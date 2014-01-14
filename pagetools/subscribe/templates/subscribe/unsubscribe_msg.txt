@@ -1,0 +1,6 @@
+Hi,
+
+Your e-mail address is now unsubscripted for {{ site_name }}.
+
+Greetings
+{{ site_name }}

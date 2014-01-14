@@ -1,0 +1,123 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-09-06 15:41+0200\n"
+"PO-Revision-Date: 2015-09-07 14:32+0100\n"
+"Last-Translator: slart@aktivix.org <slart@aktivix.org>\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 1.7.5\n"
+"Language-Team: \n"
+
+#: forms.py:33
+msgid "ChoiceField name must be \"name: option1, option2 [...])"
+msgstr "ChoiceField Name muss sein \"name: option1, option2[, ...]\""
+
+#: forms.py:79
+msgid "Form processed"
+msgstr "Formular abgearbeitet"
+
+#: forms.py:81 views.py:46
+msgid "An error occured"
+msgstr "Ein Fehler ist aufgetreten"
+
+#: forms.py:108
+msgid "Form"
+msgstr "Formular"
+
+#: forms.py:115
+msgid "About"
+msgstr "Über"
+
+#: forms.py:116
+msgid "Your Name"
+msgstr "Dein Name"
+
+#: forms.py:117
+msgid "E-Mail"
+msgstr "E-Mail"
+
+#: forms.py:119
+msgid "Message"
+msgstr "Nachricht"
+
+#: models.py:15
+msgid "Included form"
+msgstr "eingebundenes Formular"
+
+#: models.py:35
+msgid "Name"
+msgstr ""
+
+#: models.py:36
+msgid "required"
+msgstr "notwendig"
+
+#: models.py:38
+msgid "Helptext"
+msgstr "Hilfstext"
+
+#: models.py:39
+msgid "Default"
+msgstr ""
+
+#: models.py:48
+msgid "TextField"
+msgstr "Textfeld"
+
+#: models.py:49
+msgid "EmailField"
+msgstr "E-Mailfeld"
+
+#: models.py:50
+msgid "ChoiceField"
+msgstr "Auswahlfeld"
+
+#: models.py:51
+msgid "CheckField"
+msgstr "Ankreuzfeld"
+
+#: models.py:52
+msgid "MailReceiverField"
+msgstr "Formular-Empfänger"
+
+#: models.py:69
+msgid "Dynamic Form Field"
+msgstr "Dynamisches Formularfeld"
+
+#: models.py:70
+msgid "Dynamic Form Fields"
+msgstr "Dynamische Formularfelder"
+
+#: models.py:76
+msgid "Login required"
+msgstr "Anmeldung erforderlich"
+
+#: models.py:83 models.py:109
+msgid "Content"
+msgstr "Inhalt"
+
+#: models.py:94
+msgid "Page"
+msgstr "Seite"
+
+#: models.py:95
+msgid "Pages"
+msgstr "Seiten"
+
+#: models.py:110
+msgid "Visible"
+msgstr "Sichtbar"
+
+#: views.py:42
+msgid "Mail send"
+msgstr "E-Mail wurde versandt"

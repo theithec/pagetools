@@ -1,0 +1,15 @@
+{% load i18n %}
+{% blocktrans with title=title|safe content=content|safe %}
+New content on {{ site_name }}:
+
+<h3>{{ title }}</h3>
+
+{{ content }}
+
+Greetings
+{{ site_name }}
+
+Unsubscribe?
+https://{{ site_domain }}_unsubscribe_path_
+More Infos: info@{{site_domain }}
+{% endblocktrans %}

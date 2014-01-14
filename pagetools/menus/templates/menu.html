@@ -1,0 +1,12 @@
+{% for c in children %}
+<li {% if c.select_class_marker %}class="{{ c.select_class_marker}}"{% endif %}>
+	<a href="{{ c.entry_url }}" class="button"> {{ c.entry_title }} </a> 
+	{% if c.children %}
+	<ul class="dropdown-menu">
+	{% with template_name="menu.html" %}
+	{% include template_name with children=c.children only %}
+	{% endwith %}
+	</ul> 
+	{% endif %}
+</li>
+{% endfor %}

@@ -1,0 +1,27 @@
+{% load static menus_tags %}
+<html>
+  <head>
+    <title>pagetools-demo</title>
+  </head>
+  <body>
+    <div class="head">
+      <ul>{% menu MainMenu selected %}</ul>
+    </div>
+    <div class="main">
+      {% block main %}
+      base-content
+      {% endblock main %}
+    </div>
+    <div class="sidebar">
+        {% with areas.sidebar as sidebar %}
+        {% for widget in sidebar %}
+        <b>{{widget.title}}</b>
+        {{ widget.content|safe }}
+        {% endfor %}
+        {% endwith %}
+    </div>
+    {% block js %}
+    <script src="{% static "js/jquery/dist/jquery.min.js" %}"></script>
+    {% endblock js %}
+  </body>
+</html>
