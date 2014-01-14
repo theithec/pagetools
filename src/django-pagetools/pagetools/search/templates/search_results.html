@@ -1,0 +1,17 @@
+{% extends "paginate.html" %}
+{% load i18n crispy_forms_tags %}
+{% block main %}
+<h2>{% trans 'Results for:' %}
+{% if simple_contains_any %}
+{{	simple_contains_any }}
+</h2>
+advanced search
+{% else %}
+</h2>
+{% endif %} {% crispy form %} {% if results %}
+<ul>
+	{% for result in results %}
+	<li><a href="{{ result.get_absolute_url }}"> {{ result }}</a></li>
+	{%	endfor %}
+</ul>
+{% else %} no results {% endif %} {{ block.super }} {% endblock %}

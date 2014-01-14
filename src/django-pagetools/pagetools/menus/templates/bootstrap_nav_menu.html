@@ -1,0 +1,14 @@
+{% for c in children %}
+<li
+	class="{{ c.select_class_marker}}{% if c.children %} dropdown{% endif %}">
+	<a href="{{ c.entry_url }}" class="{% if c.children %} dropdown-toggle"
+	data-toggle="dropdown"{% else %}"{% endif %}	> {{ c.entry_title }}
+		{% if c.children %} <span class="caret"></span> {% endif %}
+</a> {% if c.children %}
+	<ul class="dropdown-menu">
+
+		<li>{% with template_name="bootstrap_nav_menu.html" %}{% include
+			template_name with children=c.children only %}{% endwith %}</li>
+	</ul> {% endif %}
+</li>
+{% endfor %}
