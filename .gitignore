@@ -5,6 +5,7 @@ src/django-pagetools/pagetools/demo/media/
 src/django-pagetools/pagetools/demo/db
 src/django-pagetools/dist/
 src/django-pagetools/django_pagetools.egg-info/
+src/django-pagetools/fabfile.py
 .project
 .pydevproject
 .settings
