@@ -52,8 +52,9 @@ class IncludedFormView(DetailView):
 
 
 class AuthPageView(DetailView):
-    
+
     def get_queryset(self, *args, **kwargs):
+        return super(AuthPageView, self).get_queryset(*args, **kwargs).filter()
         user = self.request.user
         #'slug': self.kwargs['slug'],
         d = {}
@@ -61,22 +62,11 @@ class AuthPageView(DetailView):
             d['login_required'] = False
         qs = self.model.public.lfilter(**d)
         return qs
-        
-        return super(AuthPageView, self).get_queryset(*args, **kwargs).filter(**d)
-        
 
-    def get_object2(self, **kwargs):
-        user = self.request.user
-        d = {
-             'slug': self.kwargs['slug'],
-        }
-        if not user.is_authenticated():
-            d['login_required'] = False
-        try:
-            self.object = self.get_queryset().get(**d)
-            return self.object
-        except ObjectDoesNotExist:
-            raise Http404
+        return super(AuthPageView, self).get_queryset(*args, **kwargs).filter(**d)
+
+
+
 
 
 class PageView(IncludedFormView, AuthPageView, BasePageView, DetailView,):

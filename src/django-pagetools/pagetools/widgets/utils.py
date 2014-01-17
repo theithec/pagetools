@@ -5,11 +5,15 @@ Created on 22.05.2013
 '''
 
 from pagetools.widgets.models import PageType, TypeArea
-from django.db.utils import ProgrammingError
+#from _mysql_exceptions import Error
+from django.db.utils import DatabaseError
+
+    
+    
 def type_or_none(typename):
     try:
         return PageType.objects.get(name=typename)
-    except(PageType.DoesNotExist, ProgrammingError):
+    except(PageType.DoesNotExist, DatabaseError):
         return None
         
 
