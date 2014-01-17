@@ -1,1 +1,3 @@
 include version.py RELEASE-VERSION
+recursive-include pagetools/templates * 
+recursive-include pagetools/*/templates *
