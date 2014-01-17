@@ -22,7 +22,7 @@ from pagetools.utils import get_adminadd_url, get_classname
 
 
 class MenuAdmin(TinyMCEMixin, admin.ModelAdmin):
-    exclude = ('parent', 'enabled', 'content_type', 'object_id', 'url')
+    exclude = ('parent', 'enabled', 'content_type', 'object_id')
     save_as = True
     def queryset(self, request):
         return Menu.tree.root_nodes()
