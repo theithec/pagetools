@@ -19,7 +19,6 @@ from .base_models import BaseSubscriberMixin
 def _mk_key():
     k = "".join([random.choice(string.letters + string.digits)
                  for x in range(1, 32)])
-    # auskommentieren, wenn manage.py schemamigration:
     if Subscriber.objects.filter(key=k):
         k = _mk_key()
     return k

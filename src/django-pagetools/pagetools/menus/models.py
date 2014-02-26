@@ -61,7 +61,7 @@ class MenuManager(TreeManager):
         )
         if not created:
             raise ValidationError(
-                _('Menu %(name) already exists'),
+                _('Menu %(name)s already exists'),
                 params={'name': title}
             )
         return menu

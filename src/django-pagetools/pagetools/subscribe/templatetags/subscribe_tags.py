@@ -20,7 +20,7 @@ class NewsSubscribtionNode(template.Node):
         return t.render(context)
 
 
-@register.tag(name="ptsubscribe_widget")
+@register.tag(name="subscribe_widget")
 def do_news_subscribtion(parser, token):
     return NewsSubscribtionNode()
 
