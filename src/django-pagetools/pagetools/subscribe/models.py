@@ -57,7 +57,7 @@ def get_subscriber_model():
             _subscriber_model = Subscriber
         else:
             _subscriber_model = get_model(modulename, clsname)
-    #print "SUBSRIBER_MODEL", _subscriber_model
+    # print "SUBSRIBER_MODEL", _subscriber_model
             
     return _subscriber_model
 

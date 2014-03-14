@@ -14,10 +14,11 @@ from .settings import ENTRIEABLE_MODELS
 _entrieable_reverse_names = []
 
 
-def entrieable_reverse_names(name):
+def entrieable_reverse_name(name):
     global _entrieable_reverse_names
     _entrieable_reverse_names.append(name)
     _entrieable_reverse_names = sorted(filter(None, _entrieable_reverse_names))
+    return name
     
 
 

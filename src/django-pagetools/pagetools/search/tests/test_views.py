@@ -31,5 +31,5 @@ class TC1Tests(TestCase):
 
 
 
-    #def test_add_page(self):
+    # def test_add_page(self):
     #    print self.client.get('http://127.0.0.1:8000/search/?s=P')

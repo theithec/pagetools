@@ -13,9 +13,9 @@ from pagetools.pages.models import Page
 
 class PageAdmin(EntrieableAdmin, PageLikeAdmin):
     readonly_fields = ('status_changed',)
-    list_display = ('title', 'lang',  'status')
+    list_display = ('title', 'lang', 'status')
     # -> unicode error @ 1&1 
-    #filter_horizontal = ('topics',)
+    # filter_horizontal = ('topics',)
     list_filter = ('lang', 'status')
     search_fields = ('title', 'content')
     save_as = True

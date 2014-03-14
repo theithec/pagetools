@@ -20,19 +20,19 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': os.path.join(PROJECT_DIR,'db'),                      # Or path to database file if using sqlite3.
+        'ENGINE': 'django.db.backends.sqlite3',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': os.path.join(PROJECT_DIR, 'db'),  # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
         'USER': '',
         'PASSWORD': '',
-        'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': '',                      # Set to empty string for default.
+        'HOST': '',  # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+        'PORT': '',  # Set to empty string for default.
     }
 }
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ['127.0.0.1:8000',]
+ALLOWED_HOSTS = ['127.0.0.1:8000', ]
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -42,7 +42,7 @@ TIME_ZONE = 'America/Chicago'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-#LANGUAGE_CODE = 'en-us'
+# LANGUAGE_CODE = 'en-us'
 LANGUAGES = (
   ('de', _('German')),
   ('en', _('English')),
@@ -133,7 +133,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'south',
     'crispy_forms',
-    #'grappelli.dashboard',
+    # 'grappelli.dashboard',
     'mptt',
     'grappelli',
     'filebrowser',
@@ -154,7 +154,7 @@ INSTALLED_APPS = (
 TEMPLATE_CONTEXT_PROCESSORS = (
 'django.contrib.auth.context_processors.auth',
 'django.core.context_processors.request',
-#'django.core.context_processors.media',
+# 'django.core.context_processors.media',
 'django.core.context_processors.static',
 )
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
@@ -201,7 +201,7 @@ GRAPPELLI_ADMIN_TITLE = '<a href="/" target="_blank">pagetools_demo</a>'
 CRISPY_TEMPLATE_PACK = 'bootstrap'
 
 PT_PAGE_PREFIX = 'page/'
-PT_TEMPLATETAG_WIDGETS = {'Uhrzeit': ('main.templatetags.main_tags', 'CurrentTimeNode'),}
+PT_TEMPLATETAG_WIDGETS = {'Uhrzeit': ('main.templatetags.main_tags', 'CurrentTimeNode'), }
 
 
 

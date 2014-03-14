@@ -56,7 +56,7 @@ class AuthPageView(DetailView):
     def get_queryset(self, *args, **kwargs):
         return super(AuthPageView, self).get_queryset(*args, **kwargs).filter()
         user = self.request.user
-        #'slug': self.kwargs['slug'],
+        # 'slug': self.kwargs['slug'],
         d = {}
         if not user.is_authenticated():
             d['login_required'] = False
@@ -66,11 +66,8 @@ class AuthPageView(DetailView):
         return super(AuthPageView, self).get_queryset(*args, **kwargs).filter(**d)
 
 
-
-
-
 class PageView(IncludedFormView, AuthPageView, BasePageView, DetailView,):
-    #queryset = Page.objects.all()
+    # queryset = Page.objects.all()
     model = Page
 
     def get_pagetype(self, **kwargs):

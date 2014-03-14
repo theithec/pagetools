@@ -1,7 +1,7 @@
 import datetime
 from django import template
 
-#https://docs.djangoproject.com/en/dev/howto/custom-template-tags/
+# https://docs.djangoproject.com/en/dev/howto/custom-template-tags/
 class CurrentTimeNode(template.Node):
     def __init__(self, format_string='%Y-%m-%d %I:%M %p'):
         self.format_string = format_string

@@ -129,7 +129,7 @@ class Menu(MenuEntry):
             clist = []
         if children == None:
             children = self.get_children().filter(**filterkwargs)
-            #children = self.get_children().filter(filterkwargs)
+            # children = self.get_children().filter(filterkwargs)
         for order_id, c in enumerate(children):
             d = {
                 'entry_title': c.title,
@@ -175,12 +175,14 @@ class Menu(MenuEntry):
         sel_entries = SelectedEntries()
         for s in selected:
             sel_entries['sel_' + s] = 'active'
+        print "selentries", sel_entries
         use_cache = True
         t = None
         if use_cache:
             t = MenuCache.objects.get(menu=self).cache
         else:
             t = self._render_no_sel()
+        print "t", t
         return t % sel_entries
 
     def update_entries(self, orderstr):
@@ -201,8 +203,8 @@ class Menu(MenuEntry):
             e.move_to(parent, 'last-child')
             e = MenuEntry.tree.get(pk=e.pk)
             parent = MenuEntry.tree.get(pk=parent.pk)
-            #e.save()
-            #parent.save()
+            # e.save()
+            # parent.save()
         MenuEntry.tree.rebuild()
         self.save()
 
@@ -227,7 +229,7 @@ class Menu(MenuEntry):
         if self.is_child_node():
             return super(Menu, self).save(*args, **kwargs)
         try:
-            c = self.menucache#MenuCache.objects.get(menu=self)
+            c = self.menucache  # MenuCache.objects.get(menu=self)
         except MenuCache.DoesNotExist:
             c = MenuCache.objects.create()
             self.content_object = c

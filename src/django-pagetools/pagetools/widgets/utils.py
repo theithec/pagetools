@@ -5,7 +5,7 @@ Created on 22.05.2013
 '''
 
 from pagetools.widgets.models import PageType, TypeArea
-#from _mysql_exceptions import Error
+# from _mysql_exceptions import Error
 from django.db.utils import DatabaseError
 
     

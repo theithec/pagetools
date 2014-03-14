@@ -9,6 +9,7 @@ from django.views.generic.list import ListView
 
 from pagetools.widgets.utils import get_areas_for_type
 from pagetools.widgets.models import PageType
+from django.template.defaultfilters import slugify
 
 class BasePageView(View):
 
@@ -35,8 +36,13 @@ class BasePageView(View):
                 pass
         return pt
     
+    
     def get_slug(self):
-        return self.get_object().slug
+        try:
+            return self.get_object().slug
+        except AttributeError:
+            n = slugify(self.__class__.__name__)
+            return n
 
     
 class PaginatorMixin(ListView):

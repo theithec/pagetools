@@ -184,4 +184,4 @@ admin.site.register(Menu, MenuAdmin)
 admin.site.register(Link, EntrieableAdmin)
 admin.site.register(ViewLink, EntrieableAdmin)
 
-admin.site.register([MenuEntry,])
+admin.site.register([MenuEntry, ])

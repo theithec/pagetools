@@ -21,5 +21,5 @@ function getUrlVars() {
 				$s = $("#id_menus").find("option[value="+ uvars['menu']+"]");
 				$s.attr('selected',true);//.select();
 			}
-		})
+		});
 })(grp.jQuery);

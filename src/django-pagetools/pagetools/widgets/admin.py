@@ -70,6 +70,8 @@ admin.site.register(TypeArea, TypeAreaAdmin)
 admin.site.register(ContentWidget, BaseWidgetAdmin)
 admin.site.register(TemplateTagWidget, TemplateTagWidgetAdmin)
 admin.site.register([PageType])
-    
+
+
+
 
 
