@@ -1,5 +1,5 @@
-{% extends "base.html" %} {% load fb_versions %} {% block css %} {{
-block.super }}
+{% extends "base.html" %} {% load fb_versions %} 
+{% block css %} {{block.super }}
 <link rel="stylesheet" href="{{ STATIC_URL }}css/colorbox.css" />
 <style>
 .pic-cell {
@@ -20,22 +20,28 @@ block.super }}
 	padding: 8px;
 }
 </style>
-{% endblock css%} {% block js %} {{ block.super }}
-<script type="text/javascript"
-	src="{{ STATIC_URL }}js/jquery.colorbox-min.js"></script>
-<script>
- function startGal(){
-	 jQuery('a.gallery').colorbox({
-    	 rel:'gal',transition:"none", 
-    	 width:"75%", 
-    	 height:"75%", 
-    	 slideshow:true, 
-    	 slideshowSpeed: 5000, 
-    	 open:true});
- }
- </script>
-{% endblock js %} {% block main %}
+{% endblock css%} 
 
+{% block js %} {{ block.super }}
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.colorbox-min.js"></script>
+<script>
+	$(document).ready(function(){
+		 function startGal(){
+			 jQuery('a.gallery').colorbox({
+		    	 rel:'gal',transition:"none", 
+		    	 width:"75%", 
+		    	 height:"75%", 
+		    	 slideshow:true, 
+		    	 slideshowSpeed: 5000, 
+		    	 open:true});
+		 }
+		 startGal();
+		
+	});
+ </script>
+{% endblock js %} 
+
+{% block main %}
 <div class="startlinkwrapper">
 	<a href="javascript:startGal()">Gallerie starten</a>
 </div>
@@ -51,7 +57,5 @@ block.super }}
 	</tr>
 	{% endfor %}
 </table>
-<script>
-	startGal();
-</script>
+
 {% endblock main %}

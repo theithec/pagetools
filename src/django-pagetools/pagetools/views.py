@@ -4,12 +4,13 @@ Created on 20.12.2013
 @author: lotek
 '''
 from django.conf import settings
+from django.template.defaultfilters import slugify
 from django.views.generic import View
 from django.views.generic.list import ListView
-
-from pagetools.widgets.utils import get_areas_for_type
 from pagetools.widgets.models import PageType
-from django.template.defaultfilters import slugify
+from pagetools.widgets.utils import get_areas_for_type
+
+
 
 class BasePageView(View):
 
@@ -58,3 +59,4 @@ class PaginatorMixin(ListView):
         context['get_sep'] = self.sep
         
         return context
+

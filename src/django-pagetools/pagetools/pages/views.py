@@ -77,3 +77,15 @@ class PageView(IncludedFormView, AuthPageView, BasePageView, DetailView,):
         kwargs['page_title'] = self.object.title
         return super(PageView, self).get_context_data(**kwargs)
 
+class IndexView(PageView):
+    #pagetype = 'index'
+
+    def get_object(self, **kwargs):
+        try:
+            self.object = Page.public.get(
+                slug='start',
+            )
+            return self.object
+        except ObjectDoesNotExist:
+            raise Http404
+

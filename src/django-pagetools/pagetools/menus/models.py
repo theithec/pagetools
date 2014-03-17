@@ -73,9 +73,7 @@ class MenuEntry(MPTTModel, LangModel):
             null=True, blank=True,
             related_name='children'
     )
-    content_type = models.ForeignKey(
-        ContentType
-    )
+    content_type = models.ForeignKey(ContentType)
     object_id = models.PositiveIntegerField()
     content_object = generic.GenericForeignKey('content_type', 'object_id')
     enabled = models.BooleanField(default=False)
