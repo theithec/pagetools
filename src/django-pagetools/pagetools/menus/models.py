@@ -74,7 +74,7 @@ class MenuEntry(MPTTModel, LangModel):
             related_name='children'
     )
     content_type = models.ForeignKey(
-        ContentType,
+        ContentType
     )
     object_id = models.PositiveIntegerField()
     content_object = generic.GenericForeignKey('content_type', 'object_id')
@@ -159,7 +159,8 @@ class Menu(MenuEntry):
                     'entry_url': url,
                     'select_class_marker' : '%(sel_' + slug + ')s'
                 })
-            cc = c.children.filter(**filterkwargs)
+            filterkwargs = {'parent': c}
+            cc = c.get_children().filter(**filterkwargs)
             if cc:
                 d['children'] = self.children_list(children=cc, for_admin=for_admin)
             clist.append(d)

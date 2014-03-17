@@ -161,3 +161,5 @@ class SendStatus(models.Model):
         return "%s  / %s : %s" % (self.subscriber,
                                   self.queued_email,
                                   self.status)
+    class Meta:
+        verbose_name_plural='Send Statuses'
