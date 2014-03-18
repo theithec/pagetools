@@ -10,7 +10,7 @@
 
 {% block main %}
 <h2>{{ object.title }}</h2>
-
-{{ object.content|safe }} {% if form %} {% crispy form %} {% endif %}
+{{ object.content|safe }} 
+{% if form %} {% crispy form %} {% endif %}
 {% endblock main %}
 

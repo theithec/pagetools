@@ -37,7 +37,7 @@ class IncludedFormView(DetailView):
             if not self.included_form.is_valid(request=request):
                 kwargs['form'] = self.included_form
             else:
-                pass  # kwargs['form'] = self.included_form
+                kwargs['form'] = None
         return self.get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
