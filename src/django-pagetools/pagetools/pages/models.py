@@ -36,7 +36,7 @@ class BasePage(IncludedForm, AuthPage, PagelikeModel):
     objects = models.Manager()
     pagetype = models.ForeignKey(PageType, blank=True, null=True)
     
-    def get_pagetype(self, *kwargs):
+    def get_pagetype(self, **kwargs):
         return self.pagetype
     
     def get_absolute_url(self):
@@ -60,6 +60,7 @@ class PageBlockMixin(models.Model):
     class Meta:
         verbose_name = u"Block"
         ordering = ('position',)
+        abstract = True
 
     def __unicode__(self):
         lc = len(self.content)
