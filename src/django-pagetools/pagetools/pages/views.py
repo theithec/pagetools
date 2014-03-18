@@ -46,7 +46,7 @@ class IncludedFormView(DetailView):
         else:
             FCls = self.get_formclass()
             if FCls:
-                kwargs['form'] = None
+                kwargs['form'] = FCls()
 
         return super(IncludedFormView, self).get_context_data(**kwargs)
 
