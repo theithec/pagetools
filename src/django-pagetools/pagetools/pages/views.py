@@ -38,6 +38,7 @@ class IncludedFormView(DetailView):
                 kwargs['form'] = self.included_form
             else:
                 kwargs['form'] = None
+                self.included_form = None
         return self.get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
