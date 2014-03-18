@@ -24,6 +24,12 @@ class TC1Tests(TestCase):
 
     def test_validation(self):
         self.assertRaises(ValidationError, Menu.tree.add_child, self.menu, self.p1)
+        
+    def test_rm_and_add_again(self):
+        self.e1.delete()
+        self.menu.save()
+        self.e1 = Menu.tree.add_child(self.menu, self.p1)
+        
 
     def test_lists(self):
         c = self.menu.get_children()

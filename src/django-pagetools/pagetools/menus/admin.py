@@ -106,21 +106,17 @@ class EntrieableForm(forms.ModelForm):
         if self.instance and 'menus' in self.changed_data:
             obj = self.instance
             cmp_data = self.cleaned_data.copy()
-            sel_menus_ids = cmp_data.pop('menus', None)
-            fmenu_ids = [int(m) for m in sel_menus_ids]
+            fmenu_ids = [int(m) for m in cmp_data.pop('menus', [])]
             self.sel_menus = Menu.tree.filter(id__in=fmenu_ids)
-            existing_menuentries_of_type = MenuEntry.tree.filter(
+            existing_menuentries_for_obj = MenuEntry.tree.filter(
                     content_type=ContentType.objects.get_for_model(
                         obj.__class__,
-                    )
+                    ),
+                    object_id = obj.pk
             )
             self.existing_menuentries = []
-            for e in existing_menuentries_of_type:
-                menu = Menu.objects.get(pk=e.get_root().pk)
-                if e.content_object.__class__.objects.filter(**cmp_data):
-                    if  menu in self.sel_menus:
-                        raise ValidationError('Already exists in Menu: %s' % menu)
-                    self.existing_menuentries.append(e)
+            for e in existing_menuentries_for_obj:
+                self.existing_menuentries.append(e)
         return s
 
     class Media(TinyMCEMixin.Media):

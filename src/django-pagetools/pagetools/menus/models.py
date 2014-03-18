@@ -6,22 +6,22 @@ Created on 14.12.2013
 from collections import defaultdict
 
 from django import template
+from django.core import urlresolvers
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
-from django.core import urlresolvers
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models.signals import pre_delete
 from django.db.utils import IntegrityError
-from django.template.context import Context
 from django.utils.functional import lazy
 from django.utils.text import slugify
 from django.utils.translation import ugettext_lazy as _
+from django.template.context import Context
+
 from mptt.fields import TreeForeignKey
 from mptt.managers import TreeManager
 from mptt.models import MPTTModel
-
 
 from pagetools.models import LangManager, LangModel
 from pagetools.utils import get_classname

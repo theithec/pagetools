@@ -37,7 +37,7 @@ class IncludedFormView(DetailView):
             if not self.included_form.is_valid(request=request):
                 kwargs['form'] = self.included_form
             else:
-                kwargs['form'] = None
+                #kwargs['form'] = None
                 self.included_form = None
         return self.get(request, *args, **kwargs)
 
