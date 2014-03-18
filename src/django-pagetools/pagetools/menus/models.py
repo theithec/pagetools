@@ -174,14 +174,14 @@ class Menu(MenuEntry):
         sel_entries = SelectedEntries()
         for s in selected:
             sel_entries['sel_' + s] = 'active'
-        print "selentries", sel_entries
+        #print "selentries", sel_entries
         use_cache = True
         t = None
         if use_cache:
             t = MenuCache.objects.get(menu=self).cache
         else:
             t = self._render_no_sel()
-        print "t", t
+        #print "t", t
         return t % sel_entries
 
     def update_entries(self, orderstr):
