@@ -23,7 +23,7 @@ class ContactForm(forms.Form):
         self.helper.form_method = 'post'
         self.helper.add_input(Submit('submit', 'Submit'))
     subject = forms.CharField(max_length=100, label=_("About"), required=True)
-    name = forms.CharField(label=_("Name"))
+    name = forms.CharField(label=_("Your Name"))
     sender = forms.EmailField(label=_("E-Mail"))
     message = forms.CharField(widget=forms.widgets.Textarea(), label=_("Message"))
     #cc_myself = forms.BooleanField(required=False, label=_("Kopie an mich selbst"))

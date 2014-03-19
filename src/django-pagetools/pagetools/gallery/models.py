@@ -22,14 +22,14 @@ class GalleryPic(models.Model):
     )
 
     def __unicode__(self):
-        return self.title
+        return '%s(%s)' % (self.title, self.pic.name)
 
     def get_absolute_url(self):
         return reverse("artistdetailview", kwargs={'slug': self.slug})
 
     class Meta():
-        verbose_name = _(u'Gallery Pic')
-        verbose_name_plural = _(u'Gallery Pic')
+        verbose_name = _(u'Titled Picture')
+        #verbose_name_plural = _(u'Gallery Pic')
 
 
 class Gallery(PagelikeModel):
@@ -59,3 +59,6 @@ class PicPos(models.Model):
     pic = models.ForeignKey(GalleryPic, related_name="picpospic")
     gal = models.ForeignKey(Gallery)
     position = models.PositiveIntegerField() 
+    
+    class Meta():
+        verbose_name = _(u'Positioned Picture')
