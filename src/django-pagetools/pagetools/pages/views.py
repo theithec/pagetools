@@ -37,7 +37,6 @@ class IncludedFormView(DetailView):
             if not self.included_form.is_valid(request=request):
                 kwargs['form'] = self.included_form
             else:
-                #kwargs['form'] = None
                 self.included_form = None
         return self.get(request, *args, **kwargs)
 
@@ -68,7 +67,6 @@ class AuthPageView(DetailView):
 
 
 class PageView(IncludedFormView, AuthPageView, BasePageView, DetailView,):
-    # queryset = Page.objects.all()
     model = Page
 
     def get_pagetype(self, **kwargs):
@@ -79,7 +77,6 @@ class PageView(IncludedFormView, AuthPageView, BasePageView, DetailView,):
         return super(PageView, self).get_context_data(**kwargs)
 
 class IndexView(PageView):
-    #pagetype = 'index'
 
     def get_object(self, **kwargs):
         try:

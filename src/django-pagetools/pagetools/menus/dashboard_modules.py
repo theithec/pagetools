@@ -23,6 +23,17 @@ class MenuModule(DashboardModule):
         kwargs['title'] = kwargs.get('title',
             u'%s: %s' % (_('Menu Overview'), self.menu_name))
         super(MenuModule, self).__init__(*args, **kwargs)
+        
+        
+    def add_entrychildren(self, children, collected=None):
+        if collected == None:
+            collected = []
+        for c in children:
+            collected.append(c)
+            cc = c.get('children', None)
+            if cc:
+                collected = self.add_entrychildren(cc, collected)
+        return collected
 
     def init_with_context(self, context):
         try:
@@ -35,7 +46,8 @@ class MenuModule(DashboardModule):
             'url': reverse("admin:menus_menu_change",args=[menu.pk])
 
         }
-        context['existing'] = menu.children_list(for_admin=True)
+        nested_children = menu.children_list(for_admin=True)
+        context['existing'] = self.add_entrychildren(nested_children)
         emods = entrieable_models()
         for em in emods:
             self.children.append({
