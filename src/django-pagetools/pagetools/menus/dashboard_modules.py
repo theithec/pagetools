@@ -29,6 +29,8 @@ class MenuModule(DashboardModule):
         if collected == None:
             collected = []
         for c in children:
+            print c
+            c['url'] = c['obj_admin_url'] + '?menu=%s'% self.menu.pk
             collected.append(c)
             cc = c.get('children', None)
             if cc:
@@ -37,16 +39,16 @@ class MenuModule(DashboardModule):
 
     def init_with_context(self, context):
         try:
-            menu = Menu.tree.get(title=self.menu_name)
+            self.menu = Menu.tree.get(title=self.menu_name)
         except Menu.DoesNotExist:
             self.pre_content = 'Menu not found'
             return
         context['menu'] = {
-            'name': menu.title,
-            'url': reverse("admin:menus_menu_change",args=[menu.pk])
+            'name': self.menu.title,
+            'url': reverse("admin:menus_menu_change",args=[self.menu.pk])
 
         }
-        nested_children = menu.children_list(for_admin=True)
+        nested_children = self.menu.children_list(for_admin=True)
         context['existing'] = self.add_entrychildren(nested_children)
         emods = entrieable_models()
         for em in emods:
@@ -55,7 +57,7 @@ class MenuModule(DashboardModule):
                 'url': reverse("admin:%s_%s_add" % (
                     em.__module__[:-7].split('.')[-1],
                     em.__name__.lower()
-                )) + '?menu=%s'% menu.pk
+                )) + '?menu=%s'% self.menu.pk
             })
         super(MenuModule, self).init_with_context(context)
         self._initialized = True

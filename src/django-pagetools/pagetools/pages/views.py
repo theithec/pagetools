@@ -80,7 +80,7 @@ class IndexView(PageView):
 
     def get_object(self, **kwargs):
         try:
-            self.object = Page.public.get(
+            self.object = self.model.public.get(
                 slug='start',
             )
             return self.object

@@ -113,6 +113,9 @@ class SelectedEntries(defaultdict):
 class MenuCache(models.Model):
     menu = models.OneToOneField('Menu', blank=True, null=True)
     cache = models.TextField()
+    
+    def __unicode__(self):
+        return u'Cache: %s' % self.menu
 
 
 class Menu(MenuEntry):
@@ -175,7 +178,7 @@ class Menu(MenuEntry):
         for s in selected:
             sel_entries['sel_' + s] = 'active'
         #print "selentries", sel_entries
-        use_cache = True
+        use_cache = self.enabled
         t = None
         if use_cache:
             t = MenuCache.objects.get(menu=self).cache

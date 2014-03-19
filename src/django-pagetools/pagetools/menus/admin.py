@@ -71,8 +71,8 @@ class MenuAdmin(TinyMCEMixin, admin.ModelAdmin):
             entry.enabled = ispub == "1"
             entry.save()
             cnt += 1
-        
-        obj.update_cache()
+        if obj.enabled:
+            obj.update_cache()
 
     class Meta:
         model = Menu
