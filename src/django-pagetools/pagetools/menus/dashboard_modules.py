@@ -1,27 +1,27 @@
 from django.core.urlresolvers import reverse
+from django.utils.translation import ugettext_lazy as _
 from grappelli.dashboard.modules import DashboardModule
 from grappelli.dashboard.utils import get_admin_site_name
-from pagetools.utils import get_classname
 from pagetools.menus.models import Menu
 from pagetools.menus.utils import entrieable_models
-from django.utils.translation import ugettext_lazy as _
-
+from pagetools.utils import get_classname
+from django.core.exceptions import MultipleObjectsReturned
 
 class MenuModule(DashboardModule):
     """
     A module that displays a pagettools.menus.menu.
     
      in dashboard: 
-     self.children.append(MenuModule(menu_name='myMenu', column=1,))
+     self.children.append(MenuModule(menu_title='myMenu', column=1,))
     
     """
 
     template = 'admin/dashboard_menu_module.html'
 
     def __init__(self, *args, **kwargs):
-        self.menu_name = kwargs.pop('menu_name', 'MainMenu')
+        self.menu_title = kwargs.pop('menu_title', 'MainMenu')
         kwargs['title'] = kwargs.get('title',
-            u'%s: %s' % (_('Menu Overview'), self.menu_name))
+            u'%s: %s' % (_('Menu Overview'), self.menu_title))
         super(MenuModule, self).__init__(*args, **kwargs)
         
         
@@ -39,8 +39,8 @@ class MenuModule(DashboardModule):
 
     def init_with_context(self, context):
         try:
-            self.menu = Menu.tree.get(title=self.menu_name)
-        except Menu.DoesNotExist:
+            self.menu = Menu.objects.lfilter().get(title=self.menu_title)
+        except (Menu.DoesNotExist, MultipleObjectsReturned),e:
             self.pre_content = 'Menu not found'
             return
         context['menu'] = {
