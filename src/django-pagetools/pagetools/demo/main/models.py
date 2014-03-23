@@ -10,12 +10,9 @@ class News(PublishableModel, LangModel):
     class Meta:
         verbose_name_plural = 'News'
     
-    
 
 import pagetools
 from pagetools import pages
-
-
 pagetools.search.search_mods = (
    (pages.models.Page, ('title', 'content')),
   # ( app.models.Model2, ('foo','bar') ),
