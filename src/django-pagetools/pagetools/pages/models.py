@@ -22,6 +22,27 @@ class IncludedForm(models.Model):
         
     class Meta:
         abstract = True
+
+class DynFormField(models.Model):
+
+    field_type = models.CharField('Type', max_length=128)
+    name = models.CharField(_('Name'), max_length=512)
+    required = models.BooleanField(_('required'))
+    position = models.PositiveSmallIntegerField("Position")
+    form_containing_model = None #models.ForeignKey(ConcrteIncludedForm, related_name='dynformfields')
+    
+    def __init__(self, *args, **kwargs):
+        super(DynFormField, self).__init__(*args, **kwargs)
+        self._meta.get_field_by_name('field_type')[0]._choices = self.get_fieldchoices()
+        
+    def get_fieldchoices(self):
+        return  (( 'CharField', _('TextField')),
+                 ( 'EmailField', _('EmailField')),
+                 ('ChoiceField', _('ChoiceField')),
+                 ('BooleanField', _('CheckField')),)
+    class Meta:
+        ordering = ['position']
+        abstract = True
     
 
 class AuthPage(models.Model):

@@ -12,7 +12,3 @@ from pagetools.views import BasePageView
 class GalleryView(BasePageView, DetailView):
     template_name = "gallery.html"
     model = Gallery
-
-    # def get_object(self, **kwargs):
-    #    return get_object_or_404(
-    #        Gallery.objects.filter(slug=self.kwargs['slug']))

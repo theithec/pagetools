@@ -4,51 +4,64 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import get_urlconf, get_resolver
 from django.http.response import Http404
 from django.views.generic.detail import DetailView
-
+from django.views.generic.edit import FormView, BaseFormView
+from django.contrib import messages
 from pagetools.views import BasePageView
-
 from .models import Page
 
+from django.utils.translation import ugettext as _
 
-class IncludedFormView(DetailView):
+
+class IncludedFormView( DetailView,BaseFormView):
     '''
-        expects 
-        object.includable_foms = { 'name1': Form1,
+        expects in object
+        includable_foms = { 'name1': Form1,
          [...]
         }
 
     '''
     included_form = None
+    success_url="/"
+    
+    def __init__(self, **kwargs):
+        super(IncludedFormView, self).__init__(**kwargs)
 
-
-    def get_formclass(self):
-        obj = self.get_object()
-        fname = obj.included_form
+    def get_form_class(self):
+        self.object = self.get_object()
+        fname = self.object.included_form
         if fname:
-            FCls = obj.includable_forms.get(fname)
+            FCls = self.object.includable_forms.get(fname)
             return FCls
     
+    def get(self, request, *args, **kwargs):
+        form_class = self.get_form_class()
+        if form_class and kwargs.get('form', True) is not None:
+            kwargs['form'] = self.get_form(form_class)
+        return self.render_to_response(self.get_context_data(**kwargs))
+    
     def post(self, request, *args, **kwargs):
-        FCls = self.get_formclass()
-        self.included_form = None
-        if FCls:
-            self.included_form = FCls(self.request.POST)
-        if self.included_form:
-            if not self.included_form.is_valid(request=request):
-                kwargs['form'] = self.included_form
-            else:
-                self.included_form = None
-        return self.get(request, *args, **kwargs)
-
-    def get_context_data(self, **kwargs):
-        if self.included_form:
-            kwargs['form'] = self.included_form
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        if form.is_valid():
+            messages.success(request, _("Mail send"))
+            kwargs['form'] = None
+            return self.get(request, *args, **kwargs)
         else:
-            FCls = self.get_formclass()
-            if FCls:
-                kwargs['form'] = FCls()
+            messages.error(request, _("An error occured"))
+            return self.form_invalid(form)
 
-        return super(IncludedFormView, self).get_context_data(**kwargs)
+    def get_extras(self):
+        d = {}
+        try:
+            d['extras'] = self.object.dynformfields.all()
+        except AttributeError:
+            pass
+        return d
+
+    def get_form_kwargs(self):
+        kwargs = super(IncludedFormView, self).get_form_kwargs()
+        kwargs.update(self.get_extras())
+        return kwargs
 
 
 class AuthPageView(DetailView):
