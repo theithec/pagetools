@@ -15,7 +15,7 @@ from pagetools.widgets.utils import get_areas_for_type
 class BasePageView(View):
 
     def get_context_data(self, *args, **kwargs):
-        kwargs = super(BasePageView, self).get_context_data(*args, **kwargs)
+        kwargs = super(BasePageView, self).get_context_data(**kwargs)
         sel = kwargs.get('selected', [])
         sel.append(self.get_slug())
         kwargs['selected'] = sel 

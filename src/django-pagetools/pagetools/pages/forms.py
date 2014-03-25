@@ -14,6 +14,7 @@ from django.contrib import messages
 
 from .settings import MAILFORM_RECEIVERS
 from django.utils.text import slugify
+from django.core.exceptions import ValidationError
 
 
 class BaseDynForm(forms.Form):
@@ -26,13 +27,16 @@ class BaseDynForm(forms.Form):
             print i, dynfield.__dict__
             self.add_custom_field(dynfield)
             
-            #self.fields['custom_%s' % i] = forms.CharField(label=question)
     
     def add_custom_field(self, dynfield):
         fieldkwargs = {'required':dynfield.required}
         Fieldcls = None
-        if dynfield.field_type == 'choicefield':
-            label, values = dynfield.name.split(':')
+        if dynfield.field_type == 'ChoiceField':
+            try:
+                label, values = dynfield.name.split(':')
+            except ValueError:
+                raise ValidationError('ChoiceField name must be "name: option1, option2 [...]')
+            
             fieldkwargs['label'] = label
             fieldkwargs['choices'] = [(slugify(v),v) for v in values.split(',')]
             fieldkwargs['widget'] = widgets.CheckboxSelectMultiple
@@ -43,7 +47,7 @@ class BaseDynForm(forms.Form):
             
             #self.fields['custom_%s' % slugify(dynfield.name)] = forms.MultipleChoiceField(label=label,choices=choices, widget=widgets.CheckboxSelectMultiple)
         self.fields['custom_%s' % slugify(dynfield.name)] = Fieldcls(**fieldkwargs)
-        
+    
     
     def is_valid(self, **kwargs):
         _is_valid =  super(BaseDynForm, self).is_valid()

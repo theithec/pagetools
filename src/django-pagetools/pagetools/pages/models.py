@@ -25,8 +25,8 @@ class IncludedForm(models.Model):
 
 class DynFormField(models.Model):
 
-    field_type = models.CharField('Type', max_length=255)
-    name = models.CharField(_('Name'), max_length=255)
+    field_type = models.CharField('Type', max_length=128)
+    name = models.CharField(_('Name'), max_length=512)
     required = models.BooleanField(_('required'))
     position = models.PositiveSmallIntegerField("Position")
     form_containing_model = None #models.ForeignKey(ConcrteIncludedForm, related_name='dynformfields')
@@ -38,7 +38,7 @@ class DynFormField(models.Model):
     def get_fieldchoices(self):
         return  (( 'CharField', _('TextField')),
                  ( 'EmailField', _('EmailField')),
-                 ('choicefield', _('ChoiceField')),
+                 ('ChoiceField', _('ChoiceField')),
                  ('BooleanField', _('CheckField')),)
     class Meta:
         ordering = ['position']
