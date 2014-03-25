@@ -44,7 +44,7 @@ class MenuModule(DashboardModule):
             self.pre_content = 'Menu not found'
             return
         context['menu'] = {
-            'name': self.menu.title,
+            'name': self.menu,
             'url': reverse("admin:menus_menu_change",args=[self.menu.pk])
 
         }

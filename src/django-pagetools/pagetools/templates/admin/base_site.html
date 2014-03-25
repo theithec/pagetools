@@ -10,11 +10,21 @@
 {% block nav-global %}
 {% with LANGUAGES|length as LCNT %}
 {% if LCNT > 1 %}
-<ul style="float:right">
-	<li style="padding:10px height: 16px;">
-		{% include "lang_chooser.html" %}
-	</li>
+
+
+<ul  style="float:right;  font-weight: bold;    position: relative;">
+<li class="grp-user-options-container grp-collapse grp-closed" style="display: block; margin:10px;">
+{{LANGUAGE_CODE|language_name_local}}
+<a class="user-options-handler grp-collapse-handler" href="javascript://" style="float:right;margin-left:5px;">{% trans 'change' %}</a>
+<ul class="grp-user-options" style="width: auto;">
+
+<li style="padding:10px;  ">
+		{% include "lang_chooser.html" with jquery="grp.jQuery" %}
+</li>
 </ul>
+</li>
+</ul>
+
 {% endif %}
 {% endwith %}
 {% endblock %}
