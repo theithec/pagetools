@@ -11,7 +11,7 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class GalleryPic(models.Model):
-    title = models.CharField(max_length=512)
+    title = models.CharField(_('Title'), max_length=512)
     pic = FileBrowseField(
         _(u"Image"),
         max_length=200,

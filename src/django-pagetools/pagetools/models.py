@@ -26,7 +26,7 @@ class LangModel(models.Model):
         max_length=2,
         choices=settings.LANGUAGES,
         blank=True,
-        verbose_name=_('Language')
+        verbose_name=_('language')
     )
 
     class Meta:
