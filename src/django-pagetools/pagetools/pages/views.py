@@ -12,7 +12,7 @@ from .models import Page
 from django.utils.translation import ugettext as _
 
 
-class IncludedFormView( DetailView,BaseFormView):
+class IncludedFormView(DetailView, BaseFormView):
     '''
         expects in object
         includable_foms = { 'name1': Form1,
@@ -23,9 +23,7 @@ class IncludedFormView( DetailView,BaseFormView):
     included_form = None
     success_url="/"
     
-    def __init__(self, **kwargs):
-        super(IncludedFormView, self).__init__(**kwargs)
-
+ 
     def get_form_class(self):
         self.object = self.get_object()
         fname = self.object.included_form
@@ -67,19 +65,15 @@ class IncludedFormView( DetailView,BaseFormView):
 class AuthPageView(DetailView):
 
     def get_queryset(self, *args, **kwargs):
-        return super(AuthPageView, self).get_queryset(*args, **kwargs).filter()
         user = self.request.user
-        # 'slug': self.kwargs['slug'],
         d = {}
         if not user.is_authenticated():
             d['login_required'] = False
         qs = self.model.public.lfilter(**d)
         return qs
+        #return super(AuthPageView, self).get_queryset(*args, **kwargs).filter(**d)
 
-        return super(AuthPageView, self).get_queryset(*args, **kwargs).filter(**d)
-
-
-class PageView(IncludedFormView, AuthPageView, BasePageView, DetailView,):
+class PageView( AuthPageView, BasePageView, IncludedFormView):
     model = Page
 
     def get_pagetype(self, **kwargs):

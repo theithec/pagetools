@@ -26,7 +26,7 @@ class WidgetAdapter(models.Model):
         return u'%s' % self.content_object
 
     def get_title(self):
-        return self.content_object.title
+        return u'%s' % self.content_object.title
 
     def get_content(self, contextdict):
         return self.content_object.get_content(contextdict)
@@ -85,7 +85,7 @@ class TemplateTagWidget(BaseWidget):
         return self.robj
 
     def get_title(self):
-        return self.title
+        return u'%s' % self.title
 
     def get_content(self, contextdict):
         if self.get_rendererobject():
@@ -124,7 +124,9 @@ class TypeArea(LangModel):
                             ("_%s" % self.lang if self.lang else ""))
 
     class Meta:
+        unique_together = ('area', 'type', 'lang')
         verbose_name = _("Pagetype-Area")
+        verbose_name_plural = _("Pagetype-Areas")
 
 
 class WidgetInArea(models.Model):
@@ -134,7 +136,7 @@ class WidgetInArea(models.Model):
     enabled = models.BooleanField(u'enabled', default=False)
 
     def __unicode__(self):
-        return "%s@%s" % (self.widget, self.typearea.type)
+        return u"%s@%s" % (self.widget, self.typearea.type)
 
     class Meta:
         ordering = ['position']

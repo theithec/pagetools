@@ -6,6 +6,7 @@ from model_utils.models import StatusModel, TimeStampedModel
 import settings as ptsettings
 from model_utils.managers import QueryManager
 
+from unislug.models  import UnicodeSlugField
 
 class LangManager(QueryManager):
     def __init__(self, *args, **kwargs):
@@ -18,6 +19,7 @@ class LangManager(QueryManager):
                 lang = get_language()
             kwargs.update(lang__in=(lang, None, u''))
         return self.filter(**kwargs)
+    
 
 
 class LangModel(models.Model):
@@ -49,7 +51,7 @@ class PublishableModel(StatusModel):
 
 class PagelikeModel(LangModel, PublishableModel, TimeStampedModel):
     title = models.CharField(u'Title', max_length=255)
-    slug = models.SlugField(u'Slug', max_length=255)
+    slug = UnicodeSlugField(u'Slug', max_length=255)
     objects = models.Manager()
 
     def get_absolute_url(self):

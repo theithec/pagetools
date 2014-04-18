@@ -12,14 +12,18 @@
 {% if LCNT > 1 %}
 
 
-<ul  style="float:right;  font-weight: bold;    position: relative;">
-<li class="grp-user-options-container grp-collapse grp-closed" style="display: block; margin:10px;">
-{{LANGUAGE_CODE|language_name_local}}
-<a class="user-options-handler grp-collapse-handler" href="javascript://" style="float:right;margin-left:5px;">{% trans 'change' %}</a>
-<ul class="grp-user-options" style="width: auto;">
+<ul  style="float:right;  font-weight: bold;    position: relative; width: auto;">
+<li class="grp-user-options-container grp-collapse grp-closed" style="display: block; ">
+
+<a class="user-options-handler grp-collapse-handler" href="javascript://" style="float:right; display:block;;margin-right:5px;padding:10px;">
+	{{LANGUAGE_CODE|language_name_local}}
+</a>
+<ul class="grp-user-options" style="width: auto; margin-top:2em;">
 
 <li style="padding:10px;  ">
+	<form action="/i18n/setlang/" method="post" id="langform">
 		{% include "lang_chooser.html" with jquery="grp.jQuery" %}
+	</form>
 </li>
 </ul>
 </li>

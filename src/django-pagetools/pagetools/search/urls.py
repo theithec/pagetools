@@ -5,7 +5,6 @@ from pagetools.menus.utils import entrieable_views
 
 
 urlpatterns = patterns('',
-                       
     entrieable_views(url(r'^', (SearchResultsView.as_view()), name=u'search')),
 
 )

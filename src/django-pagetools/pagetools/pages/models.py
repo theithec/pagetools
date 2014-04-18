@@ -12,12 +12,12 @@ from pagetools.widgets.models import PageType
 
 class IncludedForm(models.Model):
     included_form = models.CharField(max_length=255, blank=True)
-    includable_forms = {_('ContaktForm'): ContactForm}
+    includable_forms = {'ContaktForm': ContactForm}
     
     def __init__(self, *args, **kwargs):
         super(IncludedForm, self).__init__(*args, **kwargs)
         self._meta.get_field_by_name('included_form')[0]._choices = [
-            (i, i) for i in self.includable_forms.keys()
+            ( i, _(i)) for i,j in self.includable_forms.items()
         ]
         
     class Meta:
@@ -29,6 +29,8 @@ class DynFormField(models.Model):
     name = models.CharField(_('Name'), max_length=512)
     required = models.BooleanField(_('required'))
     position = models.PositiveSmallIntegerField("Position")
+    help_text = models.CharField(_('Helptext'), max_length=512)
+    initial = models.CharField(_('Name'), max_length=512)
     form_containing_model = None #models.ForeignKey(ConcrteIncludedForm, related_name='dynformfields')
     
     def __init__(self, *args, **kwargs):
@@ -41,6 +43,8 @@ class DynFormField(models.Model):
                  ('ChoiceField', _('ChoiceField')),
                  ('BooleanField', _('CheckField')),)
     class Meta:
+        verbose_name = _('Dynamic Form Field')
+        verbose_name_plural = _('Dynamic Form Fields')
         ordering = ['position']
         abstract = True
     
@@ -66,6 +70,8 @@ class BasePage(IncludedForm, AuthPage, PagelikeModel):
     class Meta(PagelikeModel.Meta):
         verbose_name = u'Page'
         abstract = True
+        
+        
 class Page(BasePage):
     pass
     

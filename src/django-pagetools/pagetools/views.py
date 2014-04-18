@@ -19,7 +19,7 @@ class BasePageView(View):
         sel = kwargs.get('selected', [])
         sel.append(self.get_slug())
         kwargs['selected'] = sel 
-        
+        print "KWARGS", kwargs
         if 'pagetools.widgets' in settings.INSTALLED_APPS:
             pt = self.get_pagetype(**kwargs)
             kwargs['areas'] = get_areas_for_type(pt, kwargs)
@@ -44,6 +44,12 @@ class BasePageView(View):
         except AttributeError:
             n = slugify(self.__class__.__name__)
             return n
+    
+    #reduce queries  
+    def get_object(self):
+        if not getattr(self, 'object', None):
+            self.object = super(BasePageView,self).get_object()
+        return self.object
 
     
 class PaginatorMixin(ListView):

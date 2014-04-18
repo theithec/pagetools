@@ -23,7 +23,7 @@ class MenuRenderer(template.Node):
         except template.VariableDoesNotExist:
             pass
         try:
-            menu = Menu.objects.lfilter().get(title=self.menu_title)
+            menu = Menu.objects.lfilter().select_related().get(title=self.menu_title)
         except  ObjectDoesNotExist:
             e = "<!--UNKNOWN MENU %s !-->" % self.menu_title
             return e

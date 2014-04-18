@@ -75,23 +75,28 @@ class QueuedEmail(models.Model):
     class Meta:
         abstract = False
         verbose_name = _("News-Mail")
+        
     createdate = models.DateTimeField('Created on',
         default=timezone.now(),
         blank=True,
         editable=False)
+    
     modifydate = models.DateTimeField('Last modified on',
         default=timezone.now(),
         blank=True,
         editable=False)
+    
     senddate = models.DateTimeField('Send after',
         default=timezone.now(),
         blank=True,
         editable=True)
+    
     subject = models.CharField(verbose_name="Subject",
         default="",
         unique=False,
         blank=True,
         max_length=255)
+    
     body = models.TextField(verbose_name="Body",
         default="",
         unique=False,
@@ -137,6 +142,7 @@ class QueuedEmail(models.Model):
                                       s.subscriber.cmd_path())
                 if status == 1:
                     s.subscriber.failures = 0
+                    #s.subscriber.save() #?
                     s.delete()
                 else:
                     s.status = status

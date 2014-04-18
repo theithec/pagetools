@@ -177,7 +177,7 @@ class Menu(MenuEntry):
         sel_entries = SelectedEntries()
         for s in selected:
             sel_entries['sel_' + s] = 'active'
-        #print "selentries", sel_entries
+        print "selentries", sel_entries
         use_cache = self.enabled
         t = None
         if use_cache:

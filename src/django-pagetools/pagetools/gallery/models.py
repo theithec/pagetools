@@ -38,9 +38,6 @@ class Gallery(PagelikeModel):
     def get_pics(self):
         return self.pics.order_by('picpospic')
 
-    def get_safe(self):
-        return self
-
     def get_title(self):
         return self.title
 

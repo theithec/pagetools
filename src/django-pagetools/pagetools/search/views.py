@@ -7,7 +7,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.views.generic.edit import FormView
 from django.views.generic.list import ListView
 from django.utils.html import strip_tags
-# from main.models import Article, Topic
+
 from pagetools.search import search_mods, extra_filter
 from pagetools.views import PaginatorMixin
 
@@ -41,7 +41,7 @@ class SearchResultsView(PaginatorMixin):
     
     def filtered_queryset(self, qs, fields):
         qs = extra_filter(qs)
-        print "QS",qs
+        #print "QS",qs
         cnots = self.search_params.get('contains_not', '').split()
         if cnots:
             notlist = [Q(**{'%s__icontains' % field: cnot}) for cnot in cnots  for field in fields]
@@ -84,7 +84,6 @@ class SearchResultsView(PaginatorMixin):
         except UnicodeError:
             txt = strip_tags(u'%s' % txt).lower()
         return txt
-        
     
     def get_queryset(self, **kwargs):
         if not self.search_params:

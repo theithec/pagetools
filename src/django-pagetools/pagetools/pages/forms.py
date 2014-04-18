@@ -72,15 +72,14 @@ class SendEmailForm(BaseDynForm):
         if _is_valid:
             from django.core.mail import send_mail
             txt = os.linesep.join([u"%s\t%s" % (field.name, field.value()) for field in self])  # _formtxt(form)
-            send_mail(_("Form"), txt, self['sender'].value(), MAILFORM_RECEIVERS)
+            send_mail(_("Form"), txt, "lotek@localhost", MAILFORM_RECEIVERS, fail_silently=False)
+
+            #send_mail(_("Form"), txt, self['sender'].value(), MAILFORM_RECEIVERS, fail_silently=False)
             #messages.add_message(request, messages.INFO, _('send ok'))
         return _is_valid
 
 
 class ContactForm(SendEmailForm):
-    def __init__(self, *args, **kwargs):
-        super(ContactForm, self).__init__(*args, **kwargs)
-
     subject = forms.CharField(max_length=100, label=_("About"), required=True)
     name = forms.CharField(label=_("Your Name"))
     sender = forms.EmailField(label=_("E-Mail"))

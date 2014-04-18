@@ -11,9 +11,6 @@ from django.template.context import Context
 from pagetools.subscribe import settings as subs_settings
 from .models import QueuedEmail, SendStatus
 
-
-
-
 def to_queue(content):
     # subscribers = Subscriber.objects.filter(is_activated=True)
     t = template.loader.get_template('subscribe/msg.txt')

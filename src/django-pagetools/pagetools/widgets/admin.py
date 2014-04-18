@@ -26,7 +26,7 @@ class TypeAreaAdmin(admin.ModelAdmin):
     def render_change_form(self, request, context, add=False,
                            change=False, form_url='', obj=None):
         if obj:
-            clslist = list(itersubclasses(BaseWidget))
+            clslist = list(itersubclasses(BaseWidget))[:]
             context['addable_widgets'] = "".join([
                 '<li><a href="' + 
                 (reverse('admin:%s_%s_add' % (
