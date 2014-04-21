@@ -5,16 +5,18 @@ Created on 18.12.2013
 '''
 import os
 
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit
 from django import forms
+from django.contrib import messages
+from django.core.mail import send_mail
+from django.core.exceptions import ValidationError
+from django.utils.text import slugify
 from django.forms import widgets
 from django.utils.translation import ugettext_lazy as _
-from django.contrib import messages
 
-from .settings import MAILFORM_RECEIVERS
-from django.utils.text import slugify
-from django.core.exceptions import ValidationError
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Submit
+
+from .settings import MAILFORM_RECEIVERS, MAILFORM_SENDER
 
 
 class BaseDynForm(forms.Form):
@@ -24,7 +26,6 @@ class BaseDynForm(forms.Form):
         super(BaseDynForm, self).__init__(*args, **kwargs)
         
         for i, dynfield in enumerate(extras):
-            print i, dynfield.__dict__
             self.add_custom_field(dynfield)
             
     
@@ -68,11 +69,11 @@ class SendEmailForm(BaseDynForm):
         self.helper.add_input(Submit('submit', 'Submit'))
 
     def is_valid(self, **kwargs):
+        # call super.super to  not to send in super.is_valid
         _is_valid = super(SendEmailForm, self).is_valid()
         if _is_valid:
-            from django.core.mail import send_mail
             txt = os.linesep.join([u"%s\t%s" % (field.name, field.value()) for field in self])  # _formtxt(form)
-            send_mail(_("Form"), txt, "lotek@localhost", MAILFORM_RECEIVERS, fail_silently=False)
+            send_mail(_("Form"), txt, MAILFORM_SENDER, MAILFORM_RECEIVERS, fail_silently=False)
 
             #send_mail(_("Form"), txt, self['sender'].value(), MAILFORM_RECEIVERS, fail_silently=False)
             #messages.add_message(request, messages.INFO, _('send ok'))
