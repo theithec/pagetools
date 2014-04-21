@@ -19,7 +19,7 @@ class BasePageView(View):
         sel = kwargs.get('selected', [])
         sel.append(self.get_slug())
         kwargs['selected'] = sel 
-        print "KWARGS", kwargs
+        #print "KWARGS", kwargs
         if 'pagetools.widgets' in settings.INSTALLED_APPS:
             pt = self.get_pagetype(**kwargs)
             kwargs['areas'] = get_areas_for_type(pt, kwargs)
