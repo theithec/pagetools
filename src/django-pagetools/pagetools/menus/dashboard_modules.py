@@ -29,7 +29,7 @@ class MenuModule(DashboardModule):
         if collected == None:
             collected = []
         for c in children:
-            print c
+            #print c
             c['url'] = c['obj_admin_url'] + '?menu=%s'% self.menu.pk
             collected.append(c)
             cc = c.get('children', None)
