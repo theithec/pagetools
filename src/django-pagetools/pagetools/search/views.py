@@ -41,7 +41,6 @@ class SearchResultsView(PaginatorMixin):
     
     def filtered_queryset(self, qs, fields):
         qs = extra_filter(qs)
-        #print "QS",qs
         cnots = self.search_params.get('contains_not', '').split()
         if cnots:
             notlist = [Q(**{'%s__icontains' % field: cnot}) for cnot in cnots  for field in fields]
