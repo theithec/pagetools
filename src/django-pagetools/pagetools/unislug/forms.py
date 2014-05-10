@@ -8,3 +8,4 @@ from . import validators
 
 class UnicodeSlugField(SlugField):
     default_validators = [validators.validate_unicode_slug]
+    

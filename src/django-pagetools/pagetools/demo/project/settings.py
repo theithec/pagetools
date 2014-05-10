@@ -118,7 +118,7 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'project.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
-WSGI_APPLICATION = 'project.wsgi.application'
+WSGI_APPLICATION = 'project.wsgix.application'
 
 TEMPLATE_DIRS = (
    os.sep.join((PROJECT_DIR, 'templates',)),

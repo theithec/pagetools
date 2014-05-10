@@ -21,8 +21,6 @@ class TinyMCEMixin(object):
         }
 
 
-
-
 class PageLikeAdmin(TinyMCEMixin, admin.ModelAdmin):
     prepopulated_fields = {"slug": ("title",)}
  

@@ -52,7 +52,7 @@ class BaseWidget(models.Model):
 
 
 class ContentWidget(BaseWidget):
-    content = models.TextField()
+    content = models.TextField(_('Content'))
 
     def get_title(self):
         return self.title or self.name
