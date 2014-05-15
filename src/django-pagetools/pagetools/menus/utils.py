@@ -21,7 +21,7 @@ def entrieable_reverse_name(name):
     return name
     
 
-def entrieable_views(url):
+def entrieable_view(url):
     entrieable_reverse_name(url.name)
     return url
 
