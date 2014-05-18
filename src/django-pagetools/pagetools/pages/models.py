@@ -30,7 +30,7 @@ class DynFormField(models.Model):
     required = models.BooleanField(_('required'))
     position = models.PositiveSmallIntegerField("Position")
     help_text = models.CharField(_('Helptext'), max_length=512)
-    initial = models.CharField(_('Name'), max_length=512)
+    initial = models.CharField(_('Default'), max_length=512)
     form_containing_model = None #models.ForeignKey(ConcrteIncludedForm, related_name='dynformfields')
     
     def __init__(self, *args, **kwargs):
@@ -68,7 +68,7 @@ class BasePage(IncludedForm, AuthPage, PagelikeModel):
         return u'/%s%s' % (page_settings.PAGE_PREFIX, self.slug)
 
     class Meta(PagelikeModel.Meta):
-        verbose_name = u'Page'
+        verbose_name = _('Page')
         abstract = True
         
         
