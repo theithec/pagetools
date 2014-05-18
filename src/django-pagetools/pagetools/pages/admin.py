@@ -27,7 +27,7 @@ class DynFieldInlineFormset(forms.models.BaseInlineFormSet):
                     raise forms.ValidationError('ChoiceField must be like "fieldname: val1, val2"')
 
         
-class DynFieldAdmin(admin.TabularInline):
+class DynFieldAdmin(admin.StackedInline):
     model = None
     sortable_field_name = "position"
     extra = 1
