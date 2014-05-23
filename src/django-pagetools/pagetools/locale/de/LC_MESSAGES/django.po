@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-03-27 00:25+0100\n"
-"PO-Revision-Date: 2014-03-27 00:25+0100\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2014-05-24 00:58+0200\n"
+"PO-Revision-Date: 2014-05-24 01:00+0100\n"
+"Last-Translator: slart@aktivix.org <slart@aktivix.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.5.4\n"
 
-#: models.py:30
+#: models.py:31
 msgid "language"
 msgstr "Sprache"
 
@@ -41,11 +41,11 @@ msgstr "Bild"
 msgid "Titled Picture"
 msgstr "Bild mit Titel"
 
-#: gallery/models.py:54 gallery/models.py:55
+#: gallery/models.py:51 gallery/models.py:52
 msgid "Galleries"
 msgstr "Gallerie"
 
-#: gallery/models.py:64
+#: gallery/models.py:61
 msgid "Positioned Picture"
 msgstr "Bild (mit Positition)"
 
@@ -91,87 +91,91 @@ msgstr "Eintrag hinzufügen"
 msgid "Entries"
 msgstr "Einträge"
 
-#: pages/forms.py:55
+#: pages/forms.py:62
 msgid "Form processed"
 msgstr "Formular wurde verarbeitet"
 
-#: pages/forms.py:57 pages/views.py:50
+#: pages/forms.py:64 pages/views.py:48
 msgid "An error occured"
 msgstr "Ein Fehler ist aufgetreten"
 
-#: pages/forms.py:75
+#: pages/forms.py:82
 msgid "Form"
 msgstr "Formular"
 
-#: pages/forms.py:84
+#: pages/forms.py:90
 msgid "About"
 msgstr "Über"
 
-#: pages/forms.py:85
+#: pages/forms.py:91
 msgid "Your Name"
 msgstr "Ihr Name"
 
-#: pages/forms.py:86 subscribe/forms.py:12
+#: pages/forms.py:92 subscribe/forms.py:12
 msgid "E-Mail"
 msgstr "E-Mail"
 
-#: pages/forms.py:87
+#: pages/forms.py:93
 msgid "Message"
 msgstr "Nachricht"
 
-#: pages/models.py:15
-msgid "ContaktForm"
-msgstr "Kontaktformular"
-
-#: pages/models.py:29 pages/models.py:33
+#: pages/models.py:35
 msgid "Name"
 msgstr "Name"
 
-#: pages/models.py:30
+#: pages/models.py:36
 msgid "required"
 msgstr "notwendig"
 
-#: pages/models.py:32
+#: pages/models.py:38
 msgid "Helptext"
 msgstr ""
 
-#: pages/models.py:41
+#: pages/models.py:39
+msgid "Default"
+msgstr ""
+
+#: pages/models.py:47
 msgid "TextField"
 msgstr "Textfeld"
 
-#: pages/models.py:42
+#: pages/models.py:48
 msgid "EmailField"
 msgstr "E-mailfeld"
 
-#: pages/models.py:43
+#: pages/models.py:49
 msgid "ChoiceField"
 msgstr "Auswahlfeld"
 
-#: pages/models.py:44
+#: pages/models.py:50
 msgid "CheckField"
 msgstr "Ankreuzfeld"
 
-#: pages/models.py:46
+#: pages/models.py:64
 msgid "Dynamic Form Field"
 msgstr "Dynamisches Formfeld"
 
-#: pages/models.py:47
+#: pages/models.py:65
 msgid "Dynamic Form Fields"
 msgstr "Dynamische Formfelder"
 
-#: pages/models.py:53
+#: pages/models.py:72
 msgid "Login required"
 msgstr "Anmeldung erforderlich"
 
-#: pages/models.py:79
+#: pages/models.py:90
+msgid "Page"
+msgstr "Seite"
+
+#: pages/models.py:100 widgets/models.py:55
 msgid "Content"
 msgstr "Inhalt"
 
-#: pages/models.py:80
+#: pages/models.py:101
 msgid "Visible"
 msgstr "Sichtbar"
 
-#: pages/views.py:46
+#: pages/views.py:44
 msgid "Mail send"
 msgstr "E-mail wurde versandt"
 
@@ -191,9 +195,13 @@ msgstr "enthält genau"
 msgid "contains not "
 msgstr "enthält nicht"
 
-#: search/templates/search_results.html:4
+#: search/templates/search_results.html:5
 msgid "Results for:"
 msgstr "Resultate für"
+
+#: search/templates/search_results.html:21
+msgid "No results"
+msgstr ""
 
 #: subscribe/models.py:77
 msgid "News-Mail"
@@ -225,20 +233,22 @@ msgid " subscribe to newsletter "
 msgstr "Anmelden zum Newsletter"
 
 #: subscribe/templates/subscribe/subscribe_msg.html:5
-msgid "zurück"
+msgid "back"
 msgstr ""
 
 #: templates/admin/base_site.html:4
 msgid "Django site admin"
 msgstr ""
 
-#: templates/admin/base_site.html:18
-msgid "change"
-msgstr ""
-
 #: templates/admin/change_form_help_text.html:4
 #, python-format
 msgid " %(ht)s %(ht|safe)s \n"
+msgstr ""
+
+#: unislug/validators.py:12
+msgid ""
+"Enter a valid 'slug' consisting of unicode letters, numbers, underscores or "
+"hyphens."
 msgstr ""
 
 #: widgets/models.py:37
@@ -256,3 +266,6 @@ msgstr "Seitentyp-Bereich"
 #: widgets/models.py:129
 msgid "Pagetype-Areas"
 msgstr "Seitentyp-Bereiche"
+
+#~ msgid "ContaktForm"
+#~ msgstr "Kontaktformular"
