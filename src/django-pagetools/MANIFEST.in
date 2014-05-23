@@ -4,3 +4,5 @@ recursive-include pagetools/*/templates *
 
 recursive-include pagetools/static * 
 recursive-include pagetools/*/static *
+
+recursive-include locale *
