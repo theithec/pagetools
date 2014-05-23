@@ -1,14 +1,16 @@
+from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.html import strip_tags
 from django.utils.translation import ugettext_lazy as _
 
 from pagetools.models import PagelikeModel
-from .forms import ContactForm
-
-import settings as page_settings
 from pagetools.widgets.models import PageType
+import settings as page_settings
 
+from .forms import ContactForm, DynMultipleChoiceField
+
+from django import forms
 
 class IncludedForm(models.Model):
     included_form = models.CharField(max_length=255, blank=True)
@@ -24,13 +26,17 @@ class IncludedForm(models.Model):
         abstract = True
 
 class DynFormField(models.Model):
-
+    
+    field_for_type = {
+        u'ChoiceField' : DynMultipleChoiceField,
+        
+    }
     field_type = models.CharField('Type', max_length=128)
     name = models.CharField(_('Name'), max_length=512)
     required = models.BooleanField(_('required'))
     position = models.PositiveSmallIntegerField("Position")
-    help_text = models.CharField(_('Helptext'), max_length=512)
-    initial = models.CharField(_('Default'), max_length=512)
+    help_text = models.CharField(_('Helptext'), max_length=512, blank=True)
+    initial = models.CharField(_('Default'), max_length=512, blank=True)
     form_containing_model = None #models.ForeignKey(ConcrteIncludedForm, related_name='dynformfields')
     
     def __init__(self, *args, **kwargs):
@@ -42,11 +48,24 @@ class DynFormField(models.Model):
                  ( 'EmailField', _('EmailField')),
                  ('ChoiceField', _('ChoiceField')),
                  ('BooleanField', _('CheckField')),)
+    
+    def clean(self):
+        pass
+    
+    def to_field(self):
+       
+            
+        Fieldcls = self.field_for_type[self.field_type]
+        #Fieldcls = self.field_for_type.get(self.field_type,
+        #                                       getattr(forms, self.field_type ))
+        return Fieldcls(label=self.name, required=self.required, help_text=self.help_text, initial=self.initial)
+         
     class Meta:
         verbose_name = _('Dynamic Form Field')
         verbose_name_plural = _('Dynamic Form Fields')
         ordering = ['position']
         abstract = True
+    
     
 
 class AuthPage(models.Model):

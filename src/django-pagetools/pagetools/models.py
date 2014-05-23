@@ -62,3 +62,5 @@ class PagelikeModel(LangModel, PublishableModel, TimeStampedModel):
 
     class Meta:
         abstract = True
+
+

@@ -18,6 +18,21 @@ from crispy_forms.layout import Submit
 
 from .settings import MAILFORM_RECEIVERS, MAILFORM_SENDER
 
+class DynMultipleChoiceField(forms.MultipleChoiceField):
+    
+    def __init__(self, **kwargs):
+        try:
+            label, values = kwargs['label'].split(':')
+        except ValueError:
+            raise ValidationError('ChoiceField1 name must be "name: option1, option2 [...]')
+        kwargs.update({
+            'label': label,
+            'choices': [(slugify(v),v) for v in values.split(',')],
+            'widget': widgets.CheckboxSelectMultiple
+        })
+        super(DynMultipleChoiceField, self).__init__(**kwargs)
+        
+
 
 class BaseDynForm(forms.Form):
 
@@ -30,21 +45,12 @@ class BaseDynForm(forms.Form):
             
     
     def add_custom_field(self, dynfield):
-        fieldkwargs = {'required':dynfield.required}
-        Fieldcls = None
-        if dynfield.field_type == 'ChoiceField':
-            try:
-                label, values = dynfield.name.split(':')
-            except ValueError:
-                raise ValidationError('ChoiceField name must be "name: option1, option2 [...]')
-            
-            fieldkwargs['label'] = label
-            fieldkwargs['choices'] = [(slugify(v),v) for v in values.split(',')]
-            fieldkwargs['widget'] = widgets.CheckboxSelectMultiple
-            Fieldcls = forms.MultipleChoiceField
-        else:
-            fieldkwargs['label'] = dynfield.name
-            Fieldcls = getattr(forms, dynfield.field_type )
+        fieldkwargs = {'required':dynfield.required,
+                       'label': dynfield.name}
+        Fieldcls = dynfield.field_for_type.get(dynfield.field_type, None)
+        if not Fieldcls:
+            Fieldcls =  getattr(forms, dynfield.field_type )
+       
             
             #self.fields['custom_%s' % slugify(dynfield.name)] = forms.MultipleChoiceField(label=label,choices=choices, widget=widgets.CheckboxSelectMultiple)
         self.fields['custom_%s' % slugify(dynfield.name)] = Fieldcls(**fieldkwargs)

@@ -16,16 +16,9 @@ class DynFieldInlineFormset(forms.models.BaseInlineFormSet):
     def clean(self):
         for form in self.forms:
             cd = form.cleaned_data
-            
-            if cd and cd['field_type'] == 'ChoiceField':
-                n = cd['name']
-                try:
-                    label, valuesstr = n.split(':')
-                    if len(valuesstr.split(','))<2:
-                        raise ValueError()
-                except ValueError:
-                    raise forms.ValidationError('ChoiceField must be like "fieldname: val1, val2"')
-
+            if cd:
+                #construct the field as validation
+                form.instance.to_field()
         
 class DynFieldAdmin(admin.StackedInline):
     model = None
