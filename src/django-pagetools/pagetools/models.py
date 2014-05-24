@@ -18,7 +18,7 @@ class LangManager(QueryManager):
         if self.use_lang:
             if not lang:
                 lang = get_language()
-            kwargs.update(lang__in=(lang, None, u''))
+                kwargs.update(lang__in=(lang, lang.split('-')[0], None, u''))
         return self.filter(**kwargs)
     
 

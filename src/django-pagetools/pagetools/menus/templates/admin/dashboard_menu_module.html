@@ -18,7 +18,7 @@
     {% with module.children as children %}
     {% if children %}
     <div class="grp-module grp-collapse grp-open">
-    	<h4 class="grp-collapse-handler toggle_addable grp-font-color-quiet">{% trans "Create new entry" %}</h4>
+    	<h4 class="grp-collapse-handler toggle_addable grp-font-color-quiet">+ {% trans "Create new entry" %}</h4>
     </div>
     <div class="grp-row  addable">
     <ul class="grp-listing-small">
@@ -34,8 +34,9 @@
      (function($) {
      	$(document).ready(function(){
 	    	$('.toggle_existing').click(function(){$('.existing').toggle();})
-	    	$('.existing').toggle();
+	    	//$('.existing').toggle();
 	    	$('.toggle_addable').click(function(){$('.addable').toggle();});
+	    	$('.addable').toggle();
      	});
      	
      })(grp.jQuery);
