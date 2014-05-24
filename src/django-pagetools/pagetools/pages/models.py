@@ -13,7 +13,7 @@ from .forms import ContactForm, DynMultipleChoiceField
 from django import forms
 
 class IncludedForm(models.Model):
-    included_form = models.CharField(max_length=255, blank=True)
+    included_form = models.CharField(_("Included form"), max_length=255, blank=True)
     includable_forms = {'ContaktForm': ContactForm}
     
     def __init__(self, *args, **kwargs):
@@ -76,7 +76,7 @@ class AuthPage(models.Model):
 
 
 class BasePage(IncludedForm, AuthPage, PagelikeModel):
-    content = models.TextField(u'Content')
+    content = models.TextField(_('Content'))
     objects = models.Manager()
     pagetype = models.ForeignKey(PageType, blank=True, null=True)
     
@@ -97,7 +97,7 @@ class Page(BasePage):
         
 # 
 class PageBlockMixin(models.Model):
-    content = models.TextField(_(u'Content'), blank=True)
+    content = models.TextField(_('Content'), blank=True)
     visible = models.BooleanField(_(u'Visible'), default=True)
     # in concrete model:
     # page = models.ForeignKey(MyBlockPage)

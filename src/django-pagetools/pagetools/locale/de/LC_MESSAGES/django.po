@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-05-24 00:58+0200\n"
-"PO-Revision-Date: 2014-05-24 01:00+0100\n"
+"POT-Creation-Date: 2014-05-24 02:02+0200\n"
+"PO-Revision-Date: 2014-05-24 02:08+0100\n"
 "Last-Translator: slart@aktivix.org <slart@aktivix.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -17,9 +17,21 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.5.4\n"
 
-#: models.py:31
+#: models.py:32
 msgid "language"
 msgstr "Sprache"
+
+#: models.py:56
+msgid "Slug"
+msgstr "URL-Schreibweise"
+
+#: settings.py:5
+msgid "draft"
+msgstr "unveröffentlicht"
+
+#: settings.py:6
+msgid "published"
+msgstr "veröffentlicht"
 
 #: demo/project/settings.py:47
 msgid "German"
@@ -119,6 +131,10 @@ msgstr "E-Mail"
 msgid "Message"
 msgstr "Nachricht"
 
+#: pages/models.py:16
+msgid "Included form"
+msgstr "Formular"
+
 #: pages/models.py:35
 msgid "Name"
 msgstr "Name"
@@ -163,13 +179,13 @@ msgstr "Dynamische Formfelder"
 msgid "Login required"
 msgstr "Anmeldung erforderlich"
 
+#: pages/models.py:79 pages/models.py:100 widgets/models.py:55
+msgid "Content"
+msgstr "Inhalt"
+
 #: pages/models.py:90
 msgid "Page"
 msgstr "Seite"
-
-#: pages/models.py:100 widgets/models.py:55
-msgid "Content"
-msgstr "Inhalt"
 
 #: pages/models.py:101
 msgid "Visible"
