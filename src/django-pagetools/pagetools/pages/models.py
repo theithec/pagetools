@@ -54,18 +54,19 @@ class DynFormField(models.Model):
         pass
     
     def to_field(self):
-       
-            
         Fieldcls = self.field_for_type[self.field_type]
-        # Fieldcls = self.field_for_type.get(self.field_type,
-        #                                       getattr(forms, self.field_type ))
-        return Fieldcls(label=self.name, required=self.required, help_text=self.help_text, initial=self.initial)
+        return Fieldcls(label=self.name, required=self.required, 
+                        help_text=self.help_text, initial=self.initial)
+    def __unicode__(self):
+        return u'%s: %s' % (self.field_type, self.name)
          
     class Meta:
         verbose_name = _('Dynamic Form Field')
         verbose_name_plural = _('Dynamic Form Fields')
         ordering = ['position']
         abstract = True
+        
+    
     
     
 

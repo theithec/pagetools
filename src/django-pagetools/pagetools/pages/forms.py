@@ -50,8 +50,6 @@ class BaseDynForm(forms.Form):
         Fieldcls = dynfield.field_for_type.get(dynfield.field_type, None)
         if not Fieldcls:
             Fieldcls = getattr(forms, dynfield.field_type)
-       
-            
             # self.fields['custom_%s' % slugify(dynfield.name)] = forms.MultipleChoiceField(label=label,choices=choices, widget=widgets.CheckboxSelectMultiple)
         self.fields['custom_%s' % slugify(dynfield.name)] = Fieldcls(**fieldkwargs)
     
@@ -81,8 +79,8 @@ class SendEmailForm(BaseDynForm):
             txt = os.linesep.join([u"%s\t%s" % (field.name, field.value()) for field in self])  # _formtxt(form)
             send_mail(_("Form"), txt, MAILFORM_SENDER, MAILFORM_RECEIVERS, fail_silently=False)
 
-            # send_mail(_("Form"), txt, self['sender'].value(), MAILFORM_RECEIVERS, fail_silently=False)
-            # messages.add_message(request, messages.INFO, _('send ok'))
+            send_mail(_("Form"), txt, self['sender'].value(), MAILFORM_RECEIVERS, fail_silently=False)
+            messages.add_message(request, messages.INFO, _('send ok'))
         return _is_valid
 
 
