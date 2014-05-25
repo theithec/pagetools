@@ -29,8 +29,7 @@ class GalleryPic(models.Model):
 
     class Meta():
         verbose_name = _(u'Titled Picture')
-        #verbose_name_plural = _(u'Gallery Pic')
-
+        verbose_name = _(u'Titled Pictures')
 
 class Gallery(PagelikeModel):
     pics = models.ManyToManyField(GalleryPic, through="PicPos")

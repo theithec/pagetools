@@ -11,13 +11,14 @@ from django.http.response import HttpResponseRedirect
 from pagetools.utils import itersubclasses, get_classname
 from pagetools.widgets.models import TypeArea, ContentWidget, PageType, \
     WidgetInArea, BaseWidget, TemplateTagWidget
-
+from pagetools.admin import TinyMCEMixin
 
 class WidgetInAreaAdmin(admin.TabularInline):
     model = WidgetInArea
     fields = ("widget", "enabled", "position")
     sortable_field_name = "position"
     extra = 1
+    
     
 class TypeAreaAdmin(admin.ModelAdmin):
     inlines = (WidgetInAreaAdmin,)
@@ -61,13 +62,17 @@ class BaseWidgetAdmin(admin.ModelAdmin):
         return self._redirect("change", request, obj, *args, **kwargs)
     
 
+class ContentWidgetAdmin(BaseWidgetAdmin, TinyMCEMixin):
+    pass
+
+
 class TemplateTagWidgetAdmin(BaseWidgetAdmin):
     prepopulated_fields = {"name": ("renderclasskey",)}
     
     
 admin.site.register(TypeArea, TypeAreaAdmin)
     
-admin.site.register(ContentWidget, BaseWidgetAdmin)
+admin.site.register(ContentWidget, ContentWidgetAdmin)
 admin.site.register(TemplateTagWidget, TemplateTagWidgetAdmin)
 admin.site.register([PageType])
 

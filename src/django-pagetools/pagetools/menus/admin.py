@@ -112,7 +112,7 @@ class EntrieableForm(forms.ModelForm):
                     content_type=ContentType.objects.get_for_model(
                         obj.__class__,
                     ),
-                    object_id = obj.pk
+                    object_id= obj.pk
             )
             self.existing_menuentries = []
             for e in existing_menuentries_for_obj:

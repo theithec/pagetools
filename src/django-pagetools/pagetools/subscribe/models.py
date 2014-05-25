@@ -142,7 +142,7 @@ class QueuedEmail(models.Model):
                                       s.subscriber.cmd_path())
                 if status == 1:
                     s.subscriber.failures = 0
-                    #s.subscriber.save() #?
+                    # s.subscriber.save() #?
                     s.delete()
                 else:
                     s.status = status
@@ -168,4 +168,4 @@ class SendStatus(models.Model):
                                   self.queued_email,
                                   self.status)
     class Meta:
-        verbose_name_plural='Send Statuses'
+        verbose_name_plural = 'Send Statuses'

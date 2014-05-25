@@ -27,7 +27,7 @@ class DynMultipleChoiceField(forms.MultipleChoiceField):
             raise ValidationError('ChoiceField1 name must be "name: option1, option2 [...]')
         kwargs.update({
             'label': label,
-            'choices': [(slugify(v),v) for v in values.split(',')],
+            'choices': [(slugify(v), v) for v in values.split(',')],
             'widget': widgets.CheckboxSelectMultiple
         })
         super(DynMultipleChoiceField, self).__init__(**kwargs)
@@ -49,15 +49,15 @@ class BaseDynForm(forms.Form):
                        'label': dynfield.name}
         Fieldcls = dynfield.field_for_type.get(dynfield.field_type, None)
         if not Fieldcls:
-            Fieldcls =  getattr(forms, dynfield.field_type )
+            Fieldcls = getattr(forms, dynfield.field_type)
        
             
-            #self.fields['custom_%s' % slugify(dynfield.name)] = forms.MultipleChoiceField(label=label,choices=choices, widget=widgets.CheckboxSelectMultiple)
+            # self.fields['custom_%s' % slugify(dynfield.name)] = forms.MultipleChoiceField(label=label,choices=choices, widget=widgets.CheckboxSelectMultiple)
         self.fields['custom_%s' % slugify(dynfield.name)] = Fieldcls(**fieldkwargs)
     
     
     def is_valid(self, **kwargs):
-        _is_valid =  super(BaseDynForm, self).is_valid()
+        _is_valid = super(BaseDynForm, self).is_valid()
         if _is_valid:
             self.msg = (messages.SUCCESS, _('Form processed'))
         else:
@@ -81,8 +81,8 @@ class SendEmailForm(BaseDynForm):
             txt = os.linesep.join([u"%s\t%s" % (field.name, field.value()) for field in self])  # _formtxt(form)
             send_mail(_("Form"), txt, MAILFORM_SENDER, MAILFORM_RECEIVERS, fail_silently=False)
 
-            #send_mail(_("Form"), txt, self['sender'].value(), MAILFORM_RECEIVERS, fail_silently=False)
-            #messages.add_message(request, messages.INFO, _('send ok'))
+            # send_mail(_("Form"), txt, self['sender'].value(), MAILFORM_RECEIVERS, fail_silently=False)
+            # messages.add_message(request, messages.INFO, _('send ok'))
         return _is_valid
 
 
@@ -91,5 +91,5 @@ class ContactForm(SendEmailForm):
     name = forms.CharField(label=_("Your Name"))
     sender = forms.EmailField(label=_("E-Mail"))
     message = forms.CharField(widget=forms.widgets.Textarea(), label=_("Message"))
-    #cc_myself = forms.BooleanField(required=False, label=_("Kopie an mich selbst"))
+    # cc_myself = forms.BooleanField(required=False, label=_("Kopie an mich selbst"))
 

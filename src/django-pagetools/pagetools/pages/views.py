@@ -21,7 +21,7 @@ class IncludedFormView(DetailView, BaseFormView):
 
     '''
     included_form = None
-    success_url="/"
+    success_url = "/"
     
  
     def get_form_class(self):
@@ -71,9 +71,9 @@ class AuthPageView(DetailView):
             d['login_required'] = False
         qs = self.model.public.lfilter(**d)
         return qs
-        #return super(AuthPageView, self).get_queryset(*args, **kwargs).filter(**d)
+        # return super(AuthPageView, self).get_queryset(*args, **kwargs).filter(**d)
 
-class PageView( AuthPageView, BasePageView, IncludedFormView):
+class PageView(AuthPageView, BasePageView, IncludedFormView):
     model = Page
 
     def get_pagetype(self, **kwargs):

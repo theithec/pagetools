@@ -17,7 +17,7 @@ class DynFieldInlineFormset(forms.models.BaseInlineFormSet):
         for form in self.forms:
             cd = form.cleaned_data
             if cd:
-                #construct the field as validation
+                # construct the field as validation
                 form.instance.to_field()
         
 class DynFieldAdmin(admin.StackedInline):
@@ -27,11 +27,11 @@ class DynFieldAdmin(admin.StackedInline):
     formset = DynFieldInlineFormset
     
     class Media:
-        js =  [os.path.join(settings.STATIC_URL, 'pagetools', 'js', 'dynfield.js')]
+        js = [os.path.join(settings.STATIC_URL, 'pagetools', 'js', 'dynfield.js')]
     
 
 
-class PageAdmin(EntrieableAdmin,  PageLikeAdmin):
+class PageAdmin(EntrieableAdmin, PageLikeAdmin):
     readonly_fields = ('status_changed',)
     list_display = ('title', 'lang', 'status')
     list_filter = ('lang', 'status')

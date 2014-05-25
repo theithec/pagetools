@@ -19,11 +19,12 @@ class IncludedForm(models.Model):
     def __init__(self, *args, **kwargs):
         super(IncludedForm, self).__init__(*args, **kwargs)
         self._meta.get_field_by_name('included_form')[0]._choices = [
-            ( i, _(i)) for i,j in self.includable_forms.items()
+            (i, _(i)) for i, j in self.includable_forms.items()
         ]
         
     class Meta:
         abstract = True
+
 
 class DynFormField(models.Model):
     
@@ -37,15 +38,15 @@ class DynFormField(models.Model):
     position = models.PositiveSmallIntegerField("Position")
     help_text = models.CharField(_('Helptext'), max_length=512, blank=True)
     initial = models.CharField(_('Default'), max_length=512, blank=True)
-    form_containing_model = None #models.ForeignKey(ConcrteIncludedForm, related_name='dynformfields')
+    form_containing_model = None  # models.ForeignKey(ConcrteIncludedForm, related_name='dynformfields')
     
     def __init__(self, *args, **kwargs):
         super(DynFormField, self).__init__(*args, **kwargs)
         self._meta.get_field_by_name('field_type')[0]._choices = self.get_fieldchoices()
         
     def get_fieldchoices(self):
-        return  (( 'CharField', _('TextField')),
-                 ( 'EmailField', _('EmailField')),
+        return  (('CharField', _('TextField')),
+                 ('EmailField', _('EmailField')),
                  ('ChoiceField', _('ChoiceField')),
                  ('BooleanField', _('CheckField')),)
     
@@ -56,7 +57,7 @@ class DynFormField(models.Model):
        
             
         Fieldcls = self.field_for_type[self.field_type]
-        #Fieldcls = self.field_for_type.get(self.field_type,
+        # Fieldcls = self.field_for_type.get(self.field_type,
         #                                       getattr(forms, self.field_type ))
         return Fieldcls(label=self.name, required=self.required, help_text=self.help_text, initial=self.initial)
          
@@ -95,7 +96,7 @@ class Page(BasePage):
     pass
     
         
-# 
+        
 class PageBlockMixin(models.Model):
     content = models.TextField(_('Content'), blank=True)
     visible = models.BooleanField(_(u'Visible'), default=True)
