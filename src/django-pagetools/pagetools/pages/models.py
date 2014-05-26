@@ -8,7 +8,7 @@ from pagetools.models import PagelikeModel
 from pagetools.widgets.models import PageType
 import settings as page_settings
 
-from .forms import ContactForm, DynMultipleChoiceField
+from .forms import ContactForm, DynMultipleChoiceField, MailReceiverField
 
 from django import forms
 
@@ -30,6 +30,7 @@ class DynFormField(models.Model):
     
     field_for_type = {
         u'ChoiceField' : DynMultipleChoiceField,
+        u'MailReceiverField': MailReceiverField
         
     }
     field_type = models.CharField('Type', max_length=128)
@@ -48,7 +49,10 @@ class DynFormField(models.Model):
         return  (('CharField', _('TextField')),
                  ('EmailField', _('EmailField')),
                  ('ChoiceField', _('ChoiceField')),
-                 ('BooleanField', _('CheckField')),)
+                 ('BooleanField', _('CheckField')),
+                 ('BooleanField', _('CheckField')),
+                 ('MailReceiverField', _('MailReceiverField'))
+                )
     
     def clean(self):
         pass

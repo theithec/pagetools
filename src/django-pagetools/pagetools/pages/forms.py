@@ -33,6 +33,18 @@ class DynMultipleChoiceField(forms.MultipleChoiceField):
         super(DynMultipleChoiceField, self).__init__(**kwargs)
         
 
+class MailReceiverField(object):
+    
+    def __init__(self, *args, **kwargs):
+        try:
+            adrs = [n.strip( ) for n in kwargs['label'].split(',')]
+            ef = forms.EmailField()
+            for a in adrs:
+                ef.validate(a)
+        except (ValueError, ValidationError, KeyError):
+            raise ValidationError('comma seperated list of e-mails')
+        
+
 
 class BaseDynForm(forms.Form):
 
@@ -50,8 +62,11 @@ class BaseDynForm(forms.Form):
         Fieldcls = dynfield.field_for_type.get(dynfield.field_type, None)
         if not Fieldcls:
             Fieldcls = getattr(forms, dynfield.field_type)
-            # self.fields['custom_%s' % slugify(dynfield.name)] = forms.MultipleChoiceField(label=label,choices=choices, widget=widgets.CheckboxSelectMultiple)
-        self.fields['custom_%s' % slugify(dynfield.name)] = Fieldcls(**fieldkwargs)
+        extra_add = getattr(self, 'add_%s' % dynfield.field_type.lower(), None)
+        if extra_add:
+            extra_add(**fieldkwargs)
+        else:
+            self.fields['custom_%s' % slugify(dynfield.name)] = Fieldcls(**fieldkwargs)
     
     
     def is_valid(self, **kwargs):
@@ -71,16 +86,22 @@ class SendEmailForm(BaseDynForm):
         self.helper = FormHelper()
         self.helper.form_method = 'post'
         self.helper.add_input(Submit('submit', 'Submit'))
-
+        #self.mailform_receivers = None
+        
+    def add_mailreceiverfield(self, **kwargs):
+        self.mailform_receivers = kwargs['label']
+        
+    def get_mailreceivers(self):
+        return getattr(self, 'mailform_receivers', MAILFORM_RECEIVERS)
+        
     def is_valid(self, **kwargs):
         # call super.super to  not to send in super.is_valid
         _is_valid = super(SendEmailForm, self).is_valid()
         if _is_valid:
             txt = os.linesep.join([u"%s\t%s" % (field.name, field.value()) for field in self])  # _formtxt(form)
-            send_mail(_("Form"), txt, MAILFORM_SENDER, MAILFORM_RECEIVERS, fail_silently=False)
+            send_mail(_("Form"), txt, MAILFORM_SENDER, self.get_mailreceivers(), fail_silently=False)
 
-            send_mail(_("Form"), txt, self['sender'].value(), MAILFORM_RECEIVERS, fail_silently=False)
-            messages.add_message(request, messages.INFO, _('send ok'))
+            #messages.add_message(request, messages.INFO, _('send ok'))
         return _is_valid
 
 
