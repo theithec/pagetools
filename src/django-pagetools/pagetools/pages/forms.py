@@ -12,7 +12,7 @@ from django.core.exceptions import ValidationError
 from django.utils.text import slugify
 from django.forms import widgets
 from django.utils.translation import ugettext_lazy as _
-
+from django.core.validators import EmailValidator
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 
@@ -38,9 +38,9 @@ class MailReceiverField(object):
     def __init__(self, *args, **kwargs):
         try:
             adrs = [n.strip( ) for n in kwargs['label'].split(',')]
-            ef = forms.EmailField()
+            ev = EmailValidator()
             for a in adrs:
-                ef.validate(a)
+                ev(a)
         except (ValueError, ValidationError, KeyError):
             raise ValidationError('comma seperated list of e-mails')
         
