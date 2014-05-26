@@ -1,0 +1,15 @@
+Folgender neuer Inhalt ist auf {{ site_name }} veröffentlicht worden:
+
+{{ content.title }}
+---
+
+{{ content.body|safe }}
+
+
+Gruß
+{{ site.domain }}
+
+Aus dem Newsletter austragen?
+{{ unsubscribe_url }}%unsubscribe_path% 
+Weitere Infos: info@{{site.domain }}
+

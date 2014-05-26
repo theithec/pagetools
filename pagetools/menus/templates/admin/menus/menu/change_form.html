@@ -1,0 +1,85 @@
+{% extends "admin/change_form_help_text.html" %} {% load i18n %} 
+{% block stylesheets %} {{ block.super }}
+<style>
+.menu-entries 	ol {
+	margin-left: 20px;
+}
+
+.sortable li div {
+	float: left;
+	margin-top: 8px;
+	width: 60%;
+	min-width: auto;
+	max-width: 800px;
+	padding: 8px;
+	background-image: -moz-linear-gradient(center top, #FFFFFF 0%, #F6F6F6 47%, #BCCCBC 100%);
+	border: thin solid gray;
+	cursor: move;
+}
+
+.sortable {
+	margin-bottom: 8px;
+}
+
+.sortable input[type=text] {
+	width: 18em;
+}
+
+.ui-sortable {
+	overflow: hidden;
+}
+
+.del_entry {
+	color: red;
+}
+
+.sortable li div.del {
+	background: red;
+}
+
+.entry_draft {
+	text-decoration: line-through;
+}
+.obj_admin_link { margin-left: 16px;}
+</style>
+{% endblock %} 
+{% block javascripts %} 
+{{ block.super }}
+<script type="text/javascript"
+	src="{{ STATIC_URL }}pagetools/js/jquery.min.js"></script>
+<script
+	src="{{ STATIC_URL }}pagetools/js/jquery-ui-1.8.18.custom.min.js"
+	type="text/javascript"></script>
+<script type="text/javascript"
+	src="{{ STATIC_URL }}pagetools/admin/js/jquery.mjs.nestedSortable.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+	var menu_entries_changed = false;
+	var $nest = $('.sortable').nestedSortable({
+          handle: 'div',
+          items: 'li',
+          toleranceElement: '> div',
+          update: function(event, ui) { 
+        	  menu_entries_changed = true;
+          }
+    });
+	$('input[type="submit"]').click(function(){
+		$("[name='entry-order']").val($nest.sortable("serialize"));
+	});
+});
+</script>
+{% endblock javascripts %} {% block after_related_objects %} 
+{{block.super }} {% if addable_entries %}
+<div class="grp-module grp-dashboard-module">
+	<h2 class="module_title">{% trans "Add New Entry" %}</h2>
+	<ol class="grp-row">{{ addable_entries|safe }}
+	</ol>
+</div>
+{% endif %} {% if menu_entries %}
+<div class="grp-module grp-dashboard-module menu-entries ui-sortable">
+	<h2>{% trans "Entries" %}</h2>
+	{% include 'admin/menus/menu/children.html' with children=menu_entries	cls='class="sortable grp-grp-items"' %} 
+	<input name="entry-order"
+		value="" type="hidden" />
+</div>
+{% endif %} {% endblock after_related_objects %}

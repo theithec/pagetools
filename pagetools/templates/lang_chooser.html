@@ -1,0 +1,38 @@
+{% load i18n %}
+{# <form action="/i18n/setlang/" method="post" id="langform"> #}
+	{% csrf_token %}
+	<input id="setlang_next" name="next" type="hidden" value="/" /> 
+	<select name="language" id="languages">
+	{% for k,v in LANGUAGES %}
+		<option value="{{ k }}" {% if k == LANGUAGE_CODE  %}selected="selected"{% endif %}>
+			{% trans v %}
+		</option>
+	{% endfor %}
+	</select>
+	<input id="setlang" type="submit" value="Go" />
+{#</form>#}
+<script>
+	setNext = function(){
+		$("#setlang_next").attr("value", document.URL.replace(
+			"/{{ LANGUAGE_CODE }}/",
+			"/"+ $("#languages option:selected").val() + "/")
+		);
+	};
+	
+	(function($) {
+		$(document).ready(function() {
+
+			$(document).ready(function(){
+				
+					$("#setlang").toggle(false);
+					$("#languages").change(function(){
+						setNext();
+						$("#langform").submit();
+					});
+				
+			});
+        });
+    })({{jquery|default:"jQuery"}});
+	
+</script>
+						

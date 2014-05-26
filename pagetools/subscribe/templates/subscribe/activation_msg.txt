@@ -1,0 +1,8 @@
+Hallo,
+
+Deine E-Mailadresse wurde für den Newsletter auf {{ site_name }} eingetragen.
+Wenn du den Newsletter beziehen willst, gehe auf folgenden Link:
+{{ activation_url }}
+
+Gruß
+{{ site_name }} 

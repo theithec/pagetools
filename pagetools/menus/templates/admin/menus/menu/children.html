@@ -1,0 +1,19 @@
+<ol {{ cls }}>
+	{% for c in children %}
+	<li id="e_{{c.entry_pk}}" class="grp-module  ">
+		<div>
+			<input name="entry-order-id-{{c.entry_order_id}}" type="hidden"
+				value="{{ c.entry_pk}}" />
+			<input name="entry-text-{{c.entry_order_id}}" type="text"
+				value="{{ c.entry_title }}" /> 
+			<input type="checkbox" name="entry-published-{{ c.entry_order_id }}" value="1"{{ c.entry_enabled }}>Show
+			<a href="{{ c.obj_admin_url }}?menu={{ original.pk }}"
+				class="obj_admin_link entry_{{ c.obj_status}}">{{ c.obj_classname }}: {{ c.obj_title }}
+			</a>
+		</div>
+		<a class="del_entry" href="{{ c.entry_del_url }}">X</a> 
+		{% if c.children %} {% with template_name="admin/menus/menu/children.html" %}
+		{% include template_name with children=c.children only %}{% endwith %} {% endif %}
+	</li>
+	{% endfor %}
+</ol>
