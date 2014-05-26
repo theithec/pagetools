@@ -1,6 +1,0 @@
-{% extends "admin/change_form_help_text.html" %} {% load i18n %} 
-{% block after_related_objects %} {{ block.super }} 
-{% if addable_widgets %}
-<ul>
-	{{addable_widgets|safe }}
-<ul>{% endif %} {% endblock after_related_objects %}
