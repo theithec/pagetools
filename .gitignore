@@ -1,11 +1,11 @@
 *.pyc
 *~
-src/django-pagetools/pagetools/demo/static/
-src/django-pagetools/pagetools/demo/media/
-src/django-pagetools/pagetools/demo/db
-src/django-pagetools/dist/
-src/django-pagetools/django_pagetools.egg-info/
-src/django-pagetools/fabfile.py
+/pagetools/demo/static/
+/pagetools/demo/media/
+/pagetools/demo/db
+/dist/
+/dist/*
+/django_pagetools.egg-info/
 .project
 .pydevproject
 .settings
