@@ -10,7 +10,4 @@ from django import forms
 
 class SubscribeForm(forms.Form):
     email = forms.EmailField(label=_("E-Mail"))
-#    mode = forms.ChoiceField( choices=(
-#        ('subscribe',_('anmelden')),
-#        ('unsubscribe',_('abmelden')),
-#    ))
+

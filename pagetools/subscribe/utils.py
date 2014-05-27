@@ -11,6 +11,7 @@ from django.template.context import Context
 from pagetools.subscribe import settings as subs_settings
 from .models import QueuedEmail, SendStatus
 
+
 def to_queue(content):
     # subscribers = Subscriber.objects.filter(is_activated=True)
     t = template.loader.get_template('subscribe/msg.txt')
@@ -18,7 +19,9 @@ def to_queue(content):
     msg = t.render(Context({
         'content': content['body'],
         'site': Site.objects.get_current(),
-        'unsubscribe_url':"http://" + Site.objects.get_current().domain + "/subscribe/unsubscribe/"
+        'unsubscribe_url': ''.join(('http://',
+                                   Site.objects.get_current().domain,
+                                   "/subscribe/unsubscribe/"))
     }))
     qm = QueuedEmail(
         subject="%s %s" % (subs_settings.NEWS_SUBJECT_PREFIX, content['title']),

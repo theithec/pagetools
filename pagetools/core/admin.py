@@ -6,8 +6,6 @@ Created on 14.12.2013
 from django.conf import settings
 from django.contrib import admin
 
-from .settings import ADMIN_SET_LANG_FILTER
-
 
 def fieldset_copy(fieldset):
     fscopy = (fieldset[0],
@@ -17,6 +15,7 @@ def fieldset_copy(fieldset):
     if clzs:
         fscopy[1]['classes'] = [c for c in clzs]
     return fscopy
+
 
 class TinyMCEMixin(object):
     class Media:
@@ -31,9 +30,8 @@ class TinyMCEMixin(object):
         }
 
 
-class PageLikeAdmin(TinyMCEMixin, admin.ModelAdmin):
+class PagelikeAdmin(TinyMCEMixin, admin.ModelAdmin):
     prepopulated_fields = {"slug": ("title",)}
- 
-    
+
 
 

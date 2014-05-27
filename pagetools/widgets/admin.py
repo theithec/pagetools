@@ -8,22 +8,23 @@ from django.contrib import admin
 from django.core.urlresolvers import reverse
 from django.http.response import HttpResponseRedirect
 
-from pagetools.utils import itersubclasses, get_classname
+from pagetools.core.utils import itersubclasses, get_classname
 from pagetools.widgets.models import TypeArea, ContentWidget, PageType, \
     WidgetInArea, BaseWidget, TemplateTagWidget
-from pagetools.admin import TinyMCEMixin
+from pagetools.core.admin import TinyMCEMixin
+
 
 class WidgetInAreaAdmin(admin.TabularInline):
     model = WidgetInArea
     fields = ("widget", "enabled", "position")
     sortable_field_name = "position"
     extra = 1
-    
-    
+
+
 class TypeAreaAdmin(admin.ModelAdmin):
     inlines = (WidgetInAreaAdmin,)
     save_as = True
-    
+
     def render_change_form(self, request, context, add=False,
                            change=False, form_url='', obj=None):
         if obj:
@@ -35,14 +36,14 @@ class TypeAreaAdmin(admin.ModelAdmin):
                 ) + '">%s</a></li>' % (get_classname(c))
                 for c in clslist
             ])
-            
         else:
             self.change_form_template = 'admin/change_form_help_text.html'
             context['help_text'] = '[save] before adding widgets'
         return admin.ModelAdmin.render_change_form(self, request, context,
                                                    add=add, change=change,
                                                    form_url=form_url, obj=obj)
-        
+
+
 class BaseWidgetAdmin(admin.ModelAdmin):
     def _redirect(self, action, request, obj, *args, **kwargs):
         s = request.GET.get('typearea', None)
@@ -60,7 +61,7 @@ class BaseWidgetAdmin(admin.ModelAdmin):
 
     def response_change(self, request, obj, *args, **kwargs):
         return self._redirect("change", request, obj, *args, **kwargs)
-    
+
 
 class ContentWidgetAdmin(BaseWidgetAdmin, TinyMCEMixin):
     pass
@@ -68,15 +69,9 @@ class ContentWidgetAdmin(BaseWidgetAdmin, TinyMCEMixin):
 
 class TemplateTagWidgetAdmin(BaseWidgetAdmin):
     prepopulated_fields = {"name": ("renderclasskey",)}
-    
-    
+
+
 admin.site.register(TypeArea, TypeAreaAdmin)
-    
 admin.site.register(ContentWidget, ContentWidgetAdmin)
 admin.site.register(TemplateTagWidget, TemplateTagWidgetAdmin)
 admin.site.register([PageType])
-
-
-
-
-

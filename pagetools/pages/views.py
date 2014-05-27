@@ -1,12 +1,10 @@
 # Create your views here.
-from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
-from django.core.urlresolvers import get_urlconf, get_resolver
 from django.http.response import Http404
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import FormView, BaseFormView
+from django.views.generic.edit import  BaseFormView
 from django.contrib import messages
-from pagetools.views import BasePageView
+from pagetools.core.views import BasePagelikeView
 from .models import Page
 
 from django.utils.translation import ugettext as _
@@ -22,21 +20,20 @@ class IncludedFormView(DetailView, BaseFormView):
     '''
     included_form = None
     success_url = "/"
-    
- 
+
     def get_form_class(self):
         self.object = self.get_object()
         fname = self.object.included_form
         if fname:
             FCls = self.object.includable_forms.get(fname)
             return FCls
-    
+
     def get(self, request, *args, **kwargs):
         form_class = self.get_form_class()
         if form_class and kwargs.get('form', True) is not None:
             kwargs['form'] = self.get_form(form_class)
         return self.render_to_response(self.get_context_data(**kwargs))
-    
+
     def post(self, request, *args, **kwargs):
         form_class = self.get_form_class()
         form = self.get_form(form_class)
@@ -71,9 +68,9 @@ class AuthPageView(DetailView):
             d['login_required'] = False
         qs = self.model.public.lfilter(**d)
         return qs
-        # return super(AuthPageView, self).get_queryset(*args, **kwargs).filter(**d)
 
-class PageView(AuthPageView, BasePageView, IncludedFormView):
+
+class PageView(AuthPageView, BasePagelikeView, IncludedFormView):
     model = Page
 
     def get_pagetype(self, **kwargs):
@@ -82,6 +79,7 @@ class PageView(AuthPageView, BasePageView, IncludedFormView):
     def get_context_data(self, **kwargs):
         kwargs['page_title'] = self.object.title
         return super(PageView, self).get_context_data(**kwargs)
+
 
 class IndexView(PageView):
 
@@ -93,4 +91,3 @@ class IndexView(PageView):
             return self.object
         except ObjectDoesNotExist:
             raise Http404
-

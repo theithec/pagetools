@@ -4,16 +4,17 @@ from grappelli.dashboard.modules import DashboardModule
 from grappelli.dashboard.utils import get_admin_site_name
 from pagetools.menus.models import Menu
 from pagetools.menus.utils import entrieable_models
-from pagetools.utils import get_classname
+from pagetools.core.utils import get_classname
 from django.core.exceptions import MultipleObjectsReturned
+
 
 class MenuModule(DashboardModule):
     """
     A module that displays a pagettools.menus.menu.
-    
+
      in dashboard: 
      self.children.append(MenuModule(menu_title='myMenu', column=1,))
-    
+
     """
 
     template = 'admin/dashboard_menu_module.html'
@@ -23,8 +24,7 @@ class MenuModule(DashboardModule):
         kwargs['title'] = kwargs.get('title',
             u'%s: %s' % (_('Menu Overview'), self.menu_title))
         super(MenuModule, self).__init__(*args, **kwargs)
-        
-        
+
     def add_entrychildren(self, children, collected=None):
         if collected == None:
             collected = []
@@ -39,7 +39,7 @@ class MenuModule(DashboardModule):
 
     def init_with_context(self, context):
         try:
-            self.menu = Menu.objects.lfilter().get(title=self.menu_title)
+            self.menu = Menu.objects.filter().get(title=self.menu_title)
         except (Menu.DoesNotExist, MultipleObjectsReturned), e:
             self.pre_content = 'Menu not found'
             return

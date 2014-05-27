@@ -15,15 +15,16 @@ from django.core.urlresolvers import reverse
 from django.http.response import HttpResponseRedirect
 from django.utils.translation import ugettext_lazy as _
 
-from pagetools.admin import TinyMCEMixin
+from pagetools.core.admin import TinyMCEMixin
 from pagetools.menus.models import MenuEntry, Menu, Link, ViewLink
 from pagetools.menus.utils import entrieable_models
-from pagetools.utils import get_adminadd_url, get_classname
+from pagetools.core.utils import get_adminadd_url, get_classname
 
 
 class MenuAdmin(TinyMCEMixin, admin.ModelAdmin):
     exclude = ('parent', 'enabled', 'content_type', 'object_id')
     save_as = True
+
     def queryset(self, request):
         return Menu.tree.root_nodes()
 
@@ -42,8 +43,7 @@ class MenuAdmin(TinyMCEMixin, admin.ModelAdmin):
         return admin.ModelAdmin.render_change_form(
             self, request, context, add=add, change=change,
             form_url=form_url, obj=obj)
-        
-    
+
     def save_related(self, request, form, formsets, change):
         obj = form.instance
         entry_order = form.data.get('entry-order')
@@ -76,7 +76,6 @@ class MenuAdmin(TinyMCEMixin, admin.ModelAdmin):
 
     class Meta:
         model = Menu
-        
 
 
 class EntrieableForm(forms.ModelForm):
@@ -123,7 +122,6 @@ class EntrieableForm(forms.ModelForm):
         js = TinyMCEMixin.Media.js + [settings.STATIC_URL + 'pagetools/admin/js/pre_sel_menu.js']
 
 
-
 class EntrieableAdmin(admin.ModelAdmin):
     form = EntrieableForm
     # readonly_fields = ('status_changed',)
@@ -156,8 +154,7 @@ class EntrieableAdmin(admin.ModelAdmin):
                 e.save()
             elif found and not is_selected:
                 e.delete()
-        
-        
+
     def _redirect(self, action, request, obj, *args, **kwargs):
         s = request.GET.get('menu', None)
         if s and '_save' in request.POST:
@@ -174,10 +171,9 @@ class EntrieableAdmin(admin.ModelAdmin):
 
     def response_change(self, request, obj, *args, **kwargs):
         return self._redirect("change", request, obj, *args, **kwargs)
-    
-   
+
+
 admin.site.register(Menu, MenuAdmin)
 admin.site.register(Link, EntrieableAdmin)
 admin.site.register(ViewLink, EntrieableAdmin)
-
 admin.site.register([MenuEntry, ])

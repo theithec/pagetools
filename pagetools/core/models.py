@@ -20,7 +20,6 @@ class LangManager(QueryManager):
                 lang = get_language()
                 kwargs.update(lang__in=(lang, lang.split('-')[0], None, u''))
         return self.filter(**kwargs)
-    
 
 
 class LangModel(models.Model):
@@ -37,8 +36,10 @@ class LangModel(models.Model):
 
 
 class PublishableModel(StatusModel):
-   
-    _translated_choices = [ (slug, _(name)) for(slug, name) in ptsettings.STATUS_CHOICES]
+
+    _translated_choices = [(slug, _(name))
+                           for(slug, name)
+                           in ptsettings.STATUS_CHOICES]
     STATUS = Choices(*_translated_choices)
     objects = QueryManager()
     public = QueryManager(status=ptsettings.STATUS_PUBLISHED)

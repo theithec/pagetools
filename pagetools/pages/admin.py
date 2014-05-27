@@ -7,7 +7,7 @@ import os
 from django import forms
 from django.conf import settings
 from django.contrib import admin
-from pagetools.admin import PageLikeAdmin
+from pagetools.core.admin import PagelikeAdmin
 from pagetools.menus.admin import EntrieableAdmin
 from pagetools.pages.models import Page
 
@@ -31,7 +31,7 @@ class DynFieldAdmin(admin.StackedInline):
     
 
 
-class PageAdmin(EntrieableAdmin, PageLikeAdmin):
+class PageAdmin(EntrieableAdmin, PagelikeAdmin):
     readonly_fields = ('status_changed',)
     list_display = ('title', 'lang', 'status')
     list_filter = ('lang', 'status')

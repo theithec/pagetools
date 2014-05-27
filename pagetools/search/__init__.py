@@ -3,4 +3,4 @@ search_mods = (
    # ( app.models.Model2, ('title', 'content','footer') ),
 )
 
-extra_filter = lambda x:x
+extra_filter = lambda x: x

@@ -6,7 +6,7 @@ Created on 29.05.2013
 from django.core.urlresolvers import reverse
 from django.db import models
 from filebrowser.fields import FileBrowseField
-from pagetools.models import PagelikeModel
+from pagetools.core.models import PagelikeModel
 from django.utils.translation import ugettext_lazy as _
 
 

@@ -10,7 +10,7 @@ from pagetools.menus.models import Menu, MenuEntry, Link, MenuManager
 from pagetools.pages import settings
 from pagetools.pages.models import Page
 from django.core.exceptions import ValidationError
-from pagetools.settings import STATUS_PUBLISHED
+from pagetools.core.settings import STATUS_PUBLISHED
 
 
 class TC1Tests(TestCase):

@@ -11,13 +11,11 @@ class TC1Tests(TestCase):
             Subscriber.objects.create(email=e, is_activated=True)
         to_queue({'title':'Title', 'body': 'Content'})  
         to_queue({'title':'Title2', 'body': 'Content2'})  
-        
-        
-        
+
     def test_queues(self):
         self.assertEqual(len(QueuedEmail.objects.all()), 2)
-        
+
     def test_send(self):
         send_max()
-      
-        
+
+

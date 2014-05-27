@@ -1,5 +1,5 @@
 from django.db import models
-from pagetools.models import PublishableModel, LangModel
+from pagetools.core.models import PublishableModel, LangModel
 from model_utils.models import StatusModel
 
 

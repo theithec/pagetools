@@ -7,7 +7,6 @@ Created on 15.12.2013
 import sys
 
 from django.utils.functional import lazy
-
 from .settings import ENTRIEABLE_MODELS
 
 
@@ -19,7 +18,7 @@ def entrieable_reverse_name(name):
     _entrieable_reverse_names.append(name)
     _entrieable_reverse_names = sorted(filter(None, _entrieable_reverse_names))
     return name
-    
+
 
 def entrieable_view(url):
     entrieable_reverse_name(url.name)

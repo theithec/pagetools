@@ -1,7 +1,6 @@
 from django.core.urlresolvers import reverse
 
 
-
 # http://code.activestate.com/recipes/576949-find-all-subclasses-of-a-given-class/
 def itersubclasses(cls, _seen=None):
     """
@@ -44,12 +43,14 @@ def itersubclasses(cls, _seen=None):
             for sub in itersubclasses(sub, _seen):
                 yield sub
 
+
 def get_classname(cls):
     try:
         name = cls._meta.verbose_name
     except AttributeError:
         name = cls.__name__
     return name
+
 
 def get_adminadd_url(cls):
     adminurl = reverse(

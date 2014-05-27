@@ -23,8 +23,8 @@ from mptt.fields import TreeForeignKey
 from mptt.managers import TreeManager
 from mptt.models import MPTTModel
 
-from pagetools.models import LangManager, LangModel
-from pagetools.utils import get_classname
+from pagetools.core.models import LangManager, LangModel
+from pagetools.core.utils import get_classname
 
 from .settings import MENU_TEMPLATE
 
@@ -113,7 +113,7 @@ class SelectedEntries(defaultdict):
 class MenuCache(models.Model):
     menu = models.OneToOneField('Menu', blank=True, null=True)
     cache = models.TextField()
-    
+
     def __unicode__(self):
         return u'Cache: %s' % self.menu
 
@@ -183,7 +183,7 @@ class Menu(MenuEntry):
             t = MenuCache.objects.get(menu=self).cache
         else:
             t = self._render_no_sel()
-        
+
         return t % sel_entries
 
     def update_entries(self, orderstr):
@@ -220,11 +220,10 @@ class Menu(MenuEntry):
     def __unicode__(self):
         return u'%s%s' % (self.title,
                           (' (%s)' % self.lang) if self.lang else '')
-        
+
     def update_cache(self):
         self.menucache.cache = self._render_no_sel()
         self.menucache.save()
-        
 
     def save(self, *args, **kwargs):
         if self.is_child_node():

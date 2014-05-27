@@ -18,8 +18,9 @@ from crispy_forms.layout import Submit
 
 from .settings import MAILFORM_RECEIVERS, MAILFORM_SENDER
 
+
 class DynMultipleChoiceField(forms.MultipleChoiceField):
-    
+
     def __init__(self, **kwargs):
         try:
             label, values = kwargs['label'].split(':')
@@ -31,19 +32,18 @@ class DynMultipleChoiceField(forms.MultipleChoiceField):
             'widget': widgets.CheckboxSelectMultiple
         })
         super(DynMultipleChoiceField, self).__init__(**kwargs)
-        
+
 
 class MailReceiverField(object):
-    
+
     def __init__(self, *args, **kwargs):
         try:
-            adrs = [n.strip( ) for n in kwargs['label'].split(',')]
+            adrs = [n.strip() for n in kwargs['label'].split(',')]
             ev = EmailValidator()
             for a in adrs:
                 ev(a)
         except (ValueError, ValidationError, KeyError):
             raise ValidationError('comma seperated list of e-mails')
-        
 
 
 class BaseDynForm(forms.Form):
@@ -51,13 +51,12 @@ class BaseDynForm(forms.Form):
     def __init__(self, *args, **kwargs):
         extras = kwargs.pop('extras', [])
         super(BaseDynForm, self).__init__(*args, **kwargs)
-        
-        for i, dynfield in enumerate(extras):
+
+        for dynfield in extras:
             self.add_custom_field(dynfield)
-            
-    
+
     def add_custom_field(self, dynfield):
-        fieldkwargs = {'required':dynfield.required,
+        fieldkwargs = {'required': dynfield.required,
                        'label': dynfield.name}
         Fieldcls = dynfield.field_for_type.get(dynfield.field_type, None)
         if not Fieldcls:
@@ -66,9 +65,9 @@ class BaseDynForm(forms.Form):
         if extra_add:
             extra_add(**fieldkwargs)
         else:
-            self.fields['custom_%s' % slugify(dynfield.name)] = Fieldcls(**fieldkwargs)
-    
-    
+            fname = 'custom_%s' % slugify(dynfield.name)
+            self.fields[fname] = Fieldcls(**fieldkwargs)
+
     def is_valid(self, **kwargs):
         _is_valid = super(BaseDynForm, self).is_valid()
         if _is_valid:
@@ -78,28 +77,31 @@ class BaseDynForm(forms.Form):
         return _is_valid
 
 
-
 class SendEmailForm(BaseDynForm):
-    
+
     def __init__(self, *args, **kwargs):
         super(SendEmailForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_method = 'post'
         self.helper.add_input(Submit('submit', 'Submit'))
         #self.mailform_receivers = None
-        
+
     def add_mailreceiverfield(self, **kwargs):
         self.mailform_receivers = kwargs['label']
-        
+
     def get_mailreceivers(self):
         return getattr(self, 'mailform_receivers', MAILFORM_RECEIVERS)
-        
+
     def is_valid(self, **kwargs):
         # call super.super to  not to send in super.is_valid
         _is_valid = super(SendEmailForm, self).is_valid()
         if _is_valid:
-            txt = os.linesep.join([u"%s\t%s" % (field.name, field.value()) for field in self])  # _formtxt(form)
-            send_mail(_("Form"), txt, MAILFORM_SENDER, self.get_mailreceivers(), fail_silently=False)
+            txt = os.linesep.join(
+                [u"%s\t%s" % (field.name, field.value()) 
+                for field in self]
+            )
+            send_mail(_("Form"), txt, MAILFORM_SENDER,
+                      self.get_mailreceivers(), fail_silently=False)
 
             #messages.add_message(request, messages.INFO, _('send ok'))
         return _is_valid
@@ -110,5 +112,4 @@ class ContactForm(SendEmailForm):
     name = forms.CharField(label=_("Your Name"))
     sender = forms.EmailField(label=_("E-Mail"))
     message = forms.CharField(widget=forms.widgets.Textarea(), label=_("Message"))
-    # cc_myself = forms.BooleanField(required=False, label=_("Kopie an mich selbst"))
 

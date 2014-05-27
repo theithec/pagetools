@@ -12,7 +12,7 @@ from django.utils import importlib
 from django.utils.translation import ugettext_lazy as _
 from django.core.exceptions import ValidationError
 
-from pagetools.models import LangModel, LangManager
+from pagetools.core.models import LangModel, LangManager
 
 from . import settings
 

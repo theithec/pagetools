@@ -58,7 +58,6 @@ def get_subscriber_model():
         else:
             _subscriber_model = get_model(modulename, clsname)
     # print "SUBSRIBER_MODEL", _subscriber_model
-            
     return _subscriber_model
 
 
@@ -75,28 +74,28 @@ class QueuedEmail(models.Model):
     class Meta:
         abstract = False
         verbose_name = _("News-Mail")
-        
+
     createdate = models.DateTimeField('Created on',
         default=timezone.now(),
         blank=True,
         editable=False)
-    
+
     modifydate = models.DateTimeField('Last modified on',
         default=timezone.now(),
         blank=True,
         editable=False)
-    
+
     senddate = models.DateTimeField('Send after',
         default=timezone.now(),
         blank=True,
         editable=True)
-    
+
     subject = models.CharField(verbose_name="Subject",
         default="",
         unique=False,
         blank=True,
         max_length=255)
-    
+
     body = models.TextField(verbose_name="Body",
         default="",
         unique=False,
@@ -167,5 +166,7 @@ class SendStatus(models.Model):
         return "%s  / %s : %s" % (self.subscriber,
                                   self.queued_email,
                                   self.status)
+
     class Meta:
-        verbose_name_plural = 'Send Statuses'
+        verbose_name = 'Status'
+        verbose_name_plural = 'Statuses'
