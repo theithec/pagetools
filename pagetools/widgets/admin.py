@@ -30,9 +30,10 @@ class TypeAreaAdmin(admin.ModelAdmin):
         if obj:
             clslist = list(itersubclasses(BaseWidget))[:]
             context['addable_widgets'] = "".join([
-                '<li><a href="' + 
+                '<li><a href="' +
                 (reverse('admin:%s_%s_add' % (
-                    c._meta.app_label, c._meta.module_name)) + "?typearea=%s" % (context['object_id'])
+                    c._meta.app_label, c._meta.module_name)) +
+                    "?typearea=%s" % (context['object_id'])
                 ) + '">%s</a></li>' % (get_classname(c))
                 for c in clslist
             ])

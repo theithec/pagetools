@@ -1,5 +1,5 @@
 include version.py RELEASE-VERSION
-recursive-include pagetools/templates * 
+recursive-include django-pagetools/pagetools/templates * 
 recursive-include pagetools/*/templates *
 
 recursive-include pagetools/static * 

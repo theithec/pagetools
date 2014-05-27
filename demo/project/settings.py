@@ -1,17 +1,15 @@
 # Django settings for demo project.
 
 import os
-
-from unipath import Path
-
-
+from os.path import dirname
+BASE_DIR = dirname(dirname(__file__))
+print BASE_DIR
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 
-_ = lambda s:s
+_ = lambda s: s
 
-PROJECT_DIR = Path(__file__).ancestor(2)
 ADMINS = (
      ('admin', 'lotek@localhost'),
 )
@@ -21,7 +19,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': os.path.join(PROJECT_DIR, 'db'),  # Or path to database file if using sqlite3.
+        'NAME': os.path.join(BASE_DIR, 'db'),  # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
         'USER': '',
         'PASSWORD': '',
@@ -63,7 +61,7 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
-MEDIA_ROOT = os.sep.join((PROJECT_DIR, 'media',))
+MEDIA_ROOT = os.sep.join((BASE_DIR, 'media',))
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://example.com/media/", "http://media.example.com/"
@@ -73,7 +71,7 @@ MEDIA_URL = '/media/'
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
-STATIC_ROOT = os.sep.join((PROJECT_DIR, 'static',))
+STATIC_ROOT = os.sep.join((BASE_DIR, 'static',))
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
@@ -121,7 +119,7 @@ ROOT_URLCONF = 'project.urls'
 WSGI_APPLICATION = 'project.wsgi.application'
 
 TEMPLATE_DIRS = (
-   os.sep.join((PROJECT_DIR, 'templates',)),
+   os.sep.join((BASE_DIR, 'templates',)),
 )
 
 INSTALLED_APPS = (
@@ -131,9 +129,9 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'south',
+    #'south',
     'crispy_forms',
-    # 'grappelli.dashboard',
+    'grappelli.dashboard',
     'mptt',
     'grappelli',
     'filebrowser',
@@ -189,25 +187,26 @@ LOGGING = {
 }
 
 INTERNAL_IPS = ('127.0.0.1',)
-MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
-INSTALLED_APPS += (
-    'debug_toolbar',
-    'django_nose',
-)
-DEBUG_TOOLBAR_CONFIG = {'INTERCEPT_REDIRECTS': False}
+
 
 GRAPPELLI_ADMIN_TITLE = '<a href="/" target="_blank">pagetools_demo</a>'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap'
 
 PT_PAGE_PREFIX = 'page/'
+
 PT_TEMPLATETAG_WIDGETS = {'Uhrzeit': ('main.templatetags.main_tags', 'CurrentTimeNode'), }
+GRAPPELLI_INDEX_DASHBOARD = 'dashboard.CustomIndexDashboard'
 
-
-
-
-
-
+'''
+if DEBUG:
+    MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
+    INSTALLED_APPS += (
+        'debug_toolbar',
+        'django_nose',
+    )
+    DEBUG_TOOLBAR_CONFIG = {'INTERCEPT_REDIRECTS': False}
+'''
 
 
 

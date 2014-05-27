@@ -3,9 +3,6 @@ import operator
 
 from django.core.urlresolvers import reverse
 from django.db.models.query_utils import Q
-from django.utils.translation import ugettext_lazy as _
-from django.views.generic.edit import FormView
-from django.views.generic.list import ListView
 from django.utils.html import strip_tags
 
 from pagetools.search import search_mods, extra_filter
@@ -78,7 +75,6 @@ class SearchResultsView(PaginatorMixin):
     def result_add(self):
         terms = self.search_params.get('contains_all', '').split()
         return self.result_(terms, operator.and_)
-
 
     def _stripped(self, txt):
         try:

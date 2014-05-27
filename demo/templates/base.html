@@ -1,14 +1,12 @@
-{% load fb_versions menus_tags %}
+{% load menus_tags %}
 <html>
 <head>
 {% block css %}{% endblock css%}
 {% block js %}
-<script src="{{ STATIC_URL }}assets/js/html5shiv.js"></script>
 {% endblock js %}
 </head>
 <body>
-
-{% menu MainMenu selected %}
+<ul>{% menu MainMenu selected %}</ul>
 <hr />
 {% block main %}
 [no content]

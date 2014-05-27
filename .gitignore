@@ -1,7 +1,7 @@
 *.pyc
 *~
 /pagetools/demo/static/
-/pagetools/demo/media/
+/pagetools/demo/media/uploads/filebrowser/*
 /pagetools/demo/db
 /dist/
 /dist/*
