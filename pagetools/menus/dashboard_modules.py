@@ -39,7 +39,7 @@ class MenuModule(DashboardModule):
 
     def init_with_context(self, context):
         try:
-            self.menu = Menu.objects.filter().get(title=self.menu_title)
+            self.menu = Menu.objects.lfilter().get(title=self.menu_title)
         except (Menu.DoesNotExist, MultipleObjectsReturned), e:
             self.pre_content = 'Menu not found'
             return
