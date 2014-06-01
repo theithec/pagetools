@@ -19,16 +19,16 @@ class DynFieldInlineFormset(forms.models.BaseInlineFormSet):
             if cd:
                 # construct the field as validation
                 form.instance.to_field()
-        
+
+
 class DynFieldAdmin(admin.StackedInline):
     model = None
     sortable_field_name = "position"
     extra = 1
     formset = DynFieldInlineFormset
-    
+
     class Media:
         js = [os.path.join(settings.STATIC_URL, 'pagetools', 'js', 'dynfield.js')]
-    
 
 
 class PageAdmin(EntrieableAdmin, PagelikeAdmin):
@@ -37,6 +37,7 @@ class PageAdmin(EntrieableAdmin, PagelikeAdmin):
     list_filter = ('lang', 'status')
     search_fields = ('title', 'content')
     save_as = True
+
     class Meta:
         model = Page
 

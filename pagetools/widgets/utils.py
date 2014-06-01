@@ -29,7 +29,7 @@ def get_areas_for_type(pagetype, contextdict, tmpdict=None):
     for ta in tas:
         if tmpdict.get(ta.area) != None:
             continue
-        orderedwidgets = ta.widgets.filter(widget_in_area__enabled=True).order_by('widget_in_area')
+        orderedwidgets = ta.widgets.filter(enabled=True).order_by('position')
         tmpdict[ta.area] = [
             {
              'title':w.get_title(),

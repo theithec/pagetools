@@ -7,7 +7,7 @@ Created on 14.12.2013
 from django.test import TestCase
 
 from pagetools.widgets.models import TypeArea, PageType, ContentWidget, \
-    WidgetInArea, WidgetAdapter
+    WidgetInArea
 from django.contrib.contenttypes.models import ContentType
 
 
@@ -23,10 +23,10 @@ class WidgetTests(TestCase):
         w1 = ContentWidget.objects.get_or_create(
                                 name='w1', content=u'foo')[0]
         co = ContentType.objects.get_for_model(w1)
-        WidgetAdapter.objects.get_or_create(content_type=co, object_id=w1.pk)
         WidgetInArea.objects.get_or_create(
             typearea=self.typearea1,
-            widget=w1.adapter.all()[0],
+            content_type=co,
+            object_id=w1.pk,
             position=1)
         self.assertEqual(self.typearea1.widgets.all()[0].content_object, w1)
 

@@ -19,25 +19,10 @@ from pagetools.core.utils import get_adminedit_url
 from . import settings
 
 
-class WidgetAdapter(models.Model):
-    content_type = models.ForeignKey(ContentType)
-    object_id = models.PositiveIntegerField()
-    content_object = generic.GenericForeignKey('content_type', 'object_id')
-
-    def __unicode__(self):
-        return u'%s' % self.content_object
-
-    def get_title(self):
-        return u'%s' % self.content_object.title
-
-    def get_content(self, contextdict):
-        return self.content_object.get_content(contextdict)
-
-
 class BaseWidget(models.Model):
     title = models.CharField(max_length=128, blank=True)
-    name = models.SlugField(_('Internal Name'), unique=True)
-    adapter = generic.GenericRelation('WidgetAdapter')
+    name = models.SlugField(_('name'), unique=True)
+    adapter = generic.GenericRelation('WidgetInArea')
 
     def __unicode__(self):
         return u"%s" % self.title or self.name
@@ -102,8 +87,6 @@ class TypeArea(LangModel):
 
     area = models.CharField(max_length=64, choices=settings.AREAS)
     type = models.ForeignKey(PageType)
-    widgets = models.ManyToManyField(WidgetAdapter, through="WidgetInArea")
-
     objects = LangManager()
 
     def full_clean(self, *args, **kwargs):
@@ -125,18 +108,26 @@ class TypeArea(LangModel):
 
 
 class WidgetInArea(models.Model):
-    typearea = models.ForeignKey(TypeArea)
-    widget = models.ForeignKey(WidgetAdapter, related_name="widget_in_area")
+    typearea = models.ForeignKey(TypeArea,related_name="widgets")
+    content_type = models.ForeignKey(ContentType)
+    object_id = models.PositiveIntegerField()
+    content_object = generic.GenericForeignKey('content_type', 'object_id')
     position = models.PositiveIntegerField()
     enabled = models.BooleanField(u'enabled', default=False)
 
+    def get_title(self):
+        return u'%s' % self.content_object.title
+
+    def get_content(self, contextdict):
+        return self.content_object.get_content(contextdict)
+
     def adminedit_url(self):
-        co = self.widget.content_object
+        co = self.content_object
         h = format_html(u'<a href="{0}">{1}</a>', get_adminedit_url(co), co)
         return h
 
     def __unicode__(self):
-        return u"%s@%s" % (self.widget, self.typearea.type)
+        return u"%s@%s" % (self.content_object, self.typearea.type)
 
     class Meta:
         ordering = ['position']
