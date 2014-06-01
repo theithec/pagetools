@@ -66,7 +66,7 @@ class TypeAreaAdmin(admin.ModelAdmin):
                     if o in found:
                         continue
                     context['addable_objs'].append(
-                        '<option  value="%s_%s">o:%s</option>' % (ctpk, o.pk, o,)
+                        '<option  value="%s_%s">%s</option>' % (ctpk, o.pk, o,)
                     )
         else:
             self.change_form_template = 'admin/change_form_help_text.html'
