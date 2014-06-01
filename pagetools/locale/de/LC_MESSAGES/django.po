@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-05-24 02:02+0200\n"
-"PO-Revision-Date: 2014-05-24 02:08+0100\n"
+"POT-Creation-Date: 2014-06-01 20:19+0200\n"
+"PO-Revision-Date: 2014-06-01 20:20+0100\n"
 "Last-Translator: slart@aktivix.org <slart@aktivix.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -17,29 +17,36 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.5.4\n"
 
-#: models.py:32
+#: core/models.py:31
 msgid "language"
 msgstr "Sprache"
 
-#: models.py:56
+#: core/models.py:57
 msgid "Slug"
 msgstr "URL-Schreibweise"
 
-#: settings.py:5
+#: core/settings.py:5
 msgid "draft"
 msgstr "unveröffentlicht"
 
-#: settings.py:6
+#: core/settings.py:6
 msgid "published"
 msgstr "veröffentlicht"
 
-#: demo/project/settings.py:47
-msgid "German"
-msgstr "Deutsch"
+#: core/templates/admin/base_site.html:4
+msgid "Django site admin"
+msgstr ""
 
-#: demo/project/settings.py:48
-msgid "English"
-msgstr "Englisch"
+#: core/templates/admin/change_form_help_text.html:4
+#, python-format
+msgid " %(ht)s %(ht|safe)s \n"
+msgstr ""
+
+#: core/unislug/validators.py:12
+msgid ""
+"Enter a valid 'slug' consisting of unicode letters, numbers, underscores or "
+"hyphens."
+msgstr ""
 
 #: gallery/models.py:14
 msgid "Title"
@@ -53,36 +60,41 @@ msgstr "Bild"
 msgid "Titled Picture"
 msgstr "Bild mit Titel"
 
-#: gallery/models.py:51 gallery/models.py:52
+#: gallery/models.py:32
+#, fuzzy
+msgid "Titled Pictures"
+msgstr "Bild mit Titel"
+
+#: gallery/models.py:50 gallery/models.py:51
 msgid "Galleries"
 msgstr "Gallerie"
 
-#: gallery/models.py:61
+#: gallery/models.py:60
 msgid "Positioned Picture"
 msgstr "Bild (mit Positition)"
 
-#: menus/admin.py:98
+#: menus/admin.py:96
 msgid "Menus"
 msgstr "Menus"
 
-#: menus/dashboard_modules.py:24
+#: menus/dashboard_modules.py:25
 msgid "Menu Overview"
 msgstr "Menu-Übersicht"
 
-#: menus/models.py:35
+#: menus/models.py:33
 msgid "Use 'add_child' or 'add_root' instead of 'create'"
 msgstr ""
 
-#: menus/models.py:40
+#: menus/models.py:38
 msgid "MenuEntry.content_object requires get_absolute_url"
 msgstr ""
 
-#: menus/models.py:53
+#: menus/models.py:51
 #, python-format
 msgid "Entry %(title)s already exists in %(parent)s"
 msgstr "Der Eintrag %(title)s existiert bereits in %(parent)s"
 
-#: menus/models.py:64
+#: menus/models.py:62
 #, python-format
 msgid "Menu %(name)s already exists"
 msgstr "Menu %(name)s existiert bereits"
@@ -103,111 +115,115 @@ msgstr "Eintrag hinzufügen"
 msgid "Entries"
 msgstr "Einträge"
 
-#: pages/forms.py:62
+#: pages/forms.py:74
 msgid "Form processed"
 msgstr "Formular wurde verarbeitet"
 
-#: pages/forms.py:64 pages/views.py:48
+#: pages/forms.py:76 pages/views.py:45
 msgid "An error occured"
 msgstr "Ein Fehler ist aufgetreten"
 
-#: pages/forms.py:82
+#: pages/forms.py:103
 msgid "Form"
 msgstr "Formular"
 
-#: pages/forms.py:90
+#: pages/forms.py:111
 msgid "About"
 msgstr "Über"
 
-#: pages/forms.py:91
+#: pages/forms.py:112
 msgid "Your Name"
 msgstr "Ihr Name"
 
-#: pages/forms.py:92 subscribe/forms.py:12
+#: pages/forms.py:113 subscribe/forms.py:12
 msgid "E-Mail"
 msgstr "E-Mail"
 
-#: pages/forms.py:93
+#: pages/forms.py:114
 msgid "Message"
 msgstr "Nachricht"
 
-#: pages/models.py:16
+#: pages/models.py:17
 msgid "Included form"
 msgstr "Formular"
 
-#: pages/models.py:35
+#: pages/models.py:37
 msgid "Name"
 msgstr "Name"
 
-#: pages/models.py:36
+#: pages/models.py:38
 msgid "required"
 msgstr "notwendig"
 
-#: pages/models.py:38
+#: pages/models.py:40
 msgid "Helptext"
 msgstr ""
 
-#: pages/models.py:39
+#: pages/models.py:41
 msgid "Default"
 msgstr ""
 
-#: pages/models.py:47
+#: pages/models.py:49
 msgid "TextField"
 msgstr "Textfeld"
 
-#: pages/models.py:48
+#: pages/models.py:50
 msgid "EmailField"
 msgstr "E-mailfeld"
 
-#: pages/models.py:49
+#: pages/models.py:51
 msgid "ChoiceField"
 msgstr "Auswahlfeld"
 
-#: pages/models.py:50
+#: pages/models.py:52 pages/models.py:53
 msgid "CheckField"
 msgstr "Ankreuzfeld"
 
-#: pages/models.py:64
+#: pages/models.py:54
+msgid "MailReceiverField"
+msgstr ""
+
+#: pages/models.py:69
 msgid "Dynamic Form Field"
 msgstr "Dynamisches Formfeld"
 
-#: pages/models.py:65
+#: pages/models.py:70
 msgid "Dynamic Form Fields"
 msgstr "Dynamische Formfelder"
 
-#: pages/models.py:72
+#: pages/models.py:76
 msgid "Login required"
 msgstr "Anmeldung erforderlich"
 
-#: pages/models.py:79 pages/models.py:100 widgets/models.py:55
+#: pages/models.py:83 pages/models.py:103 widgets/models.py:35
 msgid "Content"
 msgstr "Inhalt"
 
-#: pages/models.py:90
+#: pages/models.py:94
 msgid "Page"
 msgstr "Seite"
 
-#: pages/models.py:101
+#: pages/models.py:104
 msgid "Visible"
 msgstr "Sichtbar"
 
-#: pages/views.py:44
+#: pages/views.py:41
 msgid "Mail send"
 msgstr "E-mail wurde versandt"
 
-#: search/forms.py:17
+#: search/forms.py:16
 msgid "contains all"
 msgstr "enthält alles"
 
-#: search/forms.py:18
+#: search/forms.py:17
 msgid "contains any"
 msgstr "enthält etwas"
 
-#: search/forms.py:19
+#: search/forms.py:18
 msgid "contains exact"
 msgstr "enthält genau"
 
-#: search/forms.py:20
+#: search/forms.py:19
 msgid "contains not "
 msgstr "enthält nicht"
 
@@ -219,11 +235,11 @@ msgstr "Resultate für"
 msgid "No results"
 msgstr ""
 
-#: subscribe/models.py:77
+#: subscribe/models.py:76
 msgid "News-Mail"
 msgstr "News-Mail"
 
-#: subscribe/settings.py:17
+#: subscribe/settings.py:18
 msgid "Welcome"
 msgstr "Willkommen"
 
@@ -250,38 +266,40 @@ msgstr "Anmelden zum Newsletter"
 
 #: subscribe/templates/subscribe/subscribe_msg.html:5
 msgid "back"
-msgstr ""
+msgstr "zurück"
 
-#: templates/admin/base_site.html:4
-msgid "Django site admin"
-msgstr ""
+#: widgets/models.py:24
+msgid "name"
+msgstr "Name"
 
-#: templates/admin/change_form_help_text.html:4
-#, python-format
-msgid " %(ht)s %(ht|safe)s \n"
-msgstr ""
-
-#: unislug/validators.py:12
-msgid ""
-"Enter a valid 'slug' consisting of unicode letters, numbers, underscores or "
-"hyphens."
-msgstr ""
-
-#: widgets/models.py:37
-msgid "Internal Name"
-msgstr "Interne Bezeichnung"
-
-#: widgets/models.py:103
+#: widgets/models.py:83
 msgid "Pagetype"
 msgstr "Seitentyp"
 
-#: widgets/models.py:128
+#: widgets/models.py:106
 msgid "Pagetype-Area"
 msgstr "Seitentyp-Bereich"
 
-#: widgets/models.py:129
+#: widgets/models.py:107
 msgid "Pagetype-Areas"
 msgstr "Seitentyp-Bereiche"
+
+#: widgets/templates/admin/widgets/typearea/change_form.html:5
+msgid "Add new Widget"
+msgstr "Neues Widget hinzufügen"
+
+#: widgets/templates/admin/widgets/typearea/change_form.html:19
+msgid "Add existing Widget"
+msgstr "Existierendes Widget hinzufügen"
+
+#~ msgid "German"
+#~ msgstr "Deutsch"
+
+#~ msgid "English"
+#~ msgstr "Englisch"
+
+#~ msgid "Internal Name"
+#~ msgstr "Interne Bezeichnung"
 
 #~ msgid "ContaktForm"
 #~ msgstr "Kontaktformular"
