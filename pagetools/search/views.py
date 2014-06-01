@@ -113,10 +113,3 @@ class SearchResultsView(PaginatorMixin):
         return context
 
 search = SearchResultsView.as_view()
-
-
-
-
-
-
-  

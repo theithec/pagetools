@@ -5,8 +5,10 @@ Created on 15.12.2013
 '''
 
 import sys
+import warnings
 
 from django.utils.functional import lazy
+
 from .settings import ENTRIEABLE_MODELS
 
 
@@ -20,9 +22,15 @@ def entrieable_reverse_name(name):
     return name
 
 
-def entrieable_view(url):
+def entrieable_url(url):
     entrieable_reverse_name(url.name)
     return url
+
+
+def entrieable_view(url):
+    warnings.warn("deprecated, wrong naming, use entrieable_url",
+                  DeprecationWarning)
+    return entrieable_url(url)
 
 
 def entrieable_models():
