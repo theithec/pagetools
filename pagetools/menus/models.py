@@ -22,7 +22,7 @@ from mptt.managers import TreeManager
 from mptt.models import MPTTModel
 
 from pagetools.core.models import LangManager, LangModel
-from pagetools.core.utils import get_classname
+from pagetools.core.utils import get_classname, get_adminedit_url
 
 from .settings import MENU_TEMPLATE
 
@@ -135,15 +135,12 @@ class Menu(MenuEntry):
             }
             obj = c.content_object
             if for_admin:
-                reverseurl = "admin:%s_%s_change" % (
-                    obj.__class__.__module__[:-7].split('.')[-1],
-                    obj.__class__.__name__.lower()
-                )
+                reverseurl = get_adminedit_url(obj)
                 d.update({
                     'entry_order_id': order_id,
                     'entry_pk': c.pk,
                     'entry_del_url': urlresolvers.reverse('admin:menus_menuentry_delete', args=(c.pk,)),
-                    'obj_admin_url': urlresolvers.reverse(reverseurl, args=(obj.id,)),
+                    'obj_admin_url': reverseurl,  #urlresolvers.reverse(reverseurl, args=(obj.id,)),
                     'obj_classname': get_classname(obj.__class__),
                     'obj_title': obj,
                     'obj_status': 'published' if getattr(obj, 'enabled', True) else 'draft',
@@ -156,7 +153,7 @@ class Menu(MenuEntry):
                 slug = getattr(obj, 'slug', slugify(u'%s' % obj))
                 d.update({
                     'entry_url': url,
-                    'select_class_marker' : '%(sel_' + slug + ')s'
+                    'select_class_marker': '%(sel_' + slug + ')s'
                 })
             filterkwargs = {'parent': c}
             cc = c.get_children().filter(**filterkwargs)

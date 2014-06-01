@@ -139,7 +139,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
-    'pagetools',
+    'pagetools.core',
     'pagetools.pages',
     'pagetools.widgets',
     'pagetools.menus',

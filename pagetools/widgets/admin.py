@@ -5,20 +5,23 @@ Created on 14.12.2013
 '''
 
 from django.contrib import admin
+from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
 from django.http.response import HttpResponseRedirect
 
+from pagetools.core.admin import TinyMCEMixin
 from pagetools.core.utils import itersubclasses, get_classname
 from pagetools.widgets.models import TypeArea, ContentWidget, PageType, \
-    WidgetInArea, BaseWidget, TemplateTagWidget
-from pagetools.core.admin import TinyMCEMixin
+    WidgetInArea, BaseWidget, TemplateTagWidget, WidgetAdapter
 
 
 class WidgetInAreaAdmin(admin.TabularInline):
     model = WidgetInArea
-    fields = ("widget", "enabled", "position")
+    fields = ( "adminedit_url", "enabled", "position",)
     sortable_field_name = "position"
     extra = 1
+    max_num = 1
+    readonly_fields = ("widget", "adminedit_url")
 
 
 class TypeAreaAdmin(admin.ModelAdmin):
@@ -30,7 +33,7 @@ class TypeAreaAdmin(admin.ModelAdmin):
         if obj:
             clslist = list(itersubclasses(BaseWidget))[:]
             context['addable_widgets'] = "".join([
-                '<li><a href="' +
+                '<li>+ <a href="' +
                 (reverse('admin:%s_%s_add' % (
                     c._meta.app_label, c._meta.module_name)) +
                     "?typearea=%s" % (context['object_id'])
@@ -42,7 +45,11 @@ class TypeAreaAdmin(admin.ModelAdmin):
             context['help_text'] = '[save] before adding widgets'
         return admin.ModelAdmin.render_change_form(self, request, context,
                                                    add=add, change=change,
-                                                   form_url=form_url, obj=obj)
+                                              form_url=form_url, obj=obj)
+
+ 
+
+
 
 
 class BaseWidgetAdmin(admin.ModelAdmin):
@@ -56,6 +63,20 @@ class BaseWidgetAdmin(admin.ModelAdmin):
             return getattr(super(BaseWidgetAdmin, self), "response_%s" % action)(
                 request, obj, *args, **kwargs
             )
+
+    def save_model(self, request, obj, form, change):
+        print "save_model"
+        obj.user = request.user
+        obj.save()
+        wa = WidgetAdapter.objects.get_or_create(
+            content_type=ContentType.objects.get_for_model(obj),
+            object_id=obj.pk
+        )[0]
+
+        s = request.GET.get('typearea', None)
+        if s:
+            ta = TypeArea.objects.get(pk=int(s))
+            WidgetInArea.objects.create(typearea=ta, widget=wa, position=99)
 
     def response_add(self, request, obj, *args, **kwargs):
         return self._redirect("add", request, obj, *args, **kwargs)
@@ -75,4 +96,4 @@ class TemplateTagWidgetAdmin(BaseWidgetAdmin):
 admin.site.register(TypeArea, TypeAreaAdmin)
 admin.site.register(ContentWidget, ContentWidgetAdmin)
 admin.site.register(TemplateTagWidget, TemplateTagWidgetAdmin)
-admin.site.register([PageType])
+admin.site.register([PageType, WidgetAdapter, WidgetInArea])

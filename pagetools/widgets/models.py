@@ -6,13 +6,15 @@ Created on 14.12.2013
 
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.template.context import Context
 from django.utils import importlib
+from django.utils.html import format_html
 from django.utils.translation import ugettext_lazy as _
-from django.core.exceptions import ValidationError
 
 from pagetools.core.models import LangModel, LangManager
+from pagetools.core.utils import get_adminedit_url
 
 from . import settings
 
@@ -36,13 +38,6 @@ class BaseWidget(models.Model):
     title = models.CharField(max_length=128, blank=True)
     name = models.SlugField(_('Internal Name'), unique=True)
     adapter = generic.GenericRelation('WidgetAdapter')
-
-    def save(self, *args, **kwargs):
-        super(BaseWidget, self).save(*args, **kwargs)
-        WidgetAdapter.objects.get_or_create(
-            content_type=ContentType.objects.get_for_model(self),
-            object_id=self.pk
-        )
 
     def __unicode__(self):
         return u"%s" % self.title or self.name
@@ -134,6 +129,11 @@ class WidgetInArea(models.Model):
     widget = models.ForeignKey(WidgetAdapter, related_name="widget_in_area")
     position = models.PositiveIntegerField()
     enabled = models.BooleanField(u'enabled', default=False)
+
+    def adminedit_url(self):
+        co = self.widget.content_object
+        h = format_html(u'<a href="{0}">{1}</a>', get_adminedit_url(co), co)
+        return h
 
     def __unicode__(self):
         return u"%s@%s" % (self.widget, self.typearea.type)
