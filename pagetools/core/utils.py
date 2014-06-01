@@ -61,8 +61,18 @@ def get_adminadd_url(cls):
 
 
 def get_adminedit_url(obj):
-    print "obj", obj
     return reverse("admin:%s_%s_change" % (
-        obj.__class__.__module__[:-7].split('.')[-1],
+        obj.__class__._meta.app_label,
         obj.__class__.__name__.lower()
     ), args=(obj.id,))
+
+
+def get_addperm_name(cls):
+    return "%s.add_%s" % (
+        cls._meta.app_label,
+        cls.__name__.lower()
+    )
+
+
+
+

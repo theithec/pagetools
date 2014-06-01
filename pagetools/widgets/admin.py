@@ -10,7 +10,8 @@ from django.core.urlresolvers import reverse
 from django.http.response import HttpResponseRedirect
 
 from pagetools.core.admin import TinyMCEMixin
-from pagetools.core.utils import itersubclasses, get_classname
+from pagetools.core.utils import itersubclasses, get_classname, get_addperm_name
+
 from .models import TypeArea, ContentWidget, PageType, \
     WidgetInArea, BaseWidget, TemplateTagWidget
 
@@ -19,8 +20,8 @@ class WidgetInAreaAdmin(admin.TabularInline):
     model = WidgetInArea
     fields = ("adminedit_url", "enabled", "position",)
     sortable_field_name = "position"
-    extra = 1
-    max_num = 1
+    extra = 0
+    max_num = 0
     readonly_fields = ( "adminedit_url",)
 
 
@@ -45,13 +46,16 @@ class TypeAreaAdmin(admin.ModelAdmin):
 
     def render_change_form(self, request, context, add=False,
                            change=False, form_url='', obj=None):
+
         if obj:
+            user = request.user
             clslist = list(itersubclasses(BaseWidget))[:]
-            print "clsl", clslist
             context['addable_objs'] = []
             context['addable_widgets'] = []
             found = [c.content_object for c in obj.widgets.all()]
             for c in clslist:
+                if not user.has_perm(get_addperm_name(c)):
+                    continue
                 context['addable_widgets'].append(
                     '<li>+  <a href="%s">%s</a></li>' % (
                     (reverse('admin:%s_%s_add' % (
