@@ -17,8 +17,7 @@ class BasePagelikeView(View):
         kwargs = super(BasePagelikeView, self).get_context_data(**kwargs)
         sel = kwargs.get('selected', [])
         sel.append(self.get_slug())
-        kwargs['selected'] = sel 
-        # print "KWARGS", kwargs
+        kwargs['selected'] = sel
         if 'pagetools.widgets' in settings.INSTALLED_APPS:
             pt = self.get_pagetype(**kwargs)
             kwargs['areas'] = get_areas_for_type(pt, kwargs)

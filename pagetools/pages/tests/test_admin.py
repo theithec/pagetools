@@ -20,7 +20,7 @@ class Tests(TestCase):
         self.addpageurl = urlresolvers.reverse('admin:pages_page_add', args=[])
         self.pages_data = [
             (u'P1', u'Foo', True),
-            (u'P2', u'Bar', False, u'pp2')
+           #s (u'P2', u'Bar', False, u'pp2')
         ]
 
     def _add_page(self, args):
@@ -32,7 +32,10 @@ class Tests(TestCase):
             {'title': title,
              'slug': slug,
              'content': content,
-             'status': status}
+             'status': status,
+             'dynformfields-TOTAL_FORMS': 1, 
+            'dynformfields-INITIAL_FORMS': 0 
+            }
         )
         return response.status_code
 

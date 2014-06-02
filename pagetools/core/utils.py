@@ -72,7 +72,3 @@ def get_addperm_name(cls):
         cls._meta.app_label,
         cls.__name__.lower()
     )
-
-
-
-

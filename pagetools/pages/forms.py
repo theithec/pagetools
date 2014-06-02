@@ -84,7 +84,6 @@ class SendEmailForm(BaseDynForm):
         self.helper = FormHelper()
         self.helper.form_method = 'post'
         self.helper.add_input(Submit('submit', 'Submit'))
-        #self.mailform_receivers = None
 
     def add_mailreceiverfield(self, **kwargs):
         self.mailform_receivers = kwargs['label']

@@ -4,12 +4,14 @@ Created on 14.12.2013
 @author: lotek
 '''
 import os
+
 from django import forms
 from django.conf import settings
 from django.contrib import admin
+
 from pagetools.core.admin import PagelikeAdmin
 from pagetools.menus.admin import EntrieableAdmin
-from pagetools.pages.models import Page
+from pagetools.pages.models import Page, DynFormField, PageDynFormField
 
 
 class DynFieldInlineFormset(forms.models.BaseInlineFormSet):
@@ -22,7 +24,17 @@ class DynFieldInlineFormset(forms.models.BaseInlineFormSet):
 
 
 class DynFieldAdmin(admin.StackedInline):
-    model = None
+    model = DynFormField
+    sortable_field_name = "position"
+    extra = 1
+    formset = DynFieldInlineFormset
+
+    class Media:
+        js = [os.path.join(settings.STATIC_URL, 'pagetools', 'js', 'dynfield.js')]
+
+
+class PageDynFieldAdmin(DynFieldAdmin):
+    model = PageDynFormField
     sortable_field_name = "position"
     extra = 1
     formset = DynFieldInlineFormset
@@ -32,6 +44,7 @@ class DynFieldAdmin(admin.StackedInline):
 
 
 class PageAdmin(EntrieableAdmin, PagelikeAdmin):
+    inlines = (PageDynFieldAdmin,)
     readonly_fields = ('status_changed',)
     list_display = ('title', 'lang', 'status')
     list_filter = ('lang', 'status')

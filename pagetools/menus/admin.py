@@ -123,7 +123,6 @@ class EntrieableForm(forms.ModelForm):
 
 class EntrieableAdmin(admin.ModelAdmin):
     form = EntrieableForm
-    # readonly_fields = ('status_changed',)
 
     def save_related(self, request, form, formsets, change):
         super(EntrieableAdmin, self).save_related(request, form,
@@ -148,7 +147,6 @@ class EntrieableAdmin(admin.ModelAdmin):
                 if title:
                     kwargs['title'] = title
                     e = Menu.tree.add_child(root, form.instance, **kwargs)
-                # e = root.entry_from_obj(form.instance)
                 e.move_to(root, 'last-child')
                 e.save()
             elif found and not is_selected:

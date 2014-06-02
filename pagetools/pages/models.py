@@ -1,3 +1,4 @@
+from django import forms
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.db import models
@@ -9,8 +10,6 @@ from pagetools.widgets.models import PageType
 import settings as page_settings
 
 from .forms import ContactForm, DynMultipleChoiceField, MailReceiverField
-
-from django import forms
 
 
 class IncludedForm(models.Model):
@@ -58,8 +57,10 @@ class DynFormField(models.Model):
         pass
 
     def to_field(self):
-        Fieldcls = self.field_for_type[self.field_type]
-        return Fieldcls(label=self.name, required=self.required, 
+        Fieldcls = self.field_for_type.get(self.field_type, None)
+        if not Fieldcls:
+            Fieldcls = getattr(forms, self.field_type)
+        return Fieldcls(label=self.name, required=self.required,
                         help_text=self.help_text, initial=self.initial)
 
     def __unicode__(self):
@@ -70,6 +71,8 @@ class DynFormField(models.Model):
         verbose_name_plural = _('Dynamic Form Fields')
         ordering = ['position']
         abstract = True
+        
+
 
 
 class AuthPage(models.Model):
@@ -97,6 +100,10 @@ class BasePage(IncludedForm, AuthPage, PagelikeModel):
 
 class Page(BasePage):
     pass
+
+
+class PageDynFormField(DynFormField):
+    form_containing_model = models.ForeignKey(Page, related_name='dynformfields')
 
 
 class PageBlockMixin(models.Model):

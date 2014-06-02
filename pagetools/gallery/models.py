@@ -31,6 +31,7 @@ class GalleryPic(models.Model):
         verbose_name = _(u'Titled Picture')
         verbose_name = _(u'Titled Pictures')
 
+
 class Gallery(PagelikeModel):
     pics = models.ManyToManyField(GalleryPic, through="PicPos")
 
@@ -55,6 +56,6 @@ class PicPos(models.Model):
     pic = models.ForeignKey(GalleryPic, related_name="picpospic")
     gal = models.ForeignKey(Gallery)
     position = models.PositiveIntegerField() 
-    
+
     class Meta():
         verbose_name = _(u'Positioned Picture')

@@ -22,7 +22,7 @@ class WidgetInAreaAdmin(admin.TabularInline):
     sortable_field_name = "position"
     extra = 0
     max_num = 0
-    readonly_fields = ( "adminedit_url",)
+    readonly_fields = ("adminedit_url",)
 
 
 class TypeAreaAdmin(admin.ModelAdmin):
@@ -53,6 +53,7 @@ class TypeAreaAdmin(admin.ModelAdmin):
             context['addable_objs'] = []
             context['addable_widgets'] = []
             found = [c.content_object for c in obj.widgets.all()]
+            #self.readonly_fields = ( "area", "type")
             for c in clslist:
                 if not user.has_perm(get_addperm_name(c)):
                     continue

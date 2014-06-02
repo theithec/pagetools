@@ -5,11 +5,12 @@ from django.core.urlresolvers import reverse
 from django.db.models.query_utils import Q
 from django.utils.html import strip_tags
 
+from BeautifulSoup import BeautifulSoup
+
 from pagetools.search import search_mods, extra_filter
 from pagetools.core.views import PaginatorMixin
 
 from .forms import AdvSearchForm
-from BeautifulSoup import BeautifulSoup
 
 
 class SearchResultsView(PaginatorMixin):
