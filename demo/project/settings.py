@@ -3,7 +3,6 @@
 import os
 from os.path import dirname
 BASE_DIR = dirname(dirname(__file__))
-print BASE_DIR
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 

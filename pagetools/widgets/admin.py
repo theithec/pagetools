@@ -65,7 +65,6 @@ class TypeAreaAdmin(admin.ModelAdmin):
                     ), get_classname(c)
                  ))
                 objs = c.objects.all()
-                print c, objs
                 ctpk = ContentType.objects.get_for_model(c).pk
                 for o in objs:
                     if o in found:
