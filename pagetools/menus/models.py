@@ -68,9 +68,8 @@ class MenuManager(TreeManager):
 class MenuEntry(MPTTModel, LangModel):
     title = models.CharField(u'Title', max_length=128)
     parent = TreeForeignKey('self',
-            null=True, blank=True,
-            related_name='children'
-    )
+                            null=True, blank=True,
+                            related_name='children')
     content_type = models.ForeignKey(ContentType)
     object_id = models.PositiveIntegerField()
     content_object = generic.GenericForeignKey('content_type', 'object_id')
