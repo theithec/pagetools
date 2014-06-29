@@ -23,7 +23,11 @@ def entrieable_reverse_name(name):
 
 
 def entrieable_url(url):
-    entrieable_reverse_name(url.name)
+    try:
+        name = url.name
+    except ValueError:
+        raise ValueError('Entrieable urls need a name')
+    entrieable_reverse_name(name)
     return url
 
 
