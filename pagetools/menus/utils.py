@@ -7,8 +7,6 @@ Created on 15.12.2013
 import sys
 import warnings
 
-from django.utils.functional import lazy
-
 from .settings import ENTRIEABLE_MODELS
 
 
