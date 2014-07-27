@@ -37,11 +37,14 @@ Quick start
          #'grappelli-dashboard',
         'filebrowser',
         'mptt'
-        'pagetools',
-        'pagetools.widgets',
-        'pagetools.menus',
-        'pagetools.pages',
-		...        
+        'pagetools.core',
+	'pagetools.pages',
+	'pagetools.widgets',
+	'pagetools.menus',
+	'pagetools.search',
+	'pagetools.subscribe',
+	'pagetools.gallery',
+	'pagetools.search',
     )
  
  all submodules need 'pagetools',   

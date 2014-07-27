@@ -13,6 +13,7 @@ class News(PublishableModel, LangModel):
 
 search.search_mods = (
    (Page, ('title', 'content')),
+   (News, ('title', 'content')),
    #( app.models.Model2, ('foo','bar') ),
 )
 

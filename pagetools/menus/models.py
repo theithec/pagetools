@@ -168,6 +168,7 @@ class Menu(MenuEntry):
         return t.render(Context({'children': children, }))
 
     def render(self, selected):
+        print "render sel" , selected
         sel_entries = SelectedEntries()
         for s in selected:
             sel_entries['sel_' + s] = 'active'

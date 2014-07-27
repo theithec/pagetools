@@ -49,7 +49,6 @@ class DynFormField(models.Model):
                  ('EmailField', _('EmailField')),
                  ('ChoiceField', _('ChoiceField')),
                  ('BooleanField', _('CheckField')),
-                 ('BooleanField', _('CheckField')),
                  ('MailReceiverField', _('MailReceiverField'))
                 )
 
@@ -71,7 +70,7 @@ class DynFormField(models.Model):
         verbose_name_plural = _('Dynamic Form Fields')
         ordering = ['position']
         abstract = True
-        
+
 
 
 
