@@ -67,6 +67,9 @@ class MenuManager(TreeManager):
 
 class MenuEntry(MPTTModel, LangModel):
     title = models.CharField(u'Title', max_length=128)
+    slugs = models.CharField(u'slugs', max_length=512,
+                             help_text=('Whitespace separated slugs of content'),
+                             default='', blank=True)
     parent = TreeForeignKey('self',
                             null=True, blank=True,
                             related_name='children')
@@ -127,7 +130,6 @@ class Menu(MenuEntry):
             clist = []
         if children == None:
             children = self.get_children().filter(**filterkwargs)
-            # children = self.get_children().filter(filterkwargs)
         for order_id, c in enumerate(children):
             d = {
                 'entry_title': c.title,
@@ -149,11 +151,14 @@ class Menu(MenuEntry):
                 if not getattr(obj, 'enabled', True):
                     continue
                 url = c.get_absolute_url()
-                slug = getattr(obj, 'slug', slugify(u'%s' % obj))
-                d.update({
-                    'entry_url': url,
-                    'select_class_marker': '%(sel_' + slug + ')s'
-                })
+                d ['entry_url'] = url
+                cslugs = c.slugs.split(' ') if c.slugs else [
+                    getattr(obj, 'slug', slugify(u'%s' % obj))
+                ]
+                print "cslugs", cslugs
+                d['select_class_marker'] = u''.join(
+                    '%(sel_' + s + ')s' for s in cslugs
+                )
             filterkwargs = {'parent': c}
             cc = c.get_children().filter(**filterkwargs)
             if cc:
@@ -178,8 +183,11 @@ class Menu(MenuEntry):
             t = MenuCache.objects.get(menu=self).cache
         else:
             t = self._render_no_sel()
-
-        return t % sel_entries
+        print "se", sel_entries
+        print "t",t
+        x = t % sel_entries
+        print "x", x
+        return x
 
     def update_entries(self, orderstr):
         '''orderstr = jquery.mjs.nestedSortable.js / serialize()'''
@@ -190,7 +198,7 @@ class Menu(MenuEntry):
                 break
             k, v = entry_str.split("=")
             b1, b2 = map(k.find, ("[", "]"))
-            eid = int(entry_str[b1 + 1:b2])
+            eid = int(entry_str[b1+1: b2])
             e = MenuEntry.objects.get(id=eid)
             if v == 'null':
                 parent = e.get_root()
@@ -255,7 +263,6 @@ class Link(models.Model):
 
 class ViewLink(models.Model):
     title = models.CharField(u'Title', max_length=128)
-#
     name = models.CharField(
             max_length=255,
            )

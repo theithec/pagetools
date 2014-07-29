@@ -40,8 +40,10 @@ class BasePagelikeView(View):
         try:
             return self.get_object().slug
         except AttributeError:
-            n = slugify(self.__class__.__name__)
-            return n
+            try:
+                return super(BasePagelikeView,self).get_slug()
+            except AttributeError:
+                return slugify(self.__class__.__name__)
 
     # reduce queries
     def get_object(self):

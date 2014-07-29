@@ -118,7 +118,8 @@ class EntrieableForm(forms.ModelForm):
         return s
 
     class Media(TinyMCEMixin.Media):
-        js = TinyMCEMixin.Media.js + [settings.STATIC_URL + 'pagetools/admin/js/pre_sel_menu.js']
+        js = TinyMCEMixin.Media.js + [settings.STATIC_URL +
+                                      'pagetools/admin/js/pre_sel_menu.js']
 
 
 class EntrieableAdmin(admin.ModelAdmin):
@@ -159,7 +160,8 @@ class EntrieableAdmin(admin.ModelAdmin):
                 reverse("admin:menus_menu_change", args=(s,))
             )
         else:
-            return getattr(super(EntrieableAdmin, self), "response_%s" % action)(
+            return getattr(super(EntrieableAdmin, self),
+                           "response_%s" % action)(
                 request, obj, *args, **kwargs
             )
 
