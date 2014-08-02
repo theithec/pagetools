@@ -9,7 +9,7 @@ from filebrowser.fields import FileBrowseField
 from pagetools.core.models import PagelikeModel
 from django.utils.translation import ugettext_lazy as _
 
-f
+
 
 class GalleryPic(models.Model):
     title = models.CharField(_('Title'), max_length=512)
@@ -56,7 +56,7 @@ class Gallery(PagelikeModel):
 class PicPos(models.Model):
     pic = models.ForeignKey(GalleryPic, related_name="picpospic")
     gal = models.ForeignKey(Gallery)
-    position = models.PositiveIntegerField() 
+    position = models.PositiveIntegerField()
 
     class Meta():
         verbose_name = _(u'Positioned Picture')
