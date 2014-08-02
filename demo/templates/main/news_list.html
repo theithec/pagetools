@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block main-head %}
+<h1 class="blog-title">Pagetools Demo</h1>
+<p class="lead blog-description">An example of creating a Site with Django-Pagetools,
+<br />
+using a modified
+<a href="http://getbootstrap.com/examples/blog/">
+example template of creating a blog with Bootstrap.
+</a>
+</p>
+{% endblock %}
+
+{% block main %}
+{% for news in object_list %}
+<div class="blog-post">
+    <h2 class="blog-post-title">{{ news.title }}</h2>
+    <p class="blog-post-meta">{{ news.status_changed|date }} <!--by <a href="#">User</a>!--></p>
+    <a href="{% url "news_detail" slug=news.slug %}">read more</a>
+</div>
+{% empty %}
+<p>No articles yet.</p>
+{% endfor %}
+
+{% endblock %}

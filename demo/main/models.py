@@ -1,11 +1,11 @@
 from django.db import models
 from pagetools import search
-from pagetools.core.models import PublishableModel, LangModel
+from pagetools.core.models import PagelikeModel
 from pagetools.pages.models import Page
+from django.db.models.fields import SlugField
 
 
-class News(PublishableModel, LangModel):
-    title = models.CharField(max_length=128)
+class News(PagelikeModel):
     content = models.TextField()
 
     class Meta:

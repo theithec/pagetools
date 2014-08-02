@@ -67,6 +67,7 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     # 'django.contrib.staticfiles.finders.DefaultStorageFinder',
+    'djangobower.finders.BowerFinder',
 )
 
 # Make this unique, and don't share it with anybody.
@@ -86,7 +87,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
-    # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
 ROOT_URLCONF = 'project.urls'
@@ -96,6 +97,11 @@ WSGI_APPLICATION = 'project.wsgi.application'
 
 TEMPLATE_DIRS = (
    os.sep.join((BASE_DIR, 'templates',)),
+)
+BOWER_COMPONENTS_ROOT = os.sep.join((BASE_DIR, 'components',))
+BOWER_INSTALLED_APPS = (
+    'bootstrap',
+    'jquery-ui'
 )
 
 INSTALLED_APPS = (
@@ -111,6 +117,7 @@ INSTALLED_APPS = (
     'mptt',
     'grappelli',
     'filebrowser',
+    'djangobower',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
@@ -170,10 +177,14 @@ INTERNAL_IPS = ('127.0.0.1',)
 GRAPPELLI_ADMIN_TITLE = '<a href="/" target="_blank">pagetools_demo</a>'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap'
+PT_MENU_TEMPLATE = 'bootstrap_nav_menu.html'
 
 PT_PAGE_PREFIX = 'page/'
 
-PT_TEMPLATETAG_WIDGETS = {'Uhrzeit': ('main.templatetags.main_tags', 'CurrentTimeNode'), }
+PT_TEMPLATETAG_WIDGETS = {
+    _('Time'): ('main.templatetags.main_tags', 'CurrentTimeNode'),
+    _('NewsMonthList'): ('main.templatetags.main_tags', 'NewsMonthNode'),
+}
 GRAPPELLI_INDEX_DASHBOARD = 'dashboard.CustomIndexDashboard'
 
 '''

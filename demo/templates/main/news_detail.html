@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block main %}
+<div class="blog-post">
+    <h2 class="blog-post-title">{{ news.title }}</h2>
+    <p class="blog-post-meta">{{ news.status_changed|date }} <!--by <a href="#">User</a>!--></p>
+    <a href="{% url "news_detail" slug=news.slug %}">read more</a>
+    {{ news.content|safe }}
+</div>
+{% endblock %}
