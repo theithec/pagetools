@@ -7,9 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="../../favicon.ico">
 
-    <title>Blog Template for Bootstrap</title>
+    <title>pagetools-demo{% if page_title %} | {{ page_title }}{%endif%}</title>
 
 
     {% block css %}
@@ -50,10 +49,6 @@
         </div>
         <button type="submit" class="btn btn-default">Submit</button>
       </form>
-      <!--form action="/search" method="GET"  class="ym-searchform">
-        <input name="contains_all" class="ym-searchfield" type="text" placeholder="search" />
-        <input id="submit_search" class="ym-searchbutton" type="submit" value="Go" />
-    </form-->
       <ul class="nav navbar-nav navbar-right">
         <li><a href="#">Link</a></li>
         <li class="dropdown">
@@ -112,11 +107,12 @@
       </p>
     </div>
 
-
+    {% block js %}
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src='{% static 'jquery/dist/jquery.min.js' %}'></script>
     <script src="{% static "bootstrap/dist/js/bootstrap.min.js" %}"></script>
+    {% endblock %}
   </body>
 </html>
