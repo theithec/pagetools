@@ -55,7 +55,7 @@ class PublishableModel(StatusModel):
 
 
 class PagelikeModel(LangModel, PublishableModel, TimeStampedModel):
-    title = models.CharField(u'Title', max_length=255)
+    title = models.CharField(_('Title'), max_length=255)
     slug = UnicodeSlugField(_('Slug'), max_length=255)
     objects = models.Manager()
 

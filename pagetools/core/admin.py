@@ -20,18 +20,16 @@ def fieldset_copy(fieldset):
 class TinyMCEMixin(object):
     class Media:
         js = [
-            '%sgrappelli/tinymce/jscripts/tiny_mce/tiny_mce.js' % 
+            '%sgrappelli/tinymce/jscripts/tiny_mce/tiny_mce.js' %
                                                     settings.STATIC_URL,
-            '%sgrappelli/tinymce_setup/tinymce_setup.js' % 
+            '%sgrappelli/tinymce_setup/tinymce_setup.js' %
                                                     settings.STATIC_URL,
         ]
-        css = {
-             'all': ('%spagetools/admin/css/pt_admin.css' % settings.STATIC_URL,)
-        }
+
 
 
 class PagelikeAdmin(TinyMCEMixin, admin.ModelAdmin):
-    prepopulated_fields = {"slug": ("title",)}
+   prepopulated_fields = {"slug": ("title",)}
 
 
 
