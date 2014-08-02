@@ -98,7 +98,7 @@ WSGI_APPLICATION = 'project.wsgi.application'
 TEMPLATE_DIRS = (
    os.sep.join((BASE_DIR, 'templates',)),
 )
-BOWER_COMPONENTS_ROOT = os.sep.join((BASE_DIR, 'components',))
+BOWER_COMPONENTS_ROOT = os.sep.join((BASE_DIR, '',))
 BOWER_INSTALLED_APPS = (
     'bootstrap',
     'jquery-ui'
