@@ -57,6 +57,7 @@ class TemplateTagWidget(BaseWidget):
                 self.renderclasskey,
                 (None, None)
             )
+            print "mcname", modulename, clsname
             module = importlib.import_module(modulename)
             try:
                 self.robj = getattr(module, clsname)()

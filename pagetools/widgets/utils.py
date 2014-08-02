@@ -7,6 +7,7 @@ Created on 22.05.2013
 from pagetools.widgets.models import PageType, TypeArea
 # from _mysql_exceptions import Error
 from django.db.utils import DatabaseError
+from django.utils.text import slugify
 
 
 def type_or_none(typename):
@@ -33,10 +34,13 @@ def get_areas_for_type(pagetype, contextdict, tmpdict=None):
         tmpdict[ta.area] = [
             {
              'title':w.get_title(),
-             'content':w.get_content(contextdict)
+             'content':w.get_content(contextdict),
+             'type': slugify(u'%s' % w.content_type)
+
             }
             for w in orderedwidgets  # allareawidgets
         ]
+        #print "tmpdict", tmpdict
     if pagetype.parent:
         tmpdict = get_areas_for_type(
             pagetype.parent,
