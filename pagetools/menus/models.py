@@ -155,7 +155,6 @@ class Menu(MenuEntry):
                 cslugs = c.slugs.split(' ') if c.slugs else [
                     getattr(obj, 'slug', slugify(u'%s' % obj))
                 ]
-                print "cslugs", cslugs
                 d['select_class_marker'] = u''.join(
                     '%(sel_' + s + ')s' for s in cslugs
                 )
@@ -173,7 +172,6 @@ class Menu(MenuEntry):
         return t.render(Context({'children': children, }))
 
     def render(self, selected):
-        print "render sel" , selected
         sel_entries = SelectedEntries()
         for s in selected:
             sel_entries['sel_' + s] = 'active'
@@ -183,10 +181,7 @@ class Menu(MenuEntry):
             t = MenuCache.objects.get(menu=self).cache
         else:
             t = self._render_no_sel()
-        print "se", sel_entries
-        print "t",t
         x = t % sel_entries
-        print "x", x
         return x
 
     def update_entries(self, orderstr):
