@@ -1,7 +1,8 @@
+
 (function($) {
-	
+
 	function dynfieldsVisibility(){
-		console.log("IV", $("#id_included_form:visible").length);
+		//console.log("IV", $("#id_included_form:visible").length);
 		txt = $( "#id_included_form option:selected" ).text();
 		if($("#id_included_form:visible").length){
 			if (txt == "---------" || txt == ""){
@@ -9,12 +10,12 @@
 			} else {
 				$("#dynformfields-group").show();
 			}
-		
+
 		} else {
 			$("#dynformfields-group").hide();
 		}
 	}
-	
+
 	$(document).ready(function() {
 		$( "#id_included_form" ).change(function() {
 			dynfieldsVisibility();
@@ -24,6 +25,5 @@
 		});
 		dynfieldsVisibility();
 	});
-		//
 })(grp.jQuery);
 

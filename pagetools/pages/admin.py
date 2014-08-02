@@ -39,8 +39,7 @@ class PageDynFieldAdmin(DynFieldAdmin):
     extra = 1
     formset = DynFieldInlineFormset
 
-    class Media:
-        js = [os.path.join(settings.STATIC_URL, 'pagetools', 'js', 'dynfield.js')]
+
 
 
 class PageAdmin(EntrieableAdmin, PagelikeAdmin):
