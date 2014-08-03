@@ -8,6 +8,7 @@ import sys
 import warnings
 
 from .settings import ENTRIEABLE_MODELS
+from django.utils.translation import ugettext as _
 
 
 _entrieable_reverse_names = []
@@ -24,13 +25,13 @@ def entrieable_url(url):
     try:
         name = url.name
     except ValueError:
-        raise ValueError('Entrieable urls need a name')
+        raise ValueError(_('Entrieable urls need a name'))
     entrieable_reverse_name(name)
     return url
 
 
 def entrieable_view(url):
-    warnings.warn("deprecated, wrong naming, use entrieable_url",
+    warnings.warn(_("deprecated, wrong naming, use entrieable_url"),
                   DeprecationWarning)
     return entrieable_url(url)
 

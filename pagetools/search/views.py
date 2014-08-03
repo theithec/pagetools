@@ -24,7 +24,7 @@ class SearchResultsView(PaginatorMixin):
 
     def get(self, request, *args, **kwargs):
         self.form = self.form_cls(request.GET)
-        is_valid = self.form.is_valid()
+        # todo?: is_valid = self.form.is_valid()
         cld = getattr(self.form, 'cleaned_data', None)
         if any(cld.values()):
             self.sep = '?%s&' % ('&'.join(
@@ -42,7 +42,7 @@ class SearchResultsView(PaginatorMixin):
         cnots = self.search_params.get('contains_not', '').split()
         if cnots:
             notlist = [Q(**{'%s__icontains' % field: cnot})
-                       for cnot in cnots  for field in fields]
+                       for cnot in cnots for field in fields]
             combined_notlist = reduce(operator.or_, notlist)
             qs = qs.exclude(combined_notlist)
         return qs
@@ -79,7 +79,8 @@ class SearchResultsView(PaginatorMixin):
 
     def _stripped(self, txt):
         try:
-            txt = BeautifulSoup(txt, convertEntities=BeautifulSoup.HTML_ENTITIES)
+            txt = BeautifulSoup(txt,
+                                convertEntities=BeautifulSoup.HTML_ENTITIES)
         except UnicodeError:
             txt = strip_tags(u'%s' % txt).lower()
         return txt
@@ -98,7 +99,8 @@ class SearchResultsView(PaginatorMixin):
                 fields = mod[1]
                 queryset = self.filtered_queryset(Cls.objects, fields)
                 for field in fields:
-                    er = [r for r in queryset if exact in  self._stripped(getattr(r, field)) ]
+                    er = [r for r in queryset if exact in
+                          self._stripped(getattr(r, field))]
                     results_exact |= set(er)
         rs = [f for f in (results_add, results_any, results_exact) if f]
         if not rs:

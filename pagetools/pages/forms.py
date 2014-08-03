@@ -25,7 +25,8 @@ class DynMultipleChoiceField(forms.MultipleChoiceField):
         try:
             label, values = kwargs['label'].split(':')
         except ValueError:
-            raise ValidationError('ChoiceField1 name must be "name: option1, option2 [...]')
+            raise ValidationError(
+                _('ChoiceField name must be "name: option1, option2 [...])'))
         kwargs.update({
             'label': label,
             'choices': [(slugify(v), v) for v in values.split(',')],
@@ -96,13 +97,12 @@ class SendEmailForm(BaseDynForm):
         _is_valid = super(SendEmailForm, self).is_valid()
         if _is_valid:
             txt = os.linesep.join(
-                [u"%s\t%s" % (field.name, field.value()) 
-                for field in self]
-            )
+                [u"%s\t%s" % (field.name, field.value())
+                    for field in self
+                 ])
             send_mail(_("Form"), txt, MAILFORM_SENDER,
                       self.get_mailreceivers(), fail_silently=False)
-
-            #messages.add_message(request, messages.INFO, _('send ok'))
+            # messages.add_message(request, messages.INFO, _('send ok'))
         return _is_valid
 
 
@@ -110,5 +110,5 @@ class ContactForm(SendEmailForm):
     subject = forms.CharField(max_length=100, label=_("About"), required=True)
     name = forms.CharField(label=_("Your Name"))
     sender = forms.EmailField(label=_("E-Mail"))
-    message = forms.CharField(widget=forms.widgets.Textarea(), label=_("Message"))
-
+    message = forms.CharField(
+        widget=forms.widgets.Textarea(), label=_("Message"))

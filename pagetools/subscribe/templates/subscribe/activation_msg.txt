@@ -1,8 +1,12 @@
-Hallo,
+Hi,
 
-Deine E-Mailadresse wurde für den Newsletter auf {{ site_name }} eingetragen.
-Wenn du den Newsletter beziehen willst, gehe auf folgenden Link:
+You have received this e-mail message because you have recently submmitted your
+e-mail address to {{ site_name }}.
+
+To confirm that you want to subscribe, use this link:
 {{ activation_url }}
 
-Gruß
-{{ site_name }} 
+If you do not want to subscribe, do nothing.
+
+Thank you
+{{ site_name }}

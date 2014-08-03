@@ -6,7 +6,7 @@ Created on 05.01.2014
 '''
 from django.db import models
 
-from django.utils import  timezone
+from django.utils import timezone
 
 
 class BaseSubscriberMixin(models.Model):

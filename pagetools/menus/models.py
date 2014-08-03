@@ -3,7 +3,6 @@ Created on 14.12.2013
 
 @author: lotek
 '''
-from collections import defaultdict
 
 from django import template
 from django.core import urlresolvers
@@ -16,6 +15,8 @@ from django.db.models.signals import pre_delete
 from django.utils.text import slugify
 from django.utils.translation import ugettext_lazy as _
 from django.template.context import Context
+
+from collections import defaultdict
 
 from mptt.fields import TreeForeignKey
 from mptt.managers import TreeManager
@@ -39,7 +40,7 @@ class MenuManager(TreeManager):
         kwargs['title'] = kwargs.get('title', u'%s' % content_object)
         kwargs['parent'] = parent
         kwargs['content_type'] = ContentType.objects.get_for_model(
-                                                           content_object)
+            content_object)
         kwargs['object_id'] = content_object.pk
         try:
             created = False
@@ -53,9 +54,10 @@ class MenuManager(TreeManager):
         return entry
 
     def add_root(self, title, **kwargs):
-        menu, created = TreeManager.get_or_create(self,
-                    title=title,
-                    parent=None
+        menu, created = TreeManager.get_or_create(
+            self,
+            title=title,
+            parent=None
         )
         if not created:
             raise ValidationError(
@@ -66,12 +68,12 @@ class MenuManager(TreeManager):
 
 
 class MenuEntry(MPTTModel, LangModel):
-    title = models.CharField(u'Title', max_length=128)
-    slugs = models.CharField(u'slugs', max_length=512,
-                             help_text=('Whitespace separated slugs of content'),
-                             default='', blank=True)
-    parent = TreeForeignKey('self',
-                            null=True, blank=True,
+    title = models.CharField(_('Title'), max_length=128)
+    slugs = models.CharField(
+        _('slugs'), max_length=512,
+        help_text=('Whitespace separated slugs of content'),
+        default='', blank=True)
+    parent = TreeForeignKey('self', null=True, blank=True,
                             related_name='children')
     content_type = models.ForeignKey(ContentType)
     object_id = models.PositiveIntegerField()
@@ -126,9 +128,9 @@ class Menu(MenuEntry):
         filterkwargs = {'parent': self}
         if not for_admin:
             filterkwargs['enabled'] = True
-        if clist == None:
+        if clist is None:
             clist = []
-        if children == None:
+        if children is None:
             children = self.get_children().filter(**filterkwargs)
         for order_id, c in enumerate(children):
             d = {
@@ -140,8 +142,9 @@ class Menu(MenuEntry):
                 d.update({
                     'entry_order_id': order_id,
                     'entry_pk': c.pk,
-                    'entry_del_url': urlresolvers.reverse('admin:menus_menuentry_delete', args=(c.pk,)),
-                    'obj_admin_url': reverseurl,  #urlresolvers.reverse(reverseurl, args=(obj.id,)),
+                    'entry_del_url': urlresolvers.reverse(
+                        'admin:menus_menuentry_delete', args=(c.pk,)),
+                    'obj_admin_url': reverseurl,
                     'obj_classname': get_classname(obj.__class__),
                     'obj_title': obj,
                     'obj_status': 'published' if getattr(obj, 'enabled', True) else 'draft',
@@ -151,7 +154,7 @@ class Menu(MenuEntry):
                 if not getattr(obj, 'enabled', True):
                     continue
                 url = c.get_absolute_url()
-                d ['entry_url'] = url
+                d['entry_url'] = url
                 cslugs = c.slugs.split(' ') if c.slugs else [
                     getattr(obj, 'slug', slugify(u'%s' % obj))
                 ]
@@ -163,7 +166,6 @@ class Menu(MenuEntry):
             if cc:
                 d['children'] = self.children_list(children=cc, for_admin=for_admin)
             clist.append(d)
-
         return clist
 
     def _render_no_sel(self):
@@ -237,14 +239,20 @@ class Menu(MenuEntry):
         return s
 
     class Meta:
-        verbose_name = 'Menu'
+        verbose_name = _('Menu')
         proxy = True
 
 
-class Link(models.Model):
-    title = models.CharField(u'Title', max_length=128)
-    url = models.CharField(max_length=255)
-    enabled = models.BooleanField(default=True)
+class AbstractLink(models.Model):
+    title = models.CharField(_('Title'), max_length=128)
+    enabled = models.BooleanField(_('enabled'), default=True)
+
+    class Meta:
+        abstract = True
+
+
+class Link(AbstractLink):
+    url = models.CharField(_('URL'), max_length=255)
 
     def __unicode__(self):
         return self.url
@@ -253,14 +261,12 @@ class Link(models.Model):
         return self.url
 
     class Meta:
-        verbose_name = "Link"
+        verbose_name = _("Link")
+        verbose_name_plural = _("Links")
 
 
-class ViewLink(models.Model):
-    title = models.CharField(u'Title', max_length=128)
-    name = models.CharField(
-            max_length=255,
-           )
+class ViewLink(AbstractLink):
+    name = models.CharField(_('Name'), max_length=255)
 
     def __init__(self, *args, **kwargs):
         super(ViewLink, self).__init__(*args, **kwargs)
@@ -269,7 +275,6 @@ class ViewLink(models.Model):
             ('%s' % k, '%s' % k)
             for k in _entrieable_reverse_names
         ]
-    enabled = models.BooleanField(default=True)
 
     def __unicode__(self):
         return self.name
@@ -278,4 +283,5 @@ class ViewLink(models.Model):
         return reverse(self.name)
 
     class Meta:
-        verbose_name = "ViewLink"
+        verbose_name = _("ViewLink")
+        verbose_name_plural = _("ViewLinks")

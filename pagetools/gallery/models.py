@@ -10,7 +10,6 @@ from pagetools.core.models import PagelikeModel
 from django.utils.translation import ugettext_lazy as _
 
 
-
 class GalleryPic(models.Model):
     title = models.CharField(_('Title'), max_length=512)
     pic = FileBrowseField(

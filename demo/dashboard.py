@@ -13,8 +13,7 @@ from pagetools.menus.dashboard_modules import MenuModule
 
 mainmodels = [
 
-
-    (_('Structure'),  
+    (_('Structure'),
         ['pagetools.widgets.models.%s' % m for m in (
             'ContentWidget',
             'TemplateTagWidget',
@@ -25,12 +24,10 @@ mainmodels = [
      ),
 
     (_('Content'),
-        ['main.models.%s' % m for m in ( 'News', )]+
-        [
-         #...
-        ],
-        'grp-collapse grp-closed', #'' # <-(css-classses)
-    ),
+        ['main.models.%s' % m for m in ('News', )] +
+        ['pagetools.pages.models.Page', ],
+        'grp-collapse grp-closed',  # '' # <-(css-classses)
+     ),
 ]
 
 
@@ -52,25 +49,24 @@ class CustomIndexDashboard(Dashboard):
                     css_classes=(m[2],),
                 ),
             )
-        excludedapps=[ 'django.contrib.*', ]
+        excludedapps = ['django.contrib.*', ]
         for a in [a for a in [m[1] for m in mainmodels]]:
             excludedapps.extend(a)
         self.children.append(
-                modules.AppList(
-                    _('More ...'),
-                    column=1,
-                    css_classes=('grp-collapse grp-closed',),
-                    exclude=excludedapps
-
+            modules.AppList(
+                _('More ...'),
+                column=1,
+                css_classes=('grp-collapse grp-closed',),
+                exclude=excludedapps
             )
         )
 
         self.children.append(
-                    modules.AppList(
-                    _('Administration'),
-                    column=1,
-                    css_classes=('grp-collapse grp-closed',),
-                    models=('django.contrib.*',),
+            modules.AppList(
+                _('Administration'),
+                column=1,
+                css_classes=('grp-collapse grp-closed',),
+                models=('django.contrib.*',),
             ),
         )
 
@@ -82,7 +78,7 @@ class CustomIndexDashboard(Dashboard):
                     'title': _('Zur Webseite'),
                     'url': '/',
                     'external': True,
-                    'target':'_blank'
+                    'target': '_blank'
                 },
             ]
         ))

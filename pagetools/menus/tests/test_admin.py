@@ -10,5 +10,3 @@ class Tests(TestCase):
 
     def setUp(self):
         pass
-
-

@@ -15,7 +15,7 @@ def itersubclasses(cls, _seen=None):
     >>> class C(A): pass
     >>> class D(B,C): pass
     >>> class E(D): pass
-    >>> 
+    >>>
     >>> for cls in itersubclasses(A):
     ...     print(cls.__name__)
     B
@@ -55,7 +55,7 @@ def get_classname(cls):
 def get_adminadd_url(cls):
     adminurl = reverse(
         'admin:%s_%s_add' % (
-         cls._meta.app_label, cls._meta.module_name)
+            cls._meta.app_label, cls._meta.module_name)
     )
     return adminurl
 

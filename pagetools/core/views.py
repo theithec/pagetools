@@ -27,7 +27,7 @@ class BasePagelikeView(View):
     def get_pagetype(self, **kwargs):
         pt = None
         ptname = kwargs.get('pagetype_name', None)
-        if ptname == None:
+        if ptname is None:
             ptname = getattr(self, 'pagetype_name', None)
         if ptname:
             try:
@@ -41,7 +41,7 @@ class BasePagelikeView(View):
             return self.get_object().slug
         except AttributeError:
             try:
-                return super(BasePagelikeView,self).get_slug()
+                return super(BasePagelikeView, self).get_slug()
             except AttributeError:
                 return slugify(self.__class__.__name__)
 
@@ -64,4 +64,3 @@ class PaginatorMixin(ListView):
         context['curr_page_range'] = paginator.page_range[_from:page.number + 5]
         context['get_sep'] = self.sep
         return context
-

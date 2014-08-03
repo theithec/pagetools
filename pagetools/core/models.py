@@ -6,7 +6,7 @@ from model_utils.managers import QueryManager
 from model_utils.models import StatusModel, TimeStampedModel
 
 import settings as ptsettings
-from unislug.models  import UnicodeSlugField
+from unislug.models import UnicodeSlugField
 
 
 class LangManager(QueryManager):

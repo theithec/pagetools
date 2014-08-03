@@ -8,7 +8,6 @@ from django.core import urlresolvers
 from django.test.client import Client
 from django.test.testcases import TestCase
 
-from pagetools.pages.models import Page
 from django.utils.text import slugify
 
 
@@ -20,7 +19,7 @@ class Tests(TestCase):
         self.addpageurl = urlresolvers.reverse('admin:pages_page_add', args=[])
         self.pages_data = [
             (u'P1', u'Foo', True),
-           #s (u'P2', u'Bar', False, u'pp2')
+            # s (u'P2', u'Bar', False, u'pp2')
         ]
 
     def _add_page(self, args):
@@ -33,14 +32,14 @@ class Tests(TestCase):
              'slug': slug,
              'content': content,
              'status': status,
-             'dynformfields-TOTAL_FORMS': 1, 
-            'dynformfields-INITIAL_FORMS': 0 
-            }
+             'dynformfields-TOTAL_FORMS': 1,
+             'dynformfields-INITIAL_FORMS': 0
+             }
         )
         return response.status_code
 
     def test_add_page(self):
-        self.client.login(username="admin", password='alice')
+        self.client.login(username="admin", password='password')
         for data in self.pages_data:
             c = self._add_page(data)
             self.assertEqual(c, 302)

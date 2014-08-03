@@ -16,4 +16,3 @@ class TC1Tests(TestCase):
 
     def test_lists(self):
         self.assertEqual(self.page.title, 'p1')
- 

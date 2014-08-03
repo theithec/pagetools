@@ -9,11 +9,11 @@ from django.conf import settings
 PAGE_PREFIX = getattr(settings, 'PT_PAGE_PREFIX', 'page/')
 
 MAILFORM_RECEIVERS = getattr(settings,
-    'PT_MAILFORM_RECEIVERS',
-    [a[1] for a in settings.ADMINS]
-)
+                             'PT_MAILFORM_RECEIVERS',
+                             [a[1] for a in settings.ADMINS]
+                             )
 
 MAILFORM_SENDER = getattr(settings,
-    'PT_MAILFORM_SENDER',
-    'form@localhost'
-)
+                          'PT_MAILFORM_SENDER',
+                          'form@localhost'
+                          )

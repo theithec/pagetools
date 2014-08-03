@@ -58,22 +58,21 @@ def _subscribe(request):
             s = Subscriber(email=email, is_activated=False)
             context = {
                 'site_name': MAIN_HOST,  # Site.objects.get_current().domain ,
-                # 'activation_url': "http://" +Site.objects.get_current().domain+ (reverse('activate')) +s.cmd_path()
                 'activation_url': "http://%s%s?mk=%s" % (
-                     MAIN_HOST,
-                     (reverse('activate', kwargs={'key': s.key})),
-                     s.mailkey()
+                    MAIN_HOST,
+                    (reverse('activate', kwargs={'key': s.key})),
+                    s.mailkey()
                 )
             }
             t = template.loader.get_template('subscribe/activation_msg.txt')
             mailmsg = t.render(Context(context))
             try:
                 send_mail(
-                        subs_settings.ACTIVATION_MAIL_SUBJECT,
-                        mailmsg,
-                        subs_settings.NEWS_FROM,
-                        [form['email'].value()],
-                        fail_silently=False
+                    subs_settings.ACTIVATION_MAIL_SUBJECT,
+                    mailmsg,
+                    subs_settings.NEWS_FROM,
+                    [form['email'].value()],
+                    fail_silently=False
                     )
                 s.save()
                 msg = subs_msg
@@ -117,11 +116,11 @@ def _matching_activated_subscriber(request, key):
 def activate(request, key):
     s = _matching_activated_subscriber(request, key)
     activate_end = s.subscribtion_date + datetime.timedelta(hours=48)
-    if s and not s.is_activated and  activate_end > timezone.now():
+    if s and not s.is_activated and activate_end > timezone.now():
         s.activate()
         return render(request, subs_settings.MSG_BASE_TEMPLATE,
-            {'msg': _('activation: ok')}
-        )
+                      {'msg': _('activation: ok')}
+                      )
     raise Http404()
 
 

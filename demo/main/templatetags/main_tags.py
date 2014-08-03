@@ -1,11 +1,10 @@
-import datetime
-
 from django import template
-from django.template.context import Context
+from django.utils.datetime_safe import datetime
 
 from main.models import News
 
 
+# Time Example from
 # https://docs.djangoproject.com/en/dev/howto/custom-template-tags/
 class CurrentTimeNode(template.Node):
     def __init__(self, format_string='%Y-%m-%d %I:%M %p'):
@@ -30,12 +29,7 @@ def do_current_time(parser, token):
 
 
 class NewsMonthNode(template.Node):
-
-
     def render(self, context):
-        print "NewsMonthNOde", context
-        context = Context()
-        t = template.loader.get_template('main/newslist.html')
         news = News.public.lfilter()
         firstdt = news.first().status_changed
         fy, fm = firstdt.year, firstdt.month
@@ -45,21 +39,15 @@ class NewsMonthNode(template.Node):
         txt = '<ol class="list-unstyled">'
         cy = fy
         cm = fm
-        while (cy < ly or (cy==ly and cm <= lm) ):
-            mn = my_date = datetime.datetime(year=cy, month=cm, day=1)
-            txt += '<li><a href="/%s/%s">%s %s</a></li>' % (cy,mn.strftime("%b"),mn.strftime("%B"),cy)
-            #print cy,cm, "(%s,  %s)" % (lm, ly)
+        while (cy < ly or (cy == ly and cm <= lm)):
+            mn = datetime.datetime(year=cy, month=cm, day=1)
+            txt += '<li><a href="/%s/%s">%s %s</a></li>' % (
+                cy, mn.strftime("%b"),
+                mn.strftime("%B"), cy)
+            # print cy,cm, "(%s,  %s)" % (lm, ly)
             cm += 1
             if cm == 13:
                 cm = 1
                 cy += 1
         txt += "</ul>"
-        print "ttxt", txt
         return txt
-
-
-
-
-        context['news'] = News.public.lfilter()[:5]
-        if  context['news']:
-            return t.render(context)

@@ -1,4 +1,4 @@
-Folgender neuer Inhalt ist auf {{ site_name }} veröffentlicht worden:
+New content on {{ site_name }}:
 
 {{ content.title }}
 ---
@@ -6,10 +6,10 @@ Folgender neuer Inhalt ist auf {{ site_name }} veröffentlicht worden:
 {{ content.body|safe }}
 
 
-Gruß
+Greetings
 {{ site.domain }}
 
-Aus dem Newsletter austragen?
-{{ unsubscribe_url }}%unsubscribe_path% 
-Weitere Infos: info@{{site.domain }}
+Unsubscribe?
+{{ unsubscribe_url }}%unsubscribe_path%
+More Infos: info@{{site.domain }}
 

@@ -5,7 +5,7 @@ Created on 01.01.2014
 '''
 
 from django import forms
-from django.utils.translation import get_language, ugettext_lazy as _
+from django.utils.translation import ugettext_lazy as _
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 from . import search_mods

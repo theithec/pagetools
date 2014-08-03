@@ -16,8 +16,8 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': os.path.join(BASE_DIR, 'db'),  # Or path to database file if using sqlite3.
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db'),
     }
 }
 
@@ -96,8 +96,8 @@ ROOT_URLCONF = 'project.urls'
 WSGI_APPLICATION = 'project.wsgi.application'
 
 TEMPLATE_DIRS = (
-   os.sep.join((BASE_DIR, 'templates',)),
-)
+    os.sep.join((BASE_DIR, 'templates',)),
+    )
 BOWER_COMPONENTS_ROOT = os.sep.join((BASE_DIR, '',))
 BOWER_INSTALLED_APPS = (
     'bootstrap',
@@ -134,45 +134,15 @@ INSTALLED_APPS = (
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
-'django.contrib.auth.context_processors.auth',
-'django.core.context_processors.request',
-# 'django.core.context_processors.media',
-'django.core.context_processors.static',
-)
+    'django.contrib.auth.context_processors.auth',
+    'django.core.context_processors.request',
+    # 'django.core.context_processors.media',
+    'django.core.context_processors.static',
+    )
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
 
-# A sample logging configuration. The only tangible logging
-# performed by this configuration is to send an email to
-# the site admins on every HTTP 500 error when DEBUG=False.
-# See http://docs.djangoproject.com/en/dev/topics/logging for
-# more details on how to customize your logging configuration.
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'filters': {
-        'require_debug_false': {
-            '()': 'django.utils.log.RequireDebugFalse'
-        }
-    },
-    'handlers': {
-        'mail_admins': {
-            'level': 'ERROR',
-            'filters': ['require_debug_false'],
-            'class': 'django.utils.log.AdminEmailHandler'
-        }
-    },
-    'loggers': {
-        'django.request': {
-            'handlers': ['mail_admins'],
-            'level': 'ERROR',
-            'propagate': True,
-        },
-    }
-}
-
 INTERNAL_IPS = ('127.0.0.1',)
-
 
 GRAPPELLI_ADMIN_TITLE = '<a href="/" target="_blank">pagetools_demo</a>'
 
@@ -196,7 +166,3 @@ if DEBUG:
     )
     DEBUG_TOOLBAR_CONFIG = {'INTERCEPT_REDIRECTS': False}
 '''
-
-
-
-

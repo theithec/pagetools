@@ -10,7 +10,7 @@ from django.contrib import admin
 def fieldset_copy(fieldset):
     fscopy = (fieldset[0],
               {'fields': [f for f in fieldset[1]['fields']]}
-             )
+              )
     clzs = fieldset[1].get('classes')
     if clzs:
         fscopy[1]['classes'] = [c for c in clzs]
@@ -21,15 +21,11 @@ class TinyMCEMixin(object):
     class Media:
         js = [
             '%sgrappelli/tinymce/jscripts/tiny_mce/tiny_mce.js' %
-                                                    settings.STATIC_URL,
+            settings.STATIC_URL,
             '%sgrappelli/tinymce_setup/tinymce_setup.js' %
-                                                    settings.STATIC_URL,
+            settings.STATIC_URL,
         ]
 
 
-
 class PagelikeAdmin(TinyMCEMixin, admin.ModelAdmin):
-   prepopulated_fields = {"slug": ("title",)}
-
-
-
+    prepopulated_fields = {"slug": ("title",)}

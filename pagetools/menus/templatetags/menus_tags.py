@@ -3,7 +3,7 @@ Created on 09.05.2013
 
 @author: lotek
 '''
-from django import  template
+from django import template
 from django.core.exceptions import ObjectDoesNotExist
 from pagetools.menus.models import Menu
 
@@ -23,8 +23,9 @@ class MenuRenderer(template.Node):
         except template.VariableDoesNotExist:
             pass
         try:
-            menu = Menu.objects.lfilter().select_related().get(title=self.menu_title)
-        except  ObjectDoesNotExist:
+            menu = Menu.objects.lfilter().select_related().get(
+                title=self.menu_title)
+        except ObjectDoesNotExist:
             e = "<!--UNKNOWN MENU %s !-->" % self.menu_title
             return e
         return menu.render(selected)
@@ -34,5 +35,3 @@ class MenuRenderer(template.Node):
 def do_menu(parser, token):
     menu_title, selected = token.contents.split()[1:]
     return MenuRenderer(selected, menu_title)
-
-

@@ -24,12 +24,11 @@ class TC1Tests(TestCase):
 
     def test_validation(self):
         self.assertRaises(ValidationError, Menu.tree.add_child, self.menu, self.p1)
-        
+
     def test_rm_and_add_again(self):
         self.e1.delete()
         self.menu.save()
         self.e1 = Menu.tree.add_child(self.menu, self.p1)
-        
 
     def test_lists(self):
         c = self.menu.get_children()
@@ -39,8 +38,8 @@ class TC1Tests(TestCase):
             u'/%sp1' % settings.PAGE_PREFIX
         )
         self.assertEqual(
-           c[1].get_absolute_url(),
+            c[1].get_absolute_url(),
             u'/foo'
         )
-  
+
 

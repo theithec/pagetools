@@ -5,7 +5,6 @@ Created on 03.09.2012
 '''
 from django.conf import settings
 
-
 _ = lambda x:x
 
 MSG_BASE_TEMPLATE = getattr(settings, "PT_SUBSCR_MSG_BASE_TEMPLATE", 'base.html')
@@ -19,7 +18,7 @@ ACTIVATION_MAIL_SUBJECT = getattr(settings, "PT_SUBSCR_ACTIVATION_MAIL_SUBJECT",
 
 MAX_PER_TIME = getattr(settings, "PT_SUBSCR_MAX_PER_TIME", 100)
 
-# max. mail send failures in a row before subscriber is deleted 
+# max. mail send failures in a row before subscriber is deleted
 MAX_FAILURES = getattr(settings, "PT_SUBSCR_MAX_FAILURES", 8)
 
 URLS_REGEX = getattr(settings, "PT_SUBSCR_URLS_REGEX", r'^subscribtion/')

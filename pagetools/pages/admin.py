@@ -30,7 +30,8 @@ class DynFieldAdmin(admin.StackedInline):
     formset = DynFieldInlineFormset
 
     class Media:
-        js = [os.path.join(settings.STATIC_URL, 'pagetools', 'js', 'dynfield.js')]
+        js = [os.path.join(
+            settings.STATIC_URL, 'pagetools', 'js', 'dynfield.js')]
 
 
 class PageDynFieldAdmin(DynFieldAdmin):
@@ -38,8 +39,6 @@ class PageDynFieldAdmin(DynFieldAdmin):
     sortable_field_name = "position"
     extra = 1
     formset = DynFieldInlineFormset
-
-
 
 
 class PageAdmin(EntrieableAdmin, PagelikeAdmin):

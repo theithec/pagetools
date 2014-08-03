@@ -39,7 +39,7 @@ class Subscriber(BaseSubscriberMixin):
 
     def cmd_path(self):
         return "/?mk=".join(
-                    (urlquote(self.key), urlquote(self.mailkey())))
+            (urlquote(self.key), urlquote(self.mailkey())))
 
     def get_email(self):
         return self.email

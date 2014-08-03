@@ -8,6 +8,6 @@ from django.utils.translation import ugettext as _
 import re
 slug_unicode_re = re.compile(r'^[-\w_]+$', re.U)
 validate_unicode_slug = RegexValidator(
-        slug_unicode_re,
-        _("Enter a valid 'slug' consisting of unicode letters, numbers, underscores or hyphens."),
-        'invalid')
+    slug_unicode_re,
+    _("Enter a valid 'slug' consisting of unicode letters, numbers, underscores or hyphens."),
+    'invalid')

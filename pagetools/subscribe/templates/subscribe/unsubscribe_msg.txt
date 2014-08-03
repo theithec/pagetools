@@ -1,8 +1,6 @@
-Hallo,
+Hi,
 
-Deine E-Mailadresse wurde für den Newsletter auf {{ site_name }} eingetragen.
-Wenn du den Newsletter beziehen willst, gehe auf folgenden Link:
-{{ activation_url }}
+Your e-mail address is now unsubscripted for {{ site_name }}.
 
-Gruß
-{{ site_name }} 
+Greetings
+{{ site_name }}

@@ -21,7 +21,7 @@ class WidgetTests(TestCase):
 
     def test_model_creation(self):
         w1 = ContentWidget.objects.get_or_create(
-                                name='w1', content=u'foo')[0]
+            name='w1', content=u'foo')[0]
         co = ContentType.objects.get_for_model(w1)
         WidgetInArea.objects.get_or_create(
             typearea=self.typearea1,
