@@ -40,7 +40,7 @@ class NewsMonthNode(template.Node):
         cy = fy
         cm = fm
         while (cy < ly or (cy == ly and cm <= lm)):
-            mn = datetime.datetime(year=cy, month=cm, day=1)
+            mn = datetime(year=cy, month=cm, day=1)
             txt += '<li><a href="/%s/%s">%s %s</a></li>' % (
                 cy, mn.strftime("%b"),
                 mn.strftime("%B"), cy)
