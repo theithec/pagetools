@@ -1,11 +1,14 @@
 *.pyc
 *~
-/pagetools/demo/static/
-/pagetools/demo/media/uploads/filebrowser/*
-/pagetools/demo/db
+/demo/static/
+/demo/media/uploads/filebrowser/*
+/demo/db
 /dist/
 /dist/*
 /django_pagetools.egg-info/
 .project
 .pydevproject
 .settings
+
+META-INF
+build.properties
