@@ -36,7 +36,7 @@ class Gallery(PagelikeModel):
     pics = models.ManyToManyField(GalleryPic, through="PicPos")
 
     def get_pics(self):
-        return self.pics.order_by('picpospic')
+        return self.pics.order_by('positioned_pic')
 
     def get_title(self):
         return self.title
@@ -53,7 +53,7 @@ class Gallery(PagelikeModel):
 
 
 class PicPos(models.Model):
-    pic = models.ForeignKey(GalleryPic, related_name="picpospic")
+    pic = models.ForeignKey(GalleryPic, related_name="positioned_pic")
     gal = models.ForeignKey(Gallery)
     position = models.PositiveIntegerField()
 

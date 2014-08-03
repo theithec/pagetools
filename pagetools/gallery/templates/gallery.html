@@ -1,4 +1,4 @@
-{% extends "base.html" %} {% load fb_versions %} 
+{% extends "base.html" %} {% load fb_versions static %}
 {% block css %} {{block.super }}
 <link rel="stylesheet" href="{{ STATIC_URL }}css/colorbox.css" />
 <style>
@@ -20,42 +20,41 @@
 	padding: 8px;
 }
 </style>
-{% endblock css%} 
+{% endblock css%}
 
 {% block js %} {{ block.super }}
-<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.colorbox-min.js"></script>
+<script type="text/javascript" src="{% static "js/jquery.colorbox-min.js" %}"></script>
 <script>
-	$(document).ready(function(){
-		 function startGal(){
-			 jQuery('a.gallery').colorbox({
-		    	 rel:'gal',transition:"none", 
-		    	 width:"75%", 
-		    	 height:"75%", 
-		    	 slideshow:true, 
-		    	 slideshowSpeed: 5000, 
-		    	 open:true});
-		 }
-		 startGal();
-		
-	});
+$(document).ready(function(){
+	 function startGal(){
+		 jQuery('a.gallery').colorbox({
+	    	 rel:'gal',transition:"none",
+	    	 width:"75%",
+	    	 height:"75%",
+	    	 slideshow:true,
+	    	 slideshowSpeed: 5000,
+	    	 open:true});
+	 }
+	 startGal();
+});
  </script>
-{% endblock js %} 
+{% endblock js %}
 
 {% block main %}
 <div class="startlinkwrapper">
 	<a href="javascript:startGal()">Gallerie starten</a>
 </div>
 <table>
-	{% for pic in object.get_pics %}
+{% for pos_pic in object.get_pics %}
 	<tr>
 		<td class="pic-cell"><a class='gallery'
-			href='/media/{{ pic.pic }}' title="{{pic.title}}"> <img
+			href='/media/{{ pos_pic.pic }}' title="{{pos_pic.title}}"> <img
 				src="{% version pic.pic 'thumbnail' %}" alt="{{pic.title}}" />
 		</a></td>
-		<td class="text-cell"><a href='/media/{{ pic.pic }}'
-			title="{{pic.title}}"> {{pic.title}} </a></td>
+		<td class="text-cell"><a href='/media/{{ pos_pic.pic }}'
+			title="{{pos_pic.title}}"> {{pos_pic.title}} </a></td>
 	</tr>
-	{% endfor %}
+{% endfor %}
 </table>
 
 {% endblock main %}
