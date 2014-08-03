@@ -24,7 +24,7 @@ class SearchResultsView(PaginatorMixin):
 
     def get(self, request, *args, **kwargs):
         self.form = self.form_cls(request.GET)
-        # todo?: is_valid = self.form.is_valid()
+        is_valid = self.form.is_valid()
         cld = getattr(self.form, 'cleaned_data', None)
         if any(cld.values()):
             self.sep = '?%s&' % ('&'.join(
