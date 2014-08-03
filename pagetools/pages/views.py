@@ -74,7 +74,7 @@ class PageView(AuthPageView, BasePagelikeView, IncludedFormView):
     model = Page
 
     def get_pagetype(self, **kwargs):
-        return self.object.pagetype
+        return self.object.pagetype or BasePagelikeView.get_pagetype(self)
 
     def get_context_data(self, **kwargs):
         kwargs['page_title'] = self.object.title
