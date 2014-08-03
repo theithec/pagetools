@@ -111,7 +111,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    #'south',
+    'south',
     'crispy_forms',
     'grappelli.dashboard',
     'mptt',
