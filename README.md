@@ -44,8 +44,8 @@ Quick start
         'pagetools.search',
         )
 
-     all submodules need 'pagetools',
-     'pages' needs 'widgets 'and 'menus',
+ all submodules need 'pagetools',
+ 'pages' needs 'widgets 'and 'menus',
 
 
 2. Include the urls in your project urls.py like this::
@@ -61,26 +61,26 @@ Quick start
 4. Start the development server and visit http://127.0.0.1:8000/admin/
 
 5. Add a Menu, e.g. 'mainmenu'
-     After 'save and continue editing', the admin page has a section 'add new entry' containing  'Page', 'Link' and  'PageView' to create objects of those.
-     Of cource you can create a (e.g.) page using /admin/pages/add but doing it from the menu  preselects the menu
-     for the page and redirect to the menu after saving the page.
-     Create a page, make sure it is published (not draft) and 'mainmenu' is selected  in the menus field. Save.
-     The page is available under http://127.0.0.1:8000/page/<page_slug>
-     Make sure you have something like this in your template:
+ After 'save and continue editing', the admin page has a section 'add new entry' containing  'Page', 'Link' and  'PageView' to create objects of those.
+ Of cource you can create a (e.g.) page using /admin/pages/add but doing it from the menu  preselects the menu
+ for the page and redirect to the menu after saving the page.
+ Create a page, make sure it is published (not draft) and 'mainmenu' is selected  in the menus field. Save.
+ The page is available under http://127.0.0.1:8000/page/<page_slug>
+ Make sure you have something like this in your template:
 
-            {% load menus_tags %}
-            ...
-            <ul class="mymenu">
-            {% menu mainmenu selected %}
-            </ul>
+        {% load menus_tags %}
+        ...
+        <ul class="mymenu">
+        {% menu mainmenu selected %}
+        </ul>
 
-     Back in the menu-admin, there is a new menuentry. Select 'show' to make it visible in the menu.
+ Back in the menu-admin, there is a new menuentry. Select 'show' to make it visible in the menu.
 
-     Items in the menu-admin are drag-and-droppable for ordering (can be nested).
-     The menu must be saved to make these changes work.
+ Items in the menu-admin are drag-and-droppable for ordering (can be nested).
+ The menu must be saved to make these changes work.
 
-     Menus can be included to grappellis dashboard with the
-     pagetools.menus.dashboard_modules.MenuModule(title="MainMenu")
+ Menus can be included to grappellis dashboard with the
+ pagetools.menus.dashboard_modules.MenuModule(title="MainMenu")
 
 6. Widgets, Areas, Pagetypes
     Areas are defined in the settings. The default settings are
@@ -93,20 +93,19 @@ Quick start
     Associate a request with a pagetype:
     - If the view inherits from pagetools.core.BasePagelikeView the views `get_pagetype`
       will be used. It looks for a 'pagetype_name' in context-kwargs, then in the view's attributes.
-    - call `get_areas_for_type(pagetype)` yourself and add the result to your context as 'areas'.
-
+    - call get_areas_for_type(pagetype) and add the result to your context as 'areas'.
     'areas' is a dict with the names of the areas as keys pointing to a list of dicts
     which contains the widget data {'title':"...", 'content' "...", 'type' "..." }.
     So you need something like this your template:
 
-            {% with areas.sidebar as sidebar %}
-            {% for w in sidebar %}
-                <div class="sidebar-module{% if  w.type == "content-widget" %} sidebar-module-inset{% endif %}">
-                <h4> {{ w.title|safe }}</h4>
-                {{ w.content|safe }}
-                </div>
-                {% endfor %}
-            {%endwith %}
+        {% with areas.sidebar as sidebar %}
+        {% for w in sidebar %}
+            <div class="sidebar-module{% if  w.type == "content-widget" %} sidebar-module-inset{% endif %}">
+            <h4> {{ w.title|safe }}</h4>
+            {{ w.content|safe }}
+            </div>
+            {% endfor %}
+        {%endwith %}
 
 
 
