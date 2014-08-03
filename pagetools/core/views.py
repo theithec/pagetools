@@ -20,21 +20,28 @@ class BasePagelikeView(View):
         # print "sel", sel
         kwargs['selected'] = sel
         if 'pagetools.widgets' in settings.INSTALLED_APPS:
-            pt = self.get_pagetype(**kwargs)
+            ptname = self.get_pagetype_name(**kwargs)
+            pt = self.get_pagetype(ptname=ptname, **kwargs)
             kwargs['areas'] = get_areas_for_type(pt, kwargs)
+            kwargs['pagetype_name'] = ptname
         return kwargs
 
-    def get_pagetype(self, **kwargs):
-        pt = None
+    def get_pagetype_name(self, **kwargs):
         ptname = kwargs.get('pagetype_name', None)
         if ptname is None:
             ptname = getattr(self, 'pagetype_name', None)
+        return ptname
+
+    def get_pagetype(self, ptname=None, **kwargs):
+        if ptname is None:
+            ptname = self.get_pagetype_name(**kwargs)
         if ptname:
+            pt = None
             try:
                 pt = PageType.objects.get(name=ptname)
             except PageType.DoesNotExist:
                 pass
-        return pt
+            return pt
 
     def get_slug(self):
         try:
