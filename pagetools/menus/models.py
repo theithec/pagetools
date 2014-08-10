@@ -155,12 +155,24 @@ class Menu(MenuEntry):
                     continue
                 url = c.get_absolute_url()
                 d['entry_url'] = url
-                cslugs = c.slugs.split(' ') if c.slugs else [
-                    getattr(obj, 'slug', slugify(u'%s' % obj))
-                ]
+                cslugs = []
+                node = c
+                node_obj = obj
+                while node:
+                    cslugs += node.slugs.split(' ') if node.slugs else [
+                        getattr(node_obj, 'slug', slugify(u'%s' % node_obj))
+                    ]
+                    p = node.parent
+                    node_obj = None
+                    node = None
+                    if not p.is_root_node():
+                        node = p
+                        node_obj = p.content_object
+
                 d['select_class_marker'] = u''.join(
                     '%(sel_' + s + ')s' for s in cslugs
                 )
+                print d['select_class_marker']
             filterkwargs = {'parent': c}
             cc = c.get_children().filter(**filterkwargs)
             if cc:
