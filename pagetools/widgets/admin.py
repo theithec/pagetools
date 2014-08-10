@@ -49,7 +49,7 @@ class TypeAreaAdmin(admin.ModelAdmin):
 
         if obj:
             user = request.user
-            clslist = list(itersubclasses(BaseWidget))[:]
+            clslist = itersubclasses(BaseWidget)
             context['addable_objs'] = []
             context['addable_widgets'] = []
             found = [c.content_object for c in obj.widgets.all()]
@@ -72,6 +72,7 @@ class TypeAreaAdmin(admin.ModelAdmin):
                     context['addable_objs'].append(
                         '<option  value="%s_%s">%s</option>' % (ctpk, o.pk, o,)
                     )
+            self.change_form_template = 'admin/widgets/typearea/change_form.html'
         else:
             self.change_form_template = 'admin/change_form_help_text.html'
             context['help_text'] = '[save] before adding widgets'
