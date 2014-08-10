@@ -124,19 +124,22 @@ class Menu(MenuEntry):
     def add_child(self, obj, title=''):
         self.tree.add_child(self, obj, title)
 
-    def children_list(self, clist=None, children=None, for_admin=False):
+    def children_list(self, mtree=None, children=None, for_admin=False, dict_parent=None):
         filterkwargs = {'parent': self}
         if not for_admin:
             filterkwargs['enabled'] = True
-        if clist is None:
-            clist = []
+        if mtree is None:
+            mtree = []
         if children is None:
             children = self.get_children().filter(**filterkwargs)
+
         for order_id, c in enumerate(children):
             d = {
                 'entry_title': c.title,
             }
+            d['dict_parent'] = dict_parent
             obj = c.content_object
+            cc = c.get_children().filter(parent=c)
             if for_admin:
                 reverseurl = get_adminedit_url(obj)
                 d.update({
@@ -158,27 +161,25 @@ class Menu(MenuEntry):
                 cslugs = []
                 node = c
                 node_obj = obj
-                while node:
-                    cslugs += node.slugs.split(' ') if node.slugs else [
-                        getattr(node_obj, 'slug', slugify(u'%s' % node_obj))
-                    ]
-                    p = node.parent
-                    node_obj = None
-                    node = None
-                    if not p.is_root_node():
-                        node = p
-                        node_obj = p.content_object
 
-                d['select_class_marker'] = u''.join(
-                    '%(sel_' + s + ')s' for s in cslugs
-                )
-                print d['select_class_marker']
-            filterkwargs = {'parent': c}
-            cc = c.get_children().filter(**filterkwargs)
+                cslugs += node.slugs.split(' ') if node.slugs else [
+                    getattr(node_obj, 'slug', slugify(u'%s' % node_obj))
+                ]
+                dict_parent = d
+                while dict_parent:
+                    dict_parent['select_class_marker'] = u''.join(
+                        '%(sel_' + s + ')s' for s in cslugs
+                    )
+                    try:
+                        dict_parent = dict_parent['dict_parent']
+                    except AttributeError:
+                        break
+
+
             if cc:
-                d['children'] = self.children_list(children=cc, for_admin=for_admin)
-            clist.append(d)
-        return clist
+                d['children'] = self.children_list(children=cc, for_admin=for_admin, dict_parent=d)
+            mtree.append(d)
+        return mtree
 
     def _render_no_sel(self):
         t = template.loader.get_template(MENU_TEMPLATE)
