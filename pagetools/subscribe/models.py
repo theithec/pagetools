@@ -1,9 +1,11 @@
 import datetime
 from hashlib import sha224 as sha
+import imp
 import smtplib
 import string
-import imp
+
 from django.core.mail import send_mail, get_connection
+from django.core.mail.message import EmailMessage
 from django.db import models
 from django.db.models import get_model
 from django.utils import timezone
@@ -30,7 +32,6 @@ class Subscriber(BaseSubscriberMixin):
 
     def activate(self):
         self.is_activated = True
-        # self.key = '-'
         self.subscribtion_date = datetime.date(1900, 1, 1)
         self.save()
 
@@ -114,21 +115,27 @@ class QueuedEmail(models.Model):
             ).save()
 
     def send_to(self, to, conn, unsubscribe_path):
+        status = -1
         if self.senddate < timezone.now():
             if self.subject and self.body:
                 if to:
                     try:
-                        status = send_mail(
+                        msg = EmailMessage(
                             "%s" % self.subject,
-                            self.body.replace('%unsubscribe_path%',
+                            self.body.replace('_unsubscribe_path_',
                                               unsubscribe_path),
                             subs_settings.NEWS_FROM,
                             [to],
                             connection=conn,
-                            fail_silently=False
                         )
+                        msg.content_subtype = "html"  # Main content is now text/html
+                        status = msg.send(
+                            fail_silently=False,
+                        )
+
+                        #status = send_mail()
                     except smtplib.SMTPException:
-                        status = -1
+                        pass
         return status
 
     # @todo use one connection

@@ -1,15 +1,13 @@
 New content on {{ site_name }}:
 
-{{ content.title }}
----
+<h3>{{ title|safe }}</h3>
 
-{{ content.body|safe }}
-
+{{ content|safe }}
 
 Greetings
 {{ site.domain }}
 
 Unsubscribe?
-{{ unsubscribe_url }}%unsubscribe_path%
+{{ unsubscribe_url }}
 More Infos: info@{{site.domain }}
 

@@ -4,25 +4,35 @@ Created on 03.09.2012
 @author: lotek
 '''
 
+
 from django import template
 from django.contrib.sites.models import Site
+from django.core.urlresolvers import reverse
 from django.template.context import Context
+from django.template.loader import render_to_string
+from django.utils.safestring import mark_safe
 
 from pagetools.subscribe import settings as subs_settings
+
 from .models import QueuedEmail, SendStatus
 
 
 def to_queue(content):
     # subscribers = Subscriber.objects.filter(is_activated=True)
-    t = template.loader.get_template('subscribe/msg.txt')
-
-    msg = t.render(Context({
+    #t = template.loader.get_template('subscribe/msg.txt')
+    #print "BODY", content['body']
+    msg =render_to_string('subscribe/msg.html', {
+        'title': content['title'],
         'content': content['body'],
         'site': Site.objects.get_current(),
-        'unsubscribe_url': ''.join(('http://',
-                                   Site.objects.get_current().domain,
-                                   "/subscribe/unsubscribe/"))
-    }))
+        'unsubscribe_url': ''.join((
+            'http://',
+            Site.objects.get_current().domain,
+            reverse('unsubscribe', kwargs={'key':'_unsubscribe_path_'})
+        ))
+
+    })
+    #print "MSG", msg
     qm = QueuedEmail(
         subject="%s %s" % (subs_settings.NEWS_SUBJECT_PREFIX, content['title']),
         body=msg
