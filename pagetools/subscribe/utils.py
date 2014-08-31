@@ -20,7 +20,7 @@ from .models import QueuedEmail, SendStatus
 def to_queue(content):
     # subscribers = Subscriber.objects.filter(is_activated=True)
     #t = template.loader.get_template('subscribe/msg.txt')
-    #print "BODY", content['body']
+
     msg =render_to_string('subscribe/msg.html', {
         'title': content['title'],
         'content': content['body'],
@@ -32,7 +32,6 @@ def to_queue(content):
         ))
 
     })
-    #print "MSG", msg
     qm = QueuedEmail(
         subject="%s %s" % (subs_settings.NEWS_SUBJECT_PREFIX, content['title']),
         body=msg
