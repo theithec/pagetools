@@ -17,6 +17,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 
 from .settings import MAILFORM_RECEIVERS, MAILFORM_SENDER
+from django.forms.fields import CharField
 
 
 class DynMultipleChoiceField(forms.MultipleChoiceField):
@@ -44,15 +45,15 @@ class MailReceiverField(object):
             for a in adrs:
                 ev(a)
         except (ValueError, ValidationError, KeyError):
-            raise ValidationError('comma seperated list of e-mails')
+            raise ValidationError('comma separated list of e-mails')
 
 
 class BaseDynForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         extras = kwargs.pop('extras', [])
+        kwargs.pop('extras_opt', None)
         super(BaseDynForm, self).__init__(*args, **kwargs)
-
         for dynfield in extras:
             self.add_custom_field(dynfield)
 
