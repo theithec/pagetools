@@ -3,12 +3,12 @@ from django.views.generic.dates import MonthArchiveView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 
-from pagetools.core.views import BasePagelikeView
+from pagetools.widgets.views import WidgetPagelikeView
 
 from .models import News
 
 
-class NewsView(BasePagelikeView):
+class NewsView(WidgetPagelikeView):
     queryset = News.public.lfilter()
 
 

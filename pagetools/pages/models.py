@@ -1,5 +1,4 @@
 from django import forms
-from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.html import strip_tags
@@ -7,7 +6,6 @@ from django.utils.translation import ugettext_lazy as _
 
 from pagetools.core.models import PagelikeModel
 from pagetools.widgets.models import PageType
-import settings as page_settings
 
 from .forms import ContactForm, DynMultipleChoiceField, MailReceiverField
 

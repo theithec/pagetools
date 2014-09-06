@@ -1,13 +1,15 @@
 # Create your views here.
+from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from django.http.response import Http404
+from django.utils.translation import ugettext as _
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import BaseFormView
-from django.contrib import messages
-from pagetools.core.views import BasePagelikeView
-from .models import Page
 
-from django.utils.translation import ugettext as _
+from pagetools.core.views import BasePagelikeView
+from pagetools.widgets.views import WidgetPagelikeView
+
+from .models import Page
 
 
 class IncludedFormView(DetailView, BaseFormView):
@@ -70,7 +72,8 @@ class AuthPageView(DetailView):
         return qs
 
 
-class PageView(AuthPageView, BasePagelikeView, IncludedFormView):
+class PageView( WidgetPagelikeView, AuthPageView, IncludedFormView):
+#class PageView(WidgetPagelikeView):
     model = Page
 
     def get_pagetype(self, **kwargs):
@@ -78,8 +81,8 @@ class PageView(AuthPageView, BasePagelikeView, IncludedFormView):
 
     def get_context_data(self, **kwargs):
         kwargs['page_title'] = self.object.title
-        return super(PageView, self).get_context_data(**kwargs)
-
+        kwargs = super(PageView, self).get_context_data(**kwargs)
+        return kwargs
 
 class IndexView(PageView):
 

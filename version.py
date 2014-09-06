@@ -63,7 +63,6 @@ def read_release_version():
         return None
 
 
-
 def write_release_version(version):
     f = open("RELEASE-VERSION", "w")
     f.write("%s\n" % version)
