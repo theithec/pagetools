@@ -80,7 +80,6 @@ TEMPLATE_LOADERS = (
 )
 
 MIDDLEWARE_CLASSES = (
-    'django.middleware.cache.UpdateCacheMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -90,7 +89,6 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.cache.FetchFromCacheMiddleware',
 )
 CACHES = {
     'default': {
@@ -122,7 +120,6 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'south',
     'debug_toolbar',
     'crispy_forms',
     'grappelli.dashboard',
@@ -141,7 +138,6 @@ INSTALLED_APPS = (
     'pagetools.search',
     'pagetools.subscribe',
     'pagetools.gallery',
-    'pagetools.search',
     'main',
 )
 
