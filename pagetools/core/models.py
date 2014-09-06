@@ -5,8 +5,8 @@ from model_utils.choices import Choices
 from model_utils.managers import QueryManager
 from model_utils.models import StatusModel, TimeStampedModel
 
-import settings as ptsettings
-from unislug.models import UnicodeSlugField
+from . import settings as ptsettings
+from .unislug.models import UnicodeSlugField
 
 
 class LangManager(QueryManager):
@@ -18,7 +18,7 @@ class LangManager(QueryManager):
         if self.use_lang:
             if not lang:
                 lang = get_language()
-                kwargs.update(lang__in=(lang, lang.split('-')[0], None, u''))
+                kwargs.update(lang__in=(lang, lang.split('-')[0], None, ''))
             else:
                 kwargs['lang'] = lang
         return self.filter(**kwargs)

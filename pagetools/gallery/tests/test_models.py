@@ -16,6 +16,6 @@ class TC1Tests(TestCase):
         self.pic1 = GalleryPic.objects.create(title='pic1', pic='pic1.jpg')
 
     def test_gal(self):
-        print "Gal"
-        print self.gal
-        print self.pic1
+        print("Gal")
+        print((self.gal))
+        print((self.pic1))

@@ -18,7 +18,7 @@ class IncludedForm(models.Model):
     def __init__(self, *args, **kwargs):
         super(IncludedForm, self).__init__(*args, **kwargs)
         self._meta.get_field_by_name('included_form')[0]._choices = [
-            (i, _(i)) for i, j in self.includable_forms.items()
+            (i, _(i)) for i, j in list(self.includable_forms.items())
         ]
 
     class Meta:
@@ -28,8 +28,8 @@ class IncludedForm(models.Model):
 class DynFormField(models.Model):
 
     field_for_type = {
-        u'ChoiceField': DynMultipleChoiceField,
-        u'MailReceiverField': MailReceiverField
+        'ChoiceField': DynMultipleChoiceField,
+        'MailReceiverField': MailReceiverField
     }
     field_type = models.CharField('Type', max_length=128)
     name = models.CharField(_('Name'), max_length=512)
@@ -63,7 +63,7 @@ class DynFormField(models.Model):
                         help_text=self.help_text, initial=self.initial)
 
     def __unicode__(self):
-        return u'%s: %s' % (self.field_type, self.name)
+        return '%s: %s' % (self.field_type, self.name)
 
     class Meta:
         verbose_name = _('Dynamic Form Field')
@@ -106,13 +106,13 @@ class PageDynFormField(DynFormField):
 
 class PageBlockMixin(models.Model):
     content = models.TextField(_('Content'), blank=True)
-    visible = models.BooleanField(_(u'Visible'), default=True)
+    visible = models.BooleanField(_('Visible'), default=True)
     # in concrete model:
     # page = models.ForeignKey(MyBlockPage)
     position = models.PositiveIntegerField()
 
     class Meta:
-        verbose_name = u"Block"
+        verbose_name = "Block"
         ordering = ('position',)
         abstract = True
 

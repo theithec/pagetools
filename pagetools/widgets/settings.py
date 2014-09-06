@@ -11,7 +11,7 @@ def _(x):
 
 
 AREAS = getattr(settings, 'PT_AREAS',
-                ((u'sidebar', _('Sidebar'),),)
+                (('sidebar', _('Sidebar'),),)
                 )
 
 TEMPLATETAG_WIDGETS = getattr(settings, 'PT_TEMPLATETAG_WIDGETS', {})

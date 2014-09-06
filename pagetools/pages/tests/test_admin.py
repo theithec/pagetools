@@ -18,13 +18,13 @@ class Tests(TestCase):
         self.admin = User.objects.create_superuser('admin', 'q@w.de', 'alice')
         self.addpageurl = urlresolvers.reverse('admin:pages_page_add', args=[])
         self.pages_data = [
-            (u'P1', u'Foo', True),
+            ('P1', 'Foo', True),
             # s (u'P2', u'Bar', False, u'pp2')
         ]
 
     def _add_page(self, args):
         title, content = args[:2]
-        status = u'published' if args[2] else u'draft'
+        status = 'published' if args[2] else 'draft'
         slug = slugify(title) if len(args) < 4 else args[3]
         response = self.client.post(
             self.addpageurl,

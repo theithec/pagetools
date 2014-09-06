@@ -7,19 +7,19 @@ import string
 from django.core.mail import send_mail, get_connection
 from django.core.mail.message import EmailMessage
 from django.db import models
-from django.db.models import get_model
+#from django.db.models import get_model
 from django.utils import timezone
 from django.utils.crypto import random
 from django.utils.http import urlquote
 from django.utils.translation import ugettext_lazy as _
 
-import settings as subs_settings
+from . import settings as subs_settings
 
 from .base_models import BaseSubscriberMixin
 
 
 def _mk_key():
-    k = "".join([random.choice(string.letters + string.digits)
+    k = "".join([random.choice(string.ascii_letters + string.digits)
                  for x in range(1, 32)])
     if Subscriber.objects.filter(key=k):
         k = _mk_key()
@@ -36,14 +36,14 @@ class Subscriber(BaseSubscriberMixin):
         self.save()
 
     def mailkey(self):
-        return sha(self.get_email()).hexdigest()
+        return sha(self.get_email().encode('utf-8')).hexdigest()
 
     def cmd_path(self):
         return "/?mk=".join(
             (urlquote(self.key), urlquote(self.mailkey())))
 
     def get_email(self):
-        return self.email
+        return str(self.email)  #.encode('utf-8')
 
 
 _subscriber_model = None

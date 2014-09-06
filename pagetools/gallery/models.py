@@ -13,7 +13,7 @@ from django.utils.translation import ugettext_lazy as _
 class GalleryPic(models.Model):
     title = models.CharField(_('Title'), max_length=512)
     pic = FileBrowseField(
-        _(u"Image"),
+        _("Image"),
         max_length=200,
         directory="gallery",
         extensions=[".jpg", ".jpeg", ".gif", ".png"],
@@ -28,8 +28,8 @@ class GalleryPic(models.Model):
         return reverse("artistdetailview", kwargs={'slug': self.slug})
 
     class Meta():
-        verbose_name = _(u'Titled Picture')
-        verbose_name = _(u'Titled Pictures')
+        verbose_name = _('Titled Picture')
+        verbose_name = _('Titled Pictures')
 
 
 class Gallery(PagelikeModel):
@@ -48,8 +48,8 @@ class Gallery(PagelikeModel):
         return reverse("gallerydetailview", kwargs={'slug': self.slug})
 
     class Meta():
-        verbose_name = _(u'Galleries')
-        verbose_name_plural = _(u'Galleries')
+        verbose_name = _('Galleries')
+        verbose_name_plural = _('Galleries')
 
 
 class PicPos(models.Model):
@@ -58,4 +58,4 @@ class PicPos(models.Model):
     position = models.PositiveIntegerField()
 
     class Meta():
-        verbose_name = _(u'Positioned Picture')
+        verbose_name = _('Positioned Picture')

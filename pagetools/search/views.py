@@ -5,12 +5,13 @@ from django.core.urlresolvers import reverse
 from django.db.models.query_utils import Q
 from django.utils.html import strip_tags
 
-from BeautifulSoup import BeautifulSoup
+from bs4 import BeautifulSoup
 
 from pagetools.search import search_mods, extra_filter
 from pagetools.core.views import PaginatorMixin
 
 from .forms import AdvSearchForm
+from functools import reduce
 
 
 class SearchResultsView(PaginatorMixin):
@@ -28,7 +29,7 @@ class SearchResultsView(PaginatorMixin):
         cld = getattr(self.form, 'cleaned_data', None)
         if any(cld.values()):
             self.sep = '?%s&' % ('&'.join(
-                ['%s=%s' % (k, v) for k, v in cld.items() if v]
+                ['%s=%s' % (k, v) for k, v in list(cld.items()) if v]
             ))
             self.search_params = cld
             model_pks = cld.get('models')
@@ -82,7 +83,7 @@ class SearchResultsView(PaginatorMixin):
             txt = BeautifulSoup(txt,
                                 convertEntities=BeautifulSoup.HTML_ENTITIES)
         except UnicodeError:
-            txt = strip_tags(u'%s' % txt).lower()
+            txt = strip_tags('%s' % txt).lower()
         return txt
 
     def get_queryset(self, **kwargs):

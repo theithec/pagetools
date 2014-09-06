@@ -37,7 +37,7 @@ class MenuManager(TreeManager):
         if not getattr(content_object, 'get_absolute_url', None):
             raise ValidationError(
                 _('MenuEntry.content_object requires get_absolute_url'))
-        kwargs['title'] = kwargs.get('title', u'%s' % content_object)
+        kwargs['title'] = kwargs.get('title', '%s' % content_object)
         kwargs['parent'] = parent
         kwargs['content_type'] = ContentType.objects.get_for_model(
             content_object)
@@ -117,7 +117,7 @@ class MenuCache(models.Model):
     cache = models.TextField()
 
     def __unicode__(self):
-        return u'Cache: %s' % self.menu
+        return 'Cache: %s' % self.menu
 
 
 class Menu(MenuEntry):
@@ -163,11 +163,11 @@ class Menu(MenuEntry):
                 node_obj = obj
 
                 cslugs += node.slugs.split(' ') if node.slugs else [
-                    getattr(node_obj, 'slug', slugify(u'%s' % node_obj))
+                    getattr(node_obj, 'slug', slugify('%s' % node_obj))
                 ]
                 dict_parent = d
                 while dict_parent:
-                    dict_parent['select_class_marker'] = u''.join(
+                    dict_parent['select_class_marker'] = ''.join(
                         '%(sel_' + s + ')s' for s in cslugs
                     )
                     try:
@@ -207,7 +207,7 @@ class Menu(MenuEntry):
             if not entry_str:
                 break
             k, v = entry_str.split("=")
-            b1, b2 = map(k.find, ("[", "]"))
+            b1, b2 = list(map(k.find, ("[", "]")))
             eid = int(entry_str[b1+1: b2])
             e = MenuEntry.objects.get(id=eid)
             if v == 'null':
@@ -231,7 +231,7 @@ class Menu(MenuEntry):
         return super(Menu, self).full_clean(*args, **kwargs)
 
     def __unicode__(self):
-        return u'%s%s' % (self.title,
+        return '%s%s' % (self.title,
                           (' (%s)' % self.lang) if self.lang else '')
 
     def update_cache(self):

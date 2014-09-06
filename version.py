@@ -96,9 +96,9 @@ def get_git_version(abbrev=4):
         write_release_version(version)
 
     # Finally, return the current version.
-
-    return version
+    # print (type(version))
+    return str(version)
 
 
 if __name__ == "__main__":
-    print get_git_version()
+    print((get_git_version()))

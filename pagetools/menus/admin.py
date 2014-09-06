@@ -82,7 +82,7 @@ class EntrieableForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(EntrieableForm, self).__init__(*args, **kwargs)
-        menus = [(m.id, u'%s' % m) for m in Menu.tree.root_nodes()]
+        menus = [(m.id, '%s' % m) for m in Menu.tree.root_nodes()]
         try:
             entry = kwargs['instance']
             menuEntries = MenuEntry.tree.filter(

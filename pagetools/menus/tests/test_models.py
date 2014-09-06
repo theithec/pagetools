@@ -32,14 +32,14 @@ class TC1Tests(TestCase):
 
     def test_lists(self):
         c = self.menu.get_children()
-        self.assertEqual(self.menu.title, u'm1')
+        self.assertEqual(self.menu.title, 'm1')
         self.assertEqual(
             c[0].get_absolute_url(),
-            u'/%sp1/' % settings.PAGE_PREFIX
+            '/%sp1/' % settings.PAGE_PREFIX
         )
         self.assertEqual(
             c[1].get_absolute_url(),
-            u'/foo'
+            '/foo'
         )
 
 

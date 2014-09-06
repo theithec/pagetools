@@ -25,7 +25,7 @@ class BaseWidget(models.Model):
     adapter = generic.GenericRelation('WidgetInArea')
 
     def __unicode__(self):
-        return u"%s" % self.title or self.name
+        return "%s" % self.title or self.name
 
     class Meta:
         abstract = True
@@ -44,7 +44,7 @@ class ContentWidget(BaseWidget):
 class TemplateTagWidget(BaseWidget):
     renderclasskey = models.CharField(
         max_length=255,
-        choices=[(k, k) for k in settings.TEMPLATETAG_WIDGETS.keys()]
+        choices=[(k, k) for k in list(settings.TEMPLATETAG_WIDGETS.keys())]
     )
 
     def __init__(self, *args, **kwargs):
@@ -66,7 +66,7 @@ class TemplateTagWidget(BaseWidget):
         return self.robj
 
     def get_title(self):
-        return u'%s' % self.title
+        return '%s' % self.title
 
     def get_content(self, contextdict):
         if self.get_rendererobject():
@@ -74,14 +74,14 @@ class TemplateTagWidget(BaseWidget):
 
 
 class PageType(models.Model):
-    name = models.CharField(u'Name', max_length=128)
+    name = models.CharField('Name', max_length=128)
     parent = models.ForeignKey('self', blank=True, null=True)
 
     def __unicode__(self):
         return self.name
 
     class Meta:
-        verbose_name = _(u"Pagetype")
+        verbose_name = _("Pagetype")
 
 
 class TypeArea(LangModel):
@@ -114,21 +114,21 @@ class WidgetInArea(models.Model):
     object_id = models.PositiveIntegerField()
     content_object = generic.GenericForeignKey('content_type', 'object_id')
     position = models.PositiveIntegerField()
-    enabled = models.BooleanField(u'enabled', default=False)
+    enabled = models.BooleanField('enabled', default=False)
 
     def get_title(self):
-        return u'%s' % self.content_object.title
+        return '%s' % self.content_object.title
 
     def get_content(self, contextdict):
         return self.content_object.get_content(contextdict)
 
     def adminedit_url(self):
         co = self.content_object
-        h = format_html(u'<a href="{0}">{1}</a>', get_adminedit_url(co), co)
+        h = format_html('<a href="{0}">{1}</a>', get_adminedit_url(co), co)
         return h
 
     def __unicode__(self):
-        return u"%s@%s" % (self.content_object, self.typearea.type)
+        return "%s@%s" % (self.content_object, self.typearea.type)
 
     class Meta:
         ordering = ['position']

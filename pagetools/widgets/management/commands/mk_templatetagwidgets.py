@@ -15,9 +15,9 @@ class Command(BaseCommand):
     help = _('create Widgets according to settings.(PT_)TEMPLATETAG_WIDGETS ')
 
     def handle(self, *args, **options):
-        for k, v in TEMPLATETAG_WIDGETS.items():
+        for k, v in list(TEMPLATETAG_WIDGETS.items()):
             ttw = TemplateTagWidget.objects.create(
                 name=k,
                 renderclasskey=k,
             )
-            print u"created: %s" % ttw
+            print(("created: %s" % ttw))

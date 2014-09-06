@@ -34,7 +34,7 @@ def get_areas_for_type(pagetype, contextdict, tmpdict=None):
         tmpdict[ta.area] = [
             {'title': w.get_title(),
              'content': w.get_content(contextdict),
-             'type': slugify(u'%s' % w.content_type)
+             'type': slugify('%s' % w.content_type)
              }
             for w in orderedwidgets  # allareawidgets
         ]

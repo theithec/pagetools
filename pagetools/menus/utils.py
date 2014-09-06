@@ -17,7 +17,7 @@ _entrieable_reverse_names = []
 def entrieable_reverse_name(name):
     global _entrieable_reverse_names
     _entrieable_reverse_names.append(name)
-    _entrieable_reverse_names = sorted(filter(None, _entrieable_reverse_names))
+    _entrieable_reverse_names = sorted([_f for _f in _entrieable_reverse_names if _f])
     return name
 
 

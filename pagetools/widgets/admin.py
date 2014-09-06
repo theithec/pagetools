@@ -41,7 +41,7 @@ class TypeAreaAdmin(admin.ModelAdmin):
                                                    content_type=ct,
                                                    object_id=obj_id,
                                                    position=pos)
-            except ValueError, e:
+            except ValueError as e:
                 pass
 
     def render_change_form(self, request, context, add=False,

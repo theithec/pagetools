@@ -98,7 +98,7 @@ class SendEmailForm(BaseDynForm):
         _is_valid = super(SendEmailForm, self).is_valid()
         if _is_valid:
             txt = os.linesep.join(
-                [u"%s\t%s" % (field.name, field.value())
+                ["%s\t%s" % (field.name, field.value())
                     for field in self
                  ])
             send_mail(_("Form"), txt, MAILFORM_SENDER,

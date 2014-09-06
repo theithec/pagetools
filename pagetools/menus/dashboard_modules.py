@@ -22,7 +22,7 @@ class MenuModule(DashboardModule):
     def __init__(self, *args, **kwargs):
         self.menu_title = kwargs.pop('menu_title', 'MainMenu')
         kwargs['title'] = kwargs.get('title',
-            u'%s: %s' % (_('Menu Overview'), self.menu_title))
+            '%s: %s' % (_('Menu Overview'), self.menu_title))
         super(MenuModule, self).__init__(*args, **kwargs)
 
     def add_entrychildren(self, children, collected=None):
@@ -40,7 +40,7 @@ class MenuModule(DashboardModule):
     def init_with_context(self, context):
         try:
             self.menu = Menu.objects.lfilter().get(title=self.menu_title)
-        except (Menu.DoesNotExist, MultipleObjectsReturned), e:
+        except (Menu.DoesNotExist, MultipleObjectsReturned) as e:
             self.pre_content = 'Menu not found'
             return
         context['menu'] = {

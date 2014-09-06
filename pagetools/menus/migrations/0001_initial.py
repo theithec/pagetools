@@ -9,107 +9,107 @@ class Migration(SchemaMigration):
 
     def forwards(self, orm):
         # Adding model 'MenuEntry'
-        db.create_table(u'menus_menuentry', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+        db.create_table('menus_menuentry', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('lang', self.gf('django.db.models.fields.CharField')(max_length=2, blank=True)),
             ('title', self.gf('django.db.models.fields.CharField')(max_length=128)),
             ('parent', self.gf('mptt.fields.TreeForeignKey')(blank=True, related_name='children', null=True, to=orm['menus.MenuEntry'])),
             ('content_type', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['contenttypes.ContentType'])),
             ('object_id', self.gf('django.db.models.fields.PositiveIntegerField')()),
             ('enabled', self.gf('django.db.models.fields.BooleanField')(default=False)),
-            (u'lft', self.gf('django.db.models.fields.PositiveIntegerField')(db_index=True)),
-            (u'rght', self.gf('django.db.models.fields.PositiveIntegerField')(db_index=True)),
-            (u'tree_id', self.gf('django.db.models.fields.PositiveIntegerField')(db_index=True)),
-            (u'level', self.gf('django.db.models.fields.PositiveIntegerField')(db_index=True)),
+            ('lft', self.gf('django.db.models.fields.PositiveIntegerField')(db_index=True)),
+            ('rght', self.gf('django.db.models.fields.PositiveIntegerField')(db_index=True)),
+            ('tree_id', self.gf('django.db.models.fields.PositiveIntegerField')(db_index=True)),
+            ('level', self.gf('django.db.models.fields.PositiveIntegerField')(db_index=True)),
         ))
-        db.send_create_signal(u'menus', ['MenuEntry'])
+        db.send_create_signal('menus', ['MenuEntry'])
 
         # Adding unique constraint on 'MenuEntry', fields ['title', 'lang']
-        db.create_unique(u'menus_menuentry', ['title', 'lang'])
+        db.create_unique('menus_menuentry', ['title', 'lang'])
 
         # Adding model 'MenuCache'
-        db.create_table(u'menus_menucache', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+        db.create_table('menus_menucache', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('menu', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['menus.MenuEntry'], unique=True, null=True, blank=True)),
             ('cache', self.gf('django.db.models.fields.TextField')()),
         ))
-        db.send_create_signal(u'menus', ['MenuCache'])
+        db.send_create_signal('menus', ['MenuCache'])
 
         # Adding model 'Link'
-        db.create_table(u'menus_link', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+        db.create_table('menus_link', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('title', self.gf('django.db.models.fields.CharField')(max_length=128)),
             ('url', self.gf('django.db.models.fields.CharField')(max_length=255)),
             ('enabled', self.gf('django.db.models.fields.BooleanField')(default=True)),
         ))
-        db.send_create_signal(u'menus', ['Link'])
+        db.send_create_signal('menus', ['Link'])
 
         # Adding model 'ViewLink'
-        db.create_table(u'menus_viewlink', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+        db.create_table('menus_viewlink', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('title', self.gf('django.db.models.fields.CharField')(max_length=128)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=255)),
             ('enabled', self.gf('django.db.models.fields.BooleanField')(default=True)),
         ))
-        db.send_create_signal(u'menus', ['ViewLink'])
+        db.send_create_signal('menus', ['ViewLink'])
 
 
     def backwards(self, orm):
         # Removing unique constraint on 'MenuEntry', fields ['title', 'lang']
-        db.delete_unique(u'menus_menuentry', ['title', 'lang'])
+        db.delete_unique('menus_menuentry', ['title', 'lang'])
 
         # Deleting model 'MenuEntry'
-        db.delete_table(u'menus_menuentry')
+        db.delete_table('menus_menuentry')
 
         # Deleting model 'MenuCache'
-        db.delete_table(u'menus_menucache')
+        db.delete_table('menus_menucache')
 
         # Deleting model 'Link'
-        db.delete_table(u'menus_link')
+        db.delete_table('menus_link')
 
         # Deleting model 'ViewLink'
-        db.delete_table(u'menus_viewlink')
+        db.delete_table('menus_viewlink')
 
 
     models = {
-        u'contenttypes.contenttype': {
+        'contenttypes.contenttype': {
             'Meta': {'ordering': "('name',)", 'unique_together': "(('app_label', 'model'),)", 'object_name': 'ContentType', 'db_table': "'django_content_type'"},
             'app_label': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
         },
-        u'menus.link': {
+        'menus.link': {
             'Meta': {'object_name': 'Link'},
             'enabled': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '128'}),
             'url': ('django.db.models.fields.CharField', [], {'max_length': '255'})
         },
-        u'menus.menucache': {
+        'menus.menucache': {
             'Meta': {'object_name': 'MenuCache'},
             'cache': ('django.db.models.fields.TextField', [], {}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'menu': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['menus.MenuEntry']", 'unique': 'True', 'null': 'True', 'blank': 'True'})
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'menu': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['menus.MenuEntry']", 'unique': 'True', 'null': 'True', 'blank': 'True'})
         },
-        u'menus.menuentry': {
+        'menus.menuentry': {
             'Meta': {'unique_together': "(('title', 'lang'),)", 'object_name': 'MenuEntry'},
-            'content_type': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['contenttypes.ContentType']"}),
+            'content_type': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['contenttypes.ContentType']"}),
             'enabled': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'lang': ('django.db.models.fields.CharField', [], {'max_length': '2', 'blank': 'True'}),
-            u'level': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'}),
-            u'lft': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'}),
+            'level': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'}),
+            'lft': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'}),
             'object_id': ('django.db.models.fields.PositiveIntegerField', [], {}),
-            'parent': ('mptt.fields.TreeForeignKey', [], {'blank': 'True', 'related_name': "'children'", 'null': 'True', 'to': u"orm['menus.MenuEntry']"}),
-            u'rght': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'}),
+            'parent': ('mptt.fields.TreeForeignKey', [], {'blank': 'True', 'related_name': "'children'", 'null': 'True', 'to': "orm['menus.MenuEntry']"}),
+            'rght': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '128'}),
-            u'tree_id': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'})
+            'tree_id': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'})
         },
-        u'menus.viewlink': {
+        'menus.viewlink': {
             'Meta': {'object_name': 'ViewLink'},
             'enabled': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '128'})
         }

@@ -14,7 +14,7 @@ from django.http.response import HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404
 from django.template.context import Context
 from django.utils import timezone
-from django.utils.encoding import force_unicode
+# from django.utils.encoding import force_unicode
 from django.utils.functional import Promise
 from django.utils.translation import ugettext_lazy as _
 
@@ -33,7 +33,7 @@ MAIN_HOST = settings.ALLOWED_HOSTS[0]
 class LazyEncoder(json.JSONEncoder):
     def default(self, o):
         if isinstance(o, Promise):
-            return force_unicode(o)
+            return o  # force_unicode(o)
         else:
             return super(LazyEncoder, self).default(o)
 
