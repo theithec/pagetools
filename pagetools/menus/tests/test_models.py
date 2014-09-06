@@ -35,7 +35,7 @@ class TC1Tests(TestCase):
         self.assertEqual(self.menu.title, u'm1')
         self.assertEqual(
             c[0].get_absolute_url(),
-            u'/%sp1' % settings.PAGE_PREFIX
+            u'/%sp1/' % settings.PAGE_PREFIX
         )
         self.assertEqual(
             c[1].get_absolute_url(),

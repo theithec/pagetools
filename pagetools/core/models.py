@@ -25,7 +25,7 @@ class LangManager(QueryManager):
 
 
 class LangModel(models.Model):
-    public = LangManager()
+    public = LangManager(status=ptsettings.STATUS_PUBLISHED)
     lang = models.CharField(
         max_length=2,
         choices=settings.LANGUAGES,
@@ -44,7 +44,7 @@ class PublishableModel(StatusModel):
                            in ptsettings.STATUS_CHOICES]
     STATUS = Choices(*_translated_choices)
     objects = QueryManager()
-    public = QueryManager(status=ptsettings.STATUS_PUBLISHED)
+    public = LangManager(status=ptsettings.STATUS_PUBLISHED)
 
     def _enabled(self):
         return self.status == ptsettings.STATUS_PUBLISHED
@@ -54,7 +54,7 @@ class PublishableModel(StatusModel):
         abstract = True
 
 
-class PagelikeModel(LangModel, PublishableModel, TimeStampedModel):
+class PagelikeModel( PublishableModel, LangModel,TimeStampedModel):
     title = models.CharField(_('Title'), max_length=255)
     slug = UnicodeSlugField(_('Slug'), max_length=255)
     objects = models.Manager()

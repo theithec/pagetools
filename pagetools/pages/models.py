@@ -83,14 +83,14 @@ class AuthPage(models.Model):
 
 class BasePage(IncludedForm, AuthPage, PagelikeModel):
     content = models.TextField(_('Content'))
-    objects = models.Manager()
+    #objects = models.Manager()
     pagetype = models.ForeignKey(PageType, blank=True, null=True)
 
     def get_pagetype(self, **kwargs):
         return self.pagetype
 
     def get_absolute_url(self):
-        return u'/%s%s' % (page_settings.PAGE_PREFIX, self.slug)
+        return reverse('pageview', kwargs={'slug': self.slug})
 
     class Meta(PagelikeModel.Meta):
         verbose_name = _('Page')
