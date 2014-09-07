@@ -19,10 +19,10 @@ from django.utils.translation import ugettext_lazy as _
 
 from .settings import MAILFORM_RECEIVERS, MAILFORM_SENDER
 
-import logging
+#import logging
+#logger = logging.getLogger(__name__)
 
 
-logger = logging.getLogger(__name__)
 class DynMultipleChoiceField(forms.MultipleChoiceField):
 
     def __init__(self, **kwargs):
@@ -91,10 +91,11 @@ class SendEmailForm(BaseDynForm):
         self.helper.add_input(Submit('submit', 'Submit'))
 
     def add_mailreceiverfield(self, **kwargs):
-        self.mailform_receivers = kwargs['label']
+        self.mailform_receivers = kwargs['label'].split(',')
+
 
     def get_mailreceivers(self):
-        logger.debug(" MAILFORM_RECEIVERS %s" %  MAILFORM_RECEIVERS)
+        #logger.debug(" MAILFORM_RECEIVERS %s" %  MAILFORM_RECEIVERS)
         return getattr(self, 'mailform_receivers', MAILFORM_RECEIVERS)
 
     def is_valid(self, **kwargs):
