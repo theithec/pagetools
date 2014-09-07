@@ -21,7 +21,7 @@ class GalleryPic(models.Model):
         null=True
     )
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s(%s)' % (self.title, self.pic.name)
 
     def get_absolute_url(self):
@@ -41,7 +41,7 @@ class Gallery(PagelikeModel):
     def get_title(self):
         return self.title
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title
 
     def get_absolute_url(self):

@@ -85,7 +85,7 @@ class MenuEntry(MPTTModel, LangModel):
     def get_entry_classname(self):
         return get_classname(self.content_object.__class__)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title
 
     def get_absolute_url(self):
@@ -116,7 +116,7 @@ class MenuCache(models.Model):
     menu = models.OneToOneField('Menu', blank=True, null=True)
     cache = models.TextField()
 
-    def __unicode__(self):
+    def __str__(self):
         return 'Cache: %s' % self.menu
 
     def get_absolute_url(self):
@@ -233,7 +233,7 @@ class Menu(MenuEntry):
             raise ValidationError({'__all__': ('Language Error',)})
         return super(Menu, self).full_clean(*args, **kwargs)
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s%s' % (self.title,
                           (' (%s)' % self.lang) if self.lang else '')
 
@@ -270,7 +270,7 @@ class AbstractLink(models.Model):
 class Link(AbstractLink):
     url = models.CharField(_('URL'), max_length=255)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.url
 
     def get_absolute_url(self):
@@ -292,7 +292,7 @@ class ViewLink(AbstractLink):
             for k in _entrieable_reverse_names
         ]
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     def get_absolute_url(self):

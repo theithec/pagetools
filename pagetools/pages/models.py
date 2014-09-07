@@ -62,7 +62,7 @@ class DynFormField(models.Model):
         return Fieldcls(label=self.name, required=self.required,
                         help_text=self.help_text, initial=self.initial)
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s: %s' % (self.field_type, self.name)
 
     class Meta:
@@ -116,7 +116,7 @@ class PageBlockMixin(models.Model):
         ordering = ('position',)
         abstract = True
 
-    def __unicode__(self):
+    def __str__(self):
         lc = len(self.content)
         sc = strip_tags(self.content) or self.content
         return sc[:100 if lc > 100 else lc]

@@ -24,7 +24,7 @@ class BaseWidget(models.Model):
     name = models.SlugField(_('name'), unique=True)
     adapter = generic.GenericRelation('WidgetInArea')
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s" % self.title or self.name
 
     class Meta:
@@ -77,7 +77,7 @@ class PageType(models.Model):
     name = models.CharField('Name', max_length=128)
     parent = models.ForeignKey('self', blank=True, null=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     class Meta:
@@ -98,7 +98,7 @@ class TypeArea(LangModel):
             raise ValidationError({'__all__': ('Language Error',)})
         return super(TypeArea, self).full_clean(*args, **kwargs)
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s_%s%s" % (self.area, self.type,
                             ("_%s" % self.lang if self.lang else ""))
 
@@ -127,7 +127,7 @@ class WidgetInArea(models.Model):
         h = format_html('<a href="{0}">{1}</a>', get_adminedit_url(co), co)
         return h
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s@%s" % (self.content_object, self.typearea.type)
 
     class Meta:

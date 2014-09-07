@@ -160,7 +160,7 @@ class QueuedEmail(models.Model):
                     else:
                         s.save()
 
-    def __unicode__(self):
+    def __str__(self):
         return self.subject
 
 
@@ -169,7 +169,7 @@ class SendStatus(models.Model):
     queued_email = models.ForeignKey(QueuedEmail)
     status = models.IntegerField()
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s  / %s : %s" % (self.subscriber,
                                   self.queued_email,
                                   self.status)

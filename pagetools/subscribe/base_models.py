@@ -15,7 +15,7 @@ class BaseSubscriberMixin(models.Model):
     subscribtion_date = models.DateTimeField(default=timezone.now())
     failures = models.IntegerField(default=0)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.email
 
     class Meta:
