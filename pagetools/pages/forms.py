@@ -5,21 +5,24 @@ Created on 18.12.2013
 '''
 import os
 
-from django import forms
-from django.contrib import messages
-from django.core.mail import send_mail
-from django.core.exceptions import ValidationError
-from django.utils.text import slugify
-from django.forms import widgets
-from django.utils.translation import ugettext_lazy as _
-from django.core.validators import EmailValidator
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
+from django import forms
+from django.contrib import messages
+from django.core.exceptions import ValidationError
+from django.core.mail import send_mail
+from django.core.validators import EmailValidator
+from django.forms import widgets
+from django.forms.fields import CharField
+from django.utils.text import slugify
+from django.utils.translation import ugettext_lazy as _
 
 from .settings import MAILFORM_RECEIVERS, MAILFORM_SENDER
-from django.forms.fields import CharField
+
+import logging
 
 
+logger = logging.getLogger(__name__)
 class DynMultipleChoiceField(forms.MultipleChoiceField):
 
     def __init__(self, **kwargs):
@@ -91,6 +94,7 @@ class SendEmailForm(BaseDynForm):
         self.mailform_receivers = kwargs['label']
 
     def get_mailreceivers(self):
+        logger.debug(" MAILFORM_RECEIVERS %s" %  MAILFORM_RECEIVERS)
         return getattr(self, 'mailform_receivers', MAILFORM_RECEIVERS)
 
     def is_valid(self, **kwargs):
