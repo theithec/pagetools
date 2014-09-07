@@ -119,6 +119,9 @@ class MenuCache(models.Model):
     def __unicode__(self):
         return 'Cache: %s' % self.menu
 
+    def get_absolute_url(self):
+        return ""
+
 
 class Menu(MenuEntry):
     def add_child(self, obj, title=''):
