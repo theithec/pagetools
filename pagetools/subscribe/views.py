@@ -3,7 +3,6 @@
 
 import datetime
 from hashlib import sha224 as sha
-import json
 from smtplib import SMTPException
 
 from django import template
@@ -13,9 +12,7 @@ from django.core.urlresolvers import reverse
 from django.http.response import HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404
 from django.template.context import Context
-from django.utils import timezone
-# from django.utils.encoding import force_unicode
-from django.utils.functional import Promise
+from django.utils import timezone, simplejson
 from django.utils.translation import ugettext_lazy as _
 
 from pagetools.subscribe.forms import SubscribeForm
@@ -25,25 +22,6 @@ from . import settings as subs_settings
 
 
 MAIN_HOST = settings.ALLOWED_HOSTS[0]
-# from django.views.decorators.csrf import csrf_exempt
-# http://djangosnippets.org/snippets/1157/
-# JSONResponse # {{{
-
-
-class LazyEncoder(json.JSONEncoder):
-    def default(self, o):
-        if isinstance(o, Promise):
-            return o  # force_unicode(o)
-        else:
-            return super(LazyEncoder, self).default(o)
-
-
-class JSONResponse(HttpResponse):
-    def __init__(self, data):
-        HttpResponse.__init__(
-            self, content=json.dumps(data, cls=LazyEncoder),
-            # mimetype="text/html",
-        )
 
 
 def _subscribe(request):
@@ -58,7 +36,7 @@ def _subscribe(request):
             s = Subscriber(email=email, is_activated=False)
             context = {
                 'site_name': MAIN_HOST,  # Site.objects.get_current().domain ,
-                'activation_url': "http://%s%s?mk=%s" % (
+                'activation_url': "http://%s%s?mk=%s/" % (
                     MAIN_HOST,
                     (reverse('activate', kwargs={'key': s.key})),
                     s.mailkey()
@@ -94,7 +72,9 @@ def _subscribe_fallback(request, c):
 
 
 def _subscribe_json(msg):
-    return JSONResponse(msg)
+    #return JSONResponse(msg)
+    print ("msg", str(msg['msg']))
+    return HttpResponse( simplejson.dumps({'msg':str(msg['msg'])}))
 
 
 def subscribe(request):
@@ -106,9 +86,11 @@ def subscribe(request):
 
 
 def _matching_activated_subscriber(request, key):
-    mailkey = request.GET.get('mk', '')
+    # remove trailing slash
+    mailkey = request.GET.get('mk', '/')[:-1]
     s = get_object_or_404(Subscriber, key=key)
-    if sha(s.email).hexdigest() == mailkey:
+    mailsha = sha(s.email.encode('utf-8')).hexdigest()
+    if mailsha == mailkey:
         return s
     return None
 
