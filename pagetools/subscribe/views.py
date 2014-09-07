@@ -3,6 +3,7 @@
 
 import datetime
 from hashlib import sha224 as sha
+import json
 from smtplib import SMTPException
 
 from django import template
@@ -12,7 +13,7 @@ from django.core.urlresolvers import reverse
 from django.http.response import HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404
 from django.template.context import Context
-from django.utils import timezone, simplejson
+from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
 from pagetools.subscribe.forms import SubscribeForm
@@ -72,9 +73,7 @@ def _subscribe_fallback(request, c):
 
 
 def _subscribe_json(msg):
-    #return JSONResponse(msg)
-    print ("msg", str(msg['msg']))
-    return HttpResponse( simplejson.dumps({'msg':str(msg['msg'])}))
+    return HttpResponse( json.dumps({'msg':str(msg['msg'])}))
 
 
 def subscribe(request):
