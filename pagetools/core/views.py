@@ -24,6 +24,7 @@ class BasePagelikeView(View):
         ptname = kwargs.get('pagetype_name', None)
         if ptname is None:
             ptname = getattr(self, 'pagetype_name', None)
+        print ("pagetypenaem", ptname)
         return ptname
 
     def get_pagetype(self, ptname=None, **kwargs):
