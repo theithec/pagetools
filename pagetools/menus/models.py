@@ -149,7 +149,7 @@ class Menu(MenuEntry):
                     'entry_order_id': order_id,
                     'entry_pk': c.pk,
                     'entry_del_url': urlresolvers.reverse(
-                        'admin:menus_menuentry_delete', args=(c.pk,)),
+                    'admin:menus_menuentry_delete', args=(c.pk,)),
                     'obj_admin_url': reverseurl,
                     'obj_classname': get_classname(obj.__class__),
                     'obj_title': obj,
@@ -177,8 +177,6 @@ class Menu(MenuEntry):
                         dict_parent = dict_parent['dict_parent']
                     except AttributeError:
                         break
-
-
             if cc:
                 d['children'] = self.children_list(children=cc, for_admin=for_admin, dict_parent=d)
             mtree.append(d)
