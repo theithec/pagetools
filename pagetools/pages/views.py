@@ -68,12 +68,13 @@ class AuthPageView(DetailView):
         d = {}
         if not user.is_authenticated():
             d['login_required'] = False
+        d['user'] = user
+        print( "USER", user)
         qs = self.model.public.lfilter(**d)
         return qs
 
 
 class PageView( WidgetPagelikeView, AuthPageView, IncludedFormView):
-#class PageView(WidgetPagelikeView):
     model = Page
 
     def get_pagetype(self, **kwargs):

@@ -81,7 +81,7 @@ class AuthPage(models.Model):
 
 class BasePage(IncludedForm, AuthPage, PagelikeModel):
     content = models.TextField(_('Content'))
-    #objects = models.Manager()
+    objects = models.Manager()
     pagetype = models.ForeignKey(PageType, blank=True, null=True)
 
     def get_pagetype(self, **kwargs):

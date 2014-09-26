@@ -9,7 +9,7 @@ from . import settings as ptsettings
 from .unislug.models import UnicodeSlugField
 
 
-class LangManager(QueryManager):
+class LangManager(models.Manager):
     def __init__(self, *args, **kwargs):
         super(LangManager, self).__init__(*args, **kwargs)
         self.use_lang = bool(getattr(settings, 'LANGUAGES', False))
@@ -25,7 +25,8 @@ class LangManager(QueryManager):
 
 
 class LangModel(models.Model):
-    public = LangManager(status=ptsettings.STATUS_PUBLISHED)
+    objects = models.Manager()
+    #public = LangManager()
     lang = models.CharField(
         max_length=2,
         choices=settings.LANGUAGES,
@@ -37,14 +38,26 @@ class LangModel(models.Model):
         abstract = True
 
 
+class PublicManager(LangManager):
+    def lfilter(self, **kwargs):
+        print("kwargs1", kwargs)
+        user = kwargs.pop('user', None)
+        print("user", user)
+        if not user or not user.is_authenticated():
+            kwargs['status'] = ptsettings.STATUS_PUBLISHED
+
+        print("kwargs2", user)
+        return LangManager.lfilter(self, **kwargs)
+
+
 class PublishableModel(StatusModel):
 
     _translated_choices = [(slug, _(name))
                            for(slug, name)
                            in ptsettings.STATUS_CHOICES]
     STATUS = Choices(*_translated_choices)
-    objects = QueryManager()
-    public = LangManager(status=ptsettings.STATUS_PUBLISHED)
+    objects = models.Manager()
+    public = PublicManager()
 
     def _enabled(self):
         return self.status == ptsettings.STATUS_PUBLISHED
@@ -54,10 +67,9 @@ class PublishableModel(StatusModel):
         abstract = True
 
 
-class PagelikeModel( PublishableModel, LangModel,TimeStampedModel):
+class PagelikeModel(PublishableModel, LangModel, TimeStampedModel):
     title = models.CharField(_('Title'), max_length=255)
     slug = UnicodeSlugField(_('Slug'), max_length=255)
-    objects = models.Manager()
 
     def get_absolute_url(self):
         return '/%s' % self.slug
