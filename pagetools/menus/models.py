@@ -149,7 +149,7 @@ class Menu(MenuEntry):
                     'entry_order_id': order_id,
                     'entry_pk': c.pk,
                     'entry_del_url': urlresolvers.reverse(
-                    'admin:menus_menuentry_delete', args=(c.pk,)),
+                        'admin:menus_menuentry_delete', args=(c.pk,)),
                     'obj_admin_url': reverseurl,
                     'obj_classname': get_classname(obj.__class__),
                     'obj_title': obj,

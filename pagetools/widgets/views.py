@@ -1,4 +1,9 @@
+from django.views.generic.base import View
+import slugify
+
 from pagetools.core.views import BasePagelikeView
+
+from .models import PageType
 from .utils import get_areas_for_type
 
 
@@ -13,4 +18,38 @@ class WidgetViewMixin(object):
 
 
 class WidgetPagelikeView(WidgetViewMixin, BasePagelikeView):
-    pass
+
+    def get_pagetype_name(self, **kwargs):
+        ptname = kwargs.get('pagetype_name', None)
+        if ptname is None:
+            ptname = getattr(self, 'pagetype_name', None)
+        return ptname
+
+    def get_pagetype(self, ptname=None, **kwargs):
+        if ptname is None:
+            ptname = self.get_pagetype_name(**kwargs)
+        if ptname:
+            pt = None
+            try:
+                pt = PageType.objects.get(name=ptname)
+            except PageType.DoesNotExist:
+                pass
+            return pt
+
+    def get_slug(self):
+        try:
+            return self.get_object().slug
+        except AttributeError:
+            try:
+                return super(BasePagelikeView, self).get_slug()
+            except AttributeError:
+                return slugify(self.__class__.__name__)
+
+    # reduce queries
+    def get_object(self):
+        if not getattr(self, 'object', None):
+            self.object = super(BasePagelikeView, self).get_object()
+        return self.object
+
+
+

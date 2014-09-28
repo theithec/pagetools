@@ -93,7 +93,6 @@ class SendEmailForm(BaseDynForm):
     def add_mailreceiverfield(self, **kwargs):
         self.mailform_receivers = kwargs['label'].split(',')
 
-
     def get_mailreceivers(self):
         #logger.debug(" MAILFORM_RECEIVERS %s" %  MAILFORM_RECEIVERS)
         return getattr(self, 'mailform_receivers', MAILFORM_RECEIVERS)

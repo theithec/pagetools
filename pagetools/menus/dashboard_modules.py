@@ -12,7 +12,7 @@ class MenuModule(DashboardModule):
     """
     A module that displays a pagettools.menus.menu.
 
-     in dashboard: 
+     in dashboard:
      self.children.append(MenuModule(menu_title='myMenu', column=1,))
 
     """
@@ -26,10 +26,9 @@ class MenuModule(DashboardModule):
         super(MenuModule, self).__init__(*args, **kwargs)
 
     def add_entrychildren(self, children, collected=None):
-        if collected == None:
+        if collected is None:
             collected = []
         for c in children:
-            # print c
             c['url'] = c['obj_admin_url'] + '?menu=%s' % self.menu.pk
             collected.append(c)
             cc = c.get('children', None)
@@ -46,7 +45,6 @@ class MenuModule(DashboardModule):
         context['menu'] = {
             'name': self.menu,
             'url': reverse("admin:menus_menu_change", args=[self.menu.pk])
-
         }
         nested_children = self.menu.children_list(for_admin=True)
         context['existing'] = self.add_entrychildren(nested_children)

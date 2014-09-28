@@ -7,8 +7,6 @@ from django.conf import settings
 from django.template.defaultfilters import slugify
 from django.views.generic import View
 from django.views.generic.list import ListView
-from pagetools.widgets.models import PageType
-from pagetools.widgets.utils import get_areas_for_type
 
 
 class BasePagelikeView(View):
@@ -19,23 +17,6 @@ class BasePagelikeView(View):
         sel.append(self.get_slug())
         kwargs['selected'] = sel
         return kwargs
-
-    def get_pagetype_name(self, **kwargs):
-        ptname = kwargs.get('pagetype_name', None)
-        if ptname is None:
-            ptname = getattr(self, 'pagetype_name', None)
-        return ptname
-
-    def get_pagetype(self, ptname=None, **kwargs):
-        if ptname is None:
-            ptname = self.get_pagetype_name(**kwargs)
-        if ptname:
-            pt = None
-            try:
-                pt = PageType.objects.get(name=ptname)
-            except PageType.DoesNotExist:
-                pass
-            return pt
 
     def get_slug(self):
         try:
