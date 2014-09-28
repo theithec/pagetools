@@ -6,7 +6,6 @@ from django.utils.translation import ugettext as _
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import BaseFormView
 
-from pagetools.core.views import BasePagelikeView
 from pagetools.widgets.views import WidgetPagelikeView
 
 from .models import Page
@@ -69,7 +68,6 @@ class AuthPageView(DetailView):
         if not user.is_authenticated():
             d['login_required'] = False
         d['user'] = user
-        print( "USER", user)
         qs = self.model.public.lfilter(**d)
         return qs
 

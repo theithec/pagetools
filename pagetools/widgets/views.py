@@ -1,5 +1,5 @@
 from django.views.generic.base import View
-import slugify
+from slugify import slugify
 
 from pagetools.core.views import BasePagelikeView
 

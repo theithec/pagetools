@@ -40,13 +40,10 @@ class LangModel(models.Model):
 
 class PublicManager(LangManager):
     def lfilter(self, **kwargs):
-        print("kwargs1", kwargs)
         user = kwargs.pop('user', None)
-        print("user", user)
         if not user or not user.is_authenticated():
             kwargs['status'] = ptsettings.STATUS_PUBLISHED
 
-        print("kwargs2", user)
         return LangManager.lfilter(self, **kwargs)
 
 
