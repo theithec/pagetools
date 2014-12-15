@@ -7,12 +7,12 @@ import string
 from django.core.mail import send_mail, get_connection
 from django.core.mail.message import EmailMessage
 from django.db import models
-#from django.db.models import get_model
+from django.db.models import get_model
 from django.utils import timezone
 from django.utils.crypto import random
 from django.utils.http import urlquote
 from django.utils.translation import ugettext_lazy as _
-
+from django.db.utils import ProgrammingError
 from . import settings as subs_settings
 
 from .base_models import BaseSubscriberMixin
@@ -21,8 +21,11 @@ from .base_models import BaseSubscriberMixin
 def _mk_key():
     k = "".join([random.choice(string.ascii_letters + string.digits)
                  for x in range(1, 32)])
-    if Subscriber.objects.filter(key=k):
-        k = _mk_key()
+    try:
+        if Subscriber.objects.filter(key=k):
+            k = _mk_key()
+    except ProgrammingError:
+        pass#        k = _mk_key()
     return k
 
 
@@ -50,7 +53,7 @@ _subscriber_model = None
 
 
 def get_subscriber_model():
-
+    #return Subscriber
     global _subscriber_model
     if not _subscriber_model:
         modulename, clsname = subs_settings.SUBSCRIBER_MODEL

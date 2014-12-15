@@ -15,7 +15,8 @@ class News(PagelikeModel):
     class Meta:
         verbose_name_plural = 'News'
 
-search.search_mods = ((Page, ('title', 'content')),
-                      (News, ('title', 'content')),
-                      # ( app.models.Model2, ('foo','bar')),
-                      )
+search.search_mods = (
+  (Page, ('title', 'content')),
+  (News, ('title', 'content')),
+  # ( app.models.Model2, ('foo','bar')),
+  )

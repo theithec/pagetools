@@ -90,7 +90,7 @@ class EntrieableForm(forms.ModelForm):
                 object_id=entry.id
             )
             menuroot_ids = set([m.get_root().id for m in menuEntries])
-        except KeyError:
+        except (KeyError, AttributeError):
             menuroot_ids = set()
         self.fields['menus'] = forms.MultipleChoiceField(
             label=_('Menus'),

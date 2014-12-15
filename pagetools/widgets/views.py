@@ -8,6 +8,7 @@ from .utils import get_areas_for_type
 
 
 class WidgetViewMixin(object):
+
     def get_context_data(self, **kwargs):
         kwargs = super(WidgetViewMixin, self).get_context_data(**kwargs)
         ptname = self.get_pagetype_name(**kwargs)
