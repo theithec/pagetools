@@ -13,14 +13,14 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
 from django.http.response import HttpResponseRedirect
 from django.utils.translation import ugettext_lazy as _
-
+from concurrency.admin import  ConcurrentModelAdmin
 from pagetools.core.admin import TinyMCEMixin
 from pagetools.menus.models import MenuEntry, Menu, Link, ViewLink
 from pagetools.menus.utils import entrieable_models
 from pagetools.core.utils import get_adminadd_url, get_classname
 
 
-class MenuAdmin(TinyMCEMixin, admin.ModelAdmin):
+class MenuAdmin(TinyMCEMixin, ConcurrentModelAdmin):
     exclude = ('parent', 'enabled', 'content_type', 'object_id', 'slugs')
     save_as = True
 
