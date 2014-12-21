@@ -9,6 +9,7 @@ from django import forms
 from django.conf import settings
 from django.contrib import admin
 
+from concurrency.admin import ConcurrentModelAdmin
 from pagetools.core.admin import PagelikeAdmin
 from pagetools.menus.admin import EntrieableAdmin
 from pagetools.pages.models import Page, DynFormField, PageDynFormField

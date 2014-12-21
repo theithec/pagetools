@@ -2,6 +2,8 @@ from django.conf import settings
 from django.db import models
 from django.utils.translation import ugettext_lazy as _, get_language
 from model_utils.choices import Choices
+
+from concurrency.fields import IntegerVersionField
 from model_utils.managers import QueryManager
 from model_utils.models import StatusModel, TimeStampedModel
 
@@ -67,6 +69,7 @@ class PublishableModel(StatusModel):
 class PagelikeModel(PublishableModel, LangModel, TimeStampedModel):
     title = models.CharField(_('Title'), max_length=255)
     slug = UnicodeSlugField(_('Slug'), max_length=255)
+    version = IntegerVersionField()
 
     def get_absolute_url(self):
         return '/%s' % self.slug
