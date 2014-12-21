@@ -21,7 +21,7 @@ from pagetools.core.utils import get_adminadd_url, get_classname
 
 
 class MenuAdmin(TinyMCEMixin, admin.ModelAdmin):
-    exclude = ('parent', 'enabled', 'content_type', 'object_id')
+    exclude = ('parent', 'enabled', 'content_type', 'object_id', 'slugs')
     save_as = True
 
     def queryset(self, request):
@@ -172,7 +172,12 @@ class EntrieableAdmin(admin.ModelAdmin):
         return self._redirect("change", request, obj, *args, **kwargs)
 
 
+class MenuEntryAdmin(admin.ModelAdmin):
+    list_display = ('title',  'lang', 'enabled')
+    list_filter = ( 'lang','enabled',)
+
 admin.site.register(Menu, MenuAdmin)
 admin.site.register(Link, EntrieableAdmin)
 admin.site.register(ViewLink, EntrieableAdmin)
-admin.site.register([MenuEntry, ])
+admin.site.register(MenuEntry, MenuEntryAdmin)
+
