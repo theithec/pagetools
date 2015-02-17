@@ -3,7 +3,7 @@ from hashlib import sha224 as sha
 import imp
 import smtplib
 import string
-
+from importlib import import_module
 from django.core.mail import send_mail, get_connection
 from django.core.mail.message import EmailMessage
 from django.db import models
@@ -53,6 +53,8 @@ _subscriber_model = None
 
 
 def get_subscriber_model():
+    return ".".join(subs_settings.SUBSCRIBER_MODEL)
+
     #return Subscriber
     global _subscriber_model
     if not _subscriber_model:
@@ -60,7 +62,9 @@ def get_subscriber_model():
         if modulename == "pagetools.subscribe":
             _subscriber_model = Subscriber
         else:
-            _subscriber_model = get_model(modulename, clsname)
+            #importlib.import_module(name, package=None)¶
+
+            _subscriber_model = import_module('..%s'%modulename, clsname)
     # print "SUBSRIBER_MODEL", _subscriber_model
     return _subscriber_model
 
