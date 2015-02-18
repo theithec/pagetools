@@ -16,7 +16,7 @@ class BaseSubscriberMixin(models.Model):
     failures = models.IntegerField(default=0)
 
     def __str__(self):
-        return self.email
+        return self.get_email()
 
     class Meta:
         abstract = True
