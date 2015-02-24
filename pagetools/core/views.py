@@ -33,13 +33,6 @@ class BasePagelikeView(View):
             self.object = super(BasePagelikeView, self).get_object()
         return self.object
 
-class PubLangFilteredView(View):
-    def get_queryset(self, *args, **kwargs):
-        user = self.request.user
-        # call lazy obj
-        user.is_authenticated()
-        return self.model.public.lfilter(user=user)
-
 class PaginatorMixin(ListView):
     paginate_by = getattr(settings, 'PAGINATE_BY', 20)
     sep = '?'

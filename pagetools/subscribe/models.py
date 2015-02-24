@@ -7,7 +7,9 @@ from importlib import import_module
 from django.core.mail import send_mail, get_connection
 from django.core.mail.message import EmailMessage
 from django.db import models
-from django.db.models import get_model
+#from djan)go.db.models import get_model
+from django.db.models.loading import get_model
+
 from django.utils import timezone
 from django.utils.crypto import random
 from django.utils.http import urlquote
@@ -52,21 +54,6 @@ class Subscriber(BaseSubscriberMixin):
 _subscriber_model = None
 
 
-def get_subscriber_model():
-    return ".".join(subs_settings.SUBSCRIBER_MODEL)
-
-    #return Subscriber
-    global _subscriber_model
-    if not _subscriber_model:
-        modulename, clsname = subs_settings.SUBSCRIBER_MODEL
-        if modulename == "pagetools.subscribe":
-            _subscriber_model = Subscriber
-        else:
-            #importlib.import_module(name, package=None)¶
-
-            _subscriber_model = import_module('..%s'%modulename, clsname)
-    # print "SUBSRIBER_MODEL", _subscriber_model
-    return _subscriber_model
 
 
 # http://djangosnippets.org/snippets/1993/
@@ -112,7 +99,10 @@ class QueuedEmail(models.Model):
     def save(self, force_insert=False, force_update=False, **kwargs):
         self.modifydate = timezone.now()
         super(QueuedEmail, self).save(force_insert, force_update)
-        SubsModel = get_subscriber_model()
+        modelname = subs_settings.SUBSCRIBER_MODEL
+        if modelname == "Subscriber":
+            modelname ="subscribe.Subscriber"
+        SubsModel = get_model( *modelname.rsplit('.',1))
         subscribers = SubsModel.objects.filter(is_activated=True)
         for s in subscribers:
             SendStatus(
@@ -172,7 +162,7 @@ class QueuedEmail(models.Model):
 
 
 class SendStatus(models.Model):
-    subscriber = models.ForeignKey(get_subscriber_model())
+    subscriber = models.ForeignKey(subs_settings.SUBSCRIBER_MODEL)
     queued_email = models.ForeignKey(QueuedEmail)
     status = models.IntegerField()
 

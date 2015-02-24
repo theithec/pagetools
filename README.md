@@ -44,8 +44,8 @@ Quick start
         'pagetools.search',
         )
 
- all submodules need 'pagetools',
- 'pages' needs 'widgets 'and 'menus',
+ all submodules need 'pagetools.core',
+ 'pages' needs 'widgets 'and 'menus', everything else is optional.
 
 
 2. Include the urls in your project urls.py like this::
@@ -84,19 +84,23 @@ Quick start
 
 6. Widgets, Areas, Pagetypes
     Areas are defined in the settings. The default settings are
-            ((u'sidebar', _('Sidebar'),),)
+            (('sidebar', _('Sidebar'),),)
     in `pagetools.widgets.settings.AREAS`.
     Use `PT_AREAS` to define your own.
     Create a pagetype. Use Pagetype-Area->add to create both at once.
     If you name the pagetype "base", it  will be used as a default/fallback.
     If you use "save and continue editing" you can now add widgets.
-    Associate a request with a pagetype:
-    - If the view inherits from pagetools.core.BasePagelikeView the views `get_pagetype`
+    Assoc:iate a request with a pagetype:
+    - If the view inherits from pagetools.WidgetPagelikeView the views `get_pagetype`
       will be used. It looks for a 'pagetype_name' in context-kwargs, then in the view's attributes.
-    - call get_areas_for_type(pagetype) and add the result to your context as 'areas'.
+    - For Pages, which have their own foreign key to `pagetools.widgets.Pagetype`, the `pagetools.pages.views.PageView` overwrites this with
+
+            return self.object.pagetype or WidgetPagelikeView.get_pagetype(self)       
+             
+    - Or you can just call `pagetools.widgets.utils.get_areas_for_type(pagetype)` yourself and add the result to your context as 'areas'.
     'areas' is a dict with the names of the areas as keys pointing to a list of dicts
     which contains the widget data {'title':"...", 'content' "...", 'type' "..." }.
-    So you need something like this your template:
+    - Use something like this your template:
 
         {% with areas.sidebar as sidebar %}
         {% for w in sidebar %}
@@ -107,10 +111,10 @@ Quick start
             {% endfor %}
         {%endwith %}
 
+7. Search
 
 
-
-
+    
 
 
 
