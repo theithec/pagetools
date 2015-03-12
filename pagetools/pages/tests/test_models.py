@@ -7,12 +7,12 @@ Created on 14.12.2013
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.test.client import Client
-
 from django.contrib import auth
 from pagetools.core.settings import STATUS_PUBLISHED
 from pagetools.pages.models import Page
 
-
+from django.conf import settings
+settings.IS_TEST = True
 class TC1Tests(TestCase):
 
     def setUp(self):
