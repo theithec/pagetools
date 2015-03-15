@@ -45,7 +45,7 @@ class IncludedFormView(DetailView, BaseFormView):
         else:
             messages.error(request, _("An error occured"))
             return self.form_invalid(form)
-
+    #todo rename
     def get_extras(self):
         d = {}
         try:

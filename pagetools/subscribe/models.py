@@ -1,10 +1,9 @@
 import datetime
 from hashlib import sha224 as sha
-import imp
 import smtplib
 import string
-from importlib import import_module
-from django.core.mail import send_mail, get_connection
+#from importlib import import_module
+from django.core.mail import  get_connection
 from django.core.mail.message import EmailMessage
 from django.db import models
 #from djan)go.db.models import get_model
