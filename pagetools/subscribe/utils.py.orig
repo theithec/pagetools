@@ -4,30 +4,41 @@ Created on 03.09.2012
 @author: lotek
 '''
 
+<<<<<<< HEAD
+=======
+from django.contrib.sites.models import Site
+from django.core.urlresolvers import reverse
+>>>>>>> 81dc9d1f6b729e792f790133ee724d0364539d4f
 from django.template.loader import render_to_string
-from django.utils.translation import activate, get_language
 from pagetools.subscribe import settings as subs_settings
 
 from .models import QueuedEmail, SendStatus
 
 
-def to_queue(content, **kwargs):
-    lang = content.get('lang', None) or kwargs.get('lang', None)
-    orglang = get_language()
-    if lang:
-        activate(lang)
-    msg = render_to_string('subscribe/msg.html', {
+def to_queue(content):
+    # subscribers = Subscriber.objects.filter(is_activated=True)
+    #t = template.loader.get_template('subscribe/msg.txt')
+
+    msg =render_to_string('subscribe/msg.html', {
         'title': content['title'],
         'content': content['body'],
         'site': subs_settings.SUBSCRIBER_URL,
+<<<<<<< HEAD
         'unsubscribe_url': subs_settings.SUBSCRIBER_URL
+=======
+        'unsubscribe_url': ''.join((
+            'http://',
+            Site.objects.get_current().domain,
+            reverse('unsubscribe', kwargs={'key':'_unsubscribe_path_'})
+        ))
+
+>>>>>>> 81dc9d1f6b729e792f790133ee724d0364539d4f
     })
     qm = QueuedEmail(
         subject="%s %s" % (subs_settings.NEWS_SUBJECT_PREFIX, content['title']),
         body=msg
     )
-    qm.save(lang=lang)
-    activate(orglang)
+    qm.save()
 
 
 def send_queued_mail(qm, maxmails):
@@ -48,5 +59,4 @@ def send_max(max_send=subs_settings.MAX_PER_TIME):
             break
         num_sended += send_queued_mail(qm, maxmails)
 
-# influenced by:
-# http://stackoverflow.com/questions/7583801/send-mass-emails-with-emailmultialternatives
+# other ideas:   http://stackoverflow.com/questions/7583801/send-mass-emails-with-emailmultialternatives

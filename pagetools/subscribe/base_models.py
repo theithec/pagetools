@@ -18,5 +18,9 @@ class BaseSubscriberMixin(models.Model):
     def __str__(self):
         return self.get_email()
 
+    @classmethod
+    def get_subscribers(cls,**kwargs):
+        return cls.objects.filter(is_activated=True)
+
     class Meta:
         abstract = True

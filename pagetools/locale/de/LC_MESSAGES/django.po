@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-03 14:43+0200\n"
-"PO-Revision-Date: 2014-08-03 14:50+0100\n"
+"POT-Creation-Date: 2015-03-27 14:18+0100\n"
+"PO-Revision-Date: 2015-03-27 14:20+0100\n"
 "Last-Translator: slart@aktivix.org <slart@aktivix.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -17,16 +17,16 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.5.4\n"
 
-#: core/models.py:33
+#: core/models.py:36
 msgid "language"
 msgstr "Sprache"
 
-#: core/models.py:58 gallery/models.py:14 menus/models.py:71
-#: menus/models.py:247
+#: core/models.py:70 gallery/models.py:14 menus/models.py:72
+#: menus/models.py:263
 msgid "Title"
 msgstr "Titel"
 
-#: core/models.py:59
+#: core/models.py:71
 msgid "Slug"
 msgstr "URL-Schreibweise"
 
@@ -47,7 +47,7 @@ msgstr ""
 msgid " %(ht)s %(ht|safe)s \n"
 msgstr ""
 
-#: core/unislug/validators.py:12
+#: core/unislug/validators.py:11
 msgid ""
 "Enter a valid 'slug' consisting of unicode letters, numbers, underscores or "
 "hyphens."
@@ -82,67 +82,59 @@ msgstr "Menus"
 msgid "Menu Overview"
 msgstr "Menu-Übersicht"
 
-#: menus/models.py:34
+#: menus/models.py:35
 msgid "Use 'add_child' or 'add_root' instead of 'create'"
 msgstr ""
 
-#: menus/models.py:39
+#: menus/models.py:40
 msgid "MenuEntry.content_object requires get_absolute_url"
 msgstr ""
 
-#: menus/models.py:52
+#: menus/models.py:53
 #, python-format
 msgid "Entry %(title)s already exists in %(parent)s"
 msgstr "Der Eintrag %(title)s existiert bereits in %(parent)s"
 
-#: menus/models.py:64
+#: menus/models.py:65
 #, python-format
 msgid "Menu %(name)s already exists"
 msgstr "Menu %(name)s existiert bereits"
 
-#: menus/models.py:73
+#: menus/models.py:74
 msgid "slugs"
 msgstr "URL-Schreibweisen"
 
-#: menus/models.py:242
+#: menus/models.py:258
 #, fuzzy
 msgid "Menu"
 msgstr "Menus"
 
-#: menus/models.py:248
+#: menus/models.py:264
 msgid "enabled"
 msgstr "aktiviert"
 
-#: menus/models.py:255
+#: menus/models.py:271
 msgid "URL"
 msgstr "URL"
 
-#: menus/models.py:264
+#: menus/models.py:280
 msgid "Link"
 msgstr ""
 
-#: menus/models.py:265
+#: menus/models.py:281
 msgid "Links"
 msgstr ""
 
-#: menus/models.py:269 pages/models.py:37
+#: menus/models.py:285 pages/models.py:35
 msgid "Name"
 msgstr "Name"
 
-#: menus/models.py:286
+#: menus/models.py:302
 msgid "ViewLink"
 msgstr ""
 
-#: menus/models.py:287
+#: menus/models.py:303
 msgid "ViewLinks"
-msgstr ""
-
-#: menus/utils.py:28
-msgid "Entrieable urls need a name"
-msgstr ""
-
-#: menus/utils.py:34
-msgid "deprecated, wrong naming, use entrieable_url"
 msgstr ""
 
 #: menus/templates/admin/dashboard_menu_module.html:8
@@ -161,99 +153,107 @@ msgstr "Eintrag hinzufügen"
 msgid "Entries"
 msgstr "Einträge"
 
-#: pages/forms.py:29
+#: menus/utils.py:28
+msgid "Entrieable urls need a name"
+msgstr ""
+
+#: menus/utils.py:34
+msgid "deprecated, wrong naming, use entrieable_url"
+msgstr ""
+
+#: pages/forms.py:33
 msgid "ChoiceField name must be \"name: option1, option2 [...])"
 msgstr ""
 
-#: pages/forms.py:75
+#: pages/forms.py:79
 msgid "Form processed"
 msgstr "Formular wurde verarbeitet"
 
-#: pages/forms.py:77 pages/views.py:45
+#: pages/forms.py:81 pages/views.py:46
 msgid "An error occured"
 msgstr "Ein Fehler ist aufgetreten"
 
-#: pages/forms.py:103
+#: pages/forms.py:108
 msgid "Form"
 msgstr "Formular"
 
-#: pages/forms.py:110
+#: pages/forms.py:115
 msgid "About"
 msgstr "Über"
 
-#: pages/forms.py:111
+#: pages/forms.py:116
 msgid "Your Name"
 msgstr "Ihr Name"
 
-#: pages/forms.py:112 subscribe/forms.py:12
+#: pages/forms.py:117 subscribe/forms.py:12
 msgid "E-Mail"
 msgstr "E-Mail"
 
-#: pages/forms.py:114
+#: pages/forms.py:119
 msgid "Message"
 msgstr "Nachricht"
 
-#: pages/models.py:17
+#: pages/models.py:15
 msgid "Included form"
 msgstr "Formular"
 
-#: pages/models.py:38
+#: pages/models.py:36
 msgid "required"
 msgstr "notwendig"
 
-#: pages/models.py:40
+#: pages/models.py:38
 msgid "Helptext"
 msgstr "Hilfstext"
 
-#: pages/models.py:41
+#: pages/models.py:39
 msgid "Default"
 msgstr ""
 
-#: pages/models.py:50
+#: pages/models.py:48
 msgid "TextField"
 msgstr "Textfeld"
 
-#: pages/models.py:51
+#: pages/models.py:49
 msgid "EmailField"
 msgstr "E-mailfeld"
 
-#: pages/models.py:52
+#: pages/models.py:50
 msgid "ChoiceField"
 msgstr "Auswahlfeld"
 
-#: pages/models.py:53
+#: pages/models.py:51
 msgid "CheckField"
 msgstr "Ankreuzfeld"
 
-#: pages/models.py:54
+#: pages/models.py:52
 msgid "MailReceiverField"
 msgstr "Mail-Empfängerfeld"
 
-#: pages/models.py:71
+#: pages/models.py:69
 msgid "Dynamic Form Field"
 msgstr "Dynamisches Formfeld"
 
-#: pages/models.py:72
+#: pages/models.py:70
 msgid "Dynamic Form Fields"
 msgstr "Dynamische Formfelder"
 
-#: pages/models.py:78
+#: pages/models.py:76
 msgid "Login required"
 msgstr "Anmeldung erforderlich"
 
-#: pages/models.py:85 pages/models.py:110 widgets/models.py:35
+#: pages/models.py:83 pages/models.py:108 widgets/models.py:35
 msgid "Content"
 msgstr "Inhalt"
 
-#: pages/models.py:96
+#: pages/models.py:94
 msgid "Page"
 msgstr "Seite"
 
-#: pages/models.py:111
+#: pages/models.py:109
 msgid "Visible"
 msgstr "Sichtbar"
 
-#: pages/views.py:41
+#: pages/views.py:42
 msgid "Mail send"
 msgstr "E-mail wurde versandt"
 
@@ -273,20 +273,20 @@ msgstr "enthält genau"
 msgid "contains not "
 msgstr "enthält nicht"
 
-#: search/templates/search_results.html:25
+#: search/templates/search_results.html:22
 #, fuzzy
 msgid "Results"
 msgstr "Resultate für"
 
-#: search/templates/search_results.html:26
+#: search/templates/search_results.html:23
 msgid "more options"
 msgstr "Mehr Optionen"
 
-#: search/templates/search_results.html:27
+#: search/templates/search_results.html:24
 msgid "less options"
 msgstr "Weniger Optionen"
 
-#: subscribe/models.py:76
+#: subscribe/models.py:74
 msgid "News-Mail"
 msgstr "News-Mail"
 
@@ -294,30 +294,65 @@ msgstr "News-Mail"
 msgid "Welcome"
 msgstr "Willkommen"
 
-#: subscribe/views.py:50
-msgid "An error occurred"
-msgstr "Ein Fehler ist aufgetreten"
-
-#: subscribe/views.py:56
-#, python-format
-msgid "subscribed: %s"
-msgstr "eingetragen: %s"
-
-#: subscribe/views.py:122
-msgid "activation: ok"
-msgstr "Aktivierung erfolgreich"
-
-#: subscribe/views.py:133
-msgid "unsubscribe: ok"
-msgstr "Abmeldung erfolgreich"
-
 #: subscribe/templates/subscribe/block_subscribtion.html:11
 msgid " subscribe to newsletter "
 msgstr "Anmelden zum Newsletter"
 
+#: subscribe/templates/subscribe/msg.html:1
+#, python-format
+msgid ""
+"\n"
+"New content on %(site_name)s:\n"
+"\n"
+"<h3>%(title|safe)s</h3>\n"
+"\n"
+"%(content|safe)s\n"
+"\n"
+"Greetings\n"
+"%(site.domain)s\n"
+"\n"
+"Unsubscribe?\n"
+"%(unsubscribe_url)s\n"
+"More Infos: info@%(site.domain)s\n"
+msgstr ""
+"\n"
+"Neu auf %(site_name)s:\n"
+"\n"
+"<h3>%(title|safe)s</h3>\n"
+"\n"
+"%(content|safe)s\n"
+"\n"
+"Grüße\n"
+"%(site.domain)s\n"
+"\n"
+"Abmelden?\n"
+"%(unsubscribe_url)s\n"
+"Mehr Infos: info@%(site.domain)s\n"
+
 #: subscribe/templates/subscribe/subscribe_msg.html:4
 msgid "back"
 msgstr "zurück"
+
+#: subscribe/views.py:29
+msgid "An error occurred"
+msgstr "Ein Fehler ist aufgetreten"
+
+#: subscribe/views.py:35
+#, python-format
+msgid "subscribed: %s"
+msgstr "eingetragen: %s"
+
+#: subscribe/views.py:103
+msgid "activation: ok"
+msgstr "Aktivierung erfolgreich"
+
+#: subscribe/views.py:114
+msgid "unsubscribe: ok"
+msgstr "Abmeldung erfolgreich"
+
+#: widgets/management/commands/mk_templatetagwidgets.py:15
+msgid "create Widgets according to settings.(PT_)TEMPLATETAG_WIDGETS "
+msgstr ""
 
 #: widgets/models.py:24
 msgid "name"
@@ -338,10 +373,6 @@ msgstr "Seitentyp-Bereiche"
 #: widgets/settings.py:14
 msgid "Sidebar"
 msgstr "Seitenleiste"
-
-#: widgets/management/commands/mk_templatetagwidgets.py:15
-msgid "create Widgets according to settings.(PT_)TEMPLATETAG_WIDGETS "
-msgstr ""
 
 #: widgets/templates/admin/widgets/typearea/change_form.html:5
 msgid "Add new Widget"

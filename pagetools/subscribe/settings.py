@@ -24,6 +24,5 @@ MAX_FAILURES = getattr(settings, "PT_SUBSCR_MAX_FAILURES", 8)
 URLS_REGEX = getattr(settings, "PT_SUBSCR_URLS_REGEX", r'^subscribtion/')
 
 SUBSCRIBER_MODEL = getattr(settings, "PT_SUBSCR_SUBSCRIBER_MODEL", 'Subscriber')
-
-SUBSCRIBER_URL = getattr(settings, "PT_SUBSCR_URL",
-                         getattr(settings, 'ALLOWD_HOSTS',  'http://127.0.0.1/:8000'))
+#print ("SETTINGS", settings.PT_SUBSCR_URL)
+SUBSCRIBER_URL = getattr(settings, "PT_SUBSCR_URL",'http://localhost:8000')

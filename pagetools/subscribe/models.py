@@ -14,6 +14,7 @@ from django.utils.crypto import random
 from django.utils.http import urlquote
 from django.utils.translation import ugettext_lazy as _
 from django.db.utils import ProgrammingError
+from pagetools.core.models import  LangModel, LangManager
 from . import settings as subs_settings
 
 from .base_models import BaseSubscriberMixin
@@ -30,10 +31,10 @@ def _mk_key():
     return k
 
 
-class Subscriber(BaseSubscriberMixin):
+class Subscriber(BaseSubscriberMixin, LangModel):
     key = models.CharField(max_length=32, default=_mk_key)
     email = models.EmailField(unique=True)
-
+    objects = LangManager()
     def activate(self):
         self.is_activated = True
         self.subscribtion_date = datetime.date(1900, 1, 1)
@@ -49,6 +50,9 @@ class Subscriber(BaseSubscriberMixin):
     def get_email(self):
         return str(self.email)  #.encode('utf-8')
 
+    @classmethod
+    def get_subscribers(cls,**kwargs):
+        return cls.objects.lfilter(is_activated=True)
 
 _subscriber_model = None
 
@@ -102,7 +106,8 @@ class QueuedEmail(models.Model):
         if modelname == "Subscriber":
             modelname ="subscribe.Subscriber"
         SubsModel = get_model( *modelname.rsplit('.',1))
-        subscribers = SubsModel.objects.filter(is_activated=True)
+        subscribers = SubsModel.get_subscribers(**kwargs)
+
         for s in subscribers:
             SendStatus(
                 subscriber=s,
@@ -125,11 +130,7 @@ class QueuedEmail(models.Model):
                             connection=conn,
                         )
                         msg.content_subtype = "html"  # Main content is now text/html
-                        status = msg.send(
-                            fail_silently=False,
-                        )
-
-                        #status = send_mail()
+                        status = msg.send( fail_silently=True,)
                     except smtplib.SMTPException:
                         pass
         return status
@@ -143,13 +144,15 @@ class QueuedEmail(models.Model):
                                       conn,
                                       s.subscriber.cmd_path())
                 if status == 1:
-                    s.subscriber.failures = 0
-                    # s.subscriber.save() #?
+                    if s.subscriber.failures != 0:
+                        s.subscriber.failures = 0
+                        s.subscriber.save()
                     s.delete()
                 else:
                     s.status = status
                     subscriber = s.subscriber
                     subscriber.failures += 1
+                    subscriber.save()
                     if subscriber.failures > subs_settings.MAX_FAILURES:
                         SendStatus.objects.filter(subscriber=subscriber).delete()
                         subscriber.delete()
