@@ -33,7 +33,7 @@ Quick start
         'grappelli',
          #'grappelli-dashboard',
         'filebrowser',
-        'mptt'
+        'mptt',
         'pagetools.core',
         'pagetools.pages',
         'pagetools.widgets',
@@ -104,7 +104,7 @@ Quick start
 
         {% with areas.sidebar as sidebar %}
         {% for w in sidebar %}
-            <div class="sidebar-module{% if  w.type == "content-widget" %} sidebar-module-inset{% endif %}">
+            <div class="sidebar-module" %}">
             <h4> {{ w.title|safe }}</h4>
             {{ w.content|safe }}
             </div>

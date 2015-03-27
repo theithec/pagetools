@@ -6,5 +6,5 @@ from pagetools.pages.views import PageView
 
 
 urlpatterns = patterns('',
-   url(r'%s(?P<slug>[-\w]+)/$' % settings.PAGE_PREFIX, PageView.as_view(), name="pageview"),
+   url(r'^%s(?P<slug>[-\w]+)/$' % settings.PAGE_PREFIX, PageView.as_view(), name="pageview"),
 )
