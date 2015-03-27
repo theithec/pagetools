@@ -1,13 +1,13 @@
 {% load i18n %}
-{% blocktrans %}
+{% blocktrans with title=title|safe content=content|safe %}
 New content on {{ site_name }}:
 
-<h3>{{ title|safe }}</h3>
+<h3>{{ title }}</h3>
 
-{{ content|safe }}
+{{ content }}
 
 Greetings
-{{ site.domain }}
+{{ site_name }}
 
 Unsubscribe?
 {{ unsubscribe_url }}
