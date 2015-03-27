@@ -21,7 +21,8 @@ from pagetools.core.utils import get_adminadd_url, get_classname
 
 
 class MenuAdmin(TinyMCEMixin, ConcurrentModelAdmin):
-    exclude = ('parent', 'enabled', 'content_type', 'object_id', 'slugs')
+    exclude = ('parent', 'enabled', 'content_type',
+               'object_id', 'slugs', 'version')
     save_as = True
 
     def queryset(self, request):
