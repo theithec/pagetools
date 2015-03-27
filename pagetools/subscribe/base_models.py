@@ -17,6 +17,8 @@ class BaseSubscriberMixin(models.Model):
 
     def __str__(self):
         return self.get_email()
+    def cmd_path(self):
+        return ""
 
     @classmethod
     def get_subscribers(cls,**kwargs):
