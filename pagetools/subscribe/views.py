@@ -24,6 +24,7 @@ from . import settings as subs_settings
 def _subscribe(request):
     msg = _("An error occurred")
     form = SubscribeForm(request.POST)
+    errors = True
     if form.is_valid():
         clean_data = form.clean()
         email = clean_data['email']
@@ -53,33 +54,34 @@ def _subscribe(request):
                     )
                 s.save()
                 msg = subs_msg
+                errors = False
             except SMTPException:
                 pass
         else:
             msg = subs_msg
     else:
         msg = str(form.errors)
-    return msg
+    return msg, errors
 
 
-def _subscribe_fallback(request, c):
-    c['referer'] = request.META.get('HTTP_REFERER', '/')
+def _subscribe_fallback(request, res):
+    #todo - add to context c['referer'] = request.META.get('HTTP_REFERER', '/')
     return render(
         request,
         'subscribe/subscribe_msg.html',
     )
 
 
-def _subscribe_json(msg):
-    return HttpResponse( json.dumps({'msg':str(msg['msg'])}))
+def _subscribe_json(res):
+    return HttpResponse( json.dumps(res))
 
 
 def subscribe(request):
-    c = {}
-    c['msg'] = _subscribe(request)
+    res = {}
+    res['msg'], res['errors'] = _subscribe(request)
     if request.is_ajax():
-        return _subscribe_json(c)
-    return _subscribe_fallback(request, c)
+        return _subscribe_json(res)
+    return _subscribe_fallback(request, res)
 
 
 def _matching_activated_subscriber(request, key):

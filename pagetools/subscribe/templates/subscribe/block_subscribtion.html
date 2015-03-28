@@ -17,32 +17,32 @@
 	<span id="subscribe-msgs"></span>
 </div>
 <script>
-	$(document).ready(function(){
-		$("#subscribeform-wrapper").toggle(false);
-		$("#subscribe-btn").toggle(true).click(function(){
-			$("#subscribeform-wrapper").toggle();
-		});
-		
-	 	$("#send").click(function(){
-			$("subscribe-msgs").replaceWith('<span id="subscribe-msgs"></span>');
-			$.post(
-				"{{ subscribe_url }}",
-				$("#subscribeform").serializeArray(),
-				function(data){
-					parsed = JSON.parse(data);
-					//console.log(parsed);
-					$("#subscribe-msgs").replaceWith('<span id="subscribe-msgs">'+parsed['msg']+'</span>');
-				}
-			); 
-			
-			return false;
-			
-		}); 
-	 	$("#loading").ajaxStart(function(){
-	 	    $(this).show();
-	 	 }).ajaxStop(function(){
-	 	    $(this).hide();
-	 	 }).hide();
+window.onload = function (){
+    $("#subscribeform-wrapper").toggle(false);
+    $("#subscribe-btn").toggle(true).click(function(){
+            $("#subscribeform-wrapper").toggle();
+    });
+    
+    $("#send").click(function(){
+            $("subscribe-msgs").replaceWith('<span id="subscribe-msgs"></span>');
+            $.post(
+                    "{{ subscribe_url }}",
+                    $("#subscribeform").serializeArray(),
+                    function(data){
+                            parsed = JSON.parse(data);
+                            //console.log(parsed);
+                            $("#subscribe-msgs").replaceWith('<span id="subscribe-msgs">'+parsed['msg']+'</span>');
+                    }
+            ); 
+            
+            return false;
+            
+    }); 
+    $("#loading").ajaxStart(function(){
+        $(this).show();
+        }).ajaxStop(function(){
+        $(this).hide();
+        }).hide();
 
-	});
+}
 </script>
