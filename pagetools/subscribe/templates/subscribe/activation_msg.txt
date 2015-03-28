@@ -1,7 +1,9 @@
+{% load i18n %}
+{% blocktrans %}
 Hi,
 
 You have received this e-mail message because you have recently submmitted your
-e-mail address to {{ site_name }}.
+e-mail address to {{ site_url }}.
 
 To confirm that you want to subscribe, use this link:
 {{ activation_url }}
@@ -10,3 +12,5 @@ If you do not want to subscribe, do nothing.
 
 Thank you
 {{ site_name }}
+
+{% endblocktrans %}

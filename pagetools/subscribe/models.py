@@ -9,6 +9,7 @@ from django.db import models
 #from djan)go.db.models import get_model
 from django.db.models.loading import get_model
 
+from django.core.urlresolvers import reverse
 from django.utils import timezone
 from django.utils.crypto import random
 from django.utils.http import urlquote
@@ -140,9 +141,14 @@ class QueuedEmail(models.Model):
         if self.senddate < timezone.now():
             conn = get_connection()
             for s in sendstatuses:
-                status = self.send_to(s.subscriber.get_email(),
-                                      conn,
-                                      s.subscriber.cmd_path())
+                status = self.send_to(
+                    s.subscriber.get_email(),
+                    conn,
+                    "/%s?mk=%s" %(
+                        reverse('unsubscribe', kwargs={'key': s.subscriber.key}),
+                        s.subscriber.mailkey()
+                     )
+                )
                 if status == 1:
                     if s.subscriber.failures != 0:
                         s.subscriber.failures = 0

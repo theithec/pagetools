@@ -7,7 +7,6 @@ import json
 from smtplib import SMTPException
 
 from django import template
-from django.conf import settings
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
 from django.http.response import HttpResponse, Http404
@@ -15,14 +14,11 @@ from django.shortcuts import render, get_object_or_404
 from django.template.context import Context
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
-
+from django.contrib.sites.models import Site
 from pagetools.subscribe.forms import SubscribeForm
 from pagetools.subscribe.models import Subscriber
 
 from . import settings as subs_settings
-
-
-MAIN_HOST = settings.ALLOWED_HOSTS[0]
 
 
 def _subscribe(request):
@@ -35,10 +31,12 @@ def _subscribe(request):
         subs_msg = _('subscribed: %s') % email
         if not already_there:
             s = Subscriber(email=email, is_activated=False)
+            site_url = "https://%s" % Site.objects.get_current().domain
             context = {
-                'site_name': MAIN_HOST,  # Site.objects.get_current().domain ,
-                'activation_url': "http://%s%s?mk=%s/" % (
-                    MAIN_HOST,
+                'site_name': Site.objects.get_current().name,
+                'site_url': site_url,
+                'activation_url': "%s%s?mk=%s/" % (
+                    site_url,
                     (reverse('activate', kwargs={'key': s.key})),
                     s.mailkey()
                 )
