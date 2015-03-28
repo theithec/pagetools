@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-27 19:12+0100\n"
-"PO-Revision-Date: 2015-03-27 19:13+0100\n"
+"POT-Creation-Date: 2015-03-28 15:06+0100\n"
+"PO-Revision-Date: 2015-03-28 15:07+0100\n"
 "Last-Translator: slart@aktivix.org <slart@aktivix.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -21,20 +21,67 @@ msgstr ""
 msgid "E-Mail"
 msgstr ""
 
-#: models.py:74
+#: models.py:75
 msgid "News-Mail"
 msgstr ""
 
 #: settings.py:17
 msgid "Welcome"
+msgstr "Willkommen"
+
+#: templates/subscribe/activation_msg.txt:2
+#, python-format
+msgid ""
+"\n"
+"Hi,\n"
+"\n"
+"You have received this e-mail message because you have recently submmitted "
+"your\n"
+"e-mail address to %(site_url)s.\n"
+"\n"
+"To confirm that you want to subscribe, use this link:\n"
+"%(activation_url)s\n"
+"\n"
+"If you do not want to subscribe, do nothing.\n"
+"\n"
+"Thank you\n"
+"%(site_name)s\n"
+"\n"
 msgstr ""
+"\n"
+"Hallo,\n"
+"\n"
+"Du erhältst diese E-Mail, weil deine E-Mail-Adresse auf %(site_url)s "
+"eingetragen wurde.\n"
+"\n"
+"Um diese Anmeldung zu bestätigen benutze folgenden Link:\n"
+"%(activation_url)s\n"
+"\n"
+"Wenn du dich nicht anmelden möchtest, brauchst du einfach gar nichts tun.\n"
+"Grüße\n"
+"%(site_name)s\n"
+"\n"
 
 #: templates/subscribe/block_subscribtion.html:11
 msgid " subscribe to newsletter "
-msgstr ""
+msgstr "Newsletter-Anmeldung"
 
 #: templates/subscribe/msg.html:2
 #, python-format
+#| msgid ""
+#| "\n"
+#| "New content on %(site_name)s:\n"
+#| "\n"
+#| "<h3>%(title)s</h3>\n"
+#| "\n"
+#| "%(content)s\n"
+#| "\n"
+#| "Greetings\n"
+#| "%(site_name)s\n"
+#| "\n"
+#| "Unsubscribe?\n"
+#| "%(site_url)s_unsubscribe_path_\n"
+#| "More Infos: info@%(site_domain)s\n"
 msgid ""
 "\n"
 "New content on %(site_name)s:\n"
@@ -47,8 +94,8 @@ msgid ""
 "%(site_name)s\n"
 "\n"
 "Unsubscribe?\n"
-"%(unsubscribe_url)s\n"
-"More Infos: info@%(site.domain)s\n"
+"https://%(site_domain)s_unsubscribe_path_\n"
+"More Infos: info@%(site_domain)s\n"
 msgstr ""
 "\n"
 "Neu auf %(site_name)s:\n"
@@ -61,26 +108,26 @@ msgstr ""
 "%(site_name)s\n"
 "\n"
 "Abmelden?\n"
-"%(unsubscribe_url)s\n"
-"Mehr Infos: info@%(site.domain)s\n"
+"https://%(site_domain)s_unsubscribe_path_\n"
+"Mehr Infos: info@%(site_domain)s\n"
 
 #: templates/subscribe/subscribe_msg.html:4
 msgid "back"
-msgstr ""
+msgstr "zurück"
 
-#: views.py:29
+#: views.py:25
 msgid "An error occurred"
-msgstr ""
+msgstr "Ein Fehler ist aufgetreten"
 
-#: views.py:35
+#: views.py:31
 #, python-format
 msgid "subscribed: %s"
-msgstr ""
+msgstr "angemeldet: %s"
 
-#: views.py:103
+#: views.py:101
 msgid "activation: ok"
-msgstr ""
+msgstr "Aktivierung erfolgreich"
 
-#: views.py:114
+#: views.py:112
 msgid "unsubscribe: ok"
-msgstr ""
+msgstr "Abmeldung erfolgreich"

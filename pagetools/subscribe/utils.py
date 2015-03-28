@@ -6,8 +6,8 @@ Created on 03.09.2012
 
 from django.template.loader import render_to_string
 from django.utils.translation import activate, get_language
+from django.contrib.sites.models import Site
 from pagetools.subscribe import settings as subs_settings
-
 from .models import QueuedEmail, SendStatus
 
 
@@ -16,11 +16,15 @@ def to_queue(content, **kwargs):
     orglang = get_language()
     if lang:
         activate(lang)
+    else:
+        activate(orglang)
+    print ("lang", lang, orglang)
+    site = Site.objects.get_current()
     msg = render_to_string('subscribe/msg.html', {
         'title': content['title'],
         'content': content['body'],
-        'site': subs_settings.SUBSCRIBER_URL,
-        'unsubscribe_url': subs_settings.SUBSCRIBER_URL
+        'site_name': site.name,
+        'site_domain': site.domain,
     })
     qm = QueuedEmail(
         subject="%s %s" % (subs_settings.NEWS_SUBJECT_PREFIX, content['title']),

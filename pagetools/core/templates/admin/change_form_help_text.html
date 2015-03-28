@@ -1,6 +1,6 @@
 {% extends 'admin/change_form.html' %} {% load i18n %}
 {% block content%} {{ block.super }} 
 {% if help_text %}
-<p>{% blocktrans with help_text as ht%} {{ ht }} {{ ht|safe }} 
+<p>{% blocktrans with help_text|safe=ht%} {{ ht }} 
 {%	endblocktrans %}</p>
 {% endif %} {% endblock %}
