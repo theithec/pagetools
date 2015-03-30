@@ -79,6 +79,8 @@ def _subscribe_json(res):
 def subscribe(request):
     res = {}
     res['msg'], res['errors'] = _subscribe(request)
+    #ups, lazy
+    res['msg'] = '%s' % res['msg']
     if request.is_ajax():
         return _subscribe_json(res)
     return _subscribe_fallback(request, res)

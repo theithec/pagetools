@@ -9,11 +9,7 @@
 	</div>
 
 	<p>{% blocktrans %} subscribe to newsletter {% endblocktrans %}</p>
-	<form id="subscribeform" action="{% url " subscribe" as
-		subscribe_url %}" method="POST">
-		{% csrf_token %} {{ sform.as_p }} <input id="send" type="submit"
-			value="absenden" />
-	</form>
+		{{ sform }}
 	<span id="subscribe-msgs"></span>
 </div>
 <script>
