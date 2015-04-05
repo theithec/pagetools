@@ -55,7 +55,7 @@ def get_classname(cls):
 def get_adminadd_url(cls):
     adminurl = reverse(
         'admin:%s_%s_add' % (
-            cls._meta.app_label, cls._meta.module_name)
+            cls._meta.app_label, cls._meta.model_name)
     )
     return adminurl
 
