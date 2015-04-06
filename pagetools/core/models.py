@@ -4,11 +4,9 @@ from django.utils.translation import ugettext_lazy as _, get_language
 from model_utils.choices import Choices
 
 from concurrency.fields import IntegerVersionField
-from model_utils.managers import QueryManager
 from model_utils.models import StatusModel, TimeStampedModel
 
 from . import settings as ptsettings
-from .unislug.models import UnicodeSlugField
 
 
 class LangManager(models.Manager):
@@ -20,15 +18,13 @@ class LangManager(models.Manager):
         if self.use_lang:
             if not lang:
                 lang = get_language()
-                kwargs.update(lang__in=(lang, lang.split('-')[0], None, ''))
-            else:
-                kwargs['lang'] = lang
+            kwargs.update(lang__in=(lang, lang.split('-')[0], None, ''))
         return self.filter(**kwargs)
 
 
 class LangModel(models.Model):
     objects = models.Manager()
-    #public = LangManager()
+    # public = LangManager()
     lang = models.CharField(
         max_length=2,
         choices=settings.LANGUAGES,
@@ -40,7 +36,7 @@ class LangModel(models.Model):
         abstract = True
 
 
-class PublicManager(LangManager):
+class PublishableLangManager(LangManager):
     def lfilter(self, **kwargs):
         user = kwargs.pop('user', None)
         if not user or not user.is_authenticated():
@@ -49,14 +45,13 @@ class PublicManager(LangManager):
         return LangManager.lfilter(self, **kwargs)
 
 
-class PublishableModel(StatusModel):
+class PublishableLangModel(LangModel, StatusModel):
 
     _translated_choices = [(slug, _(name))
                            for(slug, name)
                            in ptsettings.STATUS_CHOICES]
     STATUS = Choices(*_translated_choices)
-    objects = models.Manager()
-    public = PublicManager()
+    public = PublishableLangManager()
 
     def _enabled(self):
         return self.status == ptsettings.STATUS_PUBLISHED
@@ -66,9 +61,9 @@ class PublishableModel(StatusModel):
         abstract = True
 
 
-class PagelikeModel(PublishableModel, LangModel, TimeStampedModel):
+class PagelikeModel(TimeStampedModel, PublishableLangModel):
     title = models.CharField(_('Title'), max_length=255)
-    slug = UnicodeSlugField(_('Slug'), max_length=255)
+    slug = models.SlugField(_('Slug'), max_length=255)
     version = IntegerVersionField()
 
     def get_absolute_url(self):
