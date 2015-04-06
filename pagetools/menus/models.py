@@ -29,7 +29,7 @@ from pagetools.core.utils import get_classname, get_adminedit_url
 from .settings import MENU_TEMPLATE
 
 
-class MenuManager(TreeManager):
+class MenuManager(TreeManager, LangManager):
     def create(self, *args, **kwargs):
         raise AttributeError(
             _("Use 'add_child' or 'add_root' instead of 'create'"))
@@ -80,8 +80,8 @@ class MenuEntry(MPTTModel, LangModel):
     object_id = models.PositiveIntegerField()
     content_object = generic.GenericForeignKey('content_type', 'object_id')
     enabled = models.BooleanField(default=False)
-    objects = LangManager()
-    tree = MenuManager()
+    objects = MenuManager()
+    #tree = MenuManager()
     version = IntegerVersionField()
 
     def get_entry_classname(self):
@@ -127,7 +127,7 @@ class MenuCache(models.Model):
 
 class Menu(MenuEntry):
     def add_child(self, obj, title=''):
-        self.tree.add_child(self, obj, title)
+        self.objects.add_child(self, obj, title)
 
     def children_list(self, mtree=None, children=None, for_admin=False, dict_parent=None):
         filterkwargs = {'parent': self}
@@ -218,11 +218,11 @@ class Menu(MenuEntry):
             else:
                 parent = MenuEntry.objects.get(id=int(v))
             e.move_to(parent, 'last-child')
-            e = MenuEntry.tree.get(pk=e.pk)
-            parent = MenuEntry.tree.get(pk=parent.pk)
+            e = MenuEntry.objects.get(pk=e.pk)
+            parent = MenuEntry.objects.get(pk=parent.pk)
             # e.save()
             # parent.save()
-        MenuEntry.tree.rebuild()
+        MenuEntry.objects.rebuild()
         self.save()
 
     def full_clean(self, *args, **kwargs):

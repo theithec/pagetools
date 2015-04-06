@@ -22,11 +22,11 @@ from pagetools.core.utils import get_adminadd_url, get_classname
 
 class MenuAdmin(TinyMCEMixin, ConcurrentModelAdmin):
     exclude = ('parent', 'enabled', 'content_type',
-               'object_id', 'slugs', 'version')
+               'object_id', 'slugs')
     save_as = True
 
     def queryset(self, request):
-        return Menu.tree.root_nodes()
+        return Menu.objects.root_nodes()
 
     def render_change_form(self, request, context, add=False,
                            change=False, form_url='', obj=None):
@@ -52,7 +52,7 @@ class MenuAdmin(TinyMCEMixin, ConcurrentModelAdmin):
         if form.cleaned_data.get('addeentry'):
             modulename, classname, id = form.cleaned_data['addentry'].split("#")
             o = getattr(sys.modules[modulename], classname).objects.get(pk=id)
-            MenuEntry.tree.create(
+            MenuEntry.objects.create(
                 content_type=ContentType.objects.get_for_model(o),
                 object_id=o.pk,
                 parent=form.instance,
@@ -66,7 +66,7 @@ class MenuAdmin(TinyMCEMixin, ConcurrentModelAdmin):
                 ispub = form.data.get('entry-published-%s' % cnt, 0)
             except KeyError:
                 break
-            entry = MenuEntry.tree.get(pk=eid)
+            entry = MenuEntry.objects.get(pk=eid)
             entry.title = name
             entry.enabled = ispub == "1"
             entry.save()
@@ -83,10 +83,10 @@ class EntrieableForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(EntrieableForm, self).__init__(*args, **kwargs)
-        menus = [(m.id, '%s' % m) for m in Menu.tree.root_nodes()]
+        menus = [(m.id, '%s' % m) for m in Menu.objects.root_nodes()]
         try:
             entry = kwargs['instance']
-            menuEntries = MenuEntry.tree.filter(
+            menuEntries = MenuEntry.objects.filter(
                 content_type=ContentType.objects.get_for_model(entry),
                 object_id=entry.id
             )
@@ -106,8 +106,8 @@ class EntrieableForm(forms.ModelForm):
             obj = self.instance
             cmp_data = self.cleaned_data.copy()
             fmenu_ids = [int(m) for m in cmp_data.pop('menus', [])]
-            self.sel_menus = Menu.tree.filter(id__in=fmenu_ids)
-            existing_menuentries_for_obj = MenuEntry.tree.filter(
+            self.sel_menus = Menu.objects.filter(id__in=fmenu_ids)
+            existing_menuentries_for_obj = MenuEntry.objects.filter(
                     content_type=ContentType.objects.get_for_model(
                         obj.__class__,
                     ),
@@ -134,7 +134,7 @@ class EntrieableAdmin(admin.ModelAdmin):
             return
         selected_menus = form.sel_menus
         existing_menuentries = form.existing_menuentries
-        all_menus = Menu.tree.root_nodes()
+        all_menus = Menu.objects.root_nodes()
         for  am in all_menus:
             found = None
             for e in existing_menuentries:
@@ -143,12 +143,14 @@ class EntrieableAdmin(admin.ModelAdmin):
                     break
             is_selected = am in selected_menus
             if is_selected and not found:
-                root = Menu.tree.get(pk=am.pk)
+                root = Menu.objects.get(pk=am.pk)
                 title = getattr(obj, 'title', None)
                 kwargs = {}
                 if title:
                     kwargs['title'] = title
-                    e = Menu.tree.add_child(root, form.instance, **kwargs)
+                    e = Menu.objects.add_child(root, form.instance, **kwargs)
+
+
                 e.move_to(root, 'last-child')
                 e.save()
             elif found and not is_selected:

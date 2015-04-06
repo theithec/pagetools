@@ -14,13 +14,13 @@ from pagetools.pages.models import Page
 class TC1Tests(TestCase):
 
     def setUp(self):
-        self.menu = Menu.tree.add_root(title='m1')
+        self.menu = Menu.objects.add_root(title='m1')
         self.menu.save()
         print(("MENU", self.menu))
         self.p1 = Page.objects.create(title='P1', slug='p1')
-        self.e1 = Menu.tree.add_child(self.menu, self.p1, enabled=True)
+        self.e1 = Menu.objects.add_child(self.menu, self.p1, enabled=True)
         self.l1 = Link.objects.create(url='/foo')
-        self.e2 = Menu.tree.add_child(self.menu, self.l1, enabled=True)
+        self.e2 = Menu.objects.add_child(self.menu, self.l1, enabled=True)
         self.menu.update_cache()
 
     def test_entries(self):
