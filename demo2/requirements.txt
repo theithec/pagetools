@@ -1,0 +1,13 @@
+Django==1.7.7
+Pillow==2.7.0
+Unidecode==0.04.17
+beautifulsoup4==4.3.2
+django-concurrency==0.8.1
+django-crispy-forms==1.4.0
+django-filebrowser==3.5.6
+django-grappelli==2.5.3
+django-model-utils==2.2
+django-mptt==0.6.1
+#-e git+https://github.com/theithec/pagetools.git@7b16bbae1fd2c57af30b1c65e219014214b19366#egg=django_pagetools-origin/master
+six==1.9.0
+unicode-slugify==0.1.3
