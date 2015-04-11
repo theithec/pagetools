@@ -1,8 +1,8 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 
 from .views import GalleryView
 
 
-urlpatterns = patterns('',
+urlpatterns = [
     url(r'(?P<slug>[-\w]+)/', GalleryView.as_view(), name="gallerydetailview"),
-)
+]

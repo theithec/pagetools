@@ -49,7 +49,7 @@ $(document).ready(function(){
 	<tr>
 		<td class="pic-cell"><a class='gallery'
 			href='/media/{{ pos_pic.pic }}' title="{{pos_pic.title}}"> <img
-				src="{% version pic.pic 'thumbnail' %}" alt="{{pic.title}}" />
+				src="{% version pos_pic.pic 'thumbnail' %}" alt="{{pos_pic.title}}" />
 		</a></td>
 		<td class="text-cell"><a href='/media/{{ pos_pic.pic }}'
 			title="{{pos_pic.title}}"> {{pos_pic.title}} </a></td>

@@ -60,7 +60,7 @@ class TypeAreaAdmin(admin.ModelAdmin):
                 context['addable_widgets'].append(
                     '<li>+  <a href="%s">%s</a></li>' % (
                     (reverse('admin:%s_%s_add' % (
-                        c._meta.app_label, c._meta.module_name)) +
+                        c._meta.app_label, c._meta.model_name)) +
                         "?typearea=%s" % (context['object_id'])
                     ), get_classname(c)
                  ))
