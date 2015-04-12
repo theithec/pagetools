@@ -25,7 +25,7 @@ class BaseWidget(models.Model):
     adapter = generic.GenericRelation('WidgetInArea')
 
     def __str__(self):
-        return "%s" % self.title or self.name
+        return "%s:%s" %  (self.name,self.title)
 
     class Meta:
         abstract = True
