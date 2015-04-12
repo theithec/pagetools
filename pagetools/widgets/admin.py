@@ -27,7 +27,7 @@ class WidgetInAreaAdmin(admin.TabularInline):
 
 class TypeAreaAdmin(admin.ModelAdmin):
     inlines = (WidgetInAreaAdmin,)
-    save_as = True
+    #save_as = True
 
     def save_model(self, request, obj, form, change):
         super(TypeAreaAdmin, self).save_model(request, obj, form, change)
@@ -43,6 +43,13 @@ class TypeAreaAdmin(admin.ModelAdmin):
                                                    position=pos)
             except ValueError as e:
                 pass
+    # for save_as?
+    def save_formset2(self, request, form, formset, change):
+        instances = formset.save(commit=False)
+        #safe w/o instances
+        for instance in instances:
+            instance.save()
+        formset.save_m2m()
 
     def render_change_form(self, request, context, add=False,
                            change=False, form_url='', obj=None):
