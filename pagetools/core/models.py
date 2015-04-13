@@ -17,7 +17,7 @@ class LangManager(models.Manager):
     def lfilter(self, lang=None, **kwargs):
         if self.use_lang:
             if not lang:
-                lang = get_language()
+                lang = get_language() or ""
             kwargs.update(lang__in=(lang, lang.split('-')[0], None, ''))
         return self.filter(**kwargs)
 
