@@ -10,14 +10,6 @@ class BaseNode(PublishableLangModel):
         ('page', 'Page'),
         ('section', 'Section'),
         ('content', 'Content'),
-        ('product', 'Product'),
-        ('product-landing', 'Product-Landing'),
-        ('round-icons', 'Round Icons Row'),
-        ('angular-icons', 'Angular Icons Row'),
-        ('slider', 'Slider'),
-        # ('text', 'Text'),
-        # ('image', 'Image'),
-        # ('video', 'Movie'),
     )
     title  = models.CharField(_('Internal Title'), max_length=512)
     image = FileBrowseField(_('Image'), max_length=250,blank=True, extensions=[".jpg", ".gif", ".png"])
