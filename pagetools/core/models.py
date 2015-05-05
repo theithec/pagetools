@@ -1,11 +1,9 @@
 from django.conf import settings
 from django.db import models
 from django.utils.translation import ugettext_lazy as _, get_language
-from model_utils.choices import Choices
-
-from concurrency.fields import IntegerVersionField
 from model_utils.models import StatusModel, TimeStampedModel
-
+from model_utils.choices import Choices
+from concurrency.fields import IntegerVersionField
 from . import settings as ptsettings
 
 
