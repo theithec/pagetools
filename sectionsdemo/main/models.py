@@ -27,7 +27,7 @@ class Page(PageNode):
 
 class Section(PageNode):
     node_type_keys = ("section",)
-    allowed_children_keys = ('row',)
+    allowed_children_keys = ('angular-icons',)
 
     class Meta:
         proxy=True

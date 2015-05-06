@@ -1,0 +1,32 @@
+{% extends "cnodes/base_node.html" %}
+{% load static fb_versions sekizai_tags  %}
+{% block node %}
+  {% for content in contents %} 
+  <div class="large-4 medium-4 columns box-wrapper">
+      <div class="box {% if not content.enabled %}unpublished{% endif %}">
+      <div class="boxpic">
+        {% if content.target %} 
+        <a  href="{% url "ajaxnode" content.target.slug %}"
+            data-ajax="true" data-success="processResponse" >
+        {% endif %}
+        <img 
+            src="{% version content.image 'medium' %}" 
+            width= "100%"
+            height= "100%"
+            alt="" />
+        {% if content.target %} </a> {% endif %}
+
+      </div>
+      <div class="boxtext">
+        {% if content.target %}
+        <a href="{% url "ajaxnode" content.target.slug %}"
+           data-ajax="true" data-success="processResponse" >
+        {% endif %}
+        {{ content.headline|safe }}
+        {% if content.target %}</a>{% endif %}
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+{% endblock node  %}
+

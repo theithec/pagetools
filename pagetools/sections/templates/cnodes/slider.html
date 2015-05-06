@@ -1,0 +1,141 @@
+{% extends "cnodes/base_node.html" %}
+{% load static cnode_tags sekizai_tags %}
+{% block node %}
+<div id="{{ object.long_slug }}_container" style="position:relative;margin:0 auto;top:0px;left:0px;width:1020px;height:768px;overflow:hidden;">
+  
+  <div u="loading" style="position:absolute;top:0px;left:0px;">
+    <div style="filter:alpha(opacity=70);opacity:0.7;position:absolute;display:block;top:0px;left:0px;width:100%;height:100%;">
+    </div>
+    <div style="position:absolute;display:block;background:url({% static "img/loading.gif" %}) no-repeat center center;top:0px;left:0px;width:100%;height:100%;">
+    </div>
+  </div>
+
+  <div u="slides" style="cursor:move;position:absolute;left:50px;top:0px;width:924px;height:693px;overflow:hidden;">
+    {% for content in contents %}
+    <div>
+      {% render_node content user %}
+    </div>
+    {% endfor %}
+  </div>
+
+  {% addtoblock css_block|default:"css" %}
+  <!-- Arrow Navigator Skin Begin -->
+  <!-- on Arrow Navigator Skin Begin -->
+  <!-- Help: http://www.jssor.com/development/slider-with-arrow-navigator-jquery.html -->
+  <style>
+    /* jssor slider arrow navigator skin 21 css */
+    /*
+      .jssora21l                  (normal)
+      .jssora21r                  (normal)
+      .jssora21l:hover            (normal mouseover)
+      .jssora21r:hover            (normal mouseover)
+      .jssora21l.jssora21ldn      (mousedown)
+      .jssora21r.jssora21rdn      (mousedown)
+    */
+    .jssora21l, .jssora21r {
+      display: block;
+      position: absolute;
+      /* size of arrow element */
+      width: 55px;
+      height: 55px;
+      cursor: pointer;
+      background: url({% static "img/a21.png" %}) center center no-repeat;
+      overflow: hidden;
+    }
+    .jssora21l { background-position: -3px -33px; }
+    .jssora21r { background-position: -63px -33px; }
+    .jssora21l:hover { background-position: -123px -33px; }
+    .jssora21r:hover { background-position: -183px -33px; }
+    .jssora21l.jssora21ldn { background-position: -243px -33px; }
+    .jssora21r.jssora21rdn { background-position: -303px -33px; }
+  </style>
+  {% endaddtoblock %}
+  <!-- Arrow Left -->
+  <span u="arrowleft" class="jssora21l" style="top: 173px; left: -8px;display:block !important;">
+  </span>
+  <!-- Arrow Right -->
+  <span u="arrowright" class="jssora21r" style="top: 173px; right: -8px;display:block !important;">
+  </span>
+  <!--#endregion Arrow Navigator Skin End -->
+
+
+
+  <!-- Arrow Navigator Skin End -->
+
+
+  {% addtoblock css_block|default:"css" %}
+  <!--#region Bullet Navigator Skin Begin -->
+  <!-- Help: http://www.jssor.com/development/slider-with-bullet-navigator-jquery.html -->
+  <style>
+/* jssor slider bullet navigator skin 17 css */
+/*
+   .jssorb17 div           (normal)
+   .jssorb17 div:hover     (normal mouseover)
+   .jssorb17 .av           (active)
+   .jssorb17 .av:hover     (active mouseover)
+   .jssorb17 .dn           (mousedown)
+ */
+.jssorb17 {
+  position: absolute;
+}
+            .jssorb17 div, .jssorb17 div:hover, .jssorb17 .av {
+              position: absolute;
+              /* size of bullet elment */
+              width: 16px;
+              height: 16px;
+              background: url({% static "img/b17.png" %}) no-repeat;
+              overflow: hidden;
+              cursor: pointer;
+            }
+            .jssorb17 div { background-position: -7px -7px; }
+            .jssorb17 div:hover, .jssorb17 .av:hover { background-position: -37px -7px; }
+            .jssorb17 .av { background-position: -67px -7px; }
+            .jssorb17 .dn, .jssorb17 .dn:hover { background-position: -97px -7px; }
+  </style>
+  {% endaddtoblock  %}
+  <!-- bullet navigator container -->
+  <div u="navigator" class="jssorb17" style="bottom:26px;right:6px;">
+    <div u="prototype"></div>
+  </div>
+</div>
+
+{% addtoblock js_block|default:"js" %}
+<script>
+forReady.push(function(){
+  var options = { 
+    $BulletNavigatorOptions: {
+      $Class: $JssorBulletNavigator$,
+      $ChanceToShow: 2
+    },
+    $ArrowNavigatorOptions: {
+      $Class: $JssorArrowNavigator$,
+      $ChanceToShow: 2
+    }
+  };                            
+  var jssorSlider = new $JssorSlider$('{{ object.long_slug }}_container', options);
+
+  //responsive code begin
+  //you can remove responsive code if you don't want the slider scales
+  //while window resizes
+  function ScaleSlider() {
+    //return;
+    var parentWidth = $('#{{ object.long_slug }}_container').parent().width();
+    if (parentWidth) {
+      // smaller for colorbox/ajax
+      jssorSlider.$ScaleWidth(parentWidth*{{ scale|default:"1"}});
+    }
+    else
+      window.setTimeout(ScaleSlider, 30);
+  }
+  //Scale slider after document ready
+  ScaleSlider();
+
+  //Scale slider while window load/resize/orientationchange.
+  $(window).bind("load", ScaleSlider);
+  $(window).bind("resize", ScaleSlider);
+  $(window).bind("orientationchange", ScaleSlider);
+  //responsive code end
+});
+</script>
+{% endaddtoblock "js" %}
+{% endblock node %}

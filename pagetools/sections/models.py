@@ -2,22 +2,9 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from filebrowser.fields import FileBrowseField
 from pagetools.core.models import  PublishableLangModel, PublishableLangManager
-
+from .settings import AVAIL_NODES
 class BasePageNode(PublishableLangModel):
 
-    group_choices = (
-        ('page', 'Page'),
-        ('section', 'Section'),
-        ('content', 'Content'),
-        ('product', 'Product'),
-        ('product-landing', 'Product-Landing'),
-        ('round-icons', 'Round Icons Row'),
-        ('angular-icons', 'Angular Icons Row'),
-        ('slider', 'Slider'),
-        # ('text', 'Text'),
-        # ('image', 'Image'),
-        # ('video', 'Movie'),
-    )
     title  = models.CharField(_('Internal Title'), max_length=512)
     image = FileBrowseField(_('Image'), max_length=250,blank=True, extensions=[".jpg", ".gif", ".png"])
     video_m4v = FileBrowseField(_('Video: m4v'), max_length=250,blank=True, extensions=[".m4v"])
@@ -27,7 +14,7 @@ class BasePageNode(PublishableLangModel):
     slug = models.SlugField(_('Slug'), max_length=128)
     target = models.ForeignKey("self", blank=True, null=True)
     classes = models.CharField(max_length=512, blank=True, null=True)
-    node_type = models.CharField(max_length=128, choices=group_choices)
+    node_type = models.CharField(max_length=128, choices=AVAIL_NODES)
 
 
 
