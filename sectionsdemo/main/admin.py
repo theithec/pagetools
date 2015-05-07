@@ -11,7 +11,7 @@ class PageNodePosAdmin(BasePageNodePosAdmin):
 class PageNodeAdmin(BasePageNodeAdmin):
     inlines = (PageNodePosAdmin,)
     model = PageNode
-    def get_fieldsets(self, request, obj=None):
+    def get22_fieldsets(self, request, obj=None):
         return (
             (_('Meta'), {
                 'fields': ('title', 'status',),
