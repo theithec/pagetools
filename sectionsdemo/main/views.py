@@ -9,8 +9,9 @@ class NodeView(BaseNodeView):
 class IndexView(NodeView):
     template_name = "base.html"
 
+
     def get_object(self, *args, **kwargs):
-        self.object = Page.public.first()
+        self.object = Page.objects.filter(content_type_pk = Page.get_contenttype_pk()).first()
         return self.object
 
 

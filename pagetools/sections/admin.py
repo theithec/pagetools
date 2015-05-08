@@ -3,6 +3,7 @@ from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.utils.html import format_html
 
+from django.contrib.contenttypes.models import ContentType
 from grappelli.forms import GrappelliSortableHiddenMixin
 
 
@@ -32,16 +33,21 @@ class BasePageNodePosAdmin(GrappelliSortableHiddenMixin, admin.TabularInline):
     fields = ("content","position",) #admin_link",)
     sortable_field_name = "position"
 
-    def formfield_for_foreignkey2(self, db_field, request, **kwargs):
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
         print ("PM", self.parent_model)
         #print("PP", self.instance)
         if db_field.name == "content":
-            allowed_children_keys = self.parent_model.allowed_children_keys
-            print ("ALLC", allowed_children_keys)
-            if allowed_children_keys:
-                kwargs["queryset"] = self.parent_model.public.filter(
-                    node_type__in=allowed_children_keys
-                )
+            allowed_children_classes = self.parent_model.allowed_children_classes
+            allowed_contenttypes = [
+                ContentType.objects.get_for_model(acc).pk
+                for acc in allowed_children_classes
+            ]
+            _
+            print ("ALLC", allowed_children_classes, allowed_contenttypes)
+            #if allowed_children_keys:
+            #    kwargs["queryset"] = self.parent_model.public.filter(
+            #        node_type__in=allowed_children_keys
+            #    )
         return super(BasePageNodePosAdmin, self).formfield_for_foreignkey(
             db_field, request, **kwargs
         )

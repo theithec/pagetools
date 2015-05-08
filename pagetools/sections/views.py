@@ -17,9 +17,11 @@ class BaseNodeView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(BaseNodeView, self).get_context_data(**kwargs)
-        if self.object.positioned_content:
-            context['contents'] = self.object.ordered_content(
+        #print("GETCONTEXTDATA", self.object.positioned_content.all())
+        #if self.object.positioned_content:
+        context['contents'] = self.object.ordered_content(
                 user=self.request.user)
+        print("CX",context['contents'] )
         return context
 
     def dispatch(self, request, *args, **kwargs):

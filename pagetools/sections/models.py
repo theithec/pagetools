@@ -7,6 +7,12 @@ from pagetools.core.models import  PublishableLangModel, PublishableLangManager
 
 
 
+class BasePageNodeManager(PublishableLangManager):
+    def get_queryset(self):
+        #print ("MANA", self.__dict__)
+        ct = ContentType.objects.get_for_model(self.model, for_concrete_model=False)
+        print ("MANA2", self.model, ct)
+        return super(BasePageNodeManager, self).get_queryset().filter(content_type_pk=ct.id)
 
 class BasePageNode(PublishableLangModel):
 
@@ -28,7 +34,9 @@ class BasePageNode(PublishableLangModel):
                                       related_name="positioned_content",
                                       symmetrical=False)
 
-    objects  = PublishableLangManager()
+    #ct = ContentType.objects.get_for_model(self, for_concrete_model=False)
+    #self.content_type_pk = ct.pk
+    objects  = BasePageNodeManager() #PublishableLangManager()
 
     #def _videofield(self, type):
     #    return  getattr(self, 'video_%s' % type)
@@ -52,6 +60,7 @@ class BasePageNode(PublishableLangModel):
         print ("CC", _content.__class__)
         s =  self.slug + "_" + content.slug
         content.long_slug = s
+        #print "CONTEN"
         return content
 
     def ordered_content(self, **kwargs):
@@ -59,6 +68,7 @@ class BasePageNode(PublishableLangModel):
         #if not user or not user.is_authenticated():
         #    kwargs['status'] = ptsettings.STATUS_PUBLISHED
         #o = self.positioned_content.language().fallbacks('en').filter(**kwargs).order_by('in_group__position')
+        print("SELF", self)
         o = self.positioned_content.lfilter(**kwargs).order_by('in_group__position')
         return [self.get_real_content(c) for c in o]
 
@@ -68,18 +78,22 @@ class BasePageNode(PublishableLangModel):
 
 
     def save(self, *args, **kwargs):
-        print("save",self._meta.object_name,   self._meta,"\n".join([("%s\t%s" % (k,v)) for k,v in self._meta.__dict__.items()]) , args, kwargs)
+        #print("save",self._meta.object_name,   self._meta,"\n".join([("%s\t%s" % (k,v)) for k,v in self._meta.__dict__.items()]) , args, kwargs)
         if not self.content_type_pk:
-            ct = ContentType.objects.get_for_model(self)
+            ct = ContentType.objects.get_for_model(self, for_concrete_model=False)
             self.content_type_pk = ct.pk
             print ("CT", ct, ct.pk, self._meta.concrete_model)
         super(BasePageNode, self).save(*args, **kwargs)
+
+    @classmethod
+    def get_contenttype_pk(cls):
+        t = ContentType.objects.get_for_model(cls, for_concrete_model=False)
+        return t.id
 
     class Meta:
         abstract = True
         verbose_name = _('Node')
         verbose_name_plural = _('Nodes')
-
 
 
 
