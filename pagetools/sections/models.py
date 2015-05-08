@@ -36,7 +36,7 @@ class BasePageNode(PublishableLangModel):
 
     #ct = ContentType.objects.get_for_model(self, for_concrete_model=False)
     #self.content_type_pk = ct.pk
-    objects  = BasePageNodeManager() #PublishableLangManager()
+    #objects  = BasePageNodeManager() #PublishableLangManager()
 
     #def _videofield(self, type):
     #    return  getattr(self, 'video_%s' % type)
@@ -109,3 +109,22 @@ class BasePageNodePos(models.Model):
         ordering = ['position']
         verbose_name = _('Content Position')
         verbose_name_plural = _('Content Positions')
+
+
+class PageNode(BasePageNode):
+    headline = models.CharField('Headline',  max_length=512, blank=True)
+    text = models.TextField(blank=True)
+    allowed_children_keys = ()
+    #objects = PageNodeManager()
+
+    def save(self, *args, **kwargs):
+        super(PageNode, self).save(*args, **kwargs)
+
+
+class PageNodePos(BasePageNodePos):
+    content = models.ForeignKey(PageNode)
+    owner  = models.ForeignKey(PageNode, related_name="in_group")
+
+
+
+

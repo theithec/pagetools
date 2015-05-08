@@ -2,7 +2,8 @@ from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
 from pagetools.sections.admin import BasePageNodePosAdmin, BasePageNodeAdmin
-from .models import PageNodePos, PageNode, Page, Section
+from pagetools.sections.models import PageNodePos, PageNode
+from .models import Page, Section
 
 
 class PageNodePosAdmin(BasePageNodePosAdmin):

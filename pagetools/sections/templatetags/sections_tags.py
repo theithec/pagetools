@@ -1,7 +1,7 @@
 from django import template
 from django.template.loader import render_to_string, get_template
 from django.template import Context, Template
-
+import pdb
 from pagetools.sections.utils import get_template_names_for_obj
 register = template.Library()
 
@@ -13,6 +13,8 @@ class ContentNode(template.Node):
         self.user_var = template.Variable(user)
 
     def render(self, context):
+        print ("render", self, context)
+        #pdb.set_trace()
         obj =  self.object_var.resolve(context)
         user =  self.user_var.resolve(context)
         real_template = get_template_names_for_obj(obj)
