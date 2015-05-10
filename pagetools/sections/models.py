@@ -9,9 +9,7 @@ from pagetools.core.models import  PublishableLangModel, PublishableLangManager
 
 class BasePageNodeManager(PublishableLangManager):
     def get_queryset(self):
-        #print ("MANA", self.__dict__)
         ct = ContentType.objects.get_for_model(self.model, for_concrete_model=False)
-        print ("MANA2", self.model, ct)
         return super(BasePageNodeManager, self).get_queryset().filter(content_type_pk=ct.id)
 
 class BasePageNode(PublishableLangModel):
@@ -57,19 +55,12 @@ class BasePageNode(PublishableLangModel):
 
     def get_real_content(self, _content):
         content = self.get_real_obj(_content)
-        print ("CC", _content.__class__)
         s =  self.slug + "_" + content.slug
         content.long_slug = s
-        #print "CONTEN"
         return content
 
     def ordered_content(self, **kwargs):
-        #user = kwargs.pop('user', None)
-        #if not user or not user.is_authenticated():
-        #    kwargs['status'] = ptsettings.STATUS_PUBLISHED
-        #o = self.positioned_content.language().fallbacks('en').filter(**kwargs).order_by('in_group__position')
-        print("SELF", self)
-        o = self.positioned_content.lfilter(**kwargs).order_by('in_group__position')
+        o = self.positioned_content.lfilter(**kwargs).order_by('pagenodepos')
         return [self.get_real_content(c) for c in o]
 
     def __str__(self):
@@ -78,11 +69,9 @@ class BasePageNode(PublishableLangModel):
 
 
     def save(self, *args, **kwargs):
-        #print("save",self._meta.object_name,   self._meta,"\n".join([("%s\t%s" % (k,v)) for k,v in self._meta.__dict__.items()]) , args, kwargs)
         if not self.content_type_pk:
             ct = ContentType.objects.get_for_model(self, for_concrete_model=False)
             self.content_type_pk = ct.pk
-            print ("CT", ct, ct.pk, self._meta.concrete_model)
         super(BasePageNode, self).save(*args, **kwargs)
 
     @classmethod
@@ -116,6 +105,9 @@ class PageNode(BasePageNode):
     text = models.TextField(blank=True)
     allowed_children_keys = ()
     #objects = PageNodeManager()
+
+    def get_absolute_url(self):
+        return "/#%s" % self.slug
 
     def save(self, *args, **kwargs):
         super(PageNode, self).save(*args, **kwargs)

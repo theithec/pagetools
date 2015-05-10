@@ -2,11 +2,11 @@ from django.views.generic import DetailView, FormView
 from django.http import HttpResponseRedirect
 from django_ajax.mixin import AJAXMixin
 from .utils import get_template_names_for_obj
-
+from .models import PageNode
 
 
 class BaseNodeView(DetailView):
-    #model = Node
+    model = PageNode
 
     def get_queryset(self, *args, **kwargs):
         return self.model.public.lfilter(user=self.request.user)
@@ -17,11 +17,9 @@ class BaseNodeView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(BaseNodeView, self).get_context_data(**kwargs)
-        #print("GETCONTEXTDATA", self.object.positioned_content.all())
         #if self.object.positioned_content:
         context['contents'] = self.object.ordered_content(
                 user=self.request.user)
-        print("CX",context['contents'] )
         return context
 
     def dispatch(self, request, *args, **kwargs):

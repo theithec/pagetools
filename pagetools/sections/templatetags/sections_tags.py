@@ -1,5 +1,5 @@
 from django import template
-from django.template.loader import render_to_string, get_template
+from django.template.loader import render_to_string, get_template, select_template
 from django.template import Context, Template
 import pdb
 from pagetools.sections.utils import get_template_names_for_obj
@@ -13,7 +13,6 @@ class ContentNode(template.Node):
         self.user_var = template.Variable(user)
 
     def render(self, context):
-        print ("render", self, context)
         #pdb.set_trace()
         obj =  self.object_var.resolve(context)
         user =  self.user_var.resolve(context)
@@ -24,7 +23,7 @@ class ContentNode(template.Node):
         if not  obj.enabled:
             context['unpublished'] = True
 
-        return get_template(real_template).render( context)
+        return select_template(real_template).render( context)
         return Template("cnodes/cnode.html").render(context)
         return context.render("x.html") #render("cnodes.html", context)
         return {"bla":"blub"}

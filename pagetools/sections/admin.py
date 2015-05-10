@@ -36,8 +36,6 @@ class BasePageNodePosAdmin(GrappelliSortableHiddenMixin, admin.TabularInline):
     sortable_field_name = "position"
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        print ("PM", self.parent_model)
-        #print("PP", self.instance)
         if db_field.name == "content" and  getattr(
             self.parent_model, 'allowed_children_classes', False
         ):
@@ -47,12 +45,11 @@ class BasePageNodePosAdmin(GrappelliSortableHiddenMixin, admin.TabularInline):
                 for acc in allowed_children_classes
             ]
 
-            print ("ALLC", allowed_children_classes, allowed_contenttypes, kwargs)
             #if allowed_children_keys:
             #kwargs["queryset"] = self.parent_model.objects.filter(
             kwargs["queryset"] = PageNode.objects.filter(
                 #content_type_pk__in=allowed_contenttypes
-                content_type_pk=9
+                content_type_pk__in=allowed_contenttypes
             )
         return super(BasePageNodePosAdmin, self).formfield_for_foreignkey(
                 db_field, request, **kwargs
