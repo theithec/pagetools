@@ -1,37 +1,5 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-<<<<<<< HEAD
-from filebrowser.fields import FileBrowseField
-
-class BasePageNode(models.Model):
-
-    group_choices = (
-        ('page', 'Page'),
-        ('section', 'Section'),
-        ('content', 'Content'),
-        ('product', 'Product'),
-        ('product-landing', 'Product-Landing'),
-        ('round-icons', 'Round Icons Row'),
-        ('angular-icons', 'Angular Icons Row'),
-        ('slider', 'Slider'),
-        # ('text', 'Text'),
-        # ('image', 'Image'),
-        # ('video', 'Movie'),
-    )
-    title  = models.CharField(_('Internal Title'), max_length=512)
-    image = FileBrowseField(_('Image'), max_length=250,blank=True, extensions=[".jpg", ".gif", ".png"])
-    video_m4v = FileBrowseField(_('Video: m4v'), max_length=250,blank=True, extensions=[".m4v"])
-    video_ogv = FileBrowseField(_('Video: ogv'), max_length=250,blank=True, extensions=[".ogv"])
-    video_webm = FileBrowseField(_('Video: webm'), max_length=250,blank=True, extensions=[".webm"])
-    video_poster = FileBrowseField(_('Video: Poster'), max_length=250,blank=True, extensions=[".jpg",".jpeg", ".gif", ".png"])
-    slug = models.SlugField(_('Slug'), max_length=128)
-    target = models.ForeignKey("self", blank=True, null=True)
-    classes = models.CharField(max_length=512, blank=True, null=True)
-    node_type = models.CharField(max_length=128, choices=group_choices)
-
-
-
-=======
 from django.contrib.contenttypes.models import ContentType
 from filebrowser.fields import FileBrowseField
 from pagetools.core.models import  PublishableLangModel, PublishableLangManager
@@ -59,17 +27,12 @@ class BasePageNode(PublishableLangModel):
 
 
     content_type_pk = models.SmallIntegerField(blank=True)
->>>>>>> sections2rf
     in_nodes = models.ManyToManyField("self",
                                       through="PageNodePos",
                                       related_name="positioned_content",
                                       symmetrical=False)
 
-<<<<<<< HEAD
 
-    def __str__(self):
-        return self.title
-=======
     #ct = ContentType.objects.get_for_model(self, for_concrete_model=False)
     #self.content_type_pk = ct.pk
     #objects  = BasePageNodeManager() #PublishableLangManager()
@@ -116,7 +79,6 @@ class BasePageNode(PublishableLangModel):
     def get_contenttype_pk(cls):
         t = ContentType.objects.get_for_model(cls, for_concrete_model=False)
         return t.id
->>>>>>> sections2rf
 
     class Meta:
         abstract = True
@@ -124,11 +86,6 @@ class BasePageNode(PublishableLangModel):
         verbose_name_plural = _('Nodes')
 
 
-<<<<<<< HEAD
-=======
-
-
->>>>>>> sections2rf
 class BasePageNodePos(models.Model):
     position = models.PositiveIntegerField()
 
@@ -140,8 +97,6 @@ class BasePageNodePos(models.Model):
         ordering = ['position']
         verbose_name = _('Content Position')
         verbose_name_plural = _('Content Positions')
-<<<<<<< HEAD
-=======
 
 
 class PageNode(BasePageNode):
@@ -164,4 +119,3 @@ class PageNodePos(BasePageNodePos):
 
 
 
->>>>>>> sections2rf
