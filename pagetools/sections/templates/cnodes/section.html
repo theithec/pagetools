@@ -1,0 +1,18 @@
+{% extends "cnodes/base_node.html" %}
+{% load sections_tags %}
+
+{% block node %}
+<h1>SEC</h1>
+<section class="section {{object.slug}}">
+  <div class="row section-header">
+    <div class="large-12 columns">
+        <h2>{{ object.headline }}</h2>
+    </div>
+  </div>
+  {% for content in object|ordered_content:user %}
+  <div class="row">
+      {% render_node content user %}
+  </div>
+  {% endfor %}
+</section>
+{% endblock node %}

@@ -9,7 +9,8 @@
 .project
 .pydevproject
 .settings
-
+*.swp
+*.swo
 META-INF
 build.properties
 .ropeproject/

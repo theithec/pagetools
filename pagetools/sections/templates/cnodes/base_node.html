@@ -1,0 +1,16 @@
+{% load sekizai_tags %}
+{% render_block "js_ajax" %}
+{% render_block "css_ajax" %}
+{% with content|default:object as obj %}
+{% if  not obj.enabled %}
+<div class="unpublished">
+{% endif %}    
+
+{% block node %}
+{% endblock node %}
+
+
+{% if not obj.enabled %}
+</div>
+{% endif %}    
+{% endwith %}
