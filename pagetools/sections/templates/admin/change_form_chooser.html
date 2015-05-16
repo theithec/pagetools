@@ -1,5 +1,5 @@
 {% extends "admin/change_form.html" %}
-{% block content %}
+{% block content2 %}
 {{ block.super }}
 <ul>
 {% for c in original.allowed_children_classes %}
@@ -18,4 +18,51 @@
     </div></li>
 {% endfor %}
 </ul>
-{% endblock content %}
+{% endblock content2 %}
+{% block javascripts %}
+{{ block.super }}
+<script>
+jQuery = grp.jQuery;
+(function($){
+    $(document).ready(function(){
+        $.getScript( "/static/js/jquery.balloon.js" )
+            .done(function( s, Status ) {
+                console.warn( Status );
+                $(".add-another").each(function(i, obj){
+                    var $obj = $(obj);
+                    var $cpy = $obj.clone();
+                    $cpy.attr("href", "{{c.get_adminadd_url }}").removeAttr("onclick");
+                    $obj.after($cpy);
+                    $obj.hide();
+                    var linklist="<ul>";
+                    console.log("i", i);
+                    {% for c in original.allowed_children_classes %}
+                    linklist += '<li><a href="{{c.get_adminadd_url }}"' + 
+                        ' class="in_group_chooser in_group_chooser_' + i + '"' + 
+                                '>{{c.get_classname}}</a></li>';
+                    {% endfor %}
+                    linklist += "</ul>";
+
+                    $cpy.balloon({
+                        contents: "<h1>haha</h1>"+linklist,
+                        position: "right",
+                        minLifetime: 5000,
+                        showComplete: function(){
+                            $(".in_group_chooser").bind("click",function(){
+                            console.log("x");
+                            return showAddAnotherPopup($cpy.get(0));
+                        });
+                        }    
+                    }); 
+                    
+                });
+            })
+        .fail(function( jqxhr, settings, exception ) {
+            console.error( "Something went wrong", exception );
+
+        });
+    });
+}(grp.jQuery));
+</script>
+{% endblock javascripts %}
+
