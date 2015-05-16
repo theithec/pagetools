@@ -3,6 +3,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
 from filebrowser.fields import FileBrowseField
 from pagetools.core.models import  PublishableLangModel, PublishableLangManager
+from pagetools.core.utils import get_adminadd_url
 #from .settings import AVAIL_NODES
 
 
@@ -12,20 +13,27 @@ class BasePageNodeManager(PublishableLangManager):
         ct = ContentType.objects.get_for_model(self.model, for_concrete_model=False)
         return super(BasePageNodeManager, self).get_queryset().filter(content_type_pk=ct.id)
 
-class BasePageNode(PublishableLangModel):
+
+class TypeMixin(models.Model):
+    node_choices = ()
+
+    def __init__(self, *args, **kwargs):
+        super(TypeMixin, self).__init__(*args, **kwargs)
+        self._meta.get_field('node_type')._choices = self.node_choices
+
+    node_type = models.CharField(max_length=128) #, choices=group_choices)
+
+    class Meta:
+        abstract = True
+
+
+class PageNode(PublishableLangModel):
 
     title  = models.CharField(_('Internal Title'), max_length=512)
-    #image = FileBrowseField(_('Image'), max_length=250,blank=True, extensions=[".jpg", ".gif", ".png"])
-    #video_m4v = FileBrowseField(_('Video: m4v'), max_length=250,blank=True, extensions=[".m4v"])
-    #video_ogv = FileBrowseField(_('Video: ogv'), max_length=250,blank=True, extensions=[".ogv"])
-    #video_webm = FileBrowseField(_('Video: webm'), max_length=250,blank=True, extensions=[".webm"])
-    #video_poster = FileBrowseField(_('Video: Poster'), max_length=250,blank=True, extensions=[".jpg",".jpeg", ".gif", ".png"])
     slug = models.SlugField(_('Slug'), max_length=128)
-    #target = models.ForeignKey("self", blank=True, null=True)
-    #classes = models.CharField(max_length=512, blank=True, null=True)
-    #    node_type = models.CharField(max_length=128, choices=AVAIL_NODES)
 
-
+    classes = models.CharField('Classes', max_length=512, blank=True, null=True)
+    allowed_children_keys = ()
     content_type_pk = models.SmallIntegerField(blank=True)
     in_nodes = models.ManyToManyField("self",
                                       through="PageNodePos",
@@ -50,7 +58,15 @@ class BasePageNode(PublishableLangModel):
     #    return v
     #videofiles.allow_tags=True
 
-    def get_real_obj(self, node):
+    @classmethod
+    def get_adminadd_url(Clz):
+        return get_adminadd_url(Clz)
+
+    @classmethod
+    def get_classname(Clz):
+        return Clz._meta.verbose_name
+    def get_real_obj(self, node=None):
+        node = node or self
         clz = ContentType.objects.get_for_id(node.content_type_pk)
         return clz.model_class().objects.get(pk=node.pk)
 
@@ -73,7 +89,10 @@ class BasePageNode(PublishableLangModel):
         if not self.content_type_pk:
             ct = ContentType.objects.get_for_model(self, for_concrete_model=False)
             self.content_type_pk = ct.pk
-        super(BasePageNode, self).save(*args, **kwargs)
+        super(PageNode, self).save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return "/#%s" % self.slug
 
     @classmethod
     def get_contenttype_pk(cls):
@@ -81,41 +100,20 @@ class BasePageNode(PublishableLangModel):
         return t.id
 
     class Meta:
-        abstract = True
         verbose_name = _('Node')
         verbose_name_plural = _('Nodes')
 
 
-class BasePageNodePos(models.Model):
+class PageNodePos(models.Model):
     position = models.PositiveIntegerField()
+    content = models.ForeignKey(PageNode)
+    owner  = models.ForeignKey(PageNode, related_name="in_group")
 
     def __str__(self):
         return "%s:%s:%s" %(self.owner, self.content, self.position)
 
     class Meta:
-        abstract = True
         ordering = ['position']
         verbose_name = _('Content Position')
         verbose_name_plural = _('Content Positions')
-
-
-class PageNode(BasePageNode):
-    headline = models.CharField('Headline',  max_length=512, blank=True)
-    text = models.TextField(blank=True)
-    allowed_children_keys = ()
-    #objects = PageNodeManager()
-
-    def get_absolute_url(self):
-        return "/#%s" % self.slug
-
-    def save(self, *args, **kwargs):
-        super(PageNode, self).save(*args, **kwargs)
-
-
-class PageNodePos(BasePageNodePos):
-    content = models.ForeignKey(PageNode)
-    owner  = models.ForeignKey(PageNode, related_name="in_group")
-
-
-
 

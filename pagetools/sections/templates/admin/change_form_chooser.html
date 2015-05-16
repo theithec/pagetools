@@ -1,0 +1,21 @@
+{% extends "admin/change_form.html" %}
+{% block content %}
+{{ block.super }}
+<ul>
+{% for c in original.allowed_children_classes %}
+<li><div class="grp-readonly" >
+    <a href="{{ c.get_adminadd_url }}?_to_field=id&_popup=1" 
+       class="add-another"
+       style="display:block"
+       onclick="return showAddAnotherPopup(this);"
+    >
+        <img src="/static/admin/img/icon_addlink.gif" width="10" height="10" alt="Neu hinzufügen"
+       style="float:left;" />
+        <span>
+            {{ c.get_classname }}
+        </span>
+    </a>
+    </div></li>
+{% endfor %}
+</ul>
+{% endblock content %}
