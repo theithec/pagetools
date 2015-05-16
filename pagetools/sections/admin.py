@@ -7,31 +7,23 @@ from django.contrib.contenttypes.models import ContentType
 from grappelli.forms import GrappelliSortableHiddenMixin
 from .models import PageNode, PageNodePos
 
+
 class BasePageNodePosAdmin(GrappelliSortableHiddenMixin, admin.TabularInline):
-
-    def __init__(self, *args, **kwargs):
-        super(BasePageNodePosAdmin, self).__init__(*args, **kwargs)
-
-    def admin_link(self, instance):
-        print("S", self.Meta.js)
-        admin_for = {
-            'slider': 'row',
-            'angular-icons': 'row',
-            'product': 'content',
-            'product-slider': 'content',
-        }
-        realobj = instance.content.get_real_obj()
-        print("node", realobj._meta.model_name)
-        url = reverse('admin:%s_%s_change' % (realobj._meta.app_label,
-                                              realobj._meta.model_name),
-                                             args=(realobj.id,))
-        print("URL",  url)
-        return format_html(u'<a href="{}">Edit</a>', url)
     model = PageNodePos
     readonly_fields = ('admin_link',)
     fk_name = "owner"
-    #fields = ("content", "position", "admin_link",)
     sortable_field_name = "position"
+
+    def get_queryset(self, request):
+        request.parent_model = self.parent_model
+        return super(BasePageNodePosAdmin, self).get_queryset(request)
+
+    def admin_link(self, instance):
+        realobj = instance.content.get_real_obj()
+        url = reverse('admin:%s_%s_change' % (realobj._meta.app_label,
+                                              realobj._meta.model_name),
+                      args=(realobj.id,))
+        return format_html(u'<a href="{}">Edit</a>', url)
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == "content" and  getattr(
@@ -43,13 +35,10 @@ class BasePageNodePosAdmin(GrappelliSortableHiddenMixin, admin.TabularInline):
                 for acc in allowed_children_classes
             ]
 
-            #if allowed_children_keys:
-            #kwargs["queryset"] = self.parent_model.objects.filter(
             kwargs["queryset"] = PageNode.objects.filter(
-                #content_type_pk__in=allowed_contenttypes
                 content_type_pk__in=allowed_contenttypes
             )
-        return super(BasePageNodePosAdmin, self).formfield_for_foreignkey(
+            return super(BasePageNodePosAdmin, self).formfield_for_foreignkey(
                 db_field, request, **kwargs
             )
 

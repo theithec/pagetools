@@ -65,6 +65,7 @@ class PageNode(PublishableLangModel):
     @classmethod
     def get_classname(Clz):
         return Clz._meta.verbose_name
+
     def get_real_obj(self, node=None):
         node = node or self
         clz = ContentType.objects.get_for_id(node.content_type_pk)

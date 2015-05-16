@@ -1,66 +1,54 @@
-{% extends "admin/change_form.html" %}
-{% block content2 %}
-{{ block.super }}
-<ul>
-{% for c in original.allowed_children_classes %}
-<li><div class="grp-readonly" >
-    <a href="{{ c.get_adminadd_url }}?_to_field=id&_popup=1" 
-       class="add-another"
-       style="display:block"
-       onclick="return showAddAnotherPopup(this);"
-    >
-        <img src="/static/admin/img/icon_addlink.gif" width="10" height="10" alt="Neu hinzufügen"
-       style="float:left;" />
-        <span>
-            {{ c.get_classname }}
-        </span>
-    </a>
-    </div></li>
-{% endfor %}
-</ul>
-{% endblock content2 %}
+{% extends custom_change_form|default:"admin/change_form.html" %}
+{% load static %}
 {% block javascripts %}
 {{ block.super }}
 <script>
 jQuery = grp.jQuery;
 (function($){
     $(document).ready(function(){
-        $.getScript( "/static/js/jquery.balloon.js" )
-            .done(function( s, Status ) {
-                console.warn( Status );
+        {% if request.parent_model.allowed_children_classes|length > 1 %}
+        $.getScript( "{% static "js/jquery.balloon.min.js" %}")
+            .done(function( script, Status ) {
                 $(".add-another").each(function(i, obj){
                     var $obj = $(obj);
-                    var $cpy = $obj.clone();
-                    $cpy.attr("href", "{{c.get_adminadd_url }}").removeAttr("onclick");
-                    $obj.after($cpy);
-                    $obj.hide();
+                    $obj.removeAttr("href").removeAttr("onclick");
                     var linklist="<ul>";
-                    console.log("i", i);
-                    {% for c in original.allowed_children_classes %}
+                    var links = [];
+                    {% for c in request.parent_model.allowed_children_classes %}
                     linklist += '<li><a href="{{c.get_adminadd_url }}"' + 
-                        ' class="in_group_chooser in_group_chooser_' + i + '"' + 
-                                '>{{c.get_classname}}</a></li>';
+                        ' class="in_group_chooser in_group_chooser_{{ forloop.counter }}"' + 
+                        '>{{c.get_classname}}</a></li>';
+                    links.push("{{ c.get_adminadd_url}}");
                     {% endfor %}
                     linklist += "</ul>";
-
-                    $cpy.balloon({
-                        contents: "<h1>haha</h1>"+linklist,
+                    $obj.balloon({
+                        contents: linklist,
                         position: "right",
-                        minLifetime: 5000,
+                        minLifetime: 1000,
                         showComplete: function(){
-                            $(".in_group_chooser").bind("click",function(){
-                            console.log("x");
-                            return showAddAnotherPopup($cpy.get(0));
-                        });
+                            for (var i=0; i<links.length;i++){
+                                var $cpy = $obj.clone();
+                                $cpy.attr("href", links[i]);
+                                $(".in_group_chooser_" + (i+1)).bind("click",function(){
+                                    return showAddAnotherPopup($cpy.get(0));
+                                });
+                            }
                         }    
                     }); 
-                    
+
                 });
             })
         .fail(function( jqxhr, settings, exception ) {
             console.error( "Something went wrong", exception );
 
         });
+        {% else %}
+        $(".add-another").each(function(i, obj){
+                var $obj = $(obj);
+                $obj.attr("href", "{{request.parent_model.allowed_children_classes.0.get_adminadd_url }}");
+                 
+            });
+        {% endif %}    
     });
 }(grp.jQuery));
 </script>
