@@ -27,11 +27,16 @@ jQuery = grp.jQuery;
                         minLifetime: 1000,
                         showComplete: function(){
                             for (var i=0; i<links.length;i++){
-                                var $cpy = $obj.clone();
-                                $cpy.attr("href", links[i]);
-                                $(".in_group_chooser_" + (i+1)).bind("click",function(){
-                                    return showAddAnotherPopup($cpy.get(0));
-                                });
+                                
+                                $(".in_group_chooser_" + (i+1)).bind("click",function(i){
+                                    console.log("i2",i);
+                                    return function(){
+                                        var $cpy = $obj.clone();
+                                        $cpy.attr("href", links[i]);
+                                        console.log("CPY",i, $cpy, links);
+                                      return  showAddAnotherPopup($cpy.get(0));
+                                    };
+                                }(i));
                             }
                         }    
                     }); 
