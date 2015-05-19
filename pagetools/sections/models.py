@@ -1,27 +1,31 @@
-from django.db import models
+from django.db import models, DatabaseError
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
-from filebrowser.fields import FileBrowseField
-from pagetools.core.models import  PublishableLangModel, PublishableLangManager
+from pagetools.core.models import PublishableLangModel, PublishableLangManager
 from pagetools.core.utils import get_adminadd_url
-#from .settings import AVAIL_NODES
 
 
-
-class BasePageNodeManager(PublishableLangManager):
-    def get_queryset(self):
-        ct = ContentType.objects.get_for_model(self.model, for_concrete_model=False)
-        return super(BasePageNodeManager, self).get_queryset().filter(content_type_pk=ct.id)
+class PageNodeManager(PublishableLangManager):
+    #def get_queryset(self):
+    def real(self, kwargs=None):
+        kwargs = kwargs or {}
+        try:
+            ct = ContentType.objects.get_for_model(
+                self.model, for_concrete_model=False)
+            kwargs['content_type_pk'] = ct.id
+        except DatabaseError:
+            pass
+        return super(PageNodeManager, self).get_queryset().filter(**kwargs)
 
 
 class TypeMixin(models.Model):
+
     node_choices = ()
+    node_type = models.CharField(max_length=128, blank=True)
 
     def __init__(self, *args, **kwargs):
         super(TypeMixin, self).__init__(*args, **kwargs)
         self._meta.get_field('node_type')._choices = self.node_choices
-
-    node_type = models.CharField(max_length=128) #, choices=group_choices)
 
     class Meta:
         abstract = True
@@ -29,9 +33,8 @@ class TypeMixin(models.Model):
 
 class PageNode(PublishableLangModel):
 
-    title  = models.CharField(_('Internal Title'), max_length=512)
+    title = models.CharField(_('Internal Title'), max_length=512)
     slug = models.SlugField(_('Slug'), max_length=128)
-
     classes = models.CharField('Classes', max_length=512, blank=True, null=True)
     allowed_children_keys = ()
     content_type_pk = models.SmallIntegerField(blank=True)
@@ -82,8 +85,9 @@ class PageNode(PublishableLangModel):
         return [self.get_real_content(c) for c in o]
 
     def __str__(self):
+        if self.__class__ == PageNode:
+            return self.get_real_obj().__str__()
         return self.title
-        return "[%s]:%s %s)" % (self.node_type, self.title, self.lang or "")
 
 
     def save(self, *args, **kwargs):

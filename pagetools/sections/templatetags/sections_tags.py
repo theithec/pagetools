@@ -31,7 +31,6 @@ class ContentNode(template.Node):
 
 @register.tag
 def render_node(parser, token, *args, **kwargs):
-    print (parser, token.contents.split())
     obj, user = token.contents.split()[1:]
     return ContentNode(obj, user);
 

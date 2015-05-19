@@ -5,6 +5,7 @@ from django.utils.html import format_html
 
 from django.contrib.contenttypes.models import ContentType
 from grappelli.forms import GrappelliSortableHiddenMixin
+from pagetools.core.admin import PagelikeAdmin
 from .models import PageNode, PageNodePos
 
 
@@ -43,7 +44,12 @@ class BasePageNodePosAdmin(GrappelliSortableHiddenMixin, admin.TabularInline):
             )
 
 
-class BasePageNodeAdmin(admin.ModelAdmin):
-    pass
+
+class BasePageNodeAdmin(PagelikeAdmin):
+    def get_queryset(self, request):
+        return self.model.objects.real()
+
+
+
 
 

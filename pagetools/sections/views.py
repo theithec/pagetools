@@ -11,6 +11,10 @@ class BaseNodeView(DetailView):
     def get_queryset(self, *args, **kwargs):
         return self.model.public.lfilter(user=self.request.user)
 
+    def get_object(self, *args, **kwargs):
+        o = super(BaseNodeView, self).get_object(*args, **kwargs)
+        return o.get_real_obj()
+
     def get_template_names(self):
         return self.template_name or get_template_names_for_obj(self.object) or \
             super(BaseNodeView, self).get_template_names()
@@ -21,16 +25,6 @@ class BaseNodeView(DetailView):
         context['contents'] = self.object.ordered_content(
                 user=self.request.user)
         return context
-
-    def dispatch(self, request, *args, **kwargs):
-        params = request.GET.get('v', [])
-        if 'frame' in params:
-            self.template_name = "cnodes/iframe.html"
-        elif 'play' in params:
-            self.template_name = "cnodes/video.html"
-        return super(BaseNodeView, self).dispatch(request, *args, **kwargs)
-
-
 
 class BaseAjaxNodeView(AJAXMixin, BaseNodeView):
     def get_context_data(self, **kwargs):

@@ -2,6 +2,7 @@ from django.contrib.contenttypes.models import ContentType
 
 
 def get_template_names_for_obj(obj):
+    obj = obj.get_real_obj()
     n = []
     try:
         n = ["cnodes/%s.html" % (obj.node_type)]
