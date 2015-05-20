@@ -34,7 +34,7 @@ class TypeMixin(models.Model):
 class PageNode(PublishableLangModel):
 
     title = models.CharField(_('Internal Title'), max_length=512)
-    slug = models.SlugField(_('Slug'), max_length=128)
+    slug = models.SlugField(_('Slug'), max_length=128, unique=True)
     classes = models.CharField('Classes', max_length=512, blank=True, null=True)
     allowed_children_keys = ()
     content_type_pk = models.SmallIntegerField(blank=True)
