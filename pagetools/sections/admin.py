@@ -10,6 +10,7 @@ from .models import PageNode, PageNodePos
 
 
 class BasePageNodePosAdmin(GrappelliSortableHiddenMixin, admin.TabularInline):
+
     model = PageNodePos
     readonly_fields = ('admin_link',)
     fk_name = "owner"
@@ -44,10 +45,24 @@ class BasePageNodePosAdmin(GrappelliSortableHiddenMixin, admin.TabularInline):
             )
 
 
-
 class BasePageNodeAdmin(PagelikeAdmin):
+
     def get_queryset(self, request):
         return self.model.objects.real()
+
+    def admin_link(self, instance):
+        realobj = instance.get_real_obj()
+        url = reverse('admin:%s_%s_change' % (realobj._meta.app_label,
+                                              realobj._meta.model_name),
+                      args=(realobj.id,))
+        return format_html(u'<a href="{}">{}</a>', url, realobj)
+    admin_link.short_description = _("Admin link")
+
+    def containing_nodes(self, instance):
+        parents = instance.in_nodes.all()
+        txt = ", ".join([self.admin_link(p) for p in  parents])
+        return txt
+    containing_nodes.short_description = _("Parents")
 
 
 

@@ -43,24 +43,6 @@ class PageNode(PublishableLangModel):
                                       related_name="positioned_content",
                                       symmetrical=False)
 
-
-    #ct = ContentType.objects.get_for_model(self, for_concrete_model=False)
-    #self.content_type_pk = ct.pk
-    #objects  = BasePageNodeManager() #PublishableLangManager()
-
-    #def _videofield(self, type):
-    #    return  getattr(self, 'video_%s' % type)
-
-    #def videofiles(self):
-    #    v = "<br />".join(
-    #        ['%s: %s' %(v, self._videofield(v))
-    #            for v in "m4v ogv webm poster".split()
-    #            if self._videofield(v)
-    #        ]
-    #    )
-    #    return v
-    #videofiles.allow_tags=True
-
     @classmethod
     def get_adminadd_url(Clz):
         return get_adminadd_url(Clz)
@@ -89,7 +71,6 @@ class PageNode(PublishableLangModel):
             return self.get_real_obj().__str__()
         return self.title
 
-
     def save(self, *args, **kwargs):
         if not self.content_type_pk:
             ct = ContentType.objects.get_for_model(self, for_concrete_model=False)
@@ -110,6 +91,7 @@ class PageNode(PublishableLangModel):
 
 
 class PageNodePos(models.Model):
+
     position = models.PositiveIntegerField()
     content = models.ForeignKey(PageNode)
     owner  = models.ForeignKey(PageNode, related_name="in_group")
