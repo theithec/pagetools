@@ -14,8 +14,7 @@ def get_template_names_for_obj(obj):
         "cnodes/%s-%s.html" % (obj._meta.model_name,obj.slug ),
         "cnodes/%s.html" % obj._meta.model_name,
     ]
-    logger.error("TEMPL "+ ", ".join( n))
-    #print ("n", n)
+    #logger.error("TEMPL "+ ", ".join( n))
     return n
 
 
