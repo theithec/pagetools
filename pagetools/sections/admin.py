@@ -48,7 +48,7 @@ class BasePageNodePosAdmin(GrappelliSortableHiddenMixin, admin.TabularInline):
 class BasePageNodeAdmin(PagelikeAdmin):
 
     def get_queryset(self, request):
-        return self.model.objects.real()
+        return self.model.objects.real(request=request)
 
     def admin_link(self, instance):
         realobj = instance.get_real_obj()

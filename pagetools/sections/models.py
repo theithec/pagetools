@@ -7,15 +7,14 @@ from pagetools.core.utils import get_adminadd_url
 
 class PageNodeManager(PublishableLangManager):
     #def get_queryset(self):
-    def real(self, kwargs=None):
-        kwargs = kwargs or {}
+    def real(self, **kwargs):
         try:
             ct = ContentType.objects.get_for_model(
                 self.model, for_concrete_model=False)
             kwargs['content_type_pk'] = ct.id
         except DatabaseError:
             pass
-        return super(PageNodeManager, self).get_queryset().filter(**kwargs)
+        return super(PageNodeManager, self).get_queryset(kwargs.pop('request')).filter(**kwargs)
 
 
 class TypeMixin(models.Model):
