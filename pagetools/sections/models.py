@@ -14,7 +14,9 @@ class PageNodeManager(PublishableLangManager):
             kwargs['content_type_pk'] = ct.id
         except DatabaseError:
             pass
-        return super(PageNodeManager, self).get_queryset(kwargs.pop('request')).filter(**kwargs)
+        #return super(PageNodeManager, self).get_queryset(kwargs.pop('request')).filter(**kwargs)
+        kwargs.pop("request")
+        return super(PageNodeManager, self).get_queryset().filter(**kwargs)
 
 
 class TypeMixin(models.Model):
@@ -41,7 +43,7 @@ class PageNode(PublishableLangModel):
                                       through="PageNodePos",
                                       related_name="positioned_content",
                                       symmetrical=False)
-
+    objects = PageNodeManager()
     @classmethod
     def get_adminadd_url(Clz):
         return get_adminadd_url(Clz)
@@ -52,8 +54,12 @@ class PageNode(PublishableLangModel):
 
     def get_real_obj(self, node=None):
         node = node or self
-        clz = ContentType.objects.get_for_id(node.content_type_pk)
-        return clz.model_class().objects.get(pk=node.pk)
+        try:
+            clz = ContentType.objects.get_for_id(node.content_type_pk)
+            real = clz.model_class().objects.get(pk=node.pk)
+        except AttributeError:
+            real = node
+        return real
 
     def get_real_content(self, _content):
         content = self.get_real_obj(_content)
@@ -66,8 +72,6 @@ class PageNode(PublishableLangModel):
         return [self.get_real_content(c) for c in o]
 
     def __str__(self):
-        if self.__class__ == PageNode:
-            return self.get_real_obj().__str__()
         return self.title
 
     def save(self, *args, **kwargs):

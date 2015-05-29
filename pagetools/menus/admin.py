@@ -25,7 +25,7 @@ class MenuAdmin(TinyMCEMixin, ConcurrentModelAdmin):
                'object_id', 'slugs')
     save_as = True
 
-    def queryset(self, request):
+    def get_queryset(self, request):
         return Menu.objects.root_nodes()
 
     def render_change_form(self, request, context, add=False,
@@ -38,7 +38,8 @@ class MenuAdmin(TinyMCEMixin, ConcurrentModelAdmin):
                         get_classname(c)
                     ) for c in entrieable_models()
                 ])
-            context['menu_entries'] = obj.children_list(for_admin=True)
+            menu_obj = Menu.objects.lfilter(pk=obj.pk)[0]
+            context['menu_entries'] = menu_obj.children_list(for_admin=True)
 
         return admin.ModelAdmin.render_change_form(
             self, request, context, add=add, change=change,
