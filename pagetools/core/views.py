@@ -10,7 +10,11 @@ from django.views.generic.list import ListView
 
 
 class BasePagelikeView(View):
-
+    '''[TODO: refactor to pagetools.menus]
+    Tries to find a slug from view or model add adds it to
+    context. Used for find the selected menu-entries.
+    [Use session-data instead?]
+    '''
     def get_context_data(self, *args, **kwargs):
         kwargs = super(BasePagelikeView, self).get_context_data(**kwargs)
         sel = kwargs.get('selected', [])
@@ -34,6 +38,8 @@ class BasePagelikeView(View):
         return self.object
 
 class PaginatorMixin(ListView):
+    '''Paginator Implemtation
+    If your urls use already GET-vars set sep to ="&" in subclass'''
     paginate_by = getattr(settings, 'PAGINATE_BY', 20)
     sep = '?'
 

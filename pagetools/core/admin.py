@@ -8,6 +8,7 @@ from django.contrib import admin
 
 
 def fieldset_copy(fieldset):
+    '''ugly helper for reuse of filedsets'''
     fscopy = (fieldset[0],
               {'fields': [f for f in fieldset[1]['fields']]}
               )
@@ -18,6 +19,7 @@ def fieldset_copy(fieldset):
 
 
 class TinyMCEMixin(object):
+    '''add tinyme-media'''
     class Media:
         js = [
             '%sgrappelli/tinymce/jscripts/tiny_mce/tiny_mce.js' %
@@ -28,4 +30,5 @@ class TinyMCEMixin(object):
 
 
 class PagelikeAdmin(TinyMCEMixin, admin.ModelAdmin):
+    '''prepopulate slug from title and tinymce-media'''
     prepopulated_fields = {"slug": ("title",)}

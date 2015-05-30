@@ -46,7 +46,7 @@ class MenuAdmin(TinyMCEMixin, ConcurrentModelAdmin):
             form_url=form_url, obj=obj)
 
     def save_related(self, request, form, formsets, change):
-        obj = form.instance
+        obj = Menu.objects.get(pk=form.instance.pk)
         entry_order = form.data.get('entry-order')
         if entry_order:
             obj.update_entries(entry_order)
@@ -149,7 +149,7 @@ class EntrieableAdmin(admin.ModelAdmin):
                 kwargs = {}
                 if title:
                     kwargs['title'] = title
-                    e = Menu.objects.add_child(root, form.instance, **kwargs)
+                e = Menu.objects.add_child(root, form.instance, **kwargs)
 
 
                 e.move_to(root, 'last-child')

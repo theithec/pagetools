@@ -8,11 +8,14 @@ from . import settings as ptsettings
 
 
 class LangManager(models.Manager):
+    '''Manager for models with a lang-field'''
     def __init__(self, *args, **kwargs):
         super(LangManager, self).__init__(*args, **kwargs)
         self.use_lang = bool(getattr(settings, 'LANGUAGES', False))
 
     def lfilter(self, lang=None, **kwargs):
+        '''uses keyword-argument or system-language to add 'lang' to filter-
+        arguments if settings.LANGUAGES compares to not null'''
         if self.use_lang:
             if not lang:
                 lang = get_language() or ""
@@ -21,6 +24,7 @@ class LangManager(models.Manager):
 
 
 class LangModel(models.Model):
+    '''Model with 'lang'-field'''
     objects = models.Manager()
     # public = LangManager()
     lang = models.CharField(
@@ -35,6 +39,7 @@ class LangModel(models.Model):
 
 
 class PublishableLangManager(LangManager):
+    '''Manager that finds published content language  filtered'''
     def lfilter(self, **kwargs):
         user = kwargs.pop('user', None)
         if not user or not user.is_authenticated():
@@ -44,6 +49,7 @@ class PublishableLangManager(LangManager):
 
 
 class PublishableLangModel(LangModel, StatusModel):
+    '''Model with model_utils...StatusModel for status and a language-field'''
 
     _translated_choices = [(slug, _(name))
                            for(slug, name)
@@ -61,6 +67,7 @@ class PublishableLangModel(LangModel, StatusModel):
 
 
 class PagelikeModel(TimeStampedModel, PublishableLangModel):
+    '''This may everything that inclines a detail_view'''
     title = models.CharField(_('Title'), max_length=255)
     slug = models.SlugField(_('Slug'), max_length=255)
     version = IntegerVersionField()
