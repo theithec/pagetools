@@ -16,7 +16,7 @@ class LangManager(models.Manager):
     def lfilter(self, lang=None, **kwargs):
         '''uses keyword-argument or system-language to add 'lang' to filter-
         arguments if settings.LANGUAGES compares to not null'''
-        if self.use_lang:
+        if self.use_lang and not kwargs.pop('skip_lang', False):
             if not lang:
                 lang = get_language() or ""
             kwargs.update(lang__in=(lang, lang.split('-')[0], None, ''))

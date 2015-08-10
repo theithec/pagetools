@@ -58,7 +58,8 @@ class MenuManager(TreeManager, LangManager):
         menu, created = TreeManager.get_or_create(
             self,
             title=title,
-            parent=None
+            parent=None,
+            **kwargs
         )
         if not created:
             raise ValidationError(
@@ -103,7 +104,8 @@ def delete_content(sender, **kwargs):
             content_type=ContentType.objects.get_for_model(sender),
             object_id=kwargs['instance'].pk
         )
-        e.delete()
+        if e:
+            e.delete()
     except:
         pass
 pre_delete.connect(delete_content)
@@ -126,8 +128,8 @@ class MenuCache(models.Model):
 
 
 class Menu(MenuEntry):
-    def add_child(self, obj, title=''):
-        self.objects.add_child(self, obj, title)
+    #def add_child(self, obj, title=''):
+    #    self.objects.add_child(self, obj, title)
 
     def children_list(self, mtree=None, children=None, for_admin=False, dict_parent=None):
         filterkwargs = {'parent': self}

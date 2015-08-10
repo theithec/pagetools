@@ -38,7 +38,7 @@ class MenuAdmin(TinyMCEMixin, ConcurrentModelAdmin):
                         get_classname(c)
                     ) for c in entrieable_models()
                 ])
-            menu_obj = Menu.objects.lfilter(pk=obj.pk)[0]
+            menu_obj = Menu.objects.filter(pk=obj.pk)[0]
             context['menu_entries'] = menu_obj.children_list(for_admin=True)
 
         return admin.ModelAdmin.render_change_form(
