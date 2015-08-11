@@ -16,6 +16,16 @@ setup(
     include_package_data=True,
     license='BSD License',  # example license
     description='A set of Django apps to to provide some cms-like features',
+    install_requires = [
+        'django==1.7',
+        'django-grappelli==2.65',
+        'django-filebrowser=3.5',
+        'django-mptt',
+        'django-crispy-forms',
+        'django-concurrency',
+
+    ],
+
     long_description=README,
     author='Tim Heithecker',
     author_email='tim.heithecker@gmail.com',
