@@ -20,9 +20,9 @@ setup(
         'django==1.7',
         'django-grappelli==2.65',
         'django-filebrowser==3.5',
-        'django-mptt',
-        'django-crispy-forms',
-        'django-concurrency',
+        'django-mptt==0.7.4',
+        'django-crispy-forms==1.4.0',
+        'django-concurrency==0.9',
 
     ],
 
