@@ -23,7 +23,7 @@ setup(
         'django-crispy-forms==1.4.0',
         'django-concurrency==0.9',
         'awesome-slugify==1.4',
-
+        'beautifulsoup4==4.4.0',
     ],
 
     long_description=README,
