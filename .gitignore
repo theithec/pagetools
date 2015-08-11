@@ -6,6 +6,7 @@
 /dist/
 /dist/*
 /django_pagetools.egg-info/
+/old
 .project
 .pydevproject
 .settings
