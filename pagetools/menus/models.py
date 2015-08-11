@@ -256,6 +256,7 @@ class Menu(MenuEntry):
         c.save()
         return s
 
+
     class Meta:
         verbose_name = _('Menu')
         proxy = True

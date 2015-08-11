@@ -24,7 +24,7 @@ class MenuAdmin(TinyMCEMixin, ConcurrentModelAdmin):
     exclude = ('parent', 'enabled', 'content_type',
                'object_id', 'slugs')
     save_as = True
-
+    list_display = ("title", "lang")
     def get_queryset(self, request):
         return Menu.objects.root_nodes()
 
