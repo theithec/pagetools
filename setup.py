@@ -23,6 +23,7 @@ setup(
         'django-mptt==0.7.4',
         'django-crispy-forms==1.4.0',
         'django-concurrency==0.9',
+        'django-model-utils==2.3.1',
 
     ],
 
