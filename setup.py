@@ -19,7 +19,7 @@ setup(
     install_requires = [
         'django==1.7',
         'django-grappelli==2.65',
-        'django-filebrowser=3.5',
+        'django-filebrowser==3.5',
         'django-mptt',
         'django-crispy-forms',
         'django-concurrency',
