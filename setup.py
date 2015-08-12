@@ -5,7 +5,6 @@ from setuptools import setup, find_packages
 # from distutils.core import setup
 README = open(os.path.join(os.path.dirname(__file__), 'README.md')).read()
 
-
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 from version import get_git_version
 
@@ -19,12 +18,12 @@ setup(
     install_requires = [
         'django==1.7',
         'django-grappelli==2.6.5',
-        'django-filebrowser==3.5',
+        'django-filebrowser==3.5.7',
         'django-mptt==0.7.4',
         'django-crispy-forms==1.4.0',
         'django-concurrency==0.9',
         'awesome-slugify==1.4',
-
+        'beautifulsoup4==4.4.0',
     ],
 
     long_description=README,
