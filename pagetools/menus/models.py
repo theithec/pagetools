@@ -16,7 +16,7 @@ from django.utils.text import slugify
 from django.utils.translation import ugettext_lazy as _
 from django.template.context import Context
 
-from concurrency.fields import IntegerVersionField
+#from concurrency.fields import IntegerVersionField
 from collections import defaultdict
 
 from mptt.fields import TreeForeignKey
@@ -83,7 +83,7 @@ class MenuEntry(MPTTModel, LangModel):
     enabled = models.BooleanField(default=False)
     objects = MenuManager()
     #tree = MenuManager()
-    version = IntegerVersionField()
+    #version = IntegerVersionField()
 
     def get_entry_classname(self):
         return get_classname(self.content_object.__class__)

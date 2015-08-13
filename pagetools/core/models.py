@@ -3,7 +3,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _, get_language
 from model_utils.models import StatusModel, TimeStampedModel
 from model_utils.choices import Choices
-from concurrency.fields import IntegerVersionField
+#from concurrency.fields import IntegerVersionField
 from . import settings as ptsettings
 
 
@@ -70,7 +70,6 @@ class PagelikeModel(TimeStampedModel, PublishableLangModel):
     '''This may everything that inclines a detail_view'''
     title = models.CharField(_('Title'), max_length=255)
     slug = models.SlugField(_('Slug'), max_length=255)
-    version = IntegerVersionField()
 
     def get_absolute_url(self):
         return '/%s' % self.slug
