@@ -6,7 +6,7 @@ Created on 14.12.2013
 from django.conf import settings
 from django.contrib import admin
 
-
+#
 def fieldset_copy(fieldset):
     '''ugly helper for reuse of filedsets'''
     fscopy = (fieldset[0],
