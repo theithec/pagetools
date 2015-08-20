@@ -37,15 +37,6 @@ class WidgetPagelikeView(WidgetViewMixin, BasePagelikeView):
                 pass
             return pt
 
-    def get_slug(self):
-        try:
-            return self.get_object().slug
-        except AttributeError:
-            try:
-                return super(BasePagelikeView, self).get_slug()
-            except AttributeError:
-                return slugify(self.__class__.__name__)
-
     # reduce queries
     def get_object(self):
         if not getattr(self, 'object', None):

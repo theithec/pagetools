@@ -15,7 +15,7 @@ from django.http.response import HttpResponseRedirect
 from django.utils.translation import ugettext_lazy as _
 #from concurrency.admin import  ConcurrentModelAdmin
 from pagetools.core.admin import TinyMCEMixin
-from pagetools.menus.models import MenuEntry, Menu, Link, ViewLink
+from pagetools.menus.models import MenuEntry, Menu, Link, ViewLink, MenuCache
 from pagetools.menus.utils import entrieable_models
 from pagetools.core.utils import get_adminadd_url, get_classname
 
@@ -184,4 +184,4 @@ admin.site.register(Menu, MenuAdmin)
 admin.site.register(Link, EntrieableAdmin)
 admin.site.register(ViewLink, EntrieableAdmin)
 admin.site.register(MenuEntry, MenuEntryAdmin)
-
+admin.site.register(MenuCache)
