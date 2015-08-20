@@ -3,6 +3,7 @@ Created on 20.12.2013
 
 @author: lotek
 '''
+
 from django.conf import settings
 from django.template.defaultfilters import slugify
 from django.views.generic import View
@@ -18,18 +19,18 @@ class BasePagelikeView(View):
     def get_context_data(self, *args, **kwargs):
         kwargs = super(BasePagelikeView, self).get_context_data(**kwargs)
         sel = kwargs.get('selected', [])
-        sel.append(self.get_slug())
+        sel.append(self.get_menukey())
         kwargs['selected'] = sel
         return kwargs
 
-    def get_slug(self):
+    def get_menukey(self):
         try:
             return self.get_object().slug
         except AttributeError:
             try:
-                return super(BasePagelikeView, self).get_slug()
+                return self.menukey
             except AttributeError:
-                return slugify(self.__class__.__name__)
+                return slugify(self.__class__.__name__.lower())
 
     # reduce queries
     def get_object(self):

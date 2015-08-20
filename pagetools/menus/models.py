@@ -43,6 +43,7 @@ class MenuManager(TreeManager, LangManager):
         kwargs['content_type'] = ContentType.objects.get_for_model(
             content_object)
         kwargs['object_id'] = content_object.pk
+        kwargs['slugs'] = '%s' % content_object
         try:
             created = False
             entry, created = TreeManager.get_or_create(self, **kwargs)
@@ -89,8 +90,9 @@ class MenuEntry(MPTTModel, LangModel):
         return get_classname(self.content_object.__class__)
 
     def __str__(self):
-        return self.title
-
+        # return self.title
+        return '%s%s' % (self.title,
+                          (' (%s)' % self.lang) if self.lang else '')
     def get_absolute_url(self):
         return self.content_object.get_absolute_url()
 
@@ -170,7 +172,8 @@ class Menu(MenuEntry):
                 node_obj = obj
 
                 cslugs += node.slugs.split(' ') if node.slugs else [
-                    getattr(node_obj, 'slug', slugify('%s' % node_obj))
+                    getattr(node_obj, 'slug',
+                        getattr(node_obj, 'menukey', slugify('%s' % node_obj)))
                 ]
                 dict_parent = d
                 while dict_parent:
@@ -235,9 +238,6 @@ class Menu(MenuEntry):
             raise ValidationError({'__all__': ('Language Error',)})
         return super(Menu, self).full_clean(*args, **kwargs)
 
-    def __str__(self):
-        return '%s%s' % (self.title,
-                          (' (%s)' % self.lang) if self.lang else '')
 
     def update_cache(self):
         self.menucache.cache = self._render_no_sel()
@@ -286,7 +286,6 @@ class Link(AbstractLink):
 
 class ViewLink(AbstractLink):
     name = models.CharField(_('Name'), max_length=255)
-
     def __init__(self, *args, **kwargs):
         super(ViewLink, self).__init__(*args, **kwargs)
         from pagetools.menus.utils import _entrieable_reverse_names
