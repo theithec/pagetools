@@ -133,6 +133,29 @@ class Menu(MenuEntry):
     #def add_child(self, obj, title=''):
     #    self.objects.add_child(self, obj, title)
 
+    def add_child(self, d, childentry, obj, dict_parent):
+        if not getattr(obj, 'enabled', True):
+           return
+        url = childentry.get_absolute_url()
+        d['entry_url'] = url
+        cslugs = []
+        node = childentry
+        node_obj = obj
+
+        cslugs += node.slugs.split(' ') if node.slugs else [
+            getattr(node_obj, 'slug',
+                getattr(node_obj, 'menukey', slugify('%s' % node_obj)))
+        ]
+        curr_dict = d
+        #print("c", childentry) #, cslugs)
+        while  curr_dict:
+            curr_dict['select_class_marker'] = curr_dict.get(
+                'select_class_marker', '')
+            curr_dict['select_class_marker'] += ''.join(
+                '%(sel_' + s + ')s' for s in cslugs
+            )
+            curr_dict = curr_dict['dict_parent']
+
     def children_list(self, mtree=None, children=None, for_admin=False, dict_parent=None):
         filterkwargs = {'parent': self}
         if not for_admin:
@@ -162,27 +185,7 @@ class Menu(MenuEntry):
                     'entry_enabled': "checked" if childentry.enabled else ""
                 })
             else:
-                if not getattr(obj, 'enabled', True):
-                    continue
-                url = childentry.get_absolute_url()
-                d['entry_url'] = url
-                cslugs = []
-                node = childentry
-                node_obj = obj
-
-                cslugs += node.slugs.split(' ') if node.slugs else [
-                    getattr(node_obj, 'slug',
-                        getattr(node_obj, 'menukey', slugify('%s' % node_obj)))
-                ]
-                curr_dict = d #['dict_parent']
-                #print("c", childentry) #, cslugs)
-                while  curr_dict:
-                    curr_dict['select_class_marker'] = curr_dict.get(
-                        'select_class_marker', '')
-                    curr_dict['select_class_marker'] += ''.join(
-                        '%(sel_' + s + ')s' for s in cslugs
-                    )
-                    curr_dict = curr_dict['dict_parent']
+                self.add_child(d, childentry, obj, dict_parent)
             if cc:
                 d['children'] = self.children_list(children=cc, for_admin=for_admin, dict_parent=d)
             mtree.append(d)
@@ -206,6 +209,7 @@ class Menu(MenuEntry):
         x = t % sel_entries
         #print("sel", selected, sel_entries, t)
         return x
+
 
     def update_entries(self, orderstr):
         '''orderstr = jquery.mjs.nestedSortable.js / serialize()'''
