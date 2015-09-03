@@ -141,49 +141,48 @@ class Menu(MenuEntry):
             mtree = []
         if children is None:
             children = self.get_children().filter(**filterkwargs)
-
-        for order_id, c in enumerate(children):
+        for order_id, childentry in enumerate(children):
             d = {
-                'entry_title': c.title,
+                'entry_title': childentry.title,
             }
             d['dict_parent'] = dict_parent
-            obj = c.content_object
-            cc = c.get_children().filter(parent=c)
+            obj = childentry.content_object
+            cc = childentry.get_children().filter(parent=childentry)
             if for_admin:
                 reverseurl = get_adminedit_url(obj)
                 d.update({
                     'entry_order_id': order_id,
-                    'entry_pk': c.pk,
+                    'entry_pk': childentry.pk,
                     'entry_del_url': urlresolvers.reverse(
-                        'admin:menus_menuentry_delete', args=(c.pk,)),
+                        'admin:menus_menuentry_delete', args=(childentry.pk,)),
                     'obj_admin_url': reverseurl,
                     'obj_classname': get_classname(obj.__class__),
                     'obj_title': obj,
                     'obj_status': 'published' if getattr(obj, 'enabled', True) else 'draft',
-                    'entry_enabled': "checked" if c.enabled else ""
+                    'entry_enabled': "checked" if childentry.enabled else ""
                 })
             else:
                 if not getattr(obj, 'enabled', True):
                     continue
-                url = c.get_absolute_url()
+                url = childentry.get_absolute_url()
                 d['entry_url'] = url
                 cslugs = []
-                node = c
+                node = childentry
                 node_obj = obj
 
                 cslugs += node.slugs.split(' ') if node.slugs else [
                     getattr(node_obj, 'slug',
                         getattr(node_obj, 'menukey', slugify('%s' % node_obj)))
                 ]
-                dict_parent = d
-                while dict_parent:
-                    dict_parent['select_class_marker'] = ''.join(
+                curr_dict = d #['dict_parent']
+                #print("c", childentry) #, cslugs)
+                while  curr_dict:
+                    curr_dict['select_class_marker'] = curr_dict.get(
+                        'select_class_marker', '')
+                    curr_dict['select_class_marker'] += ''.join(
                         '%(sel_' + s + ')s' for s in cslugs
                     )
-                    try:
-                        dict_parent = dict_parent['dict_parent']
-                    except AttributeError:
-                        break
+                    curr_dict = curr_dict['dict_parent']
             if cc:
                 d['children'] = self.children_list(children=cc, for_admin=for_admin, dict_parent=d)
             mtree.append(d)
@@ -205,6 +204,7 @@ class Menu(MenuEntry):
         else:
             t = self._render_no_sel()
         x = t % sel_entries
+        #print("sel", selected, sel_entries, t)
         return x
 
     def update_entries(self, orderstr):
