@@ -92,6 +92,7 @@ class BasePage(IncludedForm, AuthPage, PagelikeModel):
 
     class Meta(PagelikeModel.Meta):
         verbose_name = _('Page')
+        verbose_name_plural = _('Pages')
         abstract = True
 
 
