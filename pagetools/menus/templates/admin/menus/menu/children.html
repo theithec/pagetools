@@ -10,6 +10,7 @@
 			<a href="{{ c.obj_admin_url }}?menu={{ original.pk }}"
 				class="obj_admin_link entry_{{ c.obj_status}}">{{ c.obj_classname }}: {{ c.obj_title }}
 			</a>
+		    <a class="change_entry" href="{{ c.entry_change_url }}">[entry]</a> 
 		</div>
 		<a class="del_entry" href="{{ c.entry_del_url }}">X</a> 
 		{% if c.children %} {% with template_name="admin/menus/menu/children.html" %}
