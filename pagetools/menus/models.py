@@ -147,7 +147,6 @@ class Menu(MenuEntry):
                 getattr(node_obj, 'menukey', slugify('%s' % node_obj)))
         ]
         curr_dict = d
-        #print("c", childentry) #, cslugs)
         while  curr_dict:
             curr_dict['select_class_marker'] = curr_dict.get(
                 'select_class_marker', '')
@@ -156,7 +155,7 @@ class Menu(MenuEntry):
             )
             curr_dict = curr_dict['dict_parent']
 
-    def children_list(self, mtree=None, children=None, for_admin=False, dict_parent=None):
+    def children_list(self, mtree=None, children=None, for_admin=False, dict_parent=None, order_id=0):
         filterkwargs = {'parent': self}
         if not for_admin:
             filterkwargs['enabled'] = True
@@ -164,7 +163,7 @@ class Menu(MenuEntry):
             mtree = []
         if children is None:
             children = self.get_children().filter(**filterkwargs)
-        for order_id, childentry in enumerate(children):
+        for childentry in children:
             d = {
                 'entry_title': childentry.title,
             }
@@ -186,8 +185,10 @@ class Menu(MenuEntry):
                 })
             else:
                 self.add_child(d, childentry, obj, dict_parent)
+            order_id += 1
             if cc:
-                d['children'] = self.children_list(children=cc, for_admin=for_admin, dict_parent=d)
+                d['children'] = self.children_list(
+                    children=cc, for_admin=for_admin, dict_parent=d, order_id=order_id)
             mtree.append(d)
         return mtree
 
@@ -207,7 +208,6 @@ class Menu(MenuEntry):
         else:
             t = self._render_no_sel()
         x = t % sel_entries
-        #print("sel", selected, sel_entries, t)
         return x
 
 

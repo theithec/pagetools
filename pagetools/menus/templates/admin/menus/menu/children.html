@@ -1,6 +1,6 @@
 <ol {{ cls }}>
 	{% for c in children %}
-	<li id="e_{{c.entry_pk}}" class="grp-module  ">
+	<li id="e_{{c.entry_pk}}" class="grp-module">
 		<div>
 			<input name="entry-order-id-{{c.entry_order_id}}" type="hidden"
 				value="{{ c.entry_pk}}" />
@@ -13,7 +13,8 @@
 		</div>
 		<a class="del_entry" href="{{ c.entry_del_url }}">X</a> 
 		{% if c.children %} {% with template_name="admin/menus/menu/children.html" %}
-		{% include template_name with children=c.children only %}{% endwith %} {% endif %}
+		{% include template_name with children=c.children   %}{% endwith %} {% endif %}
+
 	</li>
 	{% endfor %}
 </ol>
