@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-09-06 15:41+0200\n"
-"PO-Revision-Date: 2015-09-06 15:48+0100\n"
+"PO-Revision-Date: 2015-09-07 14:32+0100\n"
 "Last-Translator: slart@aktivix.org <slart@aktivix.org>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
@@ -44,7 +44,7 @@ msgstr "Dein Name"
 
 #: forms.py:117
 msgid "E-Mail"
-msgstr "E-Mail gesendet"
+msgstr "E-Mail"
 
 #: forms.py:119
 msgid "Message"
