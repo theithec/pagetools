@@ -5,7 +5,6 @@ Created on 14.12.2013
 '''
 
 import sys
-import os
 from django import forms
 from django.conf import settings
 from django.contrib import admin
@@ -13,7 +12,6 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
 from django.http.response import HttpResponseRedirect
 from django.utils.translation import ugettext_lazy as _
-#from concurrency.admin import  ConcurrentModelAdmin
 from django.template.loader import render_to_string
 
 from pagetools.core.admin import TinyMCEMixin
@@ -27,25 +25,18 @@ class MenuChildrenWidget(forms.Widget):
         self.instance = kwargs.pop('instance', None)
         super(MenuChildrenWidget, self).__init__(*args, **kwargs)
 
-    def render(self,*args, **kwargs):
+    def render(self, *args, **kwargs):
         m = Menu.objects.get(pk=self.instance.pk)
-        return render_to_string("menus/admin/menuentries.html",
-                                {'children':m.children_list(for_admin=True),
-             'cls': 'class="sortable grp-grp-items sortable ui-sortable mjs-nestedSortable-branch mjs-nestedSortable-expanded"'}
-                                )
-        return '''
-<div class="grp-module grp-dashboard-module menu-entries ui-sortable">
-    %s
-</div>
-<input name="entry-order" value="" type="hidden" />
-            ''' % render_to_string(
-            'admin/menus/menu/children.html',
-            {'children':m.children_list(for_admin=True),
-             'cls': 'class="sortable grp-grp-items"'})
+        return render_to_string(
+            "menus/admin/menuentries.html",
+            {'children': m.children_list(for_admin=True),
+             'cls': 'class="sortable grp-grp-items sortable ui-sortable ' +
+                    'mjs-nestedSortable-branch mjs-nestedSortable-expanded"'})
 
 
 class MenuForm(forms.ModelForm):
     children = forms.Field()
+
     def __init__(self, *args, **kwargs):
         super(MenuForm, self).__init__(*args, **kwargs)
         if kwargs.get('instance', False):
@@ -53,14 +44,15 @@ class MenuForm(forms.ModelForm):
                 required=False,
                 widget=MenuChildrenWidget(instance=kwargs['instance']))
 
-class MenuAdmin(TinyMCEMixin, admin.ModelAdmin): #, ConcurrentModelAdmin):
-    #change_form_template = "admin/change_form_help_text.html"
+
+class MenuAdmin(TinyMCEMixin, admin.ModelAdmin):
     exclude = ('parent', 'enabled', 'content_type',
                'object_id', 'slugs')
     save_as = True
     list_display = ("title", "lang")
     form = MenuForm
     readonly_fields = ('addable_entries',)
+
     def addable_entries(self, obj, **kwargs):
         ems = entrieable_models()
         txt = "<ul>"
@@ -73,8 +65,8 @@ class MenuAdmin(TinyMCEMixin, admin.ModelAdmin): #, ConcurrentModelAdmin):
         return txt+"</ul>"
 
     addable_entries.short_description = _("Add")
-        # in this example, we have used HTML tags in the output
     addable_entries.allow_tags = True
+
     def get_queryset(self, request):
         return Menu.objects.root_nodes()
 
@@ -127,14 +119,16 @@ class MenuAdmin(TinyMCEMixin, admin.ModelAdmin): #, ConcurrentModelAdmin):
 
     class Meta:
         model = Menu
+
     class Media:
-        js =  (
+        js = (
             "js/jquery/dist/jquery.min.js",
             "js/jquery-ui/jquery-ui.min.js",
             "pagetools/admin/js/jquery.mjs.nestedSortable.js",
             'pagetools/admin/js/menuentries.js',
         )
         css = {'all': ('pagetools/admin/css/menuentries.css', )}
+
 
 class EntrieableForm(forms.ModelForm):
     menus = forms.Field()
@@ -166,10 +160,9 @@ class EntrieableForm(forms.ModelForm):
             fmenu_ids = [int(m) for m in cmp_data.pop('menus', [])]
             self.sel_menus = Menu.objects.filter(id__in=fmenu_ids)
             existing_menuentries_for_obj = MenuEntry.objects.filter(
-                    content_type=ContentType.objects.get_for_model(
-                        obj.__class__,
-                    ),
-                    object_id= obj.pk
+                content_type=ContentType.objects.get_for_model(
+                    obj.__class__,),
+                object_id=obj.pk
             )
             self.existing_menuentries = []
             for e in existing_menuentries_for_obj:
@@ -188,12 +181,12 @@ class EntrieableAdmin(admin.ModelAdmin):
         super(EntrieableAdmin, self).save_related(request, form,
                                                   formsets, change)
         obj = form.instance
-        if not 'menus' in form.changed_data:
+        if 'menus' not in form.changed_data:
             return
         selected_menus = form.sel_menus
         existing_menuentries = form.existing_menuentries
         all_menus = Menu.objects.root_nodes()
-        for  am in all_menus:
+        for am in all_menus:
             found = None
             for e in existing_menuentries:
                 if e.get_root().pk == am.pk:
@@ -207,8 +200,6 @@ class EntrieableAdmin(admin.ModelAdmin):
                 if title:
                     kwargs['title'] = title
                 e = Menu.objects.add_child(root, form.instance, **kwargs)
-
-
                 e.move_to(root, 'last-child')
                 e.save()
             elif found and not is_selected:
@@ -235,7 +226,7 @@ class EntrieableAdmin(admin.ModelAdmin):
 
 class MenuEntryAdmin(admin.ModelAdmin):
     list_display = ('title',  'lang', 'enabled')
-    list_filter = ( 'lang','enabled',)
+    list_filter = ('lang', 'enabled',)
 
 admin.site.register(Menu, MenuAdmin)
 admin.site.register(Link, EntrieableAdmin)

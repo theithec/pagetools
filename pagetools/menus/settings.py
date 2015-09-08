@@ -19,5 +19,5 @@ ENTRIEABLE_MODELS = getattr(
 MENU_TEMPLATE = getattr(
     settings,
     'PT_MENU_TEMPLATE',
-    'menus/menu.html'
+    'menu.html'
 )

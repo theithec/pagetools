@@ -38,3 +38,14 @@ class TC1Tests(TestCase):
         self.menu.update_cache()
         mr = MenuRenderer('foo', 'm1').render({})
         self.assertTrue(self.p1.slug in mr)
+
+    def test_hidden_subentries(self):
+
+        self.l3 = Link.objects.create(url='/foo3')
+        self.e3 = Menu.objects.add_child(self.e2, self.l3, enabled=False)
+
+        mr = MenuRenderer('foo', 'm1').render({})
+        self.assertNotIn("/foo3", mr)
+        print()
+        print("MR2")
+        print(mr)

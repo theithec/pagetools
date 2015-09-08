@@ -22,7 +22,7 @@
        </div>
 
 		{% if c.children %} {% with template_name="menus/admin/menuentries.html" %}
-		{% include template_name with children=c.children only  %}{% endwith %} {% endif %}
+		{% include template_name with children=c.children  only %}{% endwith %} {% endif %}
     </li>
     {% endfor %}
 </ol>

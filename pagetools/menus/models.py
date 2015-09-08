@@ -16,7 +16,6 @@ from django.utils.text import slugify
 from django.utils.translation import ugettext_lazy as _
 from django.template.context import Context
 
-#from concurrency.fields import IntegerVersionField
 from collections import defaultdict
 
 from mptt.fields import TreeForeignKey
@@ -89,8 +88,9 @@ class MenuEntry(MPTTModel, LangModel):
 
     def __str__(self):
         # return self.title
-        return '%s%s' % (self.title,
-                          (' (%s)' % self.lang) if self.lang else '')
+        return '%s%s' % (
+            self.title, (' (%s)' % self.lang) if self.lang else '')
+
     def get_absolute_url(self):
         return self.content_object.get_absolute_url()
 
@@ -128,69 +128,6 @@ class MenuCache(models.Model):
 
 
 class Menu(MenuEntry):
-    #def add_child(self, obj, title=''):
-    #    self.objects.add_child(self, obj, title)
-
-    def add_child(self, d, childentry, obj, dict_parent):
-        if not getattr(obj, 'enabled', True):
-           return
-        url = childentry.get_absolute_url()
-        d['entry_url'] = url
-        cslugs = []
-        node = childentry
-        node_obj = obj
-
-        cslugs += node.slugs.split(' ') if node.slugs else [
-            getattr(node_obj, 'slug',
-                getattr(node_obj, 'menukey', slugify('%s' % node_obj)))
-        ]
-        curr_dict = d
-        while  curr_dict:
-            curr_dict['select_class_marker'] = curr_dict.get(
-                'select_class_marker', '')
-            curr_dict['select_class_marker'] += ''.join(
-                '%(sel_' + s + ')s' for s in cslugs
-            )
-            curr_dict = curr_dict['dict_parent']
-
-    def children_list(self, mtree=None, children=None, for_admin=False, dict_parent=None, order_id=0):
-        filterkwargs = {'parent': self}
-        if not for_admin:
-            filterkwargs['enabled'] = True
-        if mtree is None:
-            mtree = []
-        if children is None:
-            children = self.get_children().filter(**filterkwargs)
-        for childentry in children:
-            d = {
-                'entry_title': childentry.title,
-            }
-            d['dict_parent'] = dict_parent
-            obj = childentry.content_object
-            cc = childentry.get_children().filter(parent=childentry)
-            if for_admin:
-                reverseurl = get_adminedit_url(obj)
-                d.update({
-                    'entry_order_id': order_id,
-                    'entry_pk': childentry.pk,
-                    'entry_del_url': urlresolvers.reverse(
-                        'admin:menus_menuentry_delete', args=(childentry.pk,)),
-                    'entry_change_url': urlresolvers.reverse(
-                        'admin:menus_menuentry_change', args=(childentry.pk,)),
-                    'obj_admin_url': reverseurl,
-                    'obj_classname': get_classname(obj.__class__),
-                    'obj_title': obj,
-                    'obj_status': 'published' if getattr(obj, 'enabled', True) else 'draft',
-                    'entry_enabled': "checked" if childentry.enabled else ""
-                })
-            else:
-                self.add_child(d, childentry, obj, dict_parent)
-            order_id += 1
-            if cc:
-                d['children'] = self.children_list(
-                    children=cc, for_admin=for_admin, dict_parent=d, order_id=order_id)
-            mtree.append(d)
-        return mtree
 
     def _render_no_sel(self):
         t = template.loader.get_template(MENU_TEMPLATE)
@@ -242,7 +179,6 @@ class Menu(MenuEntry):
             raise ValidationError({'__all__': ('Language Error',)})
         return super(Menu, self).full_clean(*args, **kwargs)
 
-
     def update_cache(self):
         self.menucache.cache = self._render_no_sel()
         self.menucache.save()
@@ -260,6 +196,77 @@ class Menu(MenuEntry):
         c.save()
         return s
 
+    def _with_child(self, dict_, entry, entry_obj, dict_parent):
+        if not getattr(entry_obj, 'enabled', True):
+            return
+        dict_['entry_url'] = entry.get_absolute_url()
+        cslugs = []
+
+        cslugs += entry.slugs.split(' ') if entry.slugs else [
+            getattr(
+                entry_obj,
+                'slug',
+                getattr(entry_obj, 'menukey', slugify('%s' % entry_obj)))
+        ]
+        curr_dict = dict_
+        while curr_dict:
+            curr_dict['select_class_marker'] = curr_dict.get(
+                'select_class_marker', '')
+            curr_dict['select_class_marker'] += ''.join(
+                '%(sel_' + s + ')s' for s in cslugs
+            )
+            curr_dict = curr_dict['dict_parent']
+        return dict_
+
+    def children_list(self, mtree=None, children=None, for_admin=False,
+                      dict_parent=None):
+        self.cnt = 0  # a non-recursive counter for a recursive fuction
+
+        def _children_list(mtree=None, children=None, for_admin=False,
+                           dict_parent=None):
+            filterkwargs = {'parent': self}
+            if not for_admin:
+                filterkwargs['enabled'] = True
+            if mtree is None:
+                mtree = []
+            if children is None:
+                children = self.get_children().filter(**filterkwargs)
+            for childentry in children:
+                d = {
+                    'entry_title': childentry.title,
+                }
+                d['dict_parent'] = dict_parent
+                obj = childentry.content_object
+                filterkwargs['parent'] = childentry
+                cc = childentry.get_children().filter(**filterkwargs)
+                if for_admin:
+                    reverseurl = get_adminedit_url(obj)
+                    d.update({
+                        'entry_order_id': self.cnt,
+                        'entry_pk': childentry.pk,
+                        'entry_del_url': urlresolvers.reverse(
+                            'admin:menus_menuentry_delete',
+                            args=(childentry.pk, )),
+                        'entry_change_url': urlresolvers.reverse(
+                            'admin:menus_menuentry_change',
+                            args=(childentry.pk,)),
+                        'obj_admin_url': reverseurl,
+                        'obj_classname': get_classname(obj.__class__),
+                        'obj_title': obj,
+                        'obj_status': 'published' if getattr(
+                            obj, 'enabled', True) else 'draft',
+                        'entry_enabled': "checked" if childentry.enabled else ""
+                    })
+                else:
+                    d = self._with_child(d, childentry, obj, dict_parent)
+                self.cnt += 1
+                if d and cc:
+                    d['children'] = _children_list(
+                        children=cc, for_admin=for_admin, dict_parent=d)
+                if d:
+                    mtree.append(d)
+            return mtree
+        return _children_list(for_admin=for_admin)
 
     class Meta:
         verbose_name = _('Menu')
@@ -290,6 +297,7 @@ class Link(AbstractLink):
 
 class ViewLink(AbstractLink):
     name = models.CharField(_('Name'), max_length=255)
+
     def __init__(self, *args, **kwargs):
         super(ViewLink, self).__init__(*args, **kwargs)
         from pagetools.menus.utils import _entrieable_reverse_names
