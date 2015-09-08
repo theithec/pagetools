@@ -119,3 +119,9 @@ STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 SITE_ID = 1
+PT_ENTRIEABLE_MODELS = (
+        ('pagetools.pages', 'Page'),
+        ('pagetools.menus', 'Link'),
+        ('pagetools.menus', 'ViewLink'),
+    )
+
