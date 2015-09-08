@@ -10,5 +10,5 @@ from pagetools.core.views import BasePagelikeView
 
 
 class GalleryView(BasePagelikeView, DetailView):
-    template_name = "pagetools/gallery/gallery.html"
+    template_name = "gallery/gallery.html"
     model = Gallery

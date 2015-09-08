@@ -29,7 +29,7 @@ class MenuChildrenWidget(forms.Widget):
 
     def render(self,*args, **kwargs):
         m = Menu.objects.get(pk=self.instance.pk)
-        return render_to_string("pagetools/menus/admin/menuentries.html",
+        return render_to_string("menus/admin/menuentries.html",
                                 {'children':m.children_list(for_admin=True),
              'cls': 'class="sortable grp-grp-items sortable ui-sortable mjs-nestedSortable-branch mjs-nestedSortable-expanded"'}
                                 )
