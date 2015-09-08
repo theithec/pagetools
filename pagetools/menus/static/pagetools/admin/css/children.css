@@ -45,10 +45,6 @@ text-decoration: line-through;
 
 
 
-pre {
-    width: 100%;
-    overflow: auto;
-}
 
 
 .placeholder {
@@ -94,7 +90,6 @@ li.mjs-nestedSortable-collapsed.mjs-nestedSortable-hovering div {
     width: 20px;
     display: none;
 }
-*/
 .sortable li.mjs-nestedSortable-collapsed > ol {
     display: none;
 }
@@ -103,14 +98,17 @@ li.mjs-nestedSortable-collapsed.mjs-nestedSortable-hovering div {
     display: inline-block;
 }
 
+*/
 .sortable span.ui-icon {
     display: inline-block;
     margin: 0;
     padding: 0;
 }
 
-.menuDiv {
+.sortable li div.menuDiv {
     background: #EBEBEB;
+    border: solid #787878 thin;
+    border-radius: 5px;
 }
 
 .menuEdit {
