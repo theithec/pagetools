@@ -1,0 +1,42 @@
+.menu-entries 	ol {
+	margin-left: 20px;
+}
+
+.sortable li div {
+	float: left;
+	margin-top: 8px;
+	width: 60%;
+	min-width: auto;
+	max-width: 800px;
+	padding: 8px;
+	background-image: linear-gradient(center top, #FFFFFF 0%, #F6F6F6 47%, #BCCCBC 100%);
+	border: thin solid gray;
+	cursor: move;
+}
+
+.sortable {
+	margin-bottom: 8px;
+}
+
+.sortable input[type=text] {
+	width: 18em;
+}
+
+.ui-sortable {
+	overflow: hidden;
+}
+
+.del_entry {
+	color: red;
+}
+
+.sortable li div.del {
+	background: red;
+}
+
+.entry_draft {
+	text-decoration: line-through;
+}
+.obj_admin_link { margin-left: 16px;}
+.change_entry {float: right;}
+

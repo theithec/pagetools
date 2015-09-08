@@ -26,10 +26,13 @@ class MenuChildrenWidget(forms.Widget):
     def __init__(self, *args, **kwargs):
         self.instance = kwargs.pop('instance', None)
         super(MenuChildrenWidget, self).__init__(*args, **kwargs)
-        print("Widget", args, kwargs)
 
     def render(self,*args, **kwargs):
         m = Menu.objects.get(pk=self.instance.pk)
+        return render_to_string("pagetools/menus/admin/menuentries.html",
+                                {'children':m.children_list(for_admin=True),
+             'cls': 'class="sortable grp-grp-items sortable ui-sortable mjs-nestedSortable-branch mjs-nestedSortable-expanded"'}
+                                )
         return '''
 <div class="grp-module grp-dashboard-module menu-entries ui-sortable">
     %s
@@ -51,6 +54,7 @@ class MenuForm(forms.ModelForm):
                 widget=MenuChildrenWidget(instance=kwargs['instance']))
 
 class MenuAdmin(TinyMCEMixin, admin.ModelAdmin): #, ConcurrentModelAdmin):
+    #change_form_template = "admin/change_form_help_text.html"
     exclude = ('parent', 'enabled', 'content_type',
                'object_id', 'slugs')
     save_as = True
@@ -61,19 +65,11 @@ class MenuAdmin(TinyMCEMixin, admin.ModelAdmin): #, ConcurrentModelAdmin):
         ems = entrieable_models()
         txt = "<ul>"
         for c in ems:
-            print("c",c)
-            adminaddurl = get_adminadd_url(c)
-            print("a",adminaddurl)
-            menuid = obj.pk
-            print("m",menuid)
-            clsname = get_classname(c)
-            print("c",clsname)
             txt += '<li><a href="%s?menu=%s">%s</a></li>' % (
-                adminaddurl,
-                menuid,
-                clsname,
+                get_adminadd_url(c),
+                obj.pk,
+                get_classname(c),
             )
-        print("txt",txt)
         return txt+"</ul>"
 
     addable_entries.short_description = _("Add")
@@ -131,8 +127,14 @@ class MenuAdmin(TinyMCEMixin, admin.ModelAdmin): #, ConcurrentModelAdmin):
 
     class Meta:
         model = Menu
-    class Media2:
-        js = ('%spagetools/admin/js/children.js' % settings.STATIC_URL , )
+    class Media:
+        js =  (
+            "jquery/dist/jquery.min.js",
+            "jquery-ui/jquery-ui.min.js",
+            "pagetools/admin/js/jquery.mjs.nestedSortable.js",
+            'pagetools/admin/js/children.js',
+        )
+        css = {'all': ('pagetools/admin/css/children.css', )}
 
 class EntrieableForm(forms.ModelForm):
     menus = forms.Field()

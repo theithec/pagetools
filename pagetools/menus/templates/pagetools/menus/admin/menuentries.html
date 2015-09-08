@@ -1,0 +1,69 @@
+<ol {{cls|safe}}>
+    {% for c in children %}
+    <li style="display: list-item;" class="mjs-nestedSortable-leaf" id="e_{{c.entry_pk }}">
+        <div class="menuDiv">
+            <div>
+			    <input name="entry-order-id-{{c.entry_order_id}}" type="hidden"
+				    value="{{ c.entry_pk}}" />
+                <a href="{{ c.obj_admin_url }}?menu={{ original.pk }}"
+				    class="obj_admin_link entry_{{ c.obj_status}}">{{ c.obj_classname }}: {{ c.obj_title }}
+                </a>    
+
+                <span title="Click to delete item." data-id="7" class="deleteMenu ui-icon ui-icon-closethick">
+            </div>
+            <input name="entry-text-{{c.entry_order_id}}" type="text"
+                value="{{ c.entry_title }}" /> 
+            <input  type="checkbox" name="entry-published-{{ c.entry_order_id }}" 
+                    value="1"{{ c.entry_enabled }}>Show
+		    <a class="change_entry" href="{{ c.entry_change_url }}">[entry]</a> 
+
+           <!-- 
+            </span>
+            <div id="menuEdit7" class="menuEdit hidden">
+                <p>
+                Content or form, or nothing here. Whatever you want.
+                </p>
+                </div>!-->
+        </div>
+    </li>
+    {% endfor %}
+   <!-- 
+    <li style="display: list-item;" class="mjs-nestedSortable-leaf" id="menuItem_7">
+        <div class="menuDiv">
+            <span>
+                <span data-id="7" class="itemTitle">f</span>
+                <span title="Click to delete item." data-id="7" class="deleteMenu ui-icon ui-icon-closethick">
+                    <span></span>
+                </span>
+            <div>bla</div>
+            <h3>hhhhhh</h3>
+            </span>
+            <div id="menuEdit7" class="menuEdit hidden">
+                <p>
+                Content or form, or nothing here. Whatever you want.
+                </p>
+        </div>
+    </li>
+    <li class="mjs-nestedSortable-leaf" id="menuItem_3">
+        <div class="menuDiv">
+            <span title="Click to show/hide children" class="disclose ui-icon ui-icon-minusthick">
+                <span></span>
+            </span>
+            <span title="Click to show/hide item editor" data-id="3" class="expandEditor ui-icon ui-icon-triangle-1-n">
+                <span></span>
+            </span>
+            <span>
+                <span data-id="3" class="itemTitle">b</span>
+                <span title="Click to delete item." data-id="3" class="deleteMenu ui-icon ui-icon-closethick">
+                    <span></span>
+                </span>
+            </span>
+            <div id="menuEdit3" class="menuEdit hidden">
+                <p>
+                Content or form, or nothing here. Whatever you want.
+                </p>
+            </div>
+        </div>
+    </li>
+                </div>!-->
+</ol>
