@@ -5,7 +5,7 @@ Created on 14.12.2013
 '''
 
 import sys
-
+import os
 from django import forms
 from django.conf import settings
 from django.contrib import admin
@@ -14,17 +14,71 @@ from django.core.urlresolvers import reverse
 from django.http.response import HttpResponseRedirect
 from django.utils.translation import ugettext_lazy as _
 #from concurrency.admin import  ConcurrentModelAdmin
+from django.template.loader import render_to_string
+
 from pagetools.core.admin import TinyMCEMixin
 from pagetools.menus.models import MenuEntry, Menu, Link, ViewLink, MenuCache
 from pagetools.menus.utils import entrieable_models
 from pagetools.core.utils import get_adminadd_url, get_classname
 
 
+class MenuChildrenWidget(forms.Widget):
+    def __init__(self, *args, **kwargs):
+        self.instance = kwargs.pop('instance', None)
+        super(MenuChildrenWidget, self).__init__(*args, **kwargs)
+        print("Widget", args, kwargs)
+
+    def render(self,*args, **kwargs):
+        m = Menu.objects.get(pk=self.instance.pk)
+        return '''
+<div class="grp-module grp-dashboard-module menu-entries ui-sortable">
+    %s
+</div>
+<input name="entry-order" value="" type="hidden" />
+            ''' % render_to_string(
+            'admin/menus/menu/children.html',
+            {'children':m.children_list(for_admin=True),
+             'cls': 'class="sortable grp-grp-items"'})
+
+
+class MenuForm(forms.ModelForm):
+    children = forms.Field()
+    def __init__(self, *args, **kwargs):
+        super(MenuForm, self).__init__(*args, **kwargs)
+        if kwargs.get('instance', False):
+            self.fields['children'] = forms.Field(
+                required=False,
+                widget=MenuChildrenWidget(instance=kwargs['instance']))
+
 class MenuAdmin(TinyMCEMixin, admin.ModelAdmin): #, ConcurrentModelAdmin):
     exclude = ('parent', 'enabled', 'content_type',
                'object_id', 'slugs')
     save_as = True
     list_display = ("title", "lang")
+    form = MenuForm
+    readonly_fields = ('addable_entries',)
+    def addable_entries(self, obj, **kwargs):
+        ems = entrieable_models()
+        txt = "<ul>"
+        for c in ems:
+            print("c",c)
+            adminaddurl = get_adminadd_url(c)
+            print("a",adminaddurl)
+            menuid = obj.pk
+            print("m",menuid)
+            clsname = get_classname(c)
+            print("c",clsname)
+            txt += '<li><a href="%s?menu=%s">%s</a></li>' % (
+                adminaddurl,
+                menuid,
+                clsname,
+            )
+        print("txt",txt)
+        return txt+"</ul>"
+
+    addable_entries.short_description = _("Add")
+        # in this example, we have used HTML tags in the output
+    addable_entries.allow_tags = True
     def get_queryset(self, request):
         return Menu.objects.root_nodes()
 
@@ -77,7 +131,8 @@ class MenuAdmin(TinyMCEMixin, admin.ModelAdmin): #, ConcurrentModelAdmin):
 
     class Meta:
         model = Menu
-
+    class Media2:
+        js = ('%spagetools/admin/js/children.js' % settings.STATIC_URL , )
 
 class EntrieableForm(forms.ModelForm):
     menus = forms.Field()

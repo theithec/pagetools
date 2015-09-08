@@ -43,6 +43,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'crispy_forms',
     'mptt',
+    'debug_toolbar',
     'pagetools.core',
     'pagetools.menus',
     'pagetools.widgets',

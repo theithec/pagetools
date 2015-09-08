@@ -83,8 +83,6 @@ class MenuEntry(MPTTModel, LangModel):
     content_object = generic.GenericForeignKey('content_type', 'object_id')
     enabled = models.BooleanField(default=False)
     objects = MenuManager()
-    #tree = MenuManager()
-    #version = IntegerVersionField()
 
     def get_entry_classname(self):
         return get_classname(self.content_object.__class__)

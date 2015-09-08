@@ -1,4 +1,4 @@
-<ol {{ cls }}>
+<ol {{ cls|safe }}>
 	{% for c in children %}
 	<li id="e_{{c.entry_pk}}" class="grp-module">
 		<div>
