@@ -14,7 +14,7 @@ from .models import Page
 class IncludedFormView(DetailView, BaseFormView):
     '''
         expects in object
-        includable_foms = { 'name1': Form1,
+        includable_forms = { 'name1': Form1,
          [...]
         }
 
@@ -45,7 +45,8 @@ class IncludedFormView(DetailView, BaseFormView):
         else:
             messages.error(request, _("An error occured"))
             return self.form_invalid(form)
-    #todo rename
+
+    # todo rename
     def get_extras(self):
         d = {}
         try:

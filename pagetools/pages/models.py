@@ -42,7 +42,8 @@ class DynFormField(models.Model):
 
     def __init__(self, *args, **kwargs):
         super(DynFormField, self).__init__(*args, **kwargs)
-        self._meta.get_field_by_name('field_type')[0]._choices = self.get_fieldchoices()
+        self._meta.get_field_by_name(
+            'field_type')[0]._choices = self.get_fieldchoices()
 
     def get_fieldchoices(self):
         return (('CharField', _('TextField')),
@@ -53,6 +54,7 @@ class DynFormField(models.Model):
                 )
 
     def clean(self):
+        #self.to_field().clean()?
         pass
 
     def to_field(self):
