@@ -1,4 +1,4 @@
-{% load menus_tags %}
+{% load static menus_tags %}
 <html>
   <head>
     <title>pagetools-demo</title>
@@ -20,5 +20,8 @@
         {% endfor %}
         {% endwith %}
     </div>
+    {% block js %}
+    <script src="{% static "js/jquery/dist/jquery.min.js" %}"></script>
+    {% endblock js %}
   </body>
 </html>

@@ -129,12 +129,12 @@ class MenuAdmin(TinyMCEMixin, admin.ModelAdmin): #, ConcurrentModelAdmin):
         model = Menu
     class Media:
         js =  (
-            "jquery/dist/jquery.min.js",
-            "jquery-ui/jquery-ui.min.js",
+            "js/jquery/dist/jquery.min.js",
+            "js/jquery-ui/jquery-ui.min.js",
             "pagetools/admin/js/jquery.mjs.nestedSortable.js",
-            'pagetools/admin/js/children.js',
+            'pagetools/admin/js/menuentries.js',
         )
-        css = {'all': ('pagetools/admin/css/children.css', )}
+        css = {'all': ('pagetools/admin/css/menuentries.css', )}
 
 class EntrieableForm(forms.ModelForm):
     menus = forms.Field()
