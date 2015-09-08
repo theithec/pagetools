@@ -17,7 +17,7 @@ class MenuModule(DashboardModule):
 
     """
 
-    template = 'admin/dashboard_menu_module.html'
+    template = 'menus/admin/dashboard_menu_module.html'
 
     def __init__(self, *args, **kwargs):
         self.menu_title = kwargs.pop('menu_title', 'MainMenu')
