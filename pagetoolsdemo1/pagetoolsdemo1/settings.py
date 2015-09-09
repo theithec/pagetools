@@ -31,8 +31,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = (
-    'grappelli',
     'grappelli.dashboard',
+    'grappelli',
     'filebrowser',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -119,7 +119,12 @@ STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 SITE_ID = 1
+
 CRISPY_TEMPLATE_PACK = "bootstrap"
+from dashboard import CustomIndexDashboard
+GRAPPELLI_INDEX_DASHBOARD = 'dashboard.CustomIndexDashboard'
+
+
 PT_ENTRIEABLE_MODELS = (
         ('pagetools.pages', 'Page'),
         ('pagetools.menus', 'Link'),

@@ -1,5 +1,6 @@
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
+from django.utils.http import urlquote
 from grappelli.dashboard.modules import DashboardModule
 from grappelli.dashboard.utils import get_admin_site_name
 from pagetools.menus.models import Menu
@@ -40,7 +41,10 @@ class MenuModule(DashboardModule):
         try:
             self.menu = Menu.objects.lfilter().get(title=self.menu_title)
         except (Menu.DoesNotExist, MultipleObjectsReturned) as e:
-            self.pre_content = 'Menu not found'
+            self.pre_content = 'Menu not found <a href="%s?title=%s">create</a>' % (
+                reverse('admin:menus_menu_add'),
+                urlquote(self.menu_title)
+            )
             return
         context['menu'] = {
             'name': self.menu,

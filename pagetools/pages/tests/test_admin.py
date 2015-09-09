@@ -11,7 +11,7 @@ from django.test.testcases import TestCase
 from django.utils.text import slugify
 
 
-class Tests(TestCase):
+class AdminTests(TestCase):
 
     def setUp(self):
         self.client = Client()
