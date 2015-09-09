@@ -53,7 +53,8 @@ class Subscriber(BaseSubscriberMixin, LangModel):
 
     @classmethod
     def get_subscribers(cls,**kwargs):
-        return cls.objects.lfilter(is_activated=True)
+        return cls.objects.lfilter(is_activated=True,
+                                   lang=kwargs.pop('lang', None))
 
 _subscriber_model = None
 
@@ -68,7 +69,7 @@ _subscriber_model = None
 #            (1, 'Sent OK'),
 #            (2, 'Unexpected Error'),
 #        ))
-class QueuedEmail(models.Model):
+class QueuedEmail(LangModel):
 
     class Meta:
         abstract = False
@@ -107,6 +108,7 @@ class QueuedEmail(models.Model):
         if modelname == "Subscriber":
             modelname ="subscribe.Subscriber"
         SubsModel = get_model( *modelname.rsplit('.',1))
+        kwargs['lang'] = self.lang
         subscribers = SubsModel.get_subscribers(**kwargs)
 
         for s in subscribers:
