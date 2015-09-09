@@ -18,7 +18,6 @@ def to_queue(content, **kwargs):
         activate(lang)
     else:
         activate(orglang)
-    print ("lang", lang, orglang)
     site = Site.objects.get_current()
     msg = render_to_string('subscribe/msg.html', {
         'title': content['title'],
@@ -28,7 +27,8 @@ def to_queue(content, **kwargs):
     })
     qm = QueuedEmail(
         subject="%s %s" % (subs_settings.NEWS_SUBJECT_PREFIX, content['title']),
-        body=msg
+        body=msg,
+        lang=lang
     )
     qm.save(lang=lang)
     activate(orglang)

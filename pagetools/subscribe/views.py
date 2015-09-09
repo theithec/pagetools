@@ -13,7 +13,7 @@ from django.http.response import HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404
 from django.template.context import Context
 from django.utils import timezone
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import get_language, ugettext_lazy as _
 from django.contrib.sites.models import Site
 from django.contrib import messages
 from pagetools.subscribe.forms import SubscribeForm
@@ -32,7 +32,8 @@ def _subscribe(request):
         already_there = Subscriber.objects.filter(email=email)
         subs_msg = _('subscribed: %s') % email
         if not already_there:
-            s = Subscriber(email=email, is_activated=False)
+            s = Subscriber(email=email, is_activated=False,
+                           lang=get_language())
             site_url = "https://%s" % Site.objects.get_current().domain
             context = {
                 'site_name': Site.objects.get_current().name,
