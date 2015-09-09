@@ -20,7 +20,7 @@ class LangManager(models.Manager):
         if self.use_lang and not kwargs.pop('skip_lang', False):
             if lang is False:
                 lang = get_language() or ""
-        kwargs.update(lang__in=(lang, lang.split('-')[0], ''))
+            kwargs.update(lang__in=(lang, lang.split('-')[0], ''))
         return self.filter(**kwargs)
 
 

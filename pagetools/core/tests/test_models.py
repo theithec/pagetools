@@ -19,7 +19,7 @@ class PublishableLangModelTest(TestCase):
         self.inst_draft_en = ConcretePublishableLangModel.objects.create(status="draft", lang="en")
         self.inst_pub_nolang = ConcretePublishableLangModel.objects.create(status="published")
         self.inst_draft_nolang = ConcretePublishableLangModel.objects.create(status="draft")
-
+        
     def tearDown(self):
         activate(self.orglang)
 
@@ -27,8 +27,10 @@ class PublishableLangModelTest(TestCase):
         activate("de")
         self.assertEqual(len(ConcretePublishableLangModel.public.lfilter()),2)
 
+    def test_skip_lang(self):
+        self.assertEqual(len(ConcretePublishableLangModel.public.lfilter(skip_lang=True)),3)
 
-    def test_find_en__active(self):
+    def test_find_en_active(self):
         activate("en")
         self.assertEqual(len(ConcretePublishableLangModel.public.lfilter()),2)
 
@@ -41,6 +43,4 @@ class PublishableLangModelTest(TestCase):
     def test_find_nolang(self):
         activate("fr")
         self.assertEqual(len(ConcretePublishableLangModel.public.lfilter()),1)
-
-
 
