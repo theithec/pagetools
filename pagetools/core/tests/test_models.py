@@ -9,6 +9,7 @@ class ConcretePublishableLangModel(PublishableLangModel):
         return "%s:%s" % (self.lang, self.status)
 
 
+
 class PublishableLangModelTest(TestCase):
 
     def setUp(self):
