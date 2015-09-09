@@ -9,8 +9,8 @@ width: 60%;
 min-width: auto;
 max-width: 800px;
 padding: 8px;
-background-image: -moz-linear-gradient(center top, #FFFFFF 0%, #F6F6F6 47%, #BCCCBC 100%);
-border: thin solid gray;
+//background-image: -moz-linear-gradient(center top, #FFFFFF 0%, #F6F6F6 47%, #BCCCBC 100%);
+//border: thin solid gray;
 cursor: move;
 }
 
@@ -71,12 +71,7 @@ ol.sortable,ol.sortable ol {
 }
 
 .sortable li div {
-    border: 1px solid #d4d4d4;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
     cursor: move;
-    border-color: #D4D4D4 #D4D4D4 #BCBCBC;
     margin: 0;
     padding: 3px;
 }

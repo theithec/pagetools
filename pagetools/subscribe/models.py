@@ -2,22 +2,21 @@ import datetime
 from hashlib import sha224 as sha
 import smtplib
 import string
-#from importlib import import_module
-from django.core.mail import  get_connection
+
+from django.core.mail import get_connection
 from django.core.mail.message import EmailMessage
 from django.db import models
-#from djan)go.db.models import get_model
 from django.db.models.loading import get_model
-
 from django.core.urlresolvers import reverse
 from django.utils import timezone
 from django.utils.crypto import random
 from django.utils.http import urlquote
 from django.utils.translation import ugettext_lazy as _
 from django.db.utils import ProgrammingError
-from pagetools.core.models import  LangModel, LangManager
-from . import settings as subs_settings
 
+from pagetools.core.models import LangModel, LangManager
+
+from . import settings as subs_settings
 from .base_models import BaseSubscriberMixin
 
 
@@ -27,8 +26,8 @@ def _mk_key():
     try:
         if Subscriber.objects.filter(key=k):
             k = _mk_key()
-    except ProgrammingError:
-        pass#        k = _mk_key()
+    except ProgrammingError:  # due migrations
+        pass
     return k
 
 
@@ -36,6 +35,7 @@ class Subscriber(BaseSubscriberMixin, LangModel):
     key = models.CharField(max_length=32, default=_mk_key)
     email = models.EmailField(unique=True)
     objects = LangManager()
+
     def activate(self):
         self.is_activated = True
         self.subscribtion_date = datetime.date(1900, 1, 1)
@@ -49,16 +49,14 @@ class Subscriber(BaseSubscriberMixin, LangModel):
             (urlquote(self.key), urlquote(self.mailkey())))
 
     def get_email(self):
-        return str(self.email)  #.encode('utf-8')
+        return str(self.email)
 
     @classmethod
-    def get_subscribers(cls,**kwargs):
+    def get_subscribers(cls, **kwargs):
         return cls.objects.lfilter(is_activated=True,
                                    lang=kwargs.pop('lang', None))
 
 _subscriber_model = None
-
-
 
 
 # http://djangosnippets.org/snippets/1993/
@@ -75,22 +73,26 @@ class QueuedEmail(LangModel):
         abstract = False
         verbose_name = _("News-Mail")
 
-    createdate = models.DateTimeField('Created on',
+    createdate = models.DateTimeField(
+        'Created on',
         default=timezone.now(),
         blank=True,
         editable=False)
 
-    modifydate = models.DateTimeField('Last modified on',
+    modifydate = models.DateTimeField(
+        'Last modified on',
         default=timezone.now(),
         blank=True,
         editable=False)
 
-    senddate = models.DateTimeField('Send after',
+    senddate = models.DateTimeField(
+        'Send after',
         default=timezone.now(),
         blank=True,
         editable=True)
 
-    subject = models.CharField(verbose_name="Subject",
+    subject = models.CharField(
+        verbose_name="Subject",
         default="",
         unique=False,
         blank=True,
@@ -103,7 +105,8 @@ class QueuedEmail(LangModel):
 
     def save(self, force_insert=False, force_update=False, **kwargs):
         self.modifydate = timezone.now()
-        super(QueuedEmail, self).save(force_insert, force_update)
+
+        super(QueuedEmail, self).save() #force_insert, force_update)
         modelname = subs_settings.SUBSCRIBER_MODEL
         if modelname == "Subscriber":
             modelname ="subscribe.Subscriber"

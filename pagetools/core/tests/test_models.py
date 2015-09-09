@@ -3,8 +3,8 @@ from django.utils.translation import activate
 from pagetools.core.models import *
 
 
-
 class ConcretePublishableLangModel(PublishableLangModel):
+
     def __str__(self):
         return "%s:%s" % (self.lang, self.status)
 

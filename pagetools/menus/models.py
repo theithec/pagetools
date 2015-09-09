@@ -147,7 +147,6 @@ class Menu(MenuEntry):
         x = t % sel_entries
         return x
 
-
     def update_entries(self, orderstr):
         '''orderstr = jquery.mjs.nestedSortable.js / serialize()'''
         entries_str = orderstr.split("&")

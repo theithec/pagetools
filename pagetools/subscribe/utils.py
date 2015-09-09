@@ -30,7 +30,7 @@ def to_queue(content, **kwargs):
         body=msg,
         lang=lang
     )
-    qm.save(lang=lang)
+    qm.save()
     activate(orglang)
 
 

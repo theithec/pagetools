@@ -34,24 +34,39 @@ class MenuChildrenWidget(forms.Widget):
                     'mjs-nestedSortable-branch mjs-nestedSortable-expanded"'})
 
 
-class MenuForm(forms.ModelForm):
+class MenuAddForm(forms.ModelForm):
+    class Meta:
+        model = Menu
+        fields = ('lang', 'title',)
+
+
+class MenuChangeForm(forms.ModelForm):
     children = forms.Field()
 
     def __init__(self, *args, **kwargs):
-        super(MenuForm, self).__init__(*args, **kwargs)
-        if kwargs.get('instance', False):
-            self.fields['children'] = forms.Field(
-                required=False,
-                widget=MenuChildrenWidget(instance=kwargs['instance']))
+        super(MenuChangeForm, self).__init__(*args, **kwargs)
+        self.fields['children'] = forms.Field(
+            required=False,
+            widget=MenuChildrenWidget(instance=kwargs['instance']))
+
+    class Meta:
+        model = Menu
+        fields = ('lang', 'title', 'children', )
 
 
 class MenuAdmin(TinyMCEMixin, admin.ModelAdmin):
-    exclude = ('parent', 'enabled', 'content_type',
-               'object_id', 'slugs')
     save_as = True
     list_display = ("title", "lang")
-    form = MenuForm
-    readonly_fields = ('addable_entries',)
+
+    def get_form(self, request, obj=None, **kwargs):
+        # Proper kwargs are form, fields, exclude, formfield_callback
+        if obj:
+            self.readonly_fields = ('addable_entries',)
+            self.form = MenuChangeForm
+        else:
+            self.readonly_fields = ()
+            self.form = MenuAddForm
+        return super(MenuAdmin, self).get_form(request, obj, **kwargs)
 
     def addable_entries(self, obj, **kwargs):
         ems = entrieable_models()

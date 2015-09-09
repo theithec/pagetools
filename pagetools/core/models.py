@@ -1,9 +1,10 @@
 from django.conf import settings
 from django.db import models
 from django.utils.translation import ugettext_lazy as _, get_language
+
 from model_utils.models import StatusModel, TimeStampedModel
 from model_utils.choices import Choices
-#from concurrency.fields import IntegerVersionField
+
 from . import settings as ptsettings
 
 
@@ -13,18 +14,21 @@ class LangManager(models.Manager):
         super(LangManager, self).__init__(*args, **kwargs)
         self.use_lang = bool(getattr(settings, 'LANGUAGES', False))
 
-    def lfilter(self, lang=None, **kwargs):
+    def lfilter(self, lang=False, **kwargs):
         '''uses keyword-argument or system-language to add 'lang' to filter-
         arguments if settings.LANGUAGES compares to not null'''
         if self.use_lang and not kwargs.pop('skip_lang', False):
-            if not lang:
+            if lang is False:
                 lang = get_language() or ""
-            kwargs.update(lang__in=(lang, lang.split('-')[0], None, ''))
+        kwargs.update(lang__in=(lang, lang.split('-')[0], ''))
         return self.filter(**kwargs)
 
 
 class LangModel(models.Model):
-    '''Model with 'lang'-field'''
+    '''Model with 'lang'-field
+    To avoid "NOT NULL constraint failed" errors,
+    empty lang is saved as ""
+    '''
     objects = models.Manager()
     # public = LangManager()
     lang = models.CharField(
@@ -33,6 +37,11 @@ class LangModel(models.Model):
         blank=True,
         verbose_name=_('language')
     )
+
+    def save(self, *args, **kwargs):
+        if self.lang is None:
+            self.lang = ''
+        super(LangModel, self).save(*args, **kwargs)
 
     class Meta:
         abstract = True
@@ -79,5 +88,3 @@ class PagelikeModel(TimeStampedModel, PublishableLangModel):
 
     class Meta:
         abstract = True
-
-
