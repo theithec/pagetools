@@ -4,7 +4,7 @@ from django.template import Context, Template
 import pdb
 from pagetools.sections.utils import get_template_names_for_obj
 register = template.Library()
-
+from pagetools.sections import render_node_extradata
 
 #@register.inclusion_tag('cnodes/cnode.html')
 class ContentNode(template.Node):
@@ -17,6 +17,12 @@ class ContentNode(template.Node):
         obj =  self.object_var.resolve(context)
         user =  self.user_var.resolve(context)
         real_template = get_template_names_for_obj(obj)
+        print ("CONTECT", context)
+        print ("extra", render_node_extradata)
+        #context.update(render_node_extradata)
+        #context['basetemplate'] = 'cnodes/base_node.html'
+        for k, v in render_node_extradata.items():
+            context[k] = v
         context['object'] = obj
         if obj.positioned_content:
             context['contents'] = obj.ordered_content(user=user)
@@ -24,9 +30,6 @@ class ContentNode(template.Node):
             context['unpublished'] = True
 
         return select_template(real_template).render( context)
-        return Template("cnodes/cnode.html").render(context)
-        return context.render("x.html") #render("cnodes.html", context)
-        return {"bla":"blub"}
 
 
 @register.tag

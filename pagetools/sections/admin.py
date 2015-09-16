@@ -61,6 +61,7 @@ class BasePageNodeAdmin(PagelikeAdmin):
         txt = ", ".join([self.admin_link(p) for p in  parents])
         return txt
     containing_nodes.short_description = _("Parents")
+    containing_nodes.allow_tags = _("Parents")
 
 
 
