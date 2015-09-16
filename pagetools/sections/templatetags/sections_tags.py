@@ -17,10 +17,6 @@ class ContentNode(template.Node):
         obj =  self.object_var.resolve(context)
         user =  self.user_var.resolve(context)
         real_template = get_template_names_for_obj(obj)
-        print ("CONTECT", context)
-        print ("extra", render_node_extradata)
-        #context.update(render_node_extradata)
-        #context['basetemplate'] = 'cnodes/base_node.html'
         for k, v in render_node_extradata.items():
             context[k] = v
         context['object'] = obj
