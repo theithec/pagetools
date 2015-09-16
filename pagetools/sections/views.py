@@ -26,12 +26,14 @@ class BaseNodeView(DetailView):
                 user=self.request.user)
         return context
 
-class BaseAjaxNodeView(AJAXMixin, BaseNodeView):
+class BaseAjaxNodeViewMixin(AJAXMixin):
     def get_context_data(self, **kwargs):
-        context = super(AjaxNodeView, self).get_context_data(**kwargs)
+        context = super(BaseAjaxNodeViewMixin, self).get_context_data(**kwargs)
         context['AJAXVIEW'] = True
         context['css_block'] = "css_ajax"
         context['js_block'] = "css_ajax"
         context['scale'] = "0.9"
         return context
 
+class BaseAjaxNodeView(BaseAjaxNodeViewMixin, BaseNodeView):
+    pass
