@@ -1,0 +1,11 @@
+{% extends "grappelli/dashboard/module.html" %}
+{% load i18n %}
+{% block module_content %}
+<div class="grp-module">
+    <ol id='pagenodes'></ol>
+
+</div>
+<script>
+var admin_pagenodesurl = "{{admin_pagenodesview}}";
+</script>
+{% endblock %}
