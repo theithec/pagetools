@@ -68,6 +68,7 @@ class PageNode(PublishableLangModel):
         return content
 
     def ordered_content(self, **kwargs):
+        #import pdb; pdb.set_trace()
         o = self.positioned_content.lfilter(**kwargs).order_by('pagenodepos')
         return [self.get_real_content(c) for c in o]
 

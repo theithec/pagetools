@@ -49,11 +49,11 @@ class LangModel(models.Model):
 
 class PublishableLangManager(LangManager):
     '''Manager that finds published content language  filtered'''
+
     def lfilter(self, **kwargs):
         user = kwargs.pop('user', None)
         if not user or not user.is_authenticated():
             kwargs['status'] = ptsettings.STATUS_PUBLISHED
-
         return LangManager.lfilter(self, **kwargs)
 
 

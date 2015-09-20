@@ -6,35 +6,34 @@
 jQuery = grp.jQuery;
 (function($){
     $(document).ready(function(){
+
         {% if request.parent_model.allowed_children_classes|length > 1 %}
         $.getScript( "{% static "js/jquery.balloon.min.js" %}")
             .done(function( script, Status ) {
                 $(".add-another").each(function(i, obj){
                     var $obj = $(obj);
-                    $obj.removeAttr("href").removeAttr("onclick");
-                    var linklist="<ul>";
+                    $obj.removeAttr("href").removeAttr("onclick"); 
+                    var linklist='<ul class="nodechildrenlinklist">';
                     var links = [];
                     {% for c in request.parent_model.allowed_children_classes %}
-                    linklist += '<li><a href="{{c.get_adminadd_url }}"' + 
+                    linklist += '<li><a href="{{c.get_adminadd_url }}?_to_field=id&_popup=1" ' + 
                         ' class="in_group_chooser in_group_chooser_{{ forloop.counter }}"' + 
-                        '>{{c.get_classname}}</a></li>';
+                        ' >{{c.get_classname}}</a></li>';
                     links.push("{{ c.get_adminadd_url}}");
                     {% endfor %}
                     linklist += "</ul>";
                     $obj.balloon({
                         contents: linklist,
                         position: "right",
-                        minLifetime: 1000,
+                        minLifetime: 10,
                         showComplete: function(){
                             for (var i=0; i<links.length;i++){
-                                
                                 $(".in_group_chooser_" + (i+1)).bind("click",function(i){
                                     console.log("i2",i);
                                     return function(){
                                         var $cpy = $obj.clone();
-                                        $cpy.attr("href", links[i]);
-                                        console.log("CPY",i, $cpy, links);
-                                      return  showAddAnotherPopup($cpy.get(0));
+                                        $cpy.attr("href", links[i]+"?_to_field=id&_popup=1" );
+                                        return showRelatedObjectPopup($cpy.get(0));
                                     };
                                 }(i));
                             }
@@ -48,11 +47,12 @@ jQuery = grp.jQuery;
 
         });
         {% else %}
-        $(".add-another").each(function(i, obj){
+
+         $(".add-another").each(function(i, obj){
                 var $obj = $(obj);
-                $obj.attr("href", "{{request.parent_model.allowed_children_classes.0.get_adminadd_url }}");
-                 
-            });
+                $obj.attr("href", "{{request.parent_model.allowed_children_classes.0.get_adminadd_url }}?_to_field=id&_popup=1");
+        });
+
         {% endif %}    
     });
 }(grp.jQuery));

@@ -121,7 +121,6 @@ MEDIA_URL = '/media/'
 SITE_ID = 1
 
 CRISPY_TEMPLATE_PACK = "bootstrap"
-from dashboard import CustomIndexDashboard
 GRAPPELLI_INDEX_DASHBOARD = 'dashboard.CustomIndexDashboard'
 
 

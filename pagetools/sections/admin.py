@@ -19,7 +19,7 @@ class BasePageNodePosAdmin(GrappelliSortableHiddenMixin, admin.TabularInline):
     def get_queryset(self, request):
         request.parent_model = self.parent_model
         return super(BasePageNodePosAdmin, self).get_queryset(request)
-
+    #todo to utils (see dashboardmodul)
     def admin_link(self, instance):
         realobj = instance.content.get_real_obj()
         url = reverse('admin:%s_%s_change' % (realobj._meta.app_label,
