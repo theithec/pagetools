@@ -1,8 +1,8 @@
 *.pyc
 *~
-/demo/static/
-/demo/media/uploads/filebrowser/*
-/demo/db
+pagetoolsdemo/media/uploads/filebrowser/*
+pagetoolsdemo/db
+pagetoolsdemo1/.coverage
 /dist/
 /dist/*
 /django_pagetools.egg-info/
@@ -12,6 +12,7 @@
 .settings
 *.swp
 *.swo
+*.orig
 META-INF
 build.properties
 .ropeproject/

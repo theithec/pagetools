@@ -38,10 +38,12 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_ajax',
     'sekizai',
     'pagetools.core',
     'pagetools.sections',
     'main',
+    'debug_toolbar',
 )
 
 MIDDLEWARE_CLASSES = (

@@ -56,6 +56,11 @@ class BasePageNodeAdmin(PagelikeAdmin):
         return format_html(u'<a href="{}">{}</a>', url, realobj)
     admin_link.short_description = _("Admin link")
 
+    def get_queryset(self, request):
+        real_pk = self.model.get_contenttype_pk()
+        qs = self.model._default_manager.filter(content_type_pk=real_pk)
+        return qs
+
     def containing_nodes(self, instance):
         parents = instance.in_nodes.all()
         txt = ", ".join([self.admin_link(p) for p in  parents])

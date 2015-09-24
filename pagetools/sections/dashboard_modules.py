@@ -19,6 +19,8 @@ class PageNodesModule(DashboardModule):
     
     Dashboard needs to include the static files, e.g:
     ----------------------------------------------------------------------------
+    from django import forms
+    ...
     def _media(self):
             return forms.Media(
                 js=["bower_components/jquery/dist/jquery.min.js",
@@ -29,6 +31,12 @@ class PageNodesModule(DashboardModule):
             )
 
     media = property(_media)
+    
+    urls.py:
+        url(
+            r'^adminnodes/(?P<slug>[\w-]+)/$',
+            admin_pagenodesview,
+            name='admin_pagenodesview'),
     ----------------------------------------------------------------------------
 
     """

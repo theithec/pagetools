@@ -6,8 +6,7 @@ from pagetools.core.utils import get_adminadd_url
 
 
 class PageNodeManager(PublishableLangManager):
-    #def get_queryset(self):
-    def real(self, **kwargs):
+    def real_NOTUZED(self, **kwargs):
         try:
             ct = ContentType.objects.get_for_model(
                 self.model, for_concrete_model=False)
@@ -57,7 +56,7 @@ class PageNode(PublishableLangModel):
         try:
             clz = ContentType.objects.get_for_id(node.content_type_pk)
             real = clz.model_class().objects.get(pk=node.pk)
-        except AttributeError:
+        except AttributeError as e:
             real = node
         return real
 
@@ -73,7 +72,8 @@ class PageNode(PublishableLangModel):
         return [self.get_real_content(c) for c in o]
 
     def __str__(self):
-        return self.title
+        o = self.get_real_obj()
+        return "%s(%s)" % (o.title ,o.get_classname())
 
     def save(self, *args, **kwargs):
         if not self.content_type_pk:

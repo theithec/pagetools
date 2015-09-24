@@ -1,8 +1,16 @@
 from django.views.generic import DetailView, FormView
+from django.core.urlresolvers import reverse
+from django.views.generic import DetailView, FormView, TemplateView
+from django.utils.html import format_html
+from django.http import HttpResponse, HttpResponseRedirect
+from django.utils.safestring import mark_safe
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
+from django_ajax.decorators import ajax
 from django_ajax.mixin import AJAXMixin
 from .utils import get_template_names_for_obj
 from .models import PageNode
+from .dashboard_modules import PageNodesModule
 
 
 class BaseNodeView(DetailView):
@@ -37,3 +45,38 @@ class BaseAjaxNodeViewMixin(AJAXMixin):
 
 class BaseAjaxNodeView(BaseAjaxNodeViewMixin, BaseNodeView):
     pass
+
+
+def _add_children(txt, children, user):
+    for c in children:
+        adminediturl = reverse(
+            'admin:%s_%s_change' % (
+                c._meta.app_label,
+                c._meta.model_name
+            ),
+            args=(c.id,))
+
+        txt += format_html(
+            '''<li><a {} href="{}">{}</a>''',
+            "" if c.enabled else mark_safe("style='color: orange;'"),
+            adminediturl,
+            c
+        )
+        coc = c.ordered_content(user=user)
+        print("C;", c, coc)
+        if coc:
+            txt += '<ul>' + _add_children('', coc, user) + '</ul>'
+        txt += "</li>"
+    return txt
+
+@ajax
+@login_required
+def admin_pagenodesview(request, slug):
+    p = PageNodesModule.model.objects.get(slug=slug)
+    listtxt = '<ol id="pagenodes">'
+    listtxt += _add_children('',
+                             p.ordered_content(user=request.user),
+                             user=request.user)
+    listtxt += '</ol>'
+    return HttpResponse(listtxt)
+    return listtxt

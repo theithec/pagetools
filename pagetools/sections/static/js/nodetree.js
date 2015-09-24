@@ -4,7 +4,9 @@ $(document).ready(function(){
         $.ajax({
             url: url,
             success: function(data, textStatus, jqXHR){
-               $("#pagenodes").replaceWith(data);
+                console.log("D", data);
+               content = data.content; //hasOwnProperty('content') 
+               $("#pagenodes").replaceWith(content);
                $("#pagenodes").bonsai({'expandAll':true});        
             }
         });
