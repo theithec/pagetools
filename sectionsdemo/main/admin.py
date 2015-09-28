@@ -27,7 +27,8 @@ class PageNodeAdmin(BasePageNodeAdmin):
 class PageAdmin(PageNodeAdmin):
     pass
 class ArticleAdmin(PageNodeAdmin):
-    inlines = ()
+    ##inlines = ()
+    model = Article
     def get_fieldsets(self, request, obj=None):
         s = super(ArticleAdmin, self).get_fieldsets(request, obj)
         return (s[0],

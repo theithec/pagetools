@@ -9,6 +9,10 @@ class Article(PageNode):
     objects  = PageNodeManager() #PublishableLangManager()
     content = models.TextField("Content")
 
+    def __init__(self,*args,**kwargs):
+        #kwargs['allowed_children_keys'] = (self.__class__,)
+        self.allowed_children_classes = (self.__class__,)
+        super(Article, self).__init__(*args, **kwargs)
 
 class Section(TypeMixin, PageNode):
     allowed_children_classes = (Article,)

@@ -63,7 +63,6 @@ def _add_children(txt, children, user):
             c
         )
         coc = c.ordered_content(user=user)
-        print("C;", c, coc)
         if coc:
             txt += '<ul>' + _add_children('', coc, user) + '</ul>'
         txt += "</li>"
