@@ -4,7 +4,6 @@ $(document).ready(function(){
         $.ajax({
             url: url,
             success: function(data, textStatus, jqXHR){
-                console.log("D", data);
                content = data.content; //hasOwnProperty('content') 
                $("#pagenodes").replaceWith(content);
                $("#pagenodes").bonsai({'expandAll':true});        
@@ -12,9 +11,9 @@ $(document).ready(function(){
         });
     }
     $('#pagenode_page_chooser').change(function(evt){
-        load_pagenodes(this.value);
+        load_pagenodes($(this).find('option:selected').attr("name"));
     });
-    var selText = $('#pagenode_page_chooser option:selected').text();
+    var selText = $('#pagenode_page_chooser option:selected').attr('name');
     if (selText && selText != ""){
         load_pagenodes(selText);
     }

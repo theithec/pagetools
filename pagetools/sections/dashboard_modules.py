@@ -57,7 +57,7 @@ class PageNodesModule(DashboardModule):
         options=""
         for p in pages:
             options += format_html(
-                '<option name={}>{}</option>' ,p.pk, p.title)
+                '<option name={}>{}</option>' ,p.slug, p.title)
         self.pre_content = '''<label>
             Page
             </label>

@@ -78,4 +78,3 @@ def admin_pagenodesview(request, slug):
                              user=request.user)
     listtxt += '</ol>'
     return HttpResponse(listtxt)
-    return listtxt
