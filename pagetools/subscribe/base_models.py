@@ -12,7 +12,7 @@ from django.utils import timezone
 class BaseSubscriberMixin(models.Model):
 
     is_activated = models.BooleanField(default=False)
-    subscribtion_date = models.DateTimeField(default=timezone.now())
+    subscribtion_date = models.DateTimeField(auto_now_add=True)
     failures = models.IntegerField(default=0)
 
     def __str__(self):
