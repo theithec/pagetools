@@ -1,13 +1,23 @@
-{% load static menus_tags %}
+{% load static menus_tags subscribe_tags%}
 <html>
   <head>
     <title>pagetools-demo</title>
+    {% block css %}
+    {% endblock css %}
   </head>
   <body>
     <div class="head">
-      <ul>{% menu MainMenu selected %}</ul>
+      <ul>{% menu MainMenu selected %}
+      </ul>
     </div>
     <div class="main">
+        {% if messages %}
+        <ul>
+        {% for msg in messages %}
+        <li>{{ msg }}</li>
+        {% endfor %}
+        </ul> 
+        {% endif %}
       {% block main %}
       base-content
       {% endblock main %}

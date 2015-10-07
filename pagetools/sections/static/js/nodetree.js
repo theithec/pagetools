@@ -4,12 +4,13 @@ $(document).ready(function(){
         $.ajax({
             url: url,
             success: function(data, textStatus, jqXHR){
-               content = data.content; //hasOwnProperty('content') 
+               content = data.content || data;
                $("#pagenodes").replaceWith(content);
-               $("#pagenodes").bonsai({'expandAll':true});        
+               $("#pagenodes").bonsai({'expandAll':true});
             }
         });
     }
+
     $('#pagenode_page_chooser').change(function(evt){
         load_pagenodes($(this).find('option:selected').attr("name"));
     });

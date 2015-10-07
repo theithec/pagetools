@@ -12,8 +12,8 @@ from django.http.response import HttpResponseRedirect
 from pagetools.core.admin import TinyMCEMixin
 from pagetools.core.utils import itersubclasses, get_classname, get_addperm_name
 
-from .models import TypeArea, ContentWidget, PageType, \
-    WidgetInArea, BaseWidget, TemplateTagWidget
+from .models import (TypeArea, ContentWidget, PageType, PageTypeDescription,
+    WidgetInArea, BaseWidget, TemplateTagWidget)
 
 
 class WidgetInAreaAdmin(admin.TabularInline):
@@ -110,8 +110,9 @@ class BaseWidgetAdmin(admin.ModelAdmin):
                 reverse("admin:widgets_typearea_change", args=(s,))
             )
         else:
-            return getattr(super(BaseWidgetAdmin, self), "response_%s" % action)(
-                request, obj, *args, **kwargs
+            #see menus.admin._redirect
+            return getattr(admin.ModelAdmin, "response_%s" % action)(
+                self, request, obj, *args, **kwargs
             )
 
     def response_add(self, request, obj, *args, **kwargs):
@@ -119,6 +120,15 @@ class BaseWidgetAdmin(admin.ModelAdmin):
 
     def response_change(self, request, obj, *args, **kwargs):
         return self._redirect("change", request, obj, *args, **kwargs)
+
+
+class PageTypeDescriptionAdmin(admin.TabularInline):
+    model = PageTypeDescription
+    extra = 1
+
+class PageTypeAdmin(admin.ModelAdmin):
+    model = PageType
+    inlines = (PageTypeDescriptionAdmin,)
 
 
 class ContentWidgetAdmin(BaseWidgetAdmin, TinyMCEMixin):
@@ -132,4 +142,6 @@ class TemplateTagWidgetAdmin(BaseWidgetAdmin):
 admin.site.register(TypeArea, TypeAreaAdmin)
 admin.site.register(ContentWidget, ContentWidgetAdmin)
 admin.site.register(TemplateTagWidget, TemplateTagWidgetAdmin)
-admin.site.register([PageType,  WidgetInArea])
+admin.site.register(WidgetInArea)
+admin.site.register(PageType, PageTypeAdmin)
+admin.site.register(PageTypeDescription, admin.ModelAdmin)

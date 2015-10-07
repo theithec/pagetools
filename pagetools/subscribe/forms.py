@@ -21,4 +21,4 @@ class SubscribeForm(forms.Form):
         # i think this is wrong but  prevents empty fieldset somehow
         self.helper.layout = Layout(  'email')
         self.helper.add_input(Submit('submit', _('Submit')))
-
+        self.helper.form_tag = True

@@ -28,8 +28,7 @@ class GalleryPic(PagelikeModel):
         verbose_name = _('Titled Pictures')
 
 
-class Gallery(PagelikeModel):
-    pics = models.ManyToManyField(GalleryPic, through="PicPos")
+class BaseGallery(models.Model):
 
     def get_pics(self):
         return self.pics.order_by('positioned_pic')
@@ -46,12 +45,25 @@ class Gallery(PagelikeModel):
     class Meta():
         verbose_name = _('Galleries')
         verbose_name_plural = _('Galleries')
+        abstract = True
 
+class Gallery(BaseGallery, PagelikeModel):
+    pics = models.ManyToManyField(GalleryPic, through="PicPos")
 
-class PicPos(models.Model):
-    pic = models.ForeignKey(GalleryPic, related_name="positioned_pic")
-    gal = models.ForeignKey(Gallery)
+class BasePicPos(models.Model):
     position = models.PositiveIntegerField()
 
     class Meta():
+        verbose_name = _('Picture')
+        verbose_name_plural = _('Pictures')
+        abstract = True
+
+
+class PicPos(BasePicPos):
+    gal = models.ForeignKey(Gallery)
+    pic = models.ForeignKey(GalleryPic, related_name="positioned_pic")
+
+    class Meta():
         verbose_name = _('Positioned Picture')
+
+

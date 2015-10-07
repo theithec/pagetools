@@ -31,7 +31,8 @@ class MenuChildrenWidget(forms.Widget):
             "menus/admin/menuentries.html",
             {'children': m.children_list(for_admin=True),
              'cls': 'class="sortable grp-grp-items sortable ui-sortable ' +
-                    'mjs-nestedSortable-branch mjs-nestedSortable-expanded"'})
+                    'mjs-nestedSortable-branch mjs-nestedSortable-expanded"',
+             'original': m})
 
 
 class MenuAddForm(forms.ModelForm):
@@ -227,9 +228,10 @@ class EntrieableAdmin(admin.ModelAdmin):
                 reverse("admin:menus_menu_change", args=(s,))
             )
         else:
-            return getattr(super(EntrieableAdmin, self),
+            #calling super may lead to recursive calls
+            return getattr(admin.ModelAdmin,
                            "response_%s" % action)(
-                request, obj, *args, **kwargs
+                self, request, obj, *args, **kwargs
             )
 
     def response_add(self, request, obj, *args, **kwargs):

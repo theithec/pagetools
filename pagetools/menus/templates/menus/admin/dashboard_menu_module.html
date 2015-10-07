@@ -10,7 +10,9 @@
 	<div class="grp-row existing">
     <ul class="grp-listing-small">
     {% for e in existing %}
-        <li class="grp-row"><a class="grp-link-internal" href="{{e.url}}">{{e.obj_classname}}:{{ e.obj_title}} ({{e.entry_title}})</a></li>
+    <li class="grp-row">
+        <a class="grp-link-internal menuentryobj-{{ e.obj_status}} menuentry {{ e.entry_enabled }}"
+            href="{{e.url}}">{{e.obj_classname}}:{{ e.obj_title}} ({{e.entry_title}})</a></li>
     {% endfor %}
     </ul>
 	</div>
@@ -23,7 +25,7 @@
     <div class="grp-row  addable">
     <ul class="grp-listing-small">
     {% for c in children %}
-		<li class="grp-row"><a class="grp-add-link" href="{{c.url}}">+ {{c.name}}</a></li>	
+    <li class="grp-row"><a class="grp-add-link" href="{{c.url}}">+ {{c.name}}</a></li>	
     {% endfor %}
     </ul> 
     </div>
@@ -41,4 +43,15 @@
      	
      })(grp.jQuery);
     </script>
+    <style>
+    .menuentryobj-draft {
+        color: orange;
+    }
+    .menuentry {
+        text-decoration: line-through;
+    }
+    .menuentry.checked{
+        text-decoration: none;
+    }
+    </style>
 {% endblock %}

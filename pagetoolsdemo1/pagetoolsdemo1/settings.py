@@ -31,26 +31,28 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = (
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
     'grappelli.dashboard',
     'grappelli',
     'filebrowser',
     'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    'crispy_forms',
     'mptt',
+    'crispy_forms',
     'debug_toolbar',
     'pagetools.core',
     'pagetools.menus',
     'pagetools.widgets',
     'pagetools.pages',
     'pagetools.search',
-    'pagetools.gallery',
+     #'pagetools.gallery',
+    'pagetools.galleries',
     'pagetools.subscribe',
+    'pagetools.sections',
     'main',
 
 )
@@ -130,4 +132,8 @@ PT_ENTRIEABLE_MODELS = (
         ('pagetools.menus', 'ViewLink'),
     )
 
-
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+PT_MAILFORM_RECEIVERS = "root@localhost"
+PT_TEMPLATETAG_WIDGETS =  {
+    'subscribe': ('pagetools.subscribe.templatetags.subscribe_tags', 'NewsSubscribtionNode'),
+}

@@ -6,7 +6,7 @@ Created on 14.12.2013
 
 from django import template
 from django.core import urlresolvers
-from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.fields import GenericForeignKey 
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
@@ -79,7 +79,7 @@ class MenuEntry(MPTTModel, LangModel):
                             related_name='children')
     content_type = models.ForeignKey(ContentType)
     object_id = models.PositiveIntegerField()
-    content_object = generic.GenericForeignKey('content_type', 'object_id')
+    content_object = GenericForeignKey('content_type', 'object_id')
     enabled = models.BooleanField(default=False)
     objects = MenuManager()
 

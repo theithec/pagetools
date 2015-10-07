@@ -8,14 +8,15 @@ import os
 from django import forms
 from django.conf import settings
 from django.contrib import admin
+from grappelli.forms import GrappelliSortableHiddenMixin
 
-#from concurrency.admin import ConcurrentModelAdmin
 from pagetools.core.admin import PagelikeAdmin
 from pagetools.menus.admin import EntrieableAdmin
 from pagetools.pages.models import Page, DynFormField, PageDynFormField
 
 
 class DynFieldInlineFormset(forms.models.BaseInlineFormSet):
+
     def clean(self):
         for form in self.forms:
             cd = form.cleaned_data
@@ -24,7 +25,7 @@ class DynFieldInlineFormset(forms.models.BaseInlineFormSet):
                 form.instance.to_field()
 
 
-class DynFieldAdmin(admin.StackedInline):
+class DynFieldAdmin(GrappelliSortableHiddenMixin, admin.StackedInline):
     model = DynFormField
     sortable_field_name = "position"
     extra = 1
@@ -42,13 +43,20 @@ class PageDynFieldAdmin(DynFieldAdmin):
     formset = DynFieldInlineFormset
 
 
-class PageAdmin(EntrieableAdmin, PagelikeAdmin):
-    inlines = (PageDynFieldAdmin,)
+class BasePageAdmin(EntrieableAdmin, PagelikeAdmin):
     readonly_fields = ('status_changed',)
     list_display = ('title', 'lang', 'status')
     list_filter = ('lang', 'status')
     search_fields = ('title', 'content')
     save_as = True
+
+    class Media:
+        js = [os.path.join(
+            settings.STATIC_URL, 'pagetools', 'js', 'formreceiver.js')]
+
+
+class PageAdmin(BasePageAdmin):
+    # inlines = (PageDynFieldAdmin,)
 
     class Meta:
         model = Page
