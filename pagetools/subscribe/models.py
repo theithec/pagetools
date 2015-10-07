@@ -75,19 +75,20 @@ class QueuedEmail(LangModel):
 
     createdate = models.DateTimeField(
         'Created on',
-        default=timezone.now(),
+        auto_now_add=True,
+        
         blank=True,
         editable=False)
 
     modifydate = models.DateTimeField(
         'Last modified on',
-        default=timezone.now(),
+        auto_now_add=True,
         blank=True,
         editable=False)
 
     senddate = models.DateTimeField(
         'Send after',
-        default=timezone.now(),
+        auto_now_add=True,
         blank=True,
         editable=True)
 
