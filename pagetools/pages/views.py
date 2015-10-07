@@ -76,11 +76,16 @@ class AuthPageView(DetailView):
 class PageView(WidgetPagelikeView, AuthPageView, IncludedFormView):
     model = Page
 
+    def get_pagetype_name(self, **kwargs):
+        return (self.object.pagetype.name 
+                if self.object.pagetype
+                else  WidgetPagelikeView.get_pagetype_name(self, **kwargs))
     def get_pagetype(self, **kwargs):
         return self.object.pagetype or WidgetPagelikeView.get_pagetype(self)
 
     def get_context_data(self, **kwargs):
         kwargs['page_title'] = self.object.title
+        obj = self.get_object()
         kwargs = super(PageView, self).get_context_data(**kwargs)
         return kwargs
 
