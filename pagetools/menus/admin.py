@@ -31,7 +31,8 @@ class MenuChildrenWidget(forms.Widget):
             "menus/admin/menuentries.html",
             {'children': m.children_list(for_admin=True),
              'cls': 'class="sortable grp-grp-items sortable ui-sortable ' +
-                    'mjs-nestedSortable-branch mjs-nestedSortable-expanded"'})
+                    'mjs-nestedSortable-branch mjs-nestedSortable-expanded"',
+             'original': m})
 
 
 class MenuAddForm(forms.ModelForm):
