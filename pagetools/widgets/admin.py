@@ -110,7 +110,7 @@ class BaseWidgetAdmin(admin.ModelAdmin):
                 reverse("admin:widgets_typearea_change", args=(s,))
             )
         else:
-            #see menus.admin._redirect
+            menus.admin._redirect#see menus.admin._redirect
             return getattr(admin.ModelAdmin, "response_%s" % action)(
                 request, obj, *args, **kwargs
             )
