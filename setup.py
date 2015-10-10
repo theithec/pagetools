@@ -16,15 +16,15 @@ setup(
     license='BSD License',  # example license
     description='A set of Django apps to to provide some cms-like features',
     install_requires = [
-        'django==1.8.4',
+        'django==1.8.5',
         'django-grappelli==2.7.1',
-        'django-filebrowser==3.5.8',
+        'django-filebrowser==3.6.1',
         'django-mptt==0.7.4',
-        'django-crispy-forms==1.5.1',
+        'django-crispy-forms==1.5.2',
         'awesome-slugify==1.6.5',
         'django-model-utils==2.3.1',
-        'pillow==2.9.0',
-        'beautifulsoup4==4.4.0',
+        'pillow==3.0.0',
+        'beautifulsoup4==4.4.1',
     ],
 
     long_description=README,
