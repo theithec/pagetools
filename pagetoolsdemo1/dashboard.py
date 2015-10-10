@@ -11,7 +11,7 @@ from django.core.urlresolvers import reverse
 
 from grappelli.dashboard import modules, Dashboard
 from grappelli.dashboard.utils import get_admin_site_name
-
+from pagetools.menus.dashboard_modules import MenuModule
 
 class CustomIndexDashboard(Dashboard):
     """
@@ -21,6 +21,7 @@ class CustomIndexDashboard(Dashboard):
     def init_with_context(self, context):
         site_name = get_admin_site_name(context)
         
+        self.children.append(MenuModule(name="MainMenu", column=1))        
         # append a group for "Administration" & "Applications"
         self.children.append(modules.Group(
             _('Group: Administration & Applications'),
@@ -41,7 +42,6 @@ class CustomIndexDashboard(Dashboard):
                 )
             ]
         ))
-        
         # append an app list module for "Applications"
         self.children.append(modules.AppList(
             _('AppList: Applications'),

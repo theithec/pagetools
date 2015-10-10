@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-09-06 15:41+0200\n"
-"PO-Revision-Date: 2015-09-07 14:32+0100\n"
+"PO-Revision-Date: 2015-10-10 15:23+0100\n"
 "Last-Translator: slart@aktivix.org <slart@aktivix.org>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
@@ -56,7 +56,7 @@ msgstr "eingebundenes Formular"
 
 #: models.py:35
 msgid "Name"
-msgstr ""
+msgstr "Name"
 
 #: models.py:36
 msgid "required"
