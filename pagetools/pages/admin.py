@@ -8,6 +8,7 @@ import os
 from django import forms
 from django.conf import settings
 from django.contrib import admin
+from grappelli.forms import GrappelliSortableHiddenMixin
 
 #from concurrency.admin import ConcurrentModelAdmin
 from pagetools.core.admin import PagelikeAdmin
@@ -24,7 +25,7 @@ class DynFieldInlineFormset(forms.models.BaseInlineFormSet):
                 form.instance.to_field()
 
 
-class DynFieldAdmin(admin.StackedInline):
+class DynFieldAdmin(GrappelliSortableHiddenMixin,admin.StackedInline):
     model = DynFormField
     sortable_field_name = "position"
     extra = 1

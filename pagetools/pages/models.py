@@ -32,7 +32,7 @@ class DynFormField(models.Model):
         'MailReceiverField': MailReceiverField
     }
     field_type = models.CharField('Type', max_length=128)
-    name = models.CharField(_('Name'), max_length=512)
+    name = models.CharField(_('Value'), max_length=512)
     required = models.BooleanField(_('required'), default=False)
     position = models.PositiveSmallIntegerField("Position")
     help_text = models.CharField(_('Helptext'), max_length=512, blank=True)
