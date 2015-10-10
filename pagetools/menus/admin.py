@@ -228,9 +228,10 @@ class EntrieableAdmin(admin.ModelAdmin):
                 reverse("admin:menus_menu_change", args=(s,))
             )
         else:
-            return getattr(super(EntrieableAdmin, self),
+            #calling super may lead to recursive calls
+            return getattr(admin.ModelAdmin,
                            "response_%s" % action)(
-                request, obj, *args, **kwargs
+                self, request, obj, *args, **kwargs
             )
 
     def response_add(self, request, obj, *args, **kwargs):
