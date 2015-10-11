@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from django.db import models, migrations
 
+from pagetools.widgets.models import TemplateTagWidget
 
 class Migration(migrations.Migration):
 
@@ -40,7 +41,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(primary_key=True, serialize=False, auto_created=True, verbose_name='ID')),
                 ('title', models.CharField(blank=True, max_length=128)),
                 ('name', models.SlugField(unique=True, verbose_name='name')),
-                ('renderclasskey', models.CharField(max_length=255)),
+                ('renderclasskey', models.CharField(choices=TemplateTagWidget.key_choices, max_length=255)),
             ],
             options={
                 'abstract': False,

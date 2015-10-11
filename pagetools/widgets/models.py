@@ -42,9 +42,10 @@ class ContentWidget(BaseWidget):
 
 
 class TemplateTagWidget(BaseWidget):
+    key_choices = [(k, k) for k in sorted(settings.TEMPLATETAG_WIDGETS.keys())]
     renderclasskey = models.CharField(
         max_length=255,
-        choices=[(k, k) for k in list(settings.TEMPLATETAG_WIDGETS.keys())]
+        choices=key_choices
     )
 
     def __init__(self, *args, **kwargs):
