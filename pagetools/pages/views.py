@@ -7,7 +7,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import BaseFormView
 
 from pagetools.widgets.views import WidgetPagelikeView
-
+from pagetools.core.settings import STATUS_PUBLISHED
 from .models import Page
 
 
@@ -64,6 +64,7 @@ class IncludedFormView(DetailView, BaseFormView):
 class AuthPageView(DetailView):
 
     def get_queryset(self, *args, **kwargs):
+
         user = self.request.user
         d = {}
         if not user.is_authenticated():
@@ -94,8 +95,8 @@ class IndexView(PageView):
 
     def get_object(self, **kwargs):
         try:
-            self.object = self.model.public.get(
-                slug='start',
+            self.object = self.get_queryset().get(
+                slug="start"
             )
             return self.object
         except ObjectDoesNotExist:
