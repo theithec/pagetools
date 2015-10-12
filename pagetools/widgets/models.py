@@ -4,12 +4,12 @@ Created on 14.12.2013
 @author: lotek
 '''
 
-from django.contrib.contenttypes import generic
-from django.contrib.contenttypes.models import ContentType
-from django.core.exceptions import ValidationError
+import importlib
 from django.db import models
 from django.template.context import Context
-from django.utils import importlib
+from django.contrib.contenttypes.fields import GenericRelation, GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
+from django.core.exceptions import ValidationError
 from django.utils.html import format_html
 from django.utils.translation import ugettext_lazy as _
 
@@ -22,7 +22,7 @@ from . import settings
 class BaseWidget(models.Model):
     title = models.CharField(max_length=128, blank=True)
     name = models.SlugField(_('name'), unique=True)
-    adapter = generic.GenericRelation('WidgetInArea')
+    adapter = GenericRelation('WidgetInArea')
 
     def __str__(self):
         return "%s:%s" %  (self.name,self.title)
@@ -58,7 +58,6 @@ class TemplateTagWidget(BaseWidget):
                 self.renderclasskey,
                 (None, None)
             )
-            #print "mcname", modulename, clsname
             module = importlib.import_module(modulename)
             try:
                 self.robj = getattr(module, clsname)()
@@ -113,7 +112,7 @@ class WidgetInArea(models.Model):
     typearea = models.ForeignKey(TypeArea,related_name="widgets")
     content_type = models.ForeignKey(ContentType)
     object_id = models.PositiveIntegerField()
-    content_object = generic.GenericForeignKey('content_type', 'object_id')
+    content_object = GenericForeignKey('content_type', 'object_id')
     position = models.PositiveIntegerField()
     enabled = models.BooleanField('enabled', default=False)
 

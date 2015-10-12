@@ -31,10 +31,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = (
-    'grappelli.dashboard',
-    'grappelli',
-    'filebrowser',
-    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -42,6 +38,10 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'crispy_forms',
+    'grappelli.dashboard',
+    'grappelli',
+    'filebrowser',
+    'django.contrib.admin',
     'mptt',
     'debug_toolbar',
     'pagetools.core',

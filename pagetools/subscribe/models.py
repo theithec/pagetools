@@ -6,7 +6,8 @@ import string
 from django.core.mail import get_connection
 from django.core.mail.message import EmailMessage
 from django.db import models
-from django.db.models.loading import get_model
+#from django.db.models.loading import get_model
+from django.apps import apps
 from django.core.urlresolvers import reverse
 from django.utils import timezone
 from django.utils.crypto import random
@@ -111,7 +112,7 @@ class QueuedEmail(LangModel):
         modelname = subs_settings.SUBSCRIBER_MODEL
         if modelname == "Subscriber":
             modelname ="subscribe.Subscriber"
-        SubsModel = get_model( *modelname.rsplit('.',1))
+        SubsModel = apps.get_model( *modelname.rsplit('.',1))
         kwargs['lang'] = self.lang
         subscribers = SubsModel.get_subscribers(**kwargs)
 
@@ -142,7 +143,6 @@ class QueuedEmail(LangModel):
                         pass
         return status
 
-    # @todo use one connection
     def send_to_all(self, sendstatuses):
         if self.senddate < timezone.now():
             conn = get_connection()
