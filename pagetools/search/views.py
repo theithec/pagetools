@@ -79,11 +79,7 @@ class SearchResultsView(PaginatorMixin):
         return self.result_(terms, operator.and_)
 
     def _stripped(self, txt):
-        try:
-            txt = BeautifulSoup(txt,
-                                convertEntities=BeautifulSoup.HTML_ENTITIES)
-        except UnicodeError:
-            txt = strip_tags('%s' % txt).lower()
+        txt = strip_tags('%s' % txt).lower()
         return txt
 
     def get_queryset(self, **kwargs):
