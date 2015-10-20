@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
-
+from django.conf import settings
 
 class Migration(migrations.Migration):
 
@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='queuedemail',
             name='lang',
-            field=models.CharField(max_length=20, verbose_name='language', choices=[('de', 'German'), ('en', 'English')], blank=True),
+            field=models.CharField(max_length=20, verbose_name='language', choices=settings.LANGUAGES, blank=True),
         ),
         migrations.AlterField(
             model_name='queuedemail',
@@ -34,7 +34,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='subscriber',
             name='lang',
-            field=models.CharField(max_length=20, verbose_name='language', choices=[('de', 'German'), ('en', 'English')], blank=True),
+            field=models.CharField(max_length=20, verbose_name='language', choices=settings.LANGUAGES, blank=True),
         ),
         migrations.AlterField(
             model_name='subscriber',
