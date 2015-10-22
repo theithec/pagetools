@@ -10,6 +10,7 @@ $(document).ready(function(){
             }
         });
     }
+
     $('#pagenode_page_chooser').change(function(evt){
         load_pagenodes($(this).find('option:selected').attr("name"));
     });
