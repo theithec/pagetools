@@ -4,9 +4,16 @@ Created on 29.05.2013
 @author: lotek
 '''
 from django.contrib import admin
+from django.conf import settings
 from .models import PicPos, GalleryPic, Gallery
 from pagetools.core.admin import PagelikeAdmin
-from pagetools.menus.admin import EntrieableAdmin
+
+
+Basegalleryadmin = admin.ModelAdmin
+if 'pagetools.menus' in settings.INSTALLED_APPS:
+    from pagetools.menus.admin import EntrieableAdmin
+    Basegalleryadmin = EntrieableAdmin
+
 
 
 class PicPosAdmin(admin.TabularInline):
@@ -16,7 +23,7 @@ class PicPosAdmin(admin.TabularInline):
     extra = 2  # how many rows to show
 
 
-class GalleryAdmin(PagelikeAdmin, EntrieableAdmin):
+class GalleryAdmin(Basegalleryadmin):
     inlines = (PicPosAdmin,)
     prepopulated_fields = {"slug": ("title",)}
 
