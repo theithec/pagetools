@@ -1,21 +1,12 @@
 from django.db import models, DatabaseError
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
-from pagetools.core.models import PublishableLangModel, PublishableLangManager
+from pagetools.core.models import PagelikeModel, PublishableLangManager
 from pagetools.core.utils import get_adminadd_url
 
 
 class PageNodeManager(PublishableLangManager):
-    def real_NOTUZED(self, **kwargs):
-        try:
-            ct = ContentType.objects.get_for_model(
-                self.model, for_concrete_model=False)
-            kwargs['content_type_pk'] = ct.id
-        except DatabaseError:
-            pass
-        #return super(PageNodeManager, self).get_queryset(kwargs.pop('request')).filter(**kwargs)
-        kwargs.pop("request")
-        return super(PageNodeManager, self).get_queryset().filter(**kwargs)
+    pass
 
 
 class TypeMixin(models.Model):
@@ -31,12 +22,9 @@ class TypeMixin(models.Model):
         abstract = True
 
 
-class PageNode(PublishableLangModel):
+class PageNode(PagelikeModel):
 
-    title = models.CharField(_('Internal Title'), max_length=512)
-    slug = models.SlugField(_('Slug'), max_length=128, unique=True)
     classes = models.CharField('Classes', max_length=512, blank=True, null=True)
-    allowed_children_keys = ()
     content_type_pk = models.SmallIntegerField(blank=True)
     in_nodes = models.ManyToManyField("self",
                                       through="PageNodePos",
@@ -53,6 +41,11 @@ class PageNode(PublishableLangModel):
 
     def get_real_obj(self, node=None):
         node = node or self
+        #import pdb; pdb.set_trace()
+
+        clz = ContentType.objects.get_for_id(node.content_type_pk)
+        real = clz.model_class().objects.get(pk=node.pk)
+        print("Node", node.title,  node.content_type_pk, clz, real.get_classname())
         try:
             clz = ContentType.objects.get_for_id(node.content_type_pk)
             real = clz.model_class().objects.get(pk=node.pk)

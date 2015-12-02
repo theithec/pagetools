@@ -3,7 +3,8 @@ from django.utils.translation import activate
 from pagetools.core.models import *
 from main.models import *
 
-
+class ConcretePublishableLangModel(PublishableLangModel):
+    pass
 
 class PublishableLangModelTest(TestCase):
 

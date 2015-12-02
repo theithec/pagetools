@@ -43,14 +43,16 @@ class PageDynFieldAdmin(DynFieldAdmin):
     formset = DynFieldInlineFormset
 
 
-class PageAdmin(EntrieableAdmin, PagelikeAdmin):
-    inlines = (PageDynFieldAdmin,)
+class BasePageAdmin(EntrieableAdmin, PagelikeAdmin):
     readonly_fields = ('status_changed',)
     list_display = ('title', 'lang', 'status')
     list_filter = ('lang', 'status')
     search_fields = ('title', 'content')
     save_as = True
 
+
+class PageAdmin(BasePageAdmin):
+    inlines = (PageDynFieldAdmin,)
     class Meta:
         model = Page
 

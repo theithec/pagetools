@@ -10,8 +10,7 @@ from pagetools.core.models import PagelikeModel
 from django.utils.translation import ugettext_lazy as _
 
 
-class GalleryPic(models.Model):
-    title = models.CharField(_('Title'), max_length=512)
+class GalleryPic(PagelikeModel):
     pic = FileBrowseField(
         _("Image"),
         max_length=200,
@@ -23,9 +22,6 @@ class GalleryPic(models.Model):
 
     def __str__(self):
         return '%s(%s)' % (self.title, self.pic.name)
-
-    def get_absolute_url(self):
-        return reverse("artistdetailview", kwargs={'slug': self.slug})
 
     class Meta():
         verbose_name = _('Titled Picture')

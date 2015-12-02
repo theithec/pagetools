@@ -17,31 +17,13 @@ class CustomIndexDashboard(Dashboard):
     """
     Custom index dashboard for www.
     """
-    
+
     def init_with_context(self, context):
         site_name = get_admin_site_name(context)
-        
-        self.children.append(MenuModule(name="MainMenu", column=1))        
+
+        self.children.append(MenuModule(name="MainMenu", column=1))
         # append a group for "Administration" & "Applications"
-        self.children.append(modules.Group(
-            _('Group: Administration & Applications'),
-            column=1,
-            collapsible=True,
-            children = [
-                modules.AppList(
-                    _('Administration'),
-                    column=1,
-                    collapsible=False,
-                    models=('django.contrib.*',),
-                ),
-                modules.AppList(
-                    _('Applications'),
-                    column=1,
-                    css_classes=('collapse closed',),
-                    exclude=('django.contrib.*',),
-                )
-            ]
-        ))
+
         # append an app list module for "Applications"
         self.children.append(modules.AppList(
             _('AppList: Applications'),
@@ -50,7 +32,7 @@ class CustomIndexDashboard(Dashboard):
             css_classes=('collapse closed',),
             exclude=('django.contrib.*',),
         ))
-        
+
         # append an app list module for "Administration"
         self.children.append(modules.ModelList(
             _('ModelList: Administration'),
@@ -58,7 +40,7 @@ class CustomIndexDashboard(Dashboard):
             collapsible=False,
             models=('django.contrib.*',),
         ))
-        
+
         # append another link list module for "support".
         self.children.append(modules.LinkList(
             _('Media Management'),
@@ -71,7 +53,7 @@ class CustomIndexDashboard(Dashboard):
                 },
             ]
         ))
-        
+
         # append another link list module for "support".
         self.children.append(modules.LinkList(
             _('Support'),
@@ -94,7 +76,7 @@ class CustomIndexDashboard(Dashboard):
                 },
             ]
         ))
-        
+
         # append a feed module
         self.children.append(modules.Feed(
             _('Latest Django News'),
@@ -102,7 +84,7 @@ class CustomIndexDashboard(Dashboard):
             feed_url='http://www.djangoproject.com/rss/weblog/',
             limit=5
         ))
-        
+
         # append a recent actions module
         self.children.append(modules.RecentActions(
             _('Recent Actions'),
