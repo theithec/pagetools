@@ -49,7 +49,8 @@ INSTALLED_APPS = (
     'pagetools.widgets',
     'pagetools.pages',
     'pagetools.search',
-    'pagetools.gallery',
+     #'pagetools.gallery',
+     'pagetools.galleries',
     'pagetools.subscribe',
     'main',
 
