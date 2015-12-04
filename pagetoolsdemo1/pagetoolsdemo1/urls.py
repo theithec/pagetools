@@ -13,7 +13,7 @@ urlpatterns = [
     url(r'', include('pagetools.core.urls')),
     url(r'^', include('pagetools.pages.urls')),
     url(r'^', include('pagetools.subscribe.urls')),
-    url(r'^gal/', include('pagetools.gallery.urls')),
+    #url(r'^gal/', include('pagetools.gallery.urls')),
     url(r'^search/', include('pagetools.search.urls')),
 
 ]
