@@ -52,6 +52,7 @@ INSTALLED_APPS = (
      #'pagetools.gallery',
     'pagetools.galleries',
     'pagetools.subscribe',
+    'pagetools.sections',
     'main',
 
 )
