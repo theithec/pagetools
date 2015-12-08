@@ -25,7 +25,7 @@ class BaseWidget(models.Model):
     adapter = GenericRelation('WidgetInArea')
 
     def __str__(self):
-        return "%s:%s" %  (self.name,self.title)
+        return "%s:%s" % (self.name, self.title)
 
     class Meta:
         abstract = True
@@ -76,6 +76,10 @@ class TemplateTagWidget(BaseWidget):
 class PageType(models.Model):
     name = models.CharField('Name', max_length=128)
     parent = models.ForeignKey('self', blank=True, null=True)
+    description = models.CharField(
+        _('Description'),
+        max_length=156,
+        help_text='''Description (for Metatag/seo)''', blank=True)
 
     def __str__(self):
         return self.name

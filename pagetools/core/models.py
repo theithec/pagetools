@@ -79,6 +79,11 @@ class PagelikeModel(TimeStampedModel, PublishableLangModel):
     '''This may everything that inclines a detail_view'''
     title = models.CharField(_('Title'), max_length=255)
     slug = models.SlugField(_('Slug'), max_length=255)
+    description = models.CharField(
+        _('Description'),
+        max_length=156,
+        help_text='''Description (for Metatag/seo)''', blank=True)
+
 
     def get_absolute_url(self):
         return '/%s' % self.slug
