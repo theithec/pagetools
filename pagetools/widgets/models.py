@@ -90,7 +90,7 @@ class PageType(models.Model):
 
 class TypeArea(LangModel):
 
-    area = models.CharField(max_length=64, choices=settings.AREAS)
+    area = models.CharField(max_length=64, choices=sorted(settings.AREAS))
     type = models.ForeignKey(PageType)
     objects = LangManager()
 

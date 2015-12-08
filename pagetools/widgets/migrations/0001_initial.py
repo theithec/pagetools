@@ -42,7 +42,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(serialize=False, primary_key=True, verbose_name='ID', auto_created=True)),
                 ('title', models.CharField(blank=True, max_length=128)),
                 ('name', models.SlugField(verbose_name='name', unique=True)),
-                ('renderclasskey', models.CharField(max_length=255, choices=[(w, w) for w in widget_settings.TEMPLATETAG_WIDGETS])),
+                ('renderclasskey', models.CharField(max_length=255, choices=sorted([(w, w) for w in widget_settings.TEMPLATETAG_WIDGETS]))),
             ],
             options={
                 'abstract': False,
@@ -53,7 +53,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(serialize=False, primary_key=True, verbose_name='ID', auto_created=True)),
                 ('lang', models.CharField(max_length=20, blank=True, verbose_name='language', choices=settings.LANGUAGES)),
-                ('area', models.CharField(max_length=64, choices=[(a[0], a[0]) for a in widget_settings.AREAS ])),
+                ('area', models.CharField(max_length=64, choices=sorted([(a) for a in widget_settings.AREAS ]))),
                 ('type', models.ForeignKey(to='widgets.PageType')),
             ],
             options={
