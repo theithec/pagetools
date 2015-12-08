@@ -1,4 +1,5 @@
 from django.views.generic.base import View
+from django.utils.translation import get_language
 from slugify import slugify
 from django.template.context_processors import csrf
 from pagetools.core.views import BasePagelikeView
@@ -14,7 +15,10 @@ class WidgetViewMixin(object):
         ptname = self.get_pagetype_name(**kwargs)
         pt = self.get_pagetype(ptname=ptname, **kwargs)
         if pt:
-            kwargs['pagetype_description'] = pt.description
+            pt_descr = pt.pagetypedescription_set.filter(
+                lang=get_language()).first()
+            if pt_descr:
+                kwargs['pagetype_description'] = pt_descr.description
         if kwargs.get("request", None) is None:
             kwargs.update(csrf(self.request))
         kwargs['areas'] = get_areas_for_type(pt, kwargs)

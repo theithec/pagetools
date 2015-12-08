@@ -72,20 +72,35 @@ class TemplateTagWidget(BaseWidget):
         if self.get_rendererobject():
             return self.robj.render(Context(contextdict, True))
 
-
 class PageType(models.Model):
     name = models.CharField('Name', max_length=128)
     parent = models.ForeignKey('self', blank=True, null=True)
-    description = models.CharField(
-        _('Description'),
-        max_length=156,
-        help_text='''Description (for Metatag/seo)''', blank=True)
 
     def __str__(self):
         return self.name
 
     class Meta:
         verbose_name = _("Pagetype")
+        verbose_name_plural = _("Pagetypes")
+
+
+class PageTypeDescription(LangModel):
+    ''' The description is meant to be used for the meta description tag'''
+    pagetype = models.ForeignKey(PageType)
+    description = models.CharField(
+        _('Description'),
+        max_length=156,
+        help_text='''Description (for Metatag/seo)''', blank=True)
+
+    def __str__(self):
+        return "%s/%s" % (self.pagetype, self.lang)
+
+    class Meta:
+        verbose_name = _("Pagetype-Description")
+        verbose_name_plural = _("Pagetype-Descriptions")
+        unique_together = ('pagetype', 'lang',)
+
+
 
 
 class TypeArea(LangModel):
