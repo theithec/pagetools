@@ -13,6 +13,8 @@ class WidgetViewMixin(object):
         kwargs = super(WidgetViewMixin, self).get_context_data(**kwargs)
         ptname = self.get_pagetype_name(**kwargs)
         pt = self.get_pagetype(ptname=ptname, **kwargs)
+        if pt:
+            kwargs['pagetype_description'] = pt.description
         if kwargs.get("request", None) is None:
             kwargs.update(csrf(self.request))
         kwargs['areas'] = get_areas_for_type(pt, kwargs)
