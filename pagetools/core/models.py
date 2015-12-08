@@ -81,7 +81,7 @@ class PagelikeModel(TimeStampedModel, PublishableLangModel):
     slug = models.SlugField(_('Slug'), max_length=255)
     description = models.CharField(
         _('Description'),
-        max_length=156,
+        max_length=139,
         help_text='''Description (for Metatag/seo)''', blank=True)
 
 
