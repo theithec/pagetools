@@ -40,7 +40,7 @@ class DynMultipleChoiceField(forms.MultipleChoiceField):
 
 
 class MailReceiverField(object):
-
+    help_text = _('comma separated list of e-mails')
     def __init__(self, *args, **kwargs):
         try:
             adrs = [n.strip() for n in kwargs['label'].split(',')]
@@ -48,7 +48,7 @@ class MailReceiverField(object):
             for a in adrs:
                 ev(a)
         except (ValueError, ValidationError, KeyError):
-            raise ValidationError('comma separated list of e-mails')
+            raise ValidationError(self.help_text)
 
 
 class BaseDynForm(forms.Form):
