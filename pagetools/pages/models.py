@@ -24,13 +24,17 @@ class IncludedForm(models.Model):
     class Meta:
         abstract = True
 
-class IncludedEmailForm(IncludedForm):
-    email_receivers = models.CharField(_("Email Receivers"), max_length=512, blank=True,
-                                     help_text="Comma separated list of emails")
 
+class IncludedEmailForm(IncludedForm):
+    email_receivers = models.CharField(
+        _("Email Receivers"),
+        max_length=512,
+        blank=True,
+        help_text="Comma separated list of emails")
 
     class Meta:
         abstract = True
+
 
 class DynFormField(models.Model):
 
@@ -74,22 +78,22 @@ class DynFormField(models.Model):
 
     def get_fieldchoices(self):
         return (
-                ('CharField', "%s#%s" % ( _('TextField'), "A field to enter text")),
-                ('EmailField', _('EmailField')),
-                ('ChoiceField', _('ChoiceField')),
-                ('BooleanField', _('CheckField')),
-                )
+            ('CharField', "%s#%s" % (_('TextField'), "A field to enter text")),
+            ('EmailField', _('EmailField')),
+            ('ChoiceField', _('ChoiceField')),
+            ('BooleanField', _('CheckField')),
+        )
 
     def clean(self):
-        #self.to_field().clean()?
+        # self.to_field().clean()?
         pass
 
     def to_field(self):
         Fieldcls = self.field_for_type.get(self.field_type, None)
         if not Fieldcls:
             Fieldcls = getattr(forms, self.field_type)
-        return Fieldcls(label=self.name, required=self.required,
-                        help_text=self.help_text, initial=self.initial)
+            return Fieldcls(label=self.name, required=self.required,
+                            help_text=self.help_text, initial=self.initial)
 
     def __str__(self):
         return '%s: %s' % (self.field_type, self.name)
@@ -134,6 +138,7 @@ class PageDynFormField(DynFormField):
         Page,
         related_name='dynformfields',
         help_text='Additional fields and settings for the included form')
+
     class Meta:
         verbose_name = _("Form field")
         verbose_name_plural = _("Additional form fields")

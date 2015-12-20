@@ -1,3 +1,4 @@
+
 # Create your views here.
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
@@ -7,8 +8,9 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import BaseFormView
 
 from pagetools.widgets.views import WidgetPagelikeView
-from pagetools.core.settings import STATUS_PUBLISHED
 from .models import Page
+
+from .settings import MAILFORM_RECEIVERS
 
 
 class IncludedFormView(DetailView, BaseFormView):
@@ -38,6 +40,8 @@ class IncludedFormView(DetailView, BaseFormView):
     def post(self, request, *args, **kwargs):
         form_class = self.get_form_class()
         form = self.get_form(form_class)
+        form.email_receivers = getattr(
+            self.object, 'email_receivers', MAILFORM_RECEIVERS)
         if form.is_valid():
             messages.success(request, _("Mail send"))
             kwargs['form'] = None
@@ -55,9 +59,9 @@ class IncludedFormView(DetailView, BaseFormView):
             pass
         return d
 
-    def get_form_kwargs(self):
+    def get_form_kwargs2(self):
         kwargs = super(IncludedFormView, self).get_form_kwargs()
-        kwargs.update(self.get_extras())
+        # kwargs.update(self.get_extras())
         return kwargs
 
 
@@ -78,15 +82,16 @@ class PageView(WidgetPagelikeView, AuthPageView, IncludedFormView):
     model = Page
 
     def get_pagetype_name(self, **kwargs):
-        return (self.object.pagetype.name 
+        return (self.object.pagetype.name
                 if self.object.pagetype
-                else  WidgetPagelikeView.get_pagetype_name(self, **kwargs))
+                else WidgetPagelikeView.get_pagetype_name(self, **kwargs))
+
     def get_pagetype(self, **kwargs):
         return self.object.pagetype or WidgetPagelikeView.get_pagetype(self)
 
     def get_context_data(self, **kwargs):
         kwargs['page_title'] = self.object.title
-        obj = self.get_object()
+        # obj = self.get_object()
         kwargs = super(PageView, self).get_context_data(**kwargs)
         return kwargs
 

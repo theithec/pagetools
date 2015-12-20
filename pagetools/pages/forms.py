@@ -41,6 +41,7 @@ class DynMultipleChoiceField(forms.MultipleChoiceField):
 
 class MailReceiverField(object):
     help_text = _('comma separated list of e-mails')
+
     def __init__(self, *args, **kwargs):
         try:
             adrs = [n.strip() for n in kwargs['label'].split(',')]
@@ -82,7 +83,7 @@ class BaseDynForm(forms.Form):
         return _is_valid
 
 
-class SendEmailForm(BaseDynForm):
+class SendEmailForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super(SendEmailForm, self).__init__(*args, **kwargs)
@@ -90,12 +91,11 @@ class SendEmailForm(BaseDynForm):
         self.helper.form_method = 'post'
         self.helper.add_input(Submit('submit', 'Submit'))
 
-    def add_mailreceiverfield(self, **kwargs):
-        self.mailform_receivers = kwargs['label'].split(',')
-
     def get_mailreceivers(self):
         # logger.debug(" MAILFORM_RECEIVERS %s" %  MAILFORM_RECEIVERS)
-        return getattr(self, 'mailform_receivers', MAILFORM_RECEIVERS)
+        return (
+            getattr(self, 'email_receivers', []) or MAILFORM_RECEIVERS
+        ).split(",")
 
     def is_valid(self, **kwargs):
         _is_valid = super(SendEmailForm, self).is_valid()
