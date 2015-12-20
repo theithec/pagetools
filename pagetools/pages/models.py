@@ -1,5 +1,3 @@
-import os
-from django.conf import settings
 from django import forms
 from django.core.urlresolvers import reverse
 from django.db import models
@@ -76,10 +74,6 @@ class DynFormField(models.Model):
 
     def get_fieldchoices(self):
         return (
-                ('MailReceiverField', "%s#%s" % (
-                    _('MailReceiverField'),
-                   MailReceiverField.help_text
-                )),
                 ('CharField', "%s#%s" % ( _('TextField'), "A field to enter text")),
                 ('EmailField', _('EmailField')),
                 ('ChoiceField', _('ChoiceField')),
