@@ -133,7 +133,29 @@ PT_ENTRIEABLE_MODELS = (
     )
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-PT_MAILFORM_RECEIVERS = "root@localhost"
+#PT_MAILFORM_RECEIVERS = "root@localhost"
 PT_TEMPLATETAG_WIDGETS =  {
     'subscribe': ('pagetools.subscribe.templatetags.subscribe_tags', 'NewsSubscribtionNode'),
 }
+
+LOGGING = {
+ 'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'debug.log',
+        },
+       'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        '':{
+            'handlers': ['console', 'file'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+        },
+    },
+}
+
