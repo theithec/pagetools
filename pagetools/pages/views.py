@@ -40,8 +40,8 @@ class IncludedFormView(DetailView, BaseFormView):
     def post(self, request, *args, **kwargs):
         form_class = self.get_form_class()
         form = self.get_form(form_class)
-        form.email_receivers = getattr(
-            self.object, 'email_receivers', MAILFORM_RECEIVERS)
+        #form.email_receivers = getattr(
+        #    self.object, 'email_receivers', MAILFORM_RECEIVERS)
         if form.is_valid():
             messages.success(request, _("Mail send"))
             kwargs['form'] = None
@@ -59,8 +59,10 @@ class IncludedFormView(DetailView, BaseFormView):
             pass
         return d
 
-    def get_form_kwargs2(self):
+    def get_form_kwargs(self):
         kwargs = super(IncludedFormView, self).get_form_kwargs()
+        if getattr(self, 'object') and getattr(self.object, 'email_receivers'):
+            kwargs['email_receivers'] = self.object.email_receivers
         # kwargs.update(self.get_extras())
         return kwargs
 

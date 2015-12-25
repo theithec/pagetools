@@ -19,9 +19,8 @@ from crispy_forms.layout import Submit
 
 from .settings import MAILFORM_RECEIVERS, MAILFORM_SENDER
 
-# import logging
-# logger = logging.getLogger(__name__)
-
+import logging
+logger = logging.getLogger(__name__)
 
 class DynMultipleChoiceField(forms.MultipleChoiceField):
 
@@ -83,19 +82,22 @@ class BaseDynForm(forms.Form):
         return _is_valid
 
 
-class SendEmailForm(forms.Form):
+class SendEmailForm(BaseDynForm):
 
     def __init__(self, *args, **kwargs):
+        self.email_receivers = kwargs.pop('email_receivers', None)
         super(SendEmailForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_method = 'post'
         self.helper.add_input(Submit('submit', 'Submit'))
 
     def get_mailreceivers(self):
-        # logger.debug(" MAILFORM_RECEIVERS %s" %  MAILFORM_RECEIVERS)
-        return (
-            getattr(self, 'email_receivers', []) or MAILFORM_RECEIVERS
-        ).split(",")
+        try:
+            r = (getattr(self, 'email_receivers', "") or ",".join(MAILFORM_RECEIVERS)).split(",")
+            logger.debug("Mail receivers %s " %  r)
+            return r
+        except AttributeError:
+            logger.error("no email receivers for %s" % self)
 
     def is_valid(self, **kwargs):
         _is_valid = super(SendEmailForm, self).is_valid()
