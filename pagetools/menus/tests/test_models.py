@@ -11,6 +11,7 @@ from pagetools.pages import settings
 from pagetools.pages.models import Page
 from django.core.exceptions import ValidationError
 from pagetools.core.settings import STATUS_PUBLISHED
+from django.utils.translation import get_language
 
 
 class TC1Tests(TestCase):
@@ -31,14 +32,22 @@ class TC1Tests(TestCase):
         self.e1 = Menu.objects.add_child(self.menu, self.p1)
 
     def test_lists(self):
+        lang = get_language()
+        print("lang", lang)
         c = self.menu.get_children()
         self.assertEqual(self.menu.title, 'm1')
+        u0 = c[0].get_absolute_url()
+        if u0.startswith("/%s/" % lang ):
+            u0 = u0[3:]
         self.assertEqual(
-            c[0].get_absolute_url(),
+            u0,
             '/%sp1/' % settings.PAGE_PREFIX
         )
+        u1 = c[1].get_absolute_url()
+        if u1.startswith("/%s/" % lang):
+            u1 = uo[3:]
         self.assertEqual(
-            c[1].get_absolute_url(),
+            u1,
             '/foo'
         )
 
