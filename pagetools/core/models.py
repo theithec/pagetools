@@ -74,11 +74,37 @@ class PublishableLangModel(LangModel, StatusModel):
     class Meta:
         abstract = True
 
+# c&p from django1.9
+from django.core.validators import RegexValidator
+import re
+import six
+from django.utils.functional import SimpleLazyObject
+
+
+def _lazy_re_compile(regex, flags=0):
+    """Lazily compile a regex with flags."""
+    def _compile():
+        # Compile the regex if it was not passed pre-compiled.
+        if isinstance(regex, six.string_types):
+            return re.compile(regex, flags)
+        else:
+            assert not flags, "flags must be empty if regex is passed pre-compiled"
+            return regex
+    return SimpleLazyObject(_compile)
+slug_unicode_re = _lazy_re_compile(r'^[-\w]+\Z', re.U)
+validate_unicode_slug = RegexValidator(
+    slug_unicode_re,
+    _("Enter a valid 'slug' consisting of Unicode letters, numbers, underscores, or hyphens."),
+    'invalid'
+)
+class USlugField(models.CharField):
+    default_validators = [validate_unicode_slug]
 
 class PagelikeModel(TimeStampedModel, PublishableLangModel):
+
     '''This may everything that inclines a detail_view'''
     title = models.CharField(_('Title'), max_length=255)
-    slug = models.SlugField(_('Slug'), max_length=255)
+    slug = USlugField(_('Slug'), max_length=255)
     description = models.CharField(
         _('Description'),
         max_length=139,
