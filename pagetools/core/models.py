@@ -1,3 +1,4 @@
+''' core modules for pagetools '''
 from django.conf import settings
 from django.db import models
 from django.utils.translation import ugettext_lazy as _, get_language
@@ -69,16 +70,17 @@ class PublishableLangModel(LangModel, StatusModel):
     def _enabled(self):
         return self.status == ptsettings.STATUS_PUBLISHED
     _enabled.boolean = True
+    _enabled.admin_order_field = 'status'
     enabled = property(_enabled)
 
     class Meta:
         abstract = True
 
-
 class PagelikeModel(TimeStampedModel, PublishableLangModel):
-    '''This may everything that inclines a detail_view'''
+    '''This may for everything that inclines a detail_view'''
+
     title = models.CharField(_('Title'), max_length=255)
-    slug = models.SlugField(_('Slug'), max_length=255)
+    slug = models.SlugField(_('Slug'), max_length=255, allow_unicode=True)
     description = models.CharField(
         _('Description'),
         max_length=139,

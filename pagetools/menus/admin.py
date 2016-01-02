@@ -15,7 +15,8 @@ from django.utils.translation import ugettext_lazy as _
 from django.template.loader import render_to_string
 
 from pagetools.core.admin import TinyMCEMixin
-from pagetools.menus.models import MenuEntry, Menu, Link, ViewLink, MenuCache
+from pagetools.menus.models import (MenuEntry, Menu, Link, ViewLink, MenuCache,
+                                    AutoPopulated)
 from pagetools.menus.utils import entrieable_models
 from pagetools.core.utils import get_adminadd_url, get_classname
 
@@ -250,3 +251,4 @@ admin.site.register(Link, EntrieableAdmin)
 admin.site.register(ViewLink, EntrieableAdmin)
 admin.site.register(MenuEntry, MenuEntryAdmin)
 admin.site.register(MenuCache)
+admin.site.register(AutoPopulated, EntrieableAdmin)

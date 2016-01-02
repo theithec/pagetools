@@ -4,19 +4,19 @@ Created on 14.12.2013
 @author: lotek
 '''
 
+from collections import defaultdict
+import logging
+
 from django import template
 from django.core import urlresolvers
-from django.contrib.contenttypes.fields import GenericForeignKey 
-from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.db.models.signals import pre_delete
 from django.utils.text import slugify
 from django.utils.translation import ugettext_lazy as _
-from django.template.context import Context
-
-from collections import defaultdict
 
 from mptt.fields import TreeForeignKey
 from mptt.managers import TreeManager
@@ -25,9 +25,10 @@ from mptt.models import MPTTModel
 from pagetools.core.models import LangManager, LangModel
 from pagetools.core.utils import get_classname, get_adminedit_url
 
+import pagetools.menus.utils
 from .settings import MENU_TEMPLATE
 
-
+logger = logging.getLogger("pagetools")
 class MenuManager(TreeManager, LangManager):
     def create(self, *args, **kwargs):
         raise AttributeError(
@@ -42,7 +43,9 @@ class MenuManager(TreeManager, LangManager):
         kwargs['content_type'] = ContentType.objects.get_for_model(
             content_object)
         kwargs['object_id'] = content_object.pk
-        kwargs['slugs'] = '%s' % content_object
+        kwargs['slug'] = '%s' % getattr(
+            content_object, 'slug',
+            slugify(content_object))
         try:
             created = False
             entry, created = TreeManager.get_or_create(self, **kwargs)
@@ -71,9 +74,9 @@ class MenuManager(TreeManager, LangManager):
 
 class MenuEntry(MPTTModel, LangModel):
     title = models.CharField(_('Title'), max_length=128)
-    slugs = models.CharField(
-        _('slugs'), max_length=512,
-        help_text=('Whitespace separated slugs of content'),
+    slug = models.CharField(
+        _('slug'), max_length=512,
+        help_text=(_('Slug')),
         default='', blank=True)
     parent = TreeForeignKey('self', null=True, blank=True,
                             related_name='children')
@@ -87,7 +90,6 @@ class MenuEntry(MPTTModel, LangModel):
         return get_classname(self.content_object.__class__)
 
     def __str__(self):
-        # return self.title
         return '%s%s' % (
             self.title, (' (%s)' % self.lang) if self.lang else '')
 
@@ -132,18 +134,20 @@ class Menu(MenuEntry):
     def _render_no_sel(self):
         t = template.loader.get_template(MENU_TEMPLATE)
         children = self.children_list()
-        return t.render(Context({'children': children, }))
+        return t.render({'children': children, })
 
     def render(self, selected):
         sel_entries = SelectedEntries()
         for s in selected:
             sel_entries['sel_' + s] = 'active'
+        x = "SELECTED: %s, KEYS: %s" % (selected,  ", ".join(sel_entries.keys()))
         use_cache = self.enabled
         t = None
         if use_cache:
             t = MenuCache.objects.get(menu=self).cache
         else:
             t = self._render_no_sel()
+        logger.debug("Menuentry " + x + " Template" +t)
         x = t % sel_entries
         return x
 
@@ -165,8 +169,6 @@ class Menu(MenuEntry):
             e.move_to(parent, 'last-child')
             e = MenuEntry.objects.get(pk=e.pk)
             parent = MenuEntry.objects.get(pk=parent.pk)
-            # e.save()
-            # parent.save()
         MenuEntry.objects.rebuild()
         self.save()
 
@@ -191,6 +193,12 @@ class Menu(MenuEntry):
             c = MenuCache.objects.create()
             self.content_object = c
         s = super(Menu, self).save(*args, **kwargs)
+        for child in self.get_children():
+            slug = getattr(child.content_object, 'slug', None)
+            if slug:
+                if not slug == child.slug:
+                    child.slug = slug
+                    child.save()
         c.menu = self
         c.save()
         return s
@@ -200,8 +208,8 @@ class Menu(MenuEntry):
             return
         dict_['entry_url'] = entry.get_absolute_url()
         cslugs = []
-
-        cslugs += entry.slugs.split(' ') if entry.slugs else [
+        # cslugs += entry.slugs.split(' ') if entry.slugs else [
+        cslugs +=  [
             getattr(
                 entry_obj,
                 'slug',
@@ -213,6 +221,7 @@ class Menu(MenuEntry):
                 'select_class_marker', '')
             curr_dict['select_class_marker'] += ''.join(
                 '%(sel_' + s + ')s' for s in cslugs
+
             )
             curr_dict = curr_dict['dict_parent']
         return dict_
@@ -226,18 +235,29 @@ class Menu(MenuEntry):
             filterkwargs = {'parent': self}
             if not for_admin:
                 filterkwargs['enabled'] = True
+
             if mtree is None:
                 mtree = []
+
             if children is None:
                 children = self.get_children().filter(**filterkwargs)
+
             for childentry in children:
                 d = {
                     'entry_title': childentry.title,
                 }
+
                 d['dict_parent'] = dict_parent
                 obj = childentry.content_object
                 filterkwargs['parent'] = childentry
-                cc = childentry.get_children().filter(**filterkwargs)
+                cc = []
+                if not for_admin and getattr(obj, 'auto_children', False):
+                    d['auto_entry'] = True
+                    cc = obj.get_children(parent=self)
+                elif dict_parent and dict_parent.get('auto_entry', False):
+                    cc = MenuEntry.objects.none()
+                else:
+                    cc = childentry.get_children().filter(**filterkwargs)
                 if for_admin:
                     reverseurl = get_adminedit_url(obj)
                     d.update({
@@ -258,14 +278,19 @@ class Menu(MenuEntry):
                     })
                 else:
                     d = self._with_child(d, childentry, obj, dict_parent)
+
                 self.cnt += 1
                 if d and cc:
                     d['children'] = _children_list(
                         children=cc, for_admin=for_admin, dict_parent=d)
+
                 if d:
                     mtree.append(d)
+
             return mtree
         return _children_list(for_admin=for_admin)
+
+
 
     class Meta:
         verbose_name = _('Menu')
@@ -275,10 +300,12 @@ class Menu(MenuEntry):
 class AbstractLink(models.Model):
     title = models.CharField(_('Title'), max_length=128)
     enabled = models.BooleanField(_('enabled'), default=True)
-
+    #  auto_children = False
     class Meta:
         abstract = True
 
+    #  def get_children(self, parent=None):
+    #    return super().get_children()
 
 class Link(AbstractLink):
     url = models.CharField(_('URL'), max_length=255)
@@ -295,15 +322,17 @@ class Link(AbstractLink):
 
 
 class ViewLink(AbstractLink):
-    name = models.CharField(_('Name'), max_length=255)
+    name = models.CharField(_('Name'), max_length=255, choices=(("a", "1"),))
 
     def __init__(self, *args, **kwargs):
-        super(ViewLink, self).__init__(*args, **kwargs)
-        from pagetools.menus.utils import _entrieable_reverse_names
-        self._meta.get_field_by_name('name')[0]._choices = [
+        super().__init__(*args, **kwargs)
+        choices = tuple((
             ('%s' % k, '%s' % k)
-            for k in _entrieable_reverse_names
-        ]
+            for k in pagetools.menus.utils._entrieable_reverse_names
+        ))
+        self._meta.get_field('name').choices = choices
+        if self.name in pagetools.menus.utils._entrieable_auto_children:
+            self.auto_children = True
 
     def __str__(self):
         return self.name
@@ -314,3 +343,24 @@ class ViewLink(AbstractLink):
     class Meta:
         verbose_name = _("ViewLink")
         verbose_name_plural = _("ViewLinks")
+
+
+class AutoPopulated(AbstractLink):
+    auto_children = True
+    name = models.CharField(_('Name'), max_length=255, choices=(("a", "1"),))
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        choices = tuple((
+            ('%s' % k, '%s' % k)
+            for k in pagetools.menus.utils._entrieable_auto_children
+        ))
+        self._meta.get_field('name').choices = choices
+
+    def get_children(self, parent):
+        return pagetools.menus.utils._auto_children_funcs[self.name]()
+
+    def get_absolute_url(self):
+        return "."
+
+

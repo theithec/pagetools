@@ -6,7 +6,8 @@ from django.utils.html import format_html
 from django.contrib.contenttypes.models import ContentType
 from grappelli.forms import GrappelliSortableHiddenMixin
 from pagetools.core.admin import PagelikeAdmin
-from .models import PageNode, PageNodePos
+from .models import (PageNode, PageNodePos, SimpleArticle, SimpleSection,
+                     SimpleSectionPage)
 
 
 class BasePageNodePosAdmin(GrappelliSortableHiddenMixin, admin.TabularInline):
@@ -15,6 +16,7 @@ class BasePageNodePosAdmin(GrappelliSortableHiddenMixin, admin.TabularInline):
     readonly_fields = ('admin_link',)
     fk_name = "owner"
     sortable_field_name = "position"
+    extra = 2
 
     def get_queryset(self, request):
         request.parent_model = self.parent_model
@@ -39,7 +41,7 @@ class BasePageNodePosAdmin(GrappelliSortableHiddenMixin, admin.TabularInline):
 
             kwargs["queryset"] = PageNode.objects.filter(
                 content_type_pk__in=allowed_contenttypes
-            )
+            ).order_by('title')
             return super(BasePageNodePosAdmin, self).formfield_for_foreignkey(
                 db_field, request, **kwargs
             )
@@ -47,6 +49,11 @@ class BasePageNodePosAdmin(GrappelliSortableHiddenMixin, admin.TabularInline):
 
 class BasePageNodeAdmin(PagelikeAdmin):
 
+    inlines = [BasePageNodePosAdmin]
+    change_form_template = 'admin/change_form_chooser.html'
+
+    prepopulated_fields = {"slug": ("title",)}
+    readonly_fields = ('status_changed','containing_nodes')
 
     def admin_link(self, instance):
         realobj = instance.get_real_obj()
@@ -69,6 +76,7 @@ class BasePageNodeAdmin(PagelikeAdmin):
     containing_nodes.allow_tags = _("Parents")
 
 
-
-
-
+admin.site.register(
+    [SimpleArticle, SimpleSection, SimpleSectionPage],
+    BasePageNodeAdmin)
+admin.site.register(PageNode)

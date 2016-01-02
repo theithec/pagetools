@@ -6,7 +6,6 @@ import string
 from django.core.mail import get_connection
 from django.core.mail.message import EmailMessage
 from django.db import models
-#from django.db.models.loading import get_model
 from django.apps import apps
 from django.core.urlresolvers import reverse
 from django.utils import timezone
@@ -19,7 +18,6 @@ from pagetools.core.models import LangModel, LangManager
 
 from . import settings as subs_settings
 from .base_models import BaseSubscriberMixin
-
 
 def _mk_key():
     k = "".join([random.choice(string.ascii_letters + string.digits)
@@ -54,8 +52,10 @@ class Subscriber(BaseSubscriberMixin, LangModel):
 
     @classmethod
     def get_subscribers(cls, **kwargs):
-        return cls.objects.lfilter(is_activated=True,
-                                   lang=kwargs.pop('lang', None))
+        fkwargs = {'is_activated': True}
+        if subs_settings.SUBSCRIBER_LANG_ONLY:
+            fkwargs['lang'] = kwargs.pop('lang', None)
+        return cls.objects.lfilter(**fkwargs)
 
 _subscriber_model = None
 
@@ -77,7 +77,7 @@ class QueuedEmail(LangModel):
     createdate = models.DateTimeField(
         'Created on',
         auto_now_add=True,
-        
+
         blank=True,
         editable=False)
 
@@ -100,7 +100,8 @@ class QueuedEmail(LangModel):
         blank=True,
         max_length=255)
 
-    body = models.TextField(verbose_name="Body",
+    body = models.TextField(
+        verbose_name="Body",
         default="",
         unique=False,
         blank=True)
@@ -108,11 +109,11 @@ class QueuedEmail(LangModel):
     def save(self, force_insert=False, force_update=False, **kwargs):
         self.modifydate = timezone.now()
 
-        super(QueuedEmail, self).save() #force_insert, force_update)
+        super(QueuedEmail, self).save()  # force_insert, force_update)
         modelname = subs_settings.SUBSCRIBER_MODEL
         if modelname == "Subscriber":
-            modelname ="subscribe.Subscriber"
-        SubsModel = apps.get_model( *modelname.rsplit('.',1))
+            modelname = "subscribe.Subscriber"
+        SubsModel = apps.get_model(*modelname.rsplit('.', 1))
         kwargs['lang'] = self.lang
         subscribers = SubsModel.get_subscribers(**kwargs)
 
@@ -131,14 +132,15 @@ class QueuedEmail(LangModel):
                     try:
                         msg = EmailMessage(
                             "%s" % self.subject,
-                            self.body.replace('_unsubscribe_path_',
-                                              'unsubscribe/%s' % unsubscribe_path),
+                            self.body.replace(
+                                '_unsubscribe_path_',
+                                'unsubscribe/%s' % unsubscribe_path),
                             subs_settings.NEWS_FROM,
                             [to],
                             connection=conn,
                         )
                         msg.content_subtype = "html"  # Main content is now text/html
-                        status = msg.send( fail_silently=True,)
+                        status = msg.send(fail_silently=True,)
                     except smtplib.SMTPException:
                         pass
         return status
@@ -150,7 +152,7 @@ class QueuedEmail(LangModel):
                 status = self.send_to(
                     s.subscriber.get_email(),
                     conn,
-                    "/%s?mk=%s" %(
+                    "/%s?mk=%s" % (
                         reverse('unsubscribe', kwargs={'key': s.subscriber.key}),
                         s.subscriber.mailkey()
                      )

@@ -41,7 +41,7 @@ def send_queued_mail(qm, maxmails):
     sts = SendStatus.objects.filter(queued_email=qm)[:maxmails]
     qm.send_to_all(sts)
     sst2 = SendStatus.objects.filter(queued_email=qm)
-    if not sst2:
+    if not sst2 and subs_settings.DELETE_QUEUED_MAILS:
         qm.delete()
     return len(sts)
 

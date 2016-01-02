@@ -6,14 +6,13 @@ from pagetools.sections.utils import get_template_names_for_obj
 register = template.Library()
 from pagetools.sections import render_node_extradata
 
-#@register.inclusion_tag('cnodes/cnode.html')
+
 class ContentNode(template.Node):
     def __init__(self, obj, user):
         self.object_var = template.Variable(obj)
         self.user_var = template.Variable(user)
 
     def render(self, context):
-        #pdb.set_trace()
         obj =  self.object_var.resolve(context)
         user =  self.user_var.resolve(context)
         real_template = get_template_names_for_obj(obj)
@@ -25,7 +24,7 @@ class ContentNode(template.Node):
         if not  obj.enabled:
             context['unpublished'] = True
 
-        return select_template(real_template).render( context)
+        return select_template(real_template).render(context)
 
 
 @register.tag
@@ -37,5 +36,7 @@ def render_node(parser, token, *args, **kwargs):
 @register.filter(name='ordered_content')
 def _ordered_content(value, args):
     obj = value
+    if obj is None:
+        return []
     return obj.ordered_content(user=args)
 

@@ -12,12 +12,14 @@ from .forms import ContactForm, DynMultipleChoiceField, MailReceiverField
 
 class IncludedForm(models.Model):
     included_form = models.CharField(
-        _("Included form"), max_length=255, blank=True)
-    includable_forms = {'ContaktForm': ContactForm}
+        _("Included form"), max_length=255, blank=True, choices=(('dummy', 'dummy'),))
+    includable_forms = {'Contactform': ContactForm}
 
     def __init__(self, *args, **kwargs):
         super(IncludedForm, self).__init__(*args, **kwargs)
-        self._meta.get_field_by_name('included_form')[0]._choices = [
+        #self._meta.get_field_by_name('included_form')[0]._choices = [
+        self._meta.get_field('included_form').choices = [
+        #self.included_form.choices = [
             (i, _(i)) for i, j in list(self.includable_forms.items())
         ]
 
@@ -121,7 +123,7 @@ class BasePage(IncludedEmailForm, AuthPage, PagelikeModel):
         return self.pagetype
 
     def get_absolute_url(self):
-        return reverse('pageview', kwargs={'slug': self.slug})
+        return reverse('pages:pageview', kwargs={'slug': self.slug})
 
     class Meta(PagelikeModel.Meta):
         verbose_name = _('Page')

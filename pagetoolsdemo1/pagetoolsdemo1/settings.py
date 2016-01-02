@@ -41,21 +41,32 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+    'django_ajax',
+    'sekizai',
     'mptt',
     'crispy_forms',
     'debug_toolbar',
+    #'django_nose',
     'pagetools.core',
     'pagetools.menus',
     'pagetools.widgets',
     'pagetools.pages',
     'pagetools.search',
-     #'pagetools.gallery',
     'pagetools.galleries',
     'pagetools.subscribe',
     'pagetools.sections',
     'main',
-
 )
+'''
+import sys
+if "test" in sys.argv:
+    INSTALLED_APPS += (
+        'main.tests',
+    )
+'''
+#import sys
+#if "test" in sys.argv:
+#INSTALLED_APPS += ('pagetools.subscribe.tests', )
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -133,7 +144,6 @@ PT_ENTRIEABLE_MODELS = (
     )
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-#PT_MAILFORM_RECEIVERS = "root@localhost"
 PT_TEMPLATETAG_WIDGETS =  {
     'subscribe': ('pagetools.subscribe.templatetags.subscribe_tags', 'NewsSubscribtionNode'),
 }
@@ -158,4 +168,6 @@ LOGGING = {
         },
     },
 }
+
+#TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 

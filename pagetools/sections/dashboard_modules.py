@@ -16,7 +16,7 @@ class PageNodesModule(DashboardModule):
     A module that displays a page with nodes.
     A "page" should be the root-pagenode model.
     Overwrite model =  <YourModel>
-    
+
     Dashboard needs to include the static files, e.g:
     ----------------------------------------------------------------------------
     from django import forms
@@ -31,7 +31,7 @@ class PageNodesModule(DashboardModule):
             )
 
     media = property(_media)
-    
+
     urls.py:
         url(
             r'^adminnodes/(?P<slug>[\w-]+)/$',
@@ -49,11 +49,9 @@ class PageNodesModule(DashboardModule):
         super(PageNodesModule, self).__init__(*args, **kwargs)
 
     def init_with_context(self, context):
-        pages = self.model.objects.all()
+        pages = self.model.objects.filter(content_type_pk=self.model.get_contenttype_pk())
         context['pages'] = pages
-        context['admin_pagenodesview'] = reverse(
-            'admin_pagenodesview',
-            args = ('__SLUG__', )) 
+        context['admin_pagenodesview'] = '/adminnodes/__SLUG__'
         options=""
         for p in pages:
             options += format_html(
@@ -64,6 +62,6 @@ class PageNodesModule(DashboardModule):
             <select style="width: auto;" id='pagenode_page_chooser'>
                 %s
             </select>''' % options
-        
+
         super(PageNodesModule, self).init_with_context(context)
         self._initialized = True

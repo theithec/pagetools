@@ -1,8 +1,9 @@
 include version.py RELEASE-VERSION
-recursive-include django-pagetools/pagetools/templates * 
+include pagetools/search/search_replacements.json
+recursive-include django-pagetools/pagetools/templates *
 recursive-include pagetools/*/templates *
 
-recursive-include pagetools/static * 
+recursive-include pagetools/static *
 recursive-include pagetools/*/static *
 
 recursive-include pagetools/locale *

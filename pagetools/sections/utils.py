@@ -1,21 +1,19 @@
 import logging
-from django.contrib.contenttypes.models import ContentType
-logger = logging.getLogger('sections')
+logger = logging.getLogger('pagetoolpagetools')
 
 
 def get_template_names_for_obj(obj):
     obj = obj.get_real_obj()
     n = []
-    try:
-        n = ["cnodes/%s.html" % (obj.node_type)]
-    except AttributeError:
-        pass
-    n +=  [
-        "cnodes/%s-%s.html" % (obj._meta.model_name,obj.slug ),
-        "cnodes/%s.html" % obj._meta.model_name,
+    node_type = getattr(obj, 'node_type', None)
+    if node_type:
+        n = [
+            "sections/%s-%s.html" % (node_type, obj.slug),
+            "sections/%s.html" % (node_type)
+        ]
+    n += [
+        "sections/%s-%s.html" % (obj._meta.model_name, obj.slug),
+        "sections/%s.html" % obj._meta.model_name,
     ]
-    #logger.error("TEMPL "+ ", ".join( n))
+    logger.debug("Templates for %s: %s" % (obj, n))
     return n
-
-
-
