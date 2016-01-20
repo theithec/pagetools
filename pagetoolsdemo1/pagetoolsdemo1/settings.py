@@ -49,12 +49,10 @@ INSTALLED_APPS = (
     'pagetools.widgets',
     'pagetools.pages',
     'pagetools.search',
-     #'pagetools.gallery',
     'pagetools.galleries',
     'pagetools.subscribe',
     'pagetools.sections',
     'main',
-
 )
 
 MIDDLEWARE_CLASSES = (
@@ -133,7 +131,6 @@ PT_ENTRIEABLE_MODELS = (
     )
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-#PT_MAILFORM_RECEIVERS = "root@localhost"
 PT_TEMPLATETAG_WIDGETS =  {
     'subscribe': ('pagetools.subscribe.templatetags.subscribe_tags', 'NewsSubscribtionNode'),
 }

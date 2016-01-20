@@ -14,15 +14,15 @@ class Article(PageNode):
         self.allowed_children_classes = (self.__class__,)
         super(Article, self).__init__(*args, **kwargs)
 
+
 class Section(TypeMixin, PageNode):
     allowed_children_classes = (Article,)
-    node_choices = (("box", "Box"),("slider",  "Slider")) 
+    node_choices = (("box", "Box"),("slider",  "Slider"))
     objects  = PageNodeManager() #PublishableLangManager()
     class Meta:
         #proxy = True
         verbose_name = _('Section')
         verbose_name_plural = _('Sections')
-
 
 
 class Page(PageNode):

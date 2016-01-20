@@ -45,7 +45,7 @@ class PageNode(PagelikeModel):
 
         clz = ContentType.objects.get_for_id(node.content_type_pk)
         real = clz.model_class().objects.get(pk=node.pk)
-        print("Node", node.title,  node.content_type_pk, clz, real.get_classname())
+        #print("Node", node.title,  node.content_type_pk, clz, real.get_classname())
         try:
             clz = ContentType.objects.get_for_id(node.content_type_pk)
             real = clz.model_class().objects.get(pk=node.pk)

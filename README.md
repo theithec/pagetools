@@ -9,6 +9,7 @@ Pagetools is a set of Django apps to to provide some cms-like features.
 -   search
 -   subscribe/newsletter
 -   gallery
+-   sections
 
 without changing the way you work with django, provided you use grappelli.
 
