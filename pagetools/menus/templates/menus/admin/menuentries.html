@@ -6,7 +6,7 @@
                 <input name="entry-order-id-{{c.entry_order_id}}" type="hidden"
                                                                   value="{{ c.entry_pk}}" />
                 <a href="{{ c.obj_admin_url }}?menu={{ original.pk }}"
-                   class="obj_admin_link entry_{{ c.obj_status}}">{{ c.obj_classname }}: {{ c.obj_title }}
+                   class="obj_admin_link menuentryobj-{{ c.obj_status}}">{{ c.obj_classname }}: {{ c.obj_title }}
                 </a>    
 
 		        <a class="del_entry" href="{{ c.entry_del_url }}">
