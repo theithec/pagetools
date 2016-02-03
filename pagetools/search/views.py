@@ -19,6 +19,7 @@ class SearchResultsView(PaginatorMixin):
     template_name = "search_results.html"
     context_object_name = 'results'
     search_params = {}
+    #print("SM", search_mods)
     _search_mods = [m for m in search_mods]
     sep = ''
     form_cls = AdvSearchForm
@@ -27,12 +28,14 @@ class SearchResultsView(PaginatorMixin):
         self.form = self.form_cls(request.GET)
         is_valid = self.form.is_valid()
         cld = getattr(self.form, 'cleaned_data', None)
+        #print("CLD", cld)
         if any(cld.values()):
             self.sep = '?%s&' % ('&'.join(
                 ['%s=%s' % (k, v) for k, v in list(cld.items()) if v]
             ))
             self.search_params = cld
             model_pks = cld.get('models')
+            #print("MPK", model_pks)
             if model_pks:
                 int_pks = [int(s) for s in model_pks]
                 self._search_mods = [search_mods[i] for i in int_pks]
