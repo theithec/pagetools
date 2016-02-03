@@ -13,7 +13,7 @@ from .forms import ContactForm, DynMultipleChoiceField, MailReceiverField
 class IncludedForm(models.Model):
     included_form = models.CharField(
         _("Included form"), max_length=255, blank=True)
-    includable_forms = {'ContaktForm': ContactForm}
+    includable_forms = {'Contactform': ContactForm}
 
     def __init__(self, *args, **kwargs):
         super(IncludedForm, self).__init__(*args, **kwargs)

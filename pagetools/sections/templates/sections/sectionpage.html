@@ -1,0 +1,5 @@
+{% load sections_tags %}
+{% for section in contents  %}
+    {% render_node section user %}
+{% endfor %}
+

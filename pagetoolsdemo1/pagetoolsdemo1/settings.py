@@ -41,6 +41,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+    'django_ajax',
+    'sekizai',
     'mptt',
     'crispy_forms',
     'debug_toolbar',

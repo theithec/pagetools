@@ -1,0 +1,15 @@
+ {% load static sections_tags menus_tags   %}
+<html>
+  <head>
+    <title>sectionsdemo</title>
+  </head>
+  <body>
+    <div class="head">
+      <ul>{% menu MainMenu selected %}
+      </ul>
+    </div>  
+    <div>
+      {% render_node object user %}
+    </div>
+  </body>
+</html>

@@ -1,8 +1,8 @@
-{% extends "cnodes/base_node.html" %}
+{% extends "sections/base_node.html" %}
 {% load sections_tags %}
 
 {% block node %}
-<h1>SEC</h1>
+<h1>{{object.title}}</h1>
 <section class="section {{object.slug}}">
   <div class="row section-header">
     <div class="large-12 columns">
