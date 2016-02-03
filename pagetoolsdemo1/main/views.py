@@ -8,7 +8,7 @@ class NodeView(BaseNodeView):
 
 class IndexView(NodeView):
 
-    template_name = "sections_base.html"
+    template_name = "sections/sections_base.html"
 
     def get_object(self, *args, **kwargs):
         self.object = SectionPage.objects.filter(
