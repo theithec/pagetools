@@ -6,7 +6,7 @@ Created on 14.12.2013
 
 from django import template
 from django.core import urlresolvers
-from django.contrib.contenttypes.fields import GenericForeignKey 
+from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
@@ -42,7 +42,9 @@ class MenuManager(TreeManager, LangManager):
         kwargs['content_type'] = ContentType.objects.get_for_model(
             content_object)
         kwargs['object_id'] = content_object.pk
-        kwargs['slugs'] = '%s' % content_object
+        kwargs['slugs'] = '%s' % getattr(
+            content_object, 'slug',
+            slugify(content_object))
         try:
             created = False
             entry, created = TreeManager.get_or_create(self, **kwargs)
