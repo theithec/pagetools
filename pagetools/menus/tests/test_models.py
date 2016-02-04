@@ -33,7 +33,6 @@ class TC1Tests(TestCase):
 
     def test_lists(self):
         lang = get_language()
-        print("lang", lang)
         c = self.menu.get_children()
         self.assertEqual(self.menu.title, 'm1')
         u0 = c[0].get_absolute_url()
@@ -45,10 +44,11 @@ class TC1Tests(TestCase):
         )
         u1 = c[1].get_absolute_url()
         if u1.startswith("/%s/" % lang):
-            u1 = uo[3:]
+            u1 = u0[3:]
         self.assertEqual(
             u1,
             '/foo'
         )
 
-
+    def test_entry_slugs(self):
+        self.assertEqual(self.e1.slugs, "p1")

@@ -46,6 +46,7 @@ INSTALLED_APPS = (
     'mptt',
     'crispy_forms',
     'debug_toolbar',
+    'django_nose',
     'pagetools.core',
     'pagetools.menus',
     'pagetools.widgets',
@@ -56,6 +57,16 @@ INSTALLED_APPS = (
     'pagetools.sections',
     'main',
 )
+'''
+import sys
+if "test" in sys.argv:
+    INSTALLED_APPS += (
+        'main.tests',
+    )
+'''
+#import sys
+#if "test" in sys.argv:
+#INSTALLED_APPS += ('pagetools.subscribe.tests', )
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -157,3 +168,6 @@ LOGGING = {
         },
     },
 }
+
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+
