@@ -1,3 +1,4 @@
+''' core modules for pagetools '''
 from django.conf import settings
 from django.db import models
 from django.utils.translation import ugettext_lazy as _, get_language
@@ -98,11 +99,14 @@ validate_unicode_slug = RegexValidator(
     'invalid'
 )
 class USlugField(models.CharField):
+    '''Slugfield that allows unicode'''
+
     default_validators = [validate_unicode_slug]
 
-class PagelikeModel(TimeStampedModel, PublishableLangModel):
 
+class PagelikeModel(TimeStampedModel, PublishableLangModel):
     '''This may everything that inclines a detail_view'''
+
     title = models.CharField(_('Title'), max_length=255)
     slug = USlugField(_('Slug'), max_length=255)
     description = models.CharField(
