@@ -39,5 +39,7 @@ def render_node(parser, token, *args, **kwargs):
 @register.filter(name='ordered_content')
 def _ordered_content(value, args):
     obj = value
+    if obj is None:
+        return []
     return obj.ordered_content(user=args)
 
