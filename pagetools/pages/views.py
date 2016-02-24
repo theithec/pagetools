@@ -3,6 +3,7 @@
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from django.http.response import Http404
+from django.http import JsonResponse
 from django.utils.translation import ugettext as _
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import BaseFormView
@@ -37,18 +38,31 @@ class IncludedFormView(DetailView, BaseFormView):
             kwargs['form'] = self.get_form(form_class)
         return self.render_to_response(self.get_context_data(**kwargs))
 
+
     def post(self, request, *args, **kwargs):
         form_class = self.get_form_class()
         form = self.get_form(form_class)
         #form.email_receivers = getattr(
         #    self.object, 'email_receivers', MAILFORM_RECEIVERS)
         if form.is_valid():
-            messages.success(request, _("Mail send"))
             kwargs['form'] = None
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def form_valid(self, form):
+        if self.request.is_ajax():
+            return JsonResponse({'data':_("Mail send")}, status=200)
+        else:
+            messages.success(request, _("Mail send"))
             return self.get(request, *args, **kwargs)
+
+    def form_invalid(self, form):
+        if self.request.is_ajax():
+            return JsonResponse(form.errors, status=400)
         else:
             messages.error(request, _("An error occured"))
-            return self.form_invalid(form)
+            return super().form_invalid(form)
 
     # todo rename
     def get_extras(self):
