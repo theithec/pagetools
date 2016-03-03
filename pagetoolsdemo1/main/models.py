@@ -5,7 +5,6 @@ from pagetools.pages.models import Page
 from pagetools import search
 from pagetools.sections.models import (PageNode, PageNodeManager, TypeMixin)
 
-
 class Article(PageNode):
     objects = PageNodeManager()
     content = models.TextField("Content")

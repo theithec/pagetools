@@ -1,7 +1,8 @@
 from django.conf.urls import include, url
 from django.contrib import admin
 from filebrowser.sites import site
-from main.views import IndexView
+from pagetools.menus.utils import entrieable_reverse_name
+from main.views import IndexView, page_entries
 
 
 urlpatterns = [
@@ -15,6 +16,6 @@ urlpatterns = [
     url(r'^', include('pagetools.subscribe.urls')),
     #url(r'^gal/', include('pagetools.gallery.urls')),
     url(r'^search/', include('pagetools.search.urls')),
-    url(r'^$', IndexView.as_view(), name='index'),
+    url(r'^$', IndexView.as_view(), name=entrieable_reverse_name('index', auto_children=page_entries)),
     url(r'^', include('pagetools.pages.urls')),
 ]

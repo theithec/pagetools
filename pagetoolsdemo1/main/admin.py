@@ -3,6 +3,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from pagetools.sections.admin import BasePageNodePosAdmin, BasePageNodeAdmin
 from pagetools.sections.models import PageNodePos, PageNode
+from pagetools.menus.admin import EntrieableAdmin
 from .models import Page, Section, Article, SectionPage
 
 

@@ -12,11 +12,16 @@ from django.utils.translation import ugettext as _
 
 
 _entrieable_reverse_names = []
+_entrieable_auto_children = []
+_auto_children_funcs = {}
 
 
-def entrieable_reverse_name(name):
+def entrieable_reverse_name(name, auto_children=False):
     global _entrieable_reverse_names
     _entrieable_reverse_names.append(name)
+    if auto_children:
+        _entrieable_auto_children.append(name)
+        _auto_children_funcs[name] = auto_children
     _entrieable_reverse_names = sorted([_f for _f in _entrieable_reverse_names if _f])
     return name
 

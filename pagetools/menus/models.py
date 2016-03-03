@@ -25,6 +25,9 @@ from mptt.models import MPTTModel
 from pagetools.core.models import LangManager, LangModel
 from pagetools.core.utils import get_classname, get_adminedit_url
 
+from pagetools.menus.utils import (_entrieable_reverse_names,
+                                   _entrieable_auto_children,
+                                   _auto_children_funcs)
 from .settings import MENU_TEMPLATE
 
 
@@ -71,6 +74,8 @@ class MenuManager(TreeManager, LangManager):
         return menu
 
 
+
+
 class MenuEntry(MPTTModel, LangModel):
     title = models.CharField(_('Title'), max_length=128)
     slugs = models.CharField(
@@ -83,6 +88,7 @@ class MenuEntry(MPTTModel, LangModel):
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
     enabled = models.BooleanField(default=False)
+    #use_object_children = False #models.BooleanField(default=False)
     objects = MenuManager()
 
     def get_entry_classname(self):
@@ -239,7 +245,14 @@ class Menu(MenuEntry):
                 d['dict_parent'] = dict_parent
                 obj = childentry.content_object
                 filterkwargs['parent'] = childentry
-                cc = childentry.get_children().filter(**filterkwargs)
+                cc = []
+                if not for_admin and getattr(obj, 'auto_children', False):
+                    d['auto_entry'] = True
+                    cc = obj.get_children(parent=self)
+                elif dict_parent and dict_parent.get('auto_entry', False):
+                    cc = MenuEntry.objects.none()
+                else:
+                    cc = childentry.get_children().filter(**filterkwargs)
                 if for_admin:
                     reverseurl = get_adminedit_url(obj)
                     d.update({
@@ -269,6 +282,8 @@ class Menu(MenuEntry):
             return mtree
         return _children_list(for_admin=for_admin)
 
+
+
     class Meta:
         verbose_name = _('Menu')
         proxy = True
@@ -277,10 +292,12 @@ class Menu(MenuEntry):
 class AbstractLink(models.Model):
     title = models.CharField(_('Title'), max_length=128)
     enabled = models.BooleanField(_('enabled'), default=True)
-
+    auto_children = False
     class Meta:
         abstract = True
 
+    def get_children(self, parent=None):
+        return super().get_children()
 
 class Link(AbstractLink):
     url = models.CharField(_('URL'), max_length=255)
@@ -299,13 +316,19 @@ class Link(AbstractLink):
 class ViewLink(AbstractLink):
     name = models.CharField(_('Name'), max_length=255)
 
+    def get_children(self, parent):
+        if self.name in _entrieable_auto_children:
+            return _auto_children_funcs[self.name]()
+        else:
+            return entry.get_children()
     def __init__(self, *args, **kwargs):
-        super(ViewLink, self).__init__(*args, **kwargs)
-        from pagetools.menus.utils import _entrieable_reverse_names
+        super().__init__(*args, **kwargs)
         self._meta.get_field_by_name('name')[0]._choices = [
             ('%s' % k, '%s' % k)
             for k in _entrieable_reverse_names
         ]
+        if self.name in _entrieable_auto_children:
+            self.auto_children = True
 
     def __str__(self):
         return self.name
@@ -316,3 +339,6 @@ class ViewLink(AbstractLink):
     class Meta:
         verbose_name = _("ViewLink")
         verbose_name_plural = _("ViewLinks")
+
+
+
