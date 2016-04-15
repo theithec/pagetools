@@ -1,17 +1,17 @@
-# Create your views here.
+import os
+import json
 import operator
+from functools import reduce
 
 from django.core.urlresolvers import reverse
 from django.db.models.query_utils import Q
 from django.utils.html import strip_tags
 
-from bs4 import BeautifulSoup
-
 from pagetools.search import search_mods, extra_filter
 from pagetools.core.views import PaginatorMixin
 
 from .forms import AdvSearchForm
-from functools import reduce
+from . import settings
 
 
 class SearchResultsView(PaginatorMixin):
@@ -19,23 +19,24 @@ class SearchResultsView(PaginatorMixin):
     template_name = "search_results.html"
     context_object_name = 'results'
     search_params = {}
-    #print("SM", search_mods)
     _search_mods = [m for m in search_mods]
     sep = ''
     form_cls = AdvSearchForm
+    _thisdir = os.path.dirname(os.path.realpath(__file__))
+    if settings.SEARCH_REPLACEMENTS:
+        replacements = json.load(
+            open(os.path.join(_thisdir, settings.SEARCH_REPLACEMENTS_FILE)))
 
     def get(self, request, *args, **kwargs):
         self.form = self.form_cls(request.GET)
         is_valid = self.form.is_valid()
         cld = getattr(self.form, 'cleaned_data', None)
-        #print("CLD", cld)
         if any(cld.values()):
             self.sep = '?%s&' % ('&'.join(
                 ['%s=%s' % (k, v) for k, v in list(cld.items()) if v]
             ))
             self.search_params = cld
             model_pks = cld.get('models')
-            #print("MPK", model_pks)
             if model_pks:
                 int_pks = [int(s) for s in model_pks]
                 self._search_mods = [search_mods[i] for i in int_pks]
@@ -51,10 +52,18 @@ class SearchResultsView(PaginatorMixin):
             qs = qs.exclude(combined_notlist)
         return qs
 
+    def _convert(self, term):
+        for k, v in self.replacements.items():
+            term.replace(k, v)
+        return term
+
     def result_(self, sterms, combine_op):
         result = set()
         if not sterms:
             return result
+        if settings.SEARCH_REPLACEMENTS:
+            for sterm in sterms:
+                sterm = self._convert(sterm)
         for mod in self._search_mods:
             Cls = mod[0]
             fields = mod[1]
