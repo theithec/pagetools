@@ -25,9 +25,7 @@ from mptt.models import MPTTModel
 from pagetools.core.models import LangManager, LangModel
 from pagetools.core.utils import get_classname, get_adminedit_url
 
-from pagetools.menus.utils import (_entrieable_reverse_names,
-                                   _entrieable_auto_children,
-                                   _auto_children_funcs)
+import pagetools.menus.utils
 from .settings import MENU_TEMPLATE
 
 
@@ -246,6 +244,7 @@ class Menu(MenuEntry):
                 obj = childentry.content_object
                 filterkwargs['parent'] = childentry
                 cc = []
+                #import pdb; pdb.set_trace()
                 if not for_admin and getattr(obj, 'auto_children', False):
                     d['auto_entry'] = True
                     cc = obj.get_children(parent=self)
@@ -317,23 +316,23 @@ class ViewLink(AbstractLink):
     name = models.CharField(_('Name'), max_length=255)
 
     def get_children(self, parent):
-        if self.name in _entrieable_auto_children:
-            return _auto_children_funcs[self.name]()
-        else:
-            return entry.get_children()
+        return pagetools.menus.utils._auto_children_funcs[self.name]()
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._meta.get_field_by_name('name')[0]._choices = [
             ('%s' % k, '%s' % k)
-            for k in _entrieable_reverse_names
+            for k in pagetools.menus.utils._entrieable_reverse_names
         ]
-        if self.name in _entrieable_auto_children:
+        if self.name in pagetools.menus.utils._entrieable_auto_children:
             self.auto_children = True
 
     def __str__(self):
         return self.name
 
     def get_absolute_url(self):
+        if self.auto_children:
+            return "."
         return reverse(self.name)
 
     class Meta:
