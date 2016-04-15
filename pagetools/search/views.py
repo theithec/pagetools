@@ -66,6 +66,9 @@ class SearchResultsView(PaginatorMixin):
         for mod in self._search_mods:
             Cls = mod[0]
             fields = mod[1]
+            if len(mod) > 2:
+                modkwargs = mod[2]
+                if 'recplacements' in mod
             queryset = self.filtered_queryset(Cls.objects, fields)
             qlists = []
             for sterm in sterms:

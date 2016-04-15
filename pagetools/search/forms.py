@@ -25,7 +25,8 @@ class AdvSearchForm(forms.Form):
         self.helper.add_input(Submit('submit', 'Submit'))
 
         _models = []
-        for k, v in search_mods:
+        for m in search_mods:
+            k, v = m[:2]
             _models.append(k)
         choices = [('%s' % i, get_classname(k)) for i, k in enumerate(_models)]
         self.fields['models'] = forms.MultipleChoiceField(choices=choices,
