@@ -54,7 +54,7 @@ class SearchResultsView(PaginatorMixin):
 
     def _convert(self, term):
         for k, v in self.replacements.items():
-            term.replace(k, v)
+            term = term.replace(k, v)
         return term
 
     def result_(self, sterms, combine_op):
@@ -62,8 +62,7 @@ class SearchResultsView(PaginatorMixin):
         if not sterms:
             return result
         if settings.SEARCH_REPLACEMENTS:
-            for sterm in sterms:
-                sterm = self._convert(sterm)
+            sterms = [self._convert(sterm) for sterm in sterms]
         for mod in self._search_mods:
             Cls = mod[0]
             fields = mod[1]
