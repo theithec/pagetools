@@ -1,15 +1,5 @@
- {% load static sections_tags menus_tags   %}
-<html>
-  <head>
-    <title>sectionsdemo</title>
-  </head>
-  <body>
-    <div class="head">
-      <ul>{% menu MainMenu selected %}
-      </ul>
-    </div>  
-    <div>
+{% extends "base.html" %}
+{% load static sections_tags menus_tags %}
+{% block "main" %}
       {% render_node object user %}
-    </div>
-  </body>
-</html>
+{% endblock "main" %}

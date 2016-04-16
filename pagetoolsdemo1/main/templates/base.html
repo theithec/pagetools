@@ -9,26 +9,33 @@
     <div class="head">
       <ul>{% menu MainMenu selected %}
       </ul>
+      <form class="menusearchform hide-for-print" action="{% url "search" %}">
+        <input type="text" class="searchfield" name="contains_all" placeholder="suchen" />
+        <button class="searchbutton small" type="submit">
+          <img src="{% static "dist/assets/img/search_icon.svg" %}" alt="search" >
+        </button>
+
+      </form>
     </div>
     <div class="main">
-        {% if messages %}
-        <ul>
+      {% if messages %}
+      <ul>
         {% for msg in messages %}
         <li>{{ msg }}</li>
         {% endfor %}
-        </ul> 
-        {% endif %}
+      </ul> 
+      {% endif %}
       {% block main %}
       base-content
       {% endblock main %}
     </div>
     <div class="sidebar">
-        {% with areas.sidebar as sidebar %}
-        {% for widget in sidebar %}
-        <b>{{widget.title}}</b>
-        {{ widget.content|safe }}
-        {% endfor %}
-        {% endwith %}
+      {% with areas.sidebar as sidebar %}
+      {% for widget in sidebar %}
+      <b>{{widget.title}}</b>
+      {{ widget.content|safe }}
+      {% endfor %}
+      {% endwith %}
     </div>
     {% block js %}
     <script src="{% static "js/jquery/dist/jquery.min.js" %}"></script>

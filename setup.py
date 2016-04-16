@@ -17,6 +17,7 @@ setup(
     description='A set of Django apps to to provide some cms-like features',
     install_requires = [
         'django==1.8.7',
+        'six==1.10.0', # ? should be included
         'django-grappelli==2.7.2',
         'django-filebrowser==3.6.1',
         'django-mptt==0.7.4',
@@ -25,6 +26,9 @@ setup(
         'django-model-utils==2.3.1',
         'pillow==3.0.0',
         'beautifulsoup4==4.4.1',
+        'djangoajax==2.3.3',
+        'django-sekizai==0.9.0',
+        'django-debug-toolbar==1.4'
     ],
 
     long_description=README,

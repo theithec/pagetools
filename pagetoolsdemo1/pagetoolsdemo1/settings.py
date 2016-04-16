@@ -46,7 +46,7 @@ INSTALLED_APPS = (
     'mptt',
     'crispy_forms',
     'debug_toolbar',
-    'django_nose',
+    #'django_nose',
     'pagetools.core',
     'pagetools.menus',
     'pagetools.widgets',
@@ -169,5 +169,5 @@ LOGGING = {
     },
 }
 
-TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+#TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
