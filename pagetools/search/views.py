@@ -42,41 +42,46 @@ class SearchResultsView(PaginatorMixin):
                 self._search_mods = [search_mods[i] for i in int_pks]
         return super(SearchResultsView, self).get(request)
 
-    def filtered_queryset(self, qs, fields):
-        qs = extra_filter(qs)
+    def filtered_queryset(self, mod): # qs, fields):
+        Cls = mod[0]
+        fields = mod[1]
+        qs = extra_filter(Cls.objects.all())
         cnots = self.search_params.get('contains_not', '').split()
         if cnots:
-            notlist = [Q(**{'%s__icontains' % field: cnot})
+            notlist = [Q(**{'%s__icontains' % field:
+                            self._convert(cnot, field, mod)})
                        for cnot in cnots for field in fields]
             combined_notlist = reduce(operator.or_, notlist)
             qs = qs.exclude(combined_notlist)
         return qs
 
-    def _convert(self, term):
-        for k, v in self.replacements.items():
-            term = term.replace(k, v)
+    def _convert(self, term, field, mod ):
+        if not settings.SEARCH_REPLACEMENTS:
+            return term
+
+        replace = mod[2].get('replacements', {}) if len(mod) > 2 else {}
+        if field in replace:
+            for k, v in self.replacements.items():
+                term = term.replace(k, v)
+
         return term
 
     def result_(self, sterms, combine_op):
         result = set()
         if not sterms:
             return result
-        if settings.SEARCH_REPLACEMENTS:
-            sterms = [self._convert(sterm) for sterm in sterms]
+
         for mod in self._search_mods:
-            Cls = mod[0]
             fields = mod[1]
-            if len(mod) > 2:
-                modkwargs = mod[2]
-                if 'recplacements' in mod
-            queryset = self.filtered_queryset(Cls.objects, fields)
+            queryset = self.filtered_queryset(mod) #Cls.objects, fields)
             qlists = []
             for sterm in sterms:
                 if len(sterm) < 3:
                     continue
                 qlist = reduce(operator.or_,
-                               [Q(**{'%s__icontains' % field: sterm})
-                                for field in fields])
+                    [Q(**{'%s__icontains' % field: self._convert(
+                        sterm, field, mod )})
+                    for field in fields])
                 qlists.append(qlist)
             if qlists:
                 combined_qlist = reduce(combine_op, qlists)
@@ -88,7 +93,7 @@ class SearchResultsView(PaginatorMixin):
         terms = self.search_params.get('contains_any', '').split()
         return self.result_(terms, operator.or_)
 
-    def result_add(self):
+    def result_all(self):
         terms = self.search_params.get('contains_all', '').split()
         return self.result_(terms, operator.and_)
 
@@ -101,19 +106,21 @@ class SearchResultsView(PaginatorMixin):
             return tuple()
 
         results_any = self.result_any()
-        results_add = self.result_add()
+        results_all = self.result_all()
         results_exact = set()
         exact = self.search_params.get('contains_exact').lower() or None
         if exact:
             for mod in self._search_mods:
                 Cls = mod[0]
                 fields = mod[1]
-                queryset = self.filtered_queryset(Cls.objects, fields)
+                queryset = self.filtered_queryset(mod)
                 for field in fields:
-                    er = [r for r in queryset if exact in
+                    er = [
+                        r for r in queryset
+                        if self._convert(exact, field, mod) in
                           self._stripped(getattr(r, field))]
                     results_exact |= set(er)
-        rs = [f for f in (results_add, results_any, results_exact) if f]
+        rs = [f for f in (results_all, results_any, results_exact) if f]
         if not rs:
             return tuple()
         else:

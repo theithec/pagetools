@@ -37,7 +37,7 @@ class SectionPage(PageNode):
 
 # define what the search searches for
 search.search_mods = (
-     ( Page,   ('title', 'content') ),
+    ( Page,   ('title', 'content'), {'replacements':['content']} ),
      ( Article,   ('title', 'content') ),
     # ( app.models.Model2, ('title', 'content','footer') ),
 )
