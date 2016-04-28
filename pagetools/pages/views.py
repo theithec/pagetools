@@ -54,14 +54,14 @@ class IncludedFormView(DetailView, BaseFormView):
         if self.request.is_ajax():
             return JsonResponse({'data':_("Mail send")}, status=200)
         else:
-            messages.success(request, _("Mail send"))
-            return self.get(request, *args, **kwargs)
+            messages.success(self.request, _("Mail send"))
+            return self.get(self.request, form=None)
 
     def form_invalid(self, form):
         if self.request.is_ajax():
             return JsonResponse(form.errors, status=400)
         else:
-            messages.error(request, _("An error occured"))
+            messages.error(self.request, _("An error occured"))
             return super().form_invalid(form)
 
     # todo rename
