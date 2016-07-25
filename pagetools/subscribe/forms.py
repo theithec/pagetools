@@ -20,5 +20,5 @@ class SubscribeForm(forms.Form):
         self.helper.form_action = reverse('subscribe')
         # i think this is wrong but  prevents empty fieldset somehow
         self.helper.layout = Layout(  'email')
-        self.helper.add_input(Submit('submit', _('Submit')))
+        self.helper.add_input(Submit('subscribe', _('Submit')))
         self.helper.form_tag = True

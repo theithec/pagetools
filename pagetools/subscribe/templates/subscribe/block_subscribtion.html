@@ -18,8 +18,8 @@ window.onload = function (){
     $("#subscribe-btn").toggle(true).click(function(){
             $("#subscribeform-wrapper").toggle();
     });
-    
-    $("#send").click(function(){
+
+    $("#submit-id-subscribe").click(function(){
             $("subscribe-msgs").replaceWith('<span id="subscribe-msgs"></span>');
             $.post(
                     "{{ subscribe_url }}",
@@ -29,11 +29,11 @@ window.onload = function (){
                             //console.log(parsed);
                             $("#subscribe-msgs").replaceWith('<span id="subscribe-msgs">'+parsed['msg']+'</span>');
                     }
-            ); 
-            
+            );
+
             return false;
-            
-    }); 
+
+    });
     $("#loading").ajaxStart(function(){
         $(this).show();
         }).ajaxStop(function(){
