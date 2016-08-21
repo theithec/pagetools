@@ -4,7 +4,7 @@ A PageNode is a model which may contains other PageNodes.
 Inheritated models which add fields needs concrete inheritance,
 otherwise a proxy model is sufficient.
 '''
-
+import importlib
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
@@ -42,13 +42,22 @@ class PageNode(PagelikeModel):
                                       symmetrical=False)
     objects = PageNodeManager()
 
-    @classmethod
-    def get_adminadd_url(Clz):
-        return get_adminadd_url(Clz)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        allowed = getattr( self, 'allowed_children_classes', None)
+        if allowed:
+            repl = []
+            for c in allowed:
+                #print ("M", c)
+                if type(c) == str:
+                    modname, clsname = c.rsplit(".", 1)
+                    #print ("M2", modname, clsname)
+                    c = getattr(importlib.import_module(modname), clsname)
+                repl.append(c)
+                #print("REPLINIT", repl)
 
-    @classmethod
-    def get_classname(Clz):
-        return Clz._meta.verbose_name
+            self.__class__.allowed_children_classes = repl
+
 
     def get_real_obj(self, node=None):
         node = node or self
@@ -93,6 +102,14 @@ class PageNode(PagelikeModel):
     def get_contenttype_pk(cls):
         t = ContentType.objects.get_for_model(cls, for_concrete_model=False)
         return t.id
+
+    @classmethod
+    def get_adminadd_url(Clz):
+        return get_adminadd_url(Clz)
+
+    @classmethod
+    def get_classname(Clz):
+        return Clz._meta.verbose_name
 
     class Meta:
         verbose_name = _('Node')

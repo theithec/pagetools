@@ -39,7 +39,7 @@ class BasePageNodePosAdmin(GrappelliSortableHiddenMixin, admin.TabularInline):
 
             kwargs["queryset"] = PageNode.objects.filter(
                 content_type_pk__in=allowed_contenttypes
-            )
+            ).order_by('title')
             return super(BasePageNodePosAdmin, self).formfield_for_foreignkey(
                 db_field, request, **kwargs
             )
