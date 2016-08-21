@@ -74,7 +74,7 @@ def admin_pagenodesview(request, slug):
     p = PageNodesModule.model.objects.get(slug=slug)
     listtxt = '<ol id="pagenodes">'
     listtxt += _add_children('',
-                             p.ordered_content(user=request.user),
+                             [p],
                              user=request.user)
     listtxt += '</ol>'
     return HttpResponse(listtxt)
