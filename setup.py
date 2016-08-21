@@ -28,7 +28,7 @@ setup(
         'beautifulsoup4==4.4.1',
         'djangoajax==2.3.3',
         'django-sekizai==0.9.0',
-        'django-debug-toolbar==1.4'
+        'django-debug-toolbar==1.5'
     ],
 
     long_description=README,
