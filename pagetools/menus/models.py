@@ -197,6 +197,12 @@ class Menu(MenuEntry):
             c = MenuCache.objects.create()
             self.content_object = c
         s = super(Menu, self).save(*args, **kwargs)
+        for child in self.get_children():
+            slug = getattr(child.content_object, 'slug', None)
+            if slug:
+                child.slugs = slug
+                child.save()
+            pass
         c.menu = self
         c.save()
         return s
