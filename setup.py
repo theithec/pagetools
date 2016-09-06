@@ -19,7 +19,7 @@ setup(
         'django==1.8.7',
         'six==1.10.0', # ? should be included
         'django-grappelli==2.7.2',
-        'django-filebrowser==3.6.1',
+        'django-filebrowser==3.6.2',
         'django-mptt==0.7.4',
         'django-crispy-forms==1.5.2',
         'awesome-slugify==1.6.5',

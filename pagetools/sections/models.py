@@ -5,6 +5,7 @@ Inheritated models which add fields needs concrete inheritance,
 otherwise a proxy model is sufficient.
 '''
 import importlib
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
@@ -87,6 +88,16 @@ class PageNode(PagelikeModel):
     def __str__(self):
         o = self.get_real_obj()
         return "%s(%s)" % (o.title, o.get_classname())
+
+    def clean(self):
+        # import pdb; pdb.set_trace()
+        objs = PageNode.objects.filter(slug=self.slug)
+        lobjs = len(objs)
+        if (lobjs == 1 and
+            objs[0].pk != self.pk) or lobjs > 1:
+            raise ValidationError(
+                _('The slug "%s" is already taken') % (self.slug))
+        return super().clean()
 
     def save(self, *args, **kwargs):
         if not self.content_type_pk:
