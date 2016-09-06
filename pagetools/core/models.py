@@ -70,6 +70,7 @@ class PublishableLangModel(LangModel, StatusModel):
     def _enabled(self):
         return self.status == ptsettings.STATUS_PUBLISHED
     _enabled.boolean = True
+    _enabled.admin_order_field = 'status'
     enabled = property(_enabled)
 
     class Meta:

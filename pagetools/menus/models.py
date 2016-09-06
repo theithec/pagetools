@@ -344,6 +344,3 @@ class ViewLink(AbstractLink):
     class Meta:
         verbose_name = _("ViewLink")
         verbose_name_plural = _("ViewLinks")
-
-
-
