@@ -16,7 +16,7 @@ setup(
     license='BSD License',  # example license
     description='A set of Django apps to to provide some cms-like features',
     install_requires = [
-        'django',
+        'django==1.9',
         'six', # ? should be included
         'django-grappelli',
         'django-filebrowser',

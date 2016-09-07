@@ -6,7 +6,7 @@ from django.http.response import Http404
 from django.http import JsonResponse
 from django.utils.translation import ugettext as _
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import BaseFormView
+from django.views.generic.edit import FormMixin
 
 from pagetools.widgets.views import WidgetPagelikeView
 from .models import Page
@@ -14,7 +14,7 @@ from .models import Page
 from .settings import MAILFORM_RECEIVERS
 
 
-class IncludedFormView(DetailView, BaseFormView):
+class IncludedFormView(DetailView):
     '''
         expects in object
         includable_forms = { 'name1': Form1,
@@ -32,16 +32,19 @@ class IncludedFormView(DetailView, BaseFormView):
             FCls = self.object.includable_forms.get(fname)
             return FCls
 
+
+
     def get(self, request, *args, **kwargs):
         form_class = self.get_form_class()
-        if form_class and kwargs.get('form', True) is not None:
-            kwargs['form'] = self.get_form(form_class)
+        if form_class and kwargs.get('form', None) is None:
+            kwargs['form'] = self.get_form_class()()
+        print("KW", kwargs)
+        # import pdb; pdb.set_trace()
         return self.render_to_response(self.get_context_data(**kwargs))
 
 
     def post(self, request, *args, **kwargs):
-        form_class = self.get_form_class()
-        form = self.get_form(form_class)
+        form = self.get_form_class()(request.POST)
         #form.email_receivers = getattr(
         #    self.object, 'email_receivers', MAILFORM_RECEIVERS)
         if form.is_valid():
@@ -62,7 +65,7 @@ class IncludedFormView(DetailView, BaseFormView):
             return JsonResponse(form.errors, status=400)
         else:
             messages.error(self.request, _("An error occured"))
-            return super().form_invalid(form)
+        return self.get(self.request, form=form)
 
     # todo rename
     def get_extras(self):
