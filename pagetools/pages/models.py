@@ -17,7 +17,8 @@ class IncludedForm(models.Model):
 
     def __init__(self, *args, **kwargs):
         super(IncludedForm, self).__init__(*args, **kwargs)
-        self._meta.get_field_by_name('included_form')[0]._choices = [
+        #  self._meta.get_field_by_name('included_form')[0]._choices = [
+        self._meta.get_field('included_form')._choices = [
             (i, _(i)) for i, j in list(self.includable_forms.items())
         ]
 
