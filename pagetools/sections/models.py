@@ -1,7 +1,7 @@
 '''
 Nested content (e.g. for single pages)
 A PageNode is a model which may contains other PageNodes.
-Inheritated models which add fields needs concrete inheritance,
+Inheritated models with own fields needs concrete inheritance,
 otherwise a proxy model is sufficient.
 '''
 import importlib
@@ -49,13 +49,10 @@ class PageNode(PagelikeModel):
         if allowed:
             repl = []
             for c in allowed:
-                #print ("M", c)
                 if type(c) == str:
                     modname, clsname = c.rsplit(".", 1)
-                    #print ("M2", modname, clsname)
                     c = getattr(importlib.import_module(modname), clsname)
                 repl.append(c)
-                #print("REPLINIT", repl)
 
             self.__class__.allowed_children_classes = repl
 

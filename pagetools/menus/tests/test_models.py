@@ -51,11 +51,11 @@ class TC1Tests(TestCase):
         )
 
     def test_entry_slugs(self):
-        self.assertEqual(self.e1.slugs, "p1")
+        self.assertEqual(self.e1.slug, "p1")
 
     def test_renamed_entry_slugs(self):
         self.p1.slug = "P1"
         self.p1.save()
         self.menu.save()
-        self.assertEqual(self.menu.get_children()[0].slugs, "P1")
+        self.assertEqual(self.menu.get_children()[0].slug, "P1")
 

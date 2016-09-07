@@ -17,18 +17,17 @@ setup(
     description='A set of Django apps to to provide some cms-like features',
     install_requires = [
         'django==1.9',
-        'six', # ? should be included
-        'django-grappelli',
-        'django-filebrowser',
-        'django-mptt',
-        'django-crispy-forms',
-        'awesome-slugify',
-        'django-model-utils',
-        'pillow',
-        'beautifulsoup4',
-        'djangoajax',
-        'django-sekizai',
-        'django-debug-toolbar'
+        'django-grappelli==2.8.1',
+        'django-filebrowser==3.7.2',
+        'django-mptt==0.8.6',
+        'django-crispy-forms==1.6.0',
+        #  'awesome-slugify=',
+        'django-model-utils==2.5.2',
+        'Pillow==3.3.1',
+        'beautifulsoup4==4.5.1',
+        'djangoajax==2.3.6',
+        'django-sekizai=0.10.0',
+        'django-debug-toolbar==1.5'
     ],
 
     long_description=README,

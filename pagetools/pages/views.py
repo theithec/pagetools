@@ -8,13 +8,14 @@ from django.utils.translation import ugettext as _
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import FormMixin
 
-from pagetools.widgets.views import WidgetPagelikeView
+from pagetools.widgets.views import WidgetPagelikeMixin
+from pagetools.menus.views import SelectedMenuentriesMixin
 from .models import Page
 
 from .settings import MAILFORM_RECEIVERS
 
 
-class IncludedFormView(DetailView):
+class IncludedFormMixin(object):
     '''
         expects in object
         includable_forms = { 'name1': Form1,
@@ -32,21 +33,17 @@ class IncludedFormView(DetailView):
             FCls = self.object.includable_forms.get(fname)
             return FCls
 
-
-
     def get(self, request, *args, **kwargs):
         form_class = self.get_form_class()
         if form_class and kwargs.get('form', None) is None:
-            kwargs['form'] = self.get_form_class()()
-        print("KW", kwargs)
-        # import pdb; pdb.set_trace()
+            FC = self.get_form_class()
+            fkwargs = self.get_form_kwargs()
+            kwargs['form'] = FC(**fkwargs)
         return self.render_to_response(self.get_context_data(**kwargs))
 
 
     def post(self, request, *args, **kwargs):
         form = self.get_form_class()(request.POST)
-        #form.email_receivers = getattr(
-        #    self.object, 'email_receivers', MAILFORM_RECEIVERS)
         if form.is_valid():
             kwargs['form'] = None
             return self.form_valid(form)
@@ -67,6 +64,7 @@ class IncludedFormView(DetailView):
             messages.error(self.request, _("An error occured"))
         return self.get(self.request, form=form)
 
+    '''
     # todo rename
     def get_extras(self):
         d = {}
@@ -75,16 +73,17 @@ class IncludedFormView(DetailView):
         except AttributeError:
             pass
         return d
+    '''
 
     def get_form_kwargs(self):
-        kwargs = super(IncludedFormView, self).get_form_kwargs()
+        kwargs = {}
         if getattr(self, 'object') and getattr(self.object, 'email_receivers'):
             kwargs['email_receivers'] = self.object.email_receivers
         # kwargs.update(self.get_extras())
         return kwargs
 
 
-class AuthPageView(DetailView):
+class AuthPageMixin(object):
 
     def get_queryset(self, *args, **kwargs):
 
@@ -97,16 +96,23 @@ class AuthPageView(DetailView):
         return qs
 
 
-class PageView(WidgetPagelikeView, AuthPageView, IncludedFormView):
+class PageView(
+        SelectedMenuentriesMixin,
+        WidgetPagelikeMixin,
+        AuthPageMixin,
+        IncludedFormMixin,
+        DetailView):
+
     model = Page
 
     def get_pagetype_name(self, **kwargs):
-        return (self.object.pagetype.name
-                if self.object.pagetype
-                else WidgetPagelikeView.get_pagetype_name(self, **kwargs))
+        return (
+            self.object.pagetype.name
+            if self.object.pagetype
+            else super().get_pagetype_name(**kwargs))
 
     def get_pagetype(self, **kwargs):
-        return self.object.pagetype or WidgetPagelikeView.get_pagetype(self)
+        return self.object.pagetype or super().get_pagetype(self)
 
     def get_context_data(self, **kwargs):
         kwargs['page_title'] = self.object.title

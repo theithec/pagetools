@@ -4,19 +4,18 @@ Created on 14.12.2013
 @author: lotek
 '''
 
+from collections import defaultdict
+
 from django import template
 from django.core import urlresolvers
-from django.contrib.contenttypes.fields import GenericForeignKey
-from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.db.models.signals import pre_delete
 from django.utils.text import slugify
 from django.utils.translation import ugettext_lazy as _
-from django.template.context import Context
-
-from collections import defaultdict
 
 from mptt.fields import TreeForeignKey
 from mptt.managers import TreeManager
@@ -43,7 +42,7 @@ class MenuManager(TreeManager, LangManager):
         kwargs['content_type'] = ContentType.objects.get_for_model(
             content_object)
         kwargs['object_id'] = content_object.pk
-        kwargs['slugs'] = '%s' % getattr(
+        kwargs['slug'] = '%s' % getattr(
             content_object, 'slug',
             slugify(content_object))
         try:
@@ -72,13 +71,11 @@ class MenuManager(TreeManager, LangManager):
         return menu
 
 
-
-
 class MenuEntry(MPTTModel, LangModel):
     title = models.CharField(_('Title'), max_length=128)
-    slugs = models.CharField(
-        _('slugs'), max_length=512,
-        help_text=('Whitespace separated slugs of content'),
+    slug = models.CharField(
+        _('slug'), max_length=512,
+        help_text=(_('Slug')),
         default='', blank=True)
     parent = TreeForeignKey('self', null=True, blank=True,
                             related_name='children')
@@ -86,14 +83,12 @@ class MenuEntry(MPTTModel, LangModel):
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
     enabled = models.BooleanField(default=False)
-    #use_object_children = False #models.BooleanField(default=False)
     objects = MenuManager()
 
     def get_entry_classname(self):
         return get_classname(self.content_object.__class__)
 
     def __str__(self):
-        # return self.title
         return '%s%s' % (
             self.title, (' (%s)' % self.lang) if self.lang else '')
 
@@ -138,9 +133,10 @@ class Menu(MenuEntry):
     def _render_no_sel(self):
         t = template.loader.get_template(MENU_TEMPLATE)
         children = self.children_list()
-        return t.render(Context({'children': children, }))
+        return t.render({'children': children, })
 
     def render(self, selected):
+        print("selelected", selected)
         sel_entries = SelectedEntries()
         for s in selected:
             sel_entries['sel_' + s] = 'active'
@@ -171,8 +167,6 @@ class Menu(MenuEntry):
             e.move_to(parent, 'last-child')
             e = MenuEntry.objects.get(pk=e.pk)
             parent = MenuEntry.objects.get(pk=parent.pk)
-            # e.save()
-            # parent.save()
         MenuEntry.objects.rebuild()
         self.save()
 
@@ -200,9 +194,9 @@ class Menu(MenuEntry):
         for child in self.get_children():
             slug = getattr(child.content_object, 'slug', None)
             if slug:
-                child.slugs = slug
-                child.save()
-            pass
+                if not slug == child.slug:
+                    child.slug = slug
+                    child.save()
         c.menu = self
         c.save()
         return s
@@ -211,21 +205,17 @@ class Menu(MenuEntry):
         if not getattr(entry_obj, 'enabled', True):
             return
         dict_['entry_url'] = entry.get_absolute_url()
-        cslugs = []
 
-        cslugs += entry.slugs.split(' ') if entry.slugs else [
-            getattr(
+        cslug = (
+            entry.slug
+            if entry.slug else getattr(
                 entry_obj,
                 'slug',
-                getattr(entry_obj, 'menukey', slugify('%s' % entry_obj)))
-        ]
+                getattr(entry_obj, 'menukey', slugify('%s' % entry_obj))))
+
         curr_dict = dict_
         while curr_dict:
-            curr_dict['select_class_marker'] = curr_dict.get(
-                'select_class_marker', '')
-            curr_dict['select_class_marker'] += ''.join(
-                '%(sel_' + s + ')s' for s in cslugs
-            )
+            curr_dict['select_class_marker'] = '%(sel_' + cslug + ')s'
             curr_dict = curr_dict['dict_parent']
         return dict_
 
@@ -238,19 +228,22 @@ class Menu(MenuEntry):
             filterkwargs = {'parent': self}
             if not for_admin:
                 filterkwargs['enabled'] = True
+
             if mtree is None:
                 mtree = []
+
             if children is None:
                 children = self.get_children().filter(**filterkwargs)
+
             for childentry in children:
                 d = {
                     'entry_title': childentry.title,
                 }
+
                 d['dict_parent'] = dict_parent
                 obj = childentry.content_object
                 filterkwargs['parent'] = childentry
                 cc = []
-                #import pdb; pdb.set_trace()
                 if not for_admin and getattr(obj, 'auto_children', False):
                     d['auto_entry'] = True
                     cc = obj.get_children(parent=self)
@@ -278,12 +271,15 @@ class Menu(MenuEntry):
                     })
                 else:
                     d = self._with_child(d, childentry, obj, dict_parent)
+
                 self.cnt += 1
                 if d and cc:
                     d['children'] = _children_list(
                         children=cc, for_admin=for_admin, dict_parent=d)
+
                 if d:
                     mtree.append(d)
+
             return mtree
         return _children_list(for_admin=for_admin)
 

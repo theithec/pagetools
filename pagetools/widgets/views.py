@@ -2,7 +2,6 @@ from django.views.generic.base import View
 from django.utils.translation import get_language
 from slugify import slugify
 from django.template.context_processors import csrf
-from pagetools.core.views import BasePagelikeView
 
 from .models import PageType
 from .utils import get_areas_for_type
@@ -26,7 +25,7 @@ class WidgetViewMixin(object):
         return kwargs
 
 
-class WidgetPagelikeView(WidgetViewMixin, BasePagelikeView):
+class WidgetPagelikeMixin(WidgetViewMixin):
 
     def get_pagetype_name(self, **kwargs):
         ptname = kwargs.get('pagetype_name', None)
@@ -46,10 +45,10 @@ class WidgetPagelikeView(WidgetViewMixin, BasePagelikeView):
             return pt
 
     # reduce queries
-    def get_object(self):
-        if not getattr(self, 'object', None):
-            self.object = super(BasePagelikeView, self).get_object()
-        return self.object
+    # def get_object(self):
+    #     if not getattr(self, 'object', None):
+    #         self.object = super(BasePagelikeView, self).get_object()
+    #     return self.object
 
 
 
