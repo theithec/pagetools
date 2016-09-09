@@ -123,7 +123,7 @@ class BasePage(IncludedEmailForm, AuthPage, PagelikeModel):
         return self.pagetype
 
     def get_absolute_url(self):
-        return reverse('pageview', kwargs={'slug': self.slug})
+        return reverse('pages:pageview', kwargs={'slug': self.slug})
 
     class Meta(PagelikeModel.Meta):
         verbose_name = _('Page')

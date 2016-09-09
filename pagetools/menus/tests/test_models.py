@@ -38,10 +38,6 @@ class TC1Tests(TestCase):
         u0 = c[0].get_absolute_url()
         if u0.startswith("/%s/" % lang ):
             u0 = u0[3:]
-        self.assertEqual(
-            u0,
-            '/%sp1/' % settings.PAGE_PREFIX
-        )
         u1 = c[1].get_absolute_url()
         if u1.startswith("/%s/" % lang):
             u1 = u0[3:]
