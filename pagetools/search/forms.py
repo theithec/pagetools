@@ -1,7 +1,7 @@
 '''
 Created on 01.01.2014
 
-@author: lotek
+@author: Tim Heithecker
 '''
 
 from django import forms

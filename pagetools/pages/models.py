@@ -1,3 +1,8 @@
+'''Models (mostly) for pages.
+
+@author Tim Heithecker
+'''
+import django
 from django import forms
 from django.core.urlresolvers import reverse
 from django.db import models
@@ -5,23 +10,39 @@ from django.utils.html import strip_tags
 from django.utils.translation import ugettext_lazy as _
 
 from pagetools.core.models import PagelikeModel
+from pagetools.core.utils import choices2field
 from pagetools.widgets.models import PageType
 
-from .forms import ContactForm, DynMultipleChoiceField, MailReceiverField
+
+from .forms import ContactForm, CaptchaContactForm, MailReceiverField
+#  , DynMultipleChoiceField
 
 
 class IncludedForm(models.Model):
+    '''Mixin to include a choosable form to an object
+
+    The forms are defined in ``includeable_forms`` like
+    {stringkey: <Class>, ...}
+    '''
+
     included_form = models.CharField(
-        _("Included form"), max_length=255, blank=True, choices=(('dummy', 'dummy'),))
-    includable_forms = {'Contactform': ContactForm}
+        _("Included form"), max_length=255, blank=True, choices=(
+            ('dummy', 'dummy'),))
+    includable_forms = {
+        'Contactform': ContactForm,
+        'Contactfrom(Captcha)':  CaptchaContactForm,
+    }
 
     def __init__(self, *args, **kwargs):
+        '''
+        Args:
+            included_form(django.db.models.CharField)
+        '''
+
         super(IncludedForm, self).__init__(*args, **kwargs)
-        #self._meta.get_field_by_name('included_form')[0]._choices = [
-        self._meta.get_field('included_form').choices = [
-        #self.included_form.choices = [
-            (i, _(i)) for i, j in list(self.includable_forms.items())
-        ]
+        choices = [
+            (i, _(i)) for i, j in list(self.includable_forms.items())]
+        choices2field(self._meta.get_field('included_form'), choices)
 
     class Meta:
         abstract = True
@@ -38,6 +59,7 @@ class IncludedEmailForm(IncludedForm):
         abstract = True
 
 
+'''
 class DynFormField(models.Model):
 
     field_for_type = {
@@ -105,6 +127,7 @@ class DynFormField(models.Model):
         verbose_name_plural = _('Dynamic Form Fields')
         ordering = ['position']
         abstract = True
+'''
 
 
 class AuthPage(models.Model):
@@ -115,9 +138,18 @@ class AuthPage(models.Model):
 
 
 class BasePage(IncludedEmailForm, AuthPage, PagelikeModel):
+    '''A basemodel for a page with one main content area
+
+    Args:
+        content(django.db.models.TextField)
+
+        pagetype(pagetools.widgets.models.Pagetype)
+    '''
     content = models.TextField(_('Content'))
     objects = models.Manager()
     pagetype = models.ForeignKey(PageType, blank=True, null=True)
+    '''See :class:`pagetools.widgets.models.PageType`
+    '''
 
     def get_pagetype(self, **kwargs):
         return self.pagetype
@@ -128,22 +160,12 @@ class BasePage(IncludedEmailForm, AuthPage, PagelikeModel):
     class Meta(PagelikeModel.Meta):
         verbose_name = _('Page')
         verbose_name_plural = _('Pages')
+        unique_together = ("slug", "lang")
         abstract = True
 
 
 class Page(BasePage):
     pass
-
-
-class PageDynFormField(DynFormField):
-    form_containing_model = models.ForeignKey(
-        Page,
-        related_name='dynformfields',
-        help_text='Additional fields and settings for the included form')
-
-    class Meta:
-        verbose_name = _("Form field")
-        verbose_name_plural = _("Additional form fields")
 
 
 class PageBlockMixin(models.Model):
@@ -162,3 +184,16 @@ class PageBlockMixin(models.Model):
         lc = len(self.content)
         sc = strip_tags(self.content) or self.content
         return sc[:100 if lc > 100 else lc]
+
+
+'''
+class PageDynFormField(DynFormField):
+    form_containing_model = models.ForeignKey(
+        Page,
+        related_name='dynformfields',
+        help_text='Additional fields and settings for the included form')
+
+    class Meta:
+        verbose_name = _("Form field")
+        verbose_name_plural = _("Additional form fields")
+'''

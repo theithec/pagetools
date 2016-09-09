@@ -1,11 +1,11 @@
+from django.conf.urls import include, url
 
-from django.conf.urls import patterns, include, url
+from pagetools.sections.views import PagelikeNodeView, BaseAjaxNodeView
 
-from pagetools.sections.views import BaseNodeView, BaseAjaxNodeView
-
-app_name="sections"
+app_name = "sections"
 
 urlpatterns = [
-   url(r'(?P<slug>[-\w]+)/$', BaseNodeView.as_view(), name="node"),
-   url(r'ajaxnode/(?P<slug>[-\w]+)/$', BaseAjaxNodeView.as_view(), name="ajax"),
+   url(r'^ajaxnode/(?P<slug>[-\w]+)/$',
+       BaseAjaxNodeView.as_view(), name="ajax"),
+   url(r'^(?P<slug>[-\w]+)/$', PagelikeNodeView.as_view(), name="node"),
 ]

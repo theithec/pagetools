@@ -1,7 +1,7 @@
 '''
 Created on 04.09.2012
 
-@author: lotek
+@author: Tim Heithecker
 '''
 from django.core.management.base import BaseCommand
 from django.utils.translation import ugettext as _

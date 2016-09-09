@@ -1,12 +1,11 @@
 '''
 Created on 18.12.2013
 
-@author: lotek
+@author: Tim Heithecker
 '''
 import os
 
 from django import forms
-from django.contrib import messages
 from django.core.exceptions import ValidationError
 from django.core.mail import send_mail
 from django.core.validators import EmailValidator
@@ -17,10 +16,14 @@ from django.utils.translation import ugettext_lazy as _
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 
-from .settings import MAILFORM_RECEIVERS, MAILFORM_SENDER
+from captcha.fields import CaptchaField
+
+from .settings import MAILFORM_RECEIVERS as MAILFORM_RECEIVERS
+from .settings import MAILFORM_SENDER
 
 import logging
 logger = logging.getLogger(__name__)
+
 
 class DynMultipleChoiceField(forms.MultipleChoiceField):
 
@@ -51,6 +54,64 @@ class MailReceiverField(object):
             raise ValidationError(self.help_text)
 
 
+class SendEmailForm(forms.Form):
+
+    def __init__(self, *args, **kwargs):
+        mailreceivers = kwargs.pop('mailreceivers', None)
+        super(SendEmailForm, self).__init__(*args, **kwargs)
+        self.mailreceivers = self.get_mailreceivers(mailreceivers)
+        self.helper = FormHelper()
+        self.helper.form_method = 'post'
+        self.helper.add_input(Submit('submit', _('Submit')))
+
+    def get_mailreceivers(self, mailreceivers=None):
+        try:
+            r = (mailreceivers or
+                 ",".join(MAILFORM_RECEIVERS)).split(",")
+            logger.debug("Mail receivers %s " % r)
+            return r
+        except AttributeError:
+            logger.error("no email receivers for %s" % self)
+
+    def get_message(self):
+        return os.linesep.join(
+            ["%s\t%s" % (field.name, field.value())
+             for field in self if field.name not in ('captcha',)
+             ])
+
+    def is_valid(self, **kwargs):
+        _is_valid = super(SendEmailForm, self).is_valid()
+        if _is_valid:
+            msg = self.get_message()
+            send_mail(_("Form"), msg, MAILFORM_SENDER,
+                      self.mailreceivers, fail_silently=False)
+        return _is_valid
+
+    def clean(self):
+        super(SendEmailForm, self).clean()
+        if not self.mailreceivers:
+            raise ValidationError(_("An error occured"))
+        try:
+            ev = EmailValidator()
+            for a in self.mailreceivers:
+                ev(a)
+        except (ValueError, ValidationError, KeyError):
+            raise ValidationError(_("An error occured"))
+
+
+class ContactForm(SendEmailForm):
+    subject = forms.CharField(max_length=100, label=_("About"), required=True)
+    name = forms.CharField(label=_("Your Name"))
+    sender = forms.EmailField(label=_("E-Mail"))
+    message = forms.CharField(
+        widget=forms.widgets.Textarea(), label=_("Message"))
+
+
+class CaptchaContactForm(ContactForm):
+    captcha = CaptchaField()
+
+
+'''
 class BaseDynForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
@@ -80,41 +141,4 @@ class BaseDynForm(forms.Form):
         else:
             self.msg = (messages.ERROR, _('An error occured'))
         return _is_valid
-
-
-class SendEmailForm(BaseDynForm):
-
-    def __init__(self, *args, **kwargs):
-        self.email_receivers = kwargs.pop('email_receivers', None)
-        super(SendEmailForm, self).__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.form_method = 'post'
-        self.helper.add_input(Submit('submit', _('Submit')))
-
-    def get_mailreceivers(self):
-        try:
-            r = (getattr(self, 'email_receivers', "") or ",".join(MAILFORM_RECEIVERS)).split(",")
-            logger.debug("Mail receivers %s " %  r)
-            return r
-        except AttributeError:
-            logger.error("no email receivers for %s" % self)
-
-    def is_valid(self, **kwargs):
-        _is_valid = super(SendEmailForm, self).is_valid()
-        if _is_valid:
-            txt = os.linesep.join(
-                ["%s\t%s" % (field.name, field.value())
-                    for field in self
-                 ])
-            send_mail(_("Form"), txt, MAILFORM_SENDER,
-                      self.get_mailreceivers(), fail_silently=False)
-            # messages.add_message(request, messages.INFO, _('send ok'))
-        return _is_valid
-
-
-class ContactForm(SendEmailForm):
-    subject = forms.CharField(max_length=100, label=_("About"), required=True)
-    name = forms.CharField(label=_("Your Name"))
-    sender = forms.EmailField(label=_("E-Mail"))
-    message = forms.CharField(
-        widget=forms.widgets.Textarea(), label=_("Message"))
+'''

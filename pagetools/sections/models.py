@@ -4,14 +4,19 @@ A PageNode is a model which may contains other PageNodes.
 Inheritated models with own fields needs concrete inheritance,
 otherwise a proxy model is sufficient.
 '''
-import importlib
 import warnings
+import django
 from django.core.exceptions import ValidationError
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
+
+from filebrowser.fields import FileBrowseField
+
 from pagetools.core.models import PagelikeModel, PublishableLangManager
-from pagetools.core.utils import get_adminadd_url, get_classname
+from pagetools.core.utils import (get_adminadd_url, get_classname, importer,
+                                  choices2field)
 
 
 class PageNodeManager(PublishableLangManager):
@@ -22,17 +27,15 @@ class TypeMixin(models.Model):
     '''Pagenodes that differs only in their representation may use the same
     model but different node choices.
     The node choice is is part of the template names'''
-
     node_choices = ()
     node_type = models.CharField(
         max_length=128,
-        blank=True,
-        choices=(('dummy', 'dummy'),)
+        blank=True
     )
 
     def __init__(self, *args, **kwargs):
         super(TypeMixin, self).__init__(*args, **kwargs)
-        self._meta.get_field('node_type').choices = self.node_choices
+        choices2field(self._meta.get_field('node_type'), self.node_choices)
 
     class Meta:
         abstract = True
@@ -40,7 +43,8 @@ class TypeMixin(models.Model):
 
 class PageNode(PagelikeModel):
 
-    classes = models.CharField('Classes', max_length=512, blank=True, null=True)
+    classes = models.CharField(
+        'Classes', max_length=512, blank=True, null=True)
     content_type_pk = models.SmallIntegerField(blank=True)
     in_nodes = models.ManyToManyField("self",
                                       through="PageNodePos",
@@ -54,22 +58,15 @@ class PageNode(PagelikeModel):
         if allowed:
             repl = []
             for c in allowed:
-                if type(c) == str:
-                    modname, clsname = c.rsplit(".", 1)
-                    c = getattr(importlib.import_module(modname), clsname)
-                repl.append(c)
+                repl.append(importer(c))
 
             self.__class__.allowed_children_classes = repl
 
     def get_real_obj(self):
         real = self
-        print("npk",self.title,  real.content_type_pk)
-        #try:
         if self.pk:
             clz = ContentType.objects.get_for_id(real.content_type_pk)
             real = clz.model_class().objects.get(pk=real.pk)
-        #except (AttributeError, ContentType.DoesNotExist):
-        #    real = node
         return real
 
     def get_real_child(self, child):
@@ -79,7 +76,7 @@ class PageNode(PagelikeModel):
         return real_child
 
     def get_real_content(self, child):
-        warnings.warn(_("deprecated, use get_real_child"),
+        warnings.warn("deprecated, use get_real_child",
                       DeprecationWarning)
 
         return self.get_real_child(child)
@@ -89,20 +86,24 @@ class PageNode(PagelikeModel):
         return [self.get_real_child(c) for c in o]
 
     def ordered_content(self, **kwargs):
-        warnings.warn(_("deprecated, use get_real_child"),
-                      DeprecationWarning)
+        # warnings.warn("deprecated, use get_real_child",
+        #              DeprecationWarning)
         return self.children(**kwargs)
+
+    def get_classname(self):
+        o = self.get_real_obj()
+        return get_classname(o)
 
     def __str__(self):
         o = self.get_real_obj()
         return "%s(%s)" % (o.title, get_classname(o))
 
     def clean(self):
-        objs = PageNode.objects.filter(slug=self.slug)
+        objs = PageNode.objects.filter(slug=self.slug, lang=self.lang)
         lobjs = len(objs)
         if (lobjs == 1 and objs[0].pk != self.pk) or lobjs > 1:
             raise ValidationError(
-                _('The slug "%s" is already taken') % (self.slug))
+                _('The slug "%s" for language "%s" is already taken') % (self.slug, self.lang))
         return super().clean()
 
     def save(self, *args, **kwargs):
@@ -113,7 +114,7 @@ class PageNode(PagelikeModel):
         super(PageNode, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
-        return "/#%s" % self.slug
+        return reverse("sections:node", args=(self.slug,))
 
     @classmethod
     def get_contenttype_pk(cls):
@@ -123,6 +124,10 @@ class PageNode(PagelikeModel):
     @classmethod
     def get_adminadd_url(Clz):
         return get_adminadd_url(Clz)
+
+    @classmethod
+    def get_classname(Clz):
+        return Clz._meta.verbose_name
 
     class Meta:
         verbose_name = _('Node')
@@ -140,25 +145,5 @@ class PageNodePos(models.Model):
 
     class Meta:
         ordering = ['position']
-        verbose_name = _('Content Position')
-        verbose_name_plural = _('Content Positions')
-
-
-class SimpleArticle(PageNode):
-    allowed_children_classes = ['pagetools.sections.models.SimpleArticle', ]
-    content = models.TextField(_('Content'), blank=True)
-    objects = PageNodeManager()
-
-
-class SimpleSection(TypeMixin, PageNode):
-    allowed_children_classes = [SimpleArticle, ]
-    node_choices = (('list', 'List', ), )
-    objects = PageNodeManager()
-
-
-class SimpleSectionPage(PageNode):
-    allowed_children_classes = [SimpleSection, ]
-    objects = PageNodeManager()
-
-    class Meta:
-        proxy = True
+        verbose_name = _('Included Content')
+        verbose_name_plural = _('Included Content')

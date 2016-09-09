@@ -1,0 +1,85 @@
+{% load static  %}
+<!doctype html>
+<html class="no-js" lang="en" dir="ltr">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="x-ua-compatible" content="ie=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Polls'n'Pagetools|{{ object.title }}</title>
+		{% if object.description %}
+		<meta name="description" content="{{ object.description }}">
+		{% endif %}
+		<link rel="stylesheet" href="{% static "css/foundation.min.css" %}">
+		<link rel="stylesheet" href="{% static "css/app.css" %}">
+	</head>
+	<body>
+
+    <div class="reveal" id="modal" data-reveal>
+        <div>
+        </div>
+    <button class="close-button" data-close aria-label="Close modal" type="button">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    </div>
+		<div class="row">
+			<div class="large-12 columns">
+				<h1>Polls'n'Pagetools</h1>
+				<ul class="dropdown menu" data-dropdown-menu>
+
+				{% block menu %}
+				{% include "menutag.html" %}
+				{% endblock menu %}
+
+				</ul>
+			</div>
+		</div>
+
+
+		<div class="row column">
+			{% if messages %}
+			<ul class="messages">
+				{% for message in messages %}
+				<li {% if message.tags %} class="callout {{ message.tags }}"{% endif %}>{{ message }}</li>
+				{% endfor %}
+			</ul>
+			{% endif %}
+
+		</div>
+		<div class="row column">
+
+			<div class="large-8 medium-8 columns">
+				{% block main %}
+				<h5>Here&rsquo;s your basic grid:</h5>
+				<!-- Grid Example -->
+
+				{% endblock main %}
+			</div>
+
+			<div class="large-4 medium-4 columns">
+				{% with areas.sidebar as sidebar %}
+				{% for widget in sidebar %}
+				<div class="callout">
+					{{ widget }}
+				</div>
+				{% endfor %}
+				{% endwith %}
+			</div>
+		</div>
+
+		<script src="{% static "js/vendor/jquery.js" %}"></script>
+		<script src="{% static "js/vendor/what-input.js" %}"></script>
+		<script src="{% static "js/vendor/foundation.js" %}"></script>
+		<script src="{% static "js/app.js" %}"></script>
+        <script>
+            var $modal = $("#modal");
+            var $modal_inner = $("#modal>div");
+            $(".call-ajax-node").click(function(e){
+                $.ajax('/node/ajaxnode/' + $(this).data('node'))
+                .done(function(resp){
+                    $modal_inner.html(resp.content);
+                    $modal.foundation('open');
+                });
+            });
+        </script>
+	</body>
+</html>

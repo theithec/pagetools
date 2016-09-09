@@ -1,3 +1,5 @@
+import django
+import importlib
 from django.core.urlresolvers import reverse
 
 
@@ -67,8 +69,31 @@ def get_adminedit_url(obj):
     ), args=(obj.id,))
 
 
-def get_addperm_name(cls):
-    return "%s.add_%s" % (
-        cls._meta.app_label,
-        cls.__name__.lower()
-    )
+def get_perm_str(cls, perm="add"):
+    '''
+    Example:
+
+        .. code-block:: python
+
+            if not user.has_perm(get_addperm_str(clz)):
+                continue
+    '''
+    return "%s.%s_%s" % (cls._meta.app_label, perm, cls.__name__.lower())
+
+
+def importer(str_or_obj):
+    '''
+    If the argument is a string import it with importlib
+    '''
+    if type(str_or_obj) == str:
+        modname, clsname = str_or_obj.rsplit(".", 1)
+        str_or_obj = getattr(importlib.import_module(modname), clsname)
+    return str_or_obj
+
+
+def choices2field(field, choices):
+
+        if django.VERSION < (1, 9):
+            field._choices = choices
+        else:
+            field.choices = choices

@@ -1,0 +1,14 @@
+language: python
+python:
+    - "3.4"
+    - "3.5"
+env:
+    - TOX_ENV=py35-18
+    - TOX_ENV=py35-19
+install:
+    - "pip install -e ."
+    - "pip install -r dev_requirements.txt"
+# script: "cd demo && coverage run --source pagetools manage.py test pagetools main"
+script: "coverage run setup.py test"
+after_success:
+  coveralls

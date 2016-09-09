@@ -1,0 +1,9 @@
+{% load fb_versions %}
+<article class="{{ object.classes }}">
+	<h4>{{object.title}}</h4>
+	{{ object.content|safe}}
+	<img src="{% version object.image 'large' %}" />
+</article>
+
+
+

@@ -15,7 +15,6 @@
 
 	(function($) {
 		setNext = function(){
-			//console.log("NEXT",$("#setlang_next"));
 				$("#setlang_next").attr("value", document.URL.replace(
 					"/{{ LANGUAGE_CODE }}/",
 					"/"+ $("#languages option:selected").val() + "/")

@@ -1,7 +1,10 @@
+'''
+Add static.serve for MEDIA:ROOT if debug == True
+'''
 from django.conf import settings
 from django.conf.urls import url
 from django.views import static
-#  from django.conf.urls.shortcut import urlpatterns
+
 
 urlpatterns = []
 if settings.DEBUG:

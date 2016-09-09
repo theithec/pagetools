@@ -12,7 +12,6 @@ from pagetools.widgets.views import WidgetPagelikeMixin
 from pagetools.menus.views import SelectedMenuentriesMixin
 from .models import Page
 
-from .settings import MAILFORM_RECEIVERS
 
 
 class IncludedFormMixin(object):
@@ -43,7 +42,11 @@ class IncludedFormMixin(object):
 
 
     def post(self, request, *args, **kwargs):
-        form = self.get_form_class()(request.POST)
+
+        #self.object = self.object or self.get_object()
+        self.get_object()
+        d = self.get_form_kwargs()
+        form = self.get_form_class()(request.POST, **self.get_form_kwargs())
         if form.is_valid():
             kwargs['form'] = None
             return self.form_valid(form)
@@ -78,7 +81,7 @@ class IncludedFormMixin(object):
     def get_form_kwargs(self):
         kwargs = {}
         if getattr(self, 'object') and getattr(self.object, 'email_receivers'):
-            kwargs['email_receivers'] = self.object.email_receivers
+            kwargs['mailreceivers'] = self.object.email_receivers
         # kwargs.update(self.get_extras())
         return kwargs
 
@@ -96,13 +99,14 @@ class AuthPageMixin(object):
         return qs
 
 
+
+class BasePageView( SelectedMenuentriesMixin, WidgetPagelikeMixin, DetailView):
+    pass
+
 class PageView(
-        SelectedMenuentriesMixin,
-        WidgetPagelikeMixin,
         AuthPageMixin,
         IncludedFormMixin,
-        DetailView):
-
+        BasePageView):
     model = Page
 
     def get_pagetype_name(self, **kwargs):

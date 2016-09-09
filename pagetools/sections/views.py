@@ -11,10 +11,13 @@ from django_ajax.mixin import AJAXMixin
 from .utils import get_template_names_for_obj
 from .models import PageNode
 from .dashboard_modules import PageNodesModule
+from pagetools.menus.views import SelectedMenuentriesMixin
+from pagetools.widgets.views import WidgetPagelikeMixin
 
 
 class BaseNodeView(DetailView):
     model = PageNode
+    template_suffix = ""
 
     def get_queryset(self, *args, **kwargs):
         return self.model.public.lfilter(user=self.request.user)
@@ -24,26 +27,36 @@ class BaseNodeView(DetailView):
         return o.get_real_obj()
 
     def get_template_names(self):
-        return self.template_name or get_template_names_for_obj(self.object) or \
+        return (
+            self.template_name or
+            get_template_names_for_obj(self.object, self.template_suffix) or
             super(BaseNodeView, self).get_template_names()
+        )
 
     def get_context_data(self, **kwargs):
         context = super(BaseNodeView, self).get_context_data(**kwargs)
-        #if self.object.positioned_content:
+        self.object = self.get_object()
         context['contents'] = self.object.ordered_content(
                 user=self.request.user)
         return context
+
+
+class PagelikeNodeView(SelectedMenuentriesMixin, WidgetPagelikeMixin,
+                       BaseNodeView):
+    pass
+
 
 class BaseAjaxNodeViewMixin(AJAXMixin):
     def get_context_data(self, **kwargs):
         context = super(BaseAjaxNodeViewMixin, self).get_context_data(**kwargs)
         context['AJAXVIEW'] = True
         context['css_block'] = "css_ajax"
-        context['js_block'] = "css_ajax"
-        #  context['scale'] = "0.9"
+        context['js_block'] = "js_ajax"
         return context
 
+
 class BaseAjaxNodeView(BaseAjaxNodeViewMixin, BaseNodeView):
+    template_suffix = "_ajax"
     pass
 
 
@@ -68,6 +81,7 @@ def _add_children(txt, children, user):
         txt += "</li>"
     return txt
 
+
 @ajax
 @login_required
 def admin_pagenodesview(request, slug):
@@ -78,5 +92,3 @@ def admin_pagenodesview(request, slug):
                              user=request.user)
     listtxt += '</ol>'
     return HttpResponse(listtxt)
-
-

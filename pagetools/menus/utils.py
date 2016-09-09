@@ -1,15 +1,10 @@
 '''
 Created on 15.12.2013
 
-@author: lotek
+@author: Tim Heithecker
 '''
 
-import sys
-import warnings
-
-from .settings import ENTRIEABLE_MODELS
-from django.utils.translation import ugettext as _
-
+from . import _ENTRIEABLE_MODELS
 
 _entrieable_reverse_names = []
 _entrieable_auto_children = []
@@ -20,23 +15,18 @@ def entrieable_reverse_name(name, app_name=None):
     global _entrieable_reverse_names
     fullname  = "%s:%s" % (app_name, name) if app_name else name
     _entrieable_reverse_names.append(fullname)
-    # if auto_children:
-    #    _entrieable_auto_children.append(name)
-    #    _auto_children_funcs[name] = auto_children
     _entrieable_reverse_names = sorted([_f for _f in _entrieable_reverse_names if _f])
     return name
 
+# todo prefix add_
 def entrieable_auto_populated(name, callback):
     _entrieable_auto_children.append(name)
     _auto_children_funcs[name] = callback
 
 def entrieable_models():
     models = []
-    for module, clz in ENTRIEABLE_MODELS:
-        try:
-            model = getattr(getattr(sys.modules[module], 'models'), clz)
+    for model in _ENTRIEABLE_MODELS:
+        validator =  getattr(model, 'show_in_menu_add', None)
+        if not validator or validator():
             models.append(model)
-        except (KeyError, AttributeError):
-            warnings.warn('Could not find Model "%s:%s".' % (module, clz))
-
     return models

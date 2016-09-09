@@ -1,22 +1,9 @@
 '''
 Created on 15.12.2013
 
-@author: lotek
+@author: Tim Heithecker
 '''
 from django.conf import settings
-
-
-ENTRIEABLE_MODELS = getattr(
-    settings,
-    'PT_ENTRIEABLE_MODELS',
-    (
-        ('pagetools.pages', 'Page'),
-        ('pagetools.menus', 'Link'),
-        ('pagetools.menus', 'ViewLink'),
-        ('pagetools.menus', 'AutoPopulated'),
-        ('pagetools.sections', 'SimpleSectionPage'),
-    )
-)
 
 MENU_TEMPLATE = getattr(
     settings,
