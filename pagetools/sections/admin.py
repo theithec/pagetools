@@ -16,6 +16,7 @@ class BasePageNodePosAdmin(GrappelliSortableHiddenMixin, admin.TabularInline):
     readonly_fields = ('admin_link',)
     fk_name = "owner"
     sortable_field_name = "position"
+    extra = 2
 
     def get_queryset(self, request):
         request.parent_model = self.parent_model

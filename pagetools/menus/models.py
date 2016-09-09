@@ -137,16 +137,17 @@ class Menu(MenuEntry):
         return t.render({'children': children, })
 
     def render(self, selected):
-        print("selelected", selected)
         sel_entries = SelectedEntries()
         for s in selected:
             sel_entries['sel_' + s] = 'active'
+        x = "SELECTED: %s, KEYS: %s" % (selected,  ", ".join(sel_entries.keys()))
         use_cache = self.enabled
         t = None
         if use_cache:
             t = MenuCache.objects.get(menu=self).cache
         else:
             t = self._render_no_sel()
+        logger.debug("Menuentry " + x + " Template" +t)
         x = t % sel_entries
         return x
 
@@ -206,14 +207,14 @@ class Menu(MenuEntry):
         if not getattr(entry_obj, 'enabled', True):
             return
         dict_['entry_url'] = entry.get_absolute_url()
-
-        cslug = (
-            entry.slug
-            if entry.slug else getattr(
+        cslugs = []
+        # cslugs += entry.slugs.split(' ') if entry.slugs else [
+        cslugs +=  [
+            getattr(
                 entry_obj,
                 'slug',
-                getattr(entry_obj, 'menukey', slugify('%s' % entry_obj))))
-
+                getattr(entry_obj, 'menukey', slugify('%s' % entry_obj)))
+        ]
         curr_dict = dict_
         while curr_dict:
             curr_dict['select_class_marker'] = curr_dict.get(
@@ -354,7 +355,6 @@ class AutoPopulated(AbstractLink):
             ('%s' % k, '%s' % k)
             for k in pagetools.menus.utils._entrieable_auto_children
         ))
-        print("Choices", choices)
         self._meta.get_field('name').choices = choices
 
     def get_children(self, parent):
