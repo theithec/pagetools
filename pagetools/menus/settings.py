@@ -13,6 +13,8 @@ ENTRIEABLE_MODELS = getattr(
         ('pagetools.pages', 'Page'),
         ('pagetools.menus', 'Link'),
         ('pagetools.menus', 'ViewLink'),
+        ('pagetools.menus', 'AutoPopulated'),
+        ('pagetools.sections', 'SimpleSectionPage'),
     )
 )
 

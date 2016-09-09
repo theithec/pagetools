@@ -76,7 +76,6 @@ class PublishableLangModel(LangModel, StatusModel):
     class Meta:
         abstract = True
 
-
 class PagelikeModel(TimeStampedModel, PublishableLangModel):
     '''This may for everything that inclines a detail_view'''
 

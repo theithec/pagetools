@@ -5,6 +5,7 @@ Created on 14.12.2013
 '''
 
 from collections import defaultdict
+import logging
 
 from django import template
 from django.core import urlresolvers
@@ -27,7 +28,7 @@ from pagetools.core.utils import get_classname, get_adminedit_url
 import pagetools.menus.utils
 from .settings import MENU_TEMPLATE
 
-
+logger = logging.getLogger("pagetools")
 class MenuManager(TreeManager, LangManager):
     def create(self, *args, **kwargs):
         raise AttributeError(
@@ -215,7 +216,12 @@ class Menu(MenuEntry):
 
         curr_dict = dict_
         while curr_dict:
-            curr_dict['select_class_marker'] = '%(sel_' + cslug + ')s'
+            curr_dict['select_class_marker'] = curr_dict.get(
+                'select_class_marker', '')
+            curr_dict['select_class_marker'] += ''.join(
+                '%(sel_' + s + ')s' for s in cslugs
+
+            )
             curr_dict = curr_dict['dict_parent']
         return dict_
 
@@ -293,12 +299,12 @@ class Menu(MenuEntry):
 class AbstractLink(models.Model):
     title = models.CharField(_('Title'), max_length=128)
     enabled = models.BooleanField(_('enabled'), default=True)
-    auto_children = False
+    #  auto_children = False
     class Meta:
         abstract = True
 
-    def get_children(self, parent=None):
-        return super().get_children()
+    #  def get_children(self, parent=None):
+    #    return super().get_children()
 
 class Link(AbstractLink):
     url = models.CharField(_('URL'), max_length=255)
@@ -315,17 +321,15 @@ class Link(AbstractLink):
 
 
 class ViewLink(AbstractLink):
-    name = models.CharField(_('Name'), max_length=255)
-
-    def get_children(self, parent):
-        return pagetools.menus.utils._auto_children_funcs[self.name]()
+    name = models.CharField(_('Name'), max_length=255, choices=(("a", "1"),))
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self._meta.get_field_by_name('name')[0]._choices = [
+        choices = tuple((
             ('%s' % k, '%s' % k)
             for k in pagetools.menus.utils._entrieable_reverse_names
-        ]
+        ))
+        self._meta.get_field('name').choices = choices
         if self.name in pagetools.menus.utils._entrieable_auto_children:
             self.auto_children = True
 
@@ -333,10 +337,30 @@ class ViewLink(AbstractLink):
         return self.name
 
     def get_absolute_url(self):
-        if self.auto_children:
-            return "."
         return reverse(self.name)
 
     class Meta:
         verbose_name = _("ViewLink")
         verbose_name_plural = _("ViewLinks")
+
+
+class AutoPopulated(AbstractLink):
+    auto_children = True
+    name = models.CharField(_('Name'), max_length=255, choices=(("a", "1"),))
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        choices = tuple((
+            ('%s' % k, '%s' % k)
+            for k in pagetools.menus.utils._entrieable_auto_children
+        ))
+        print("Choices", choices)
+        self._meta.get_field('name').choices = choices
+
+    def get_children(self, parent):
+        return pagetools.menus.utils._auto_children_funcs[self.name]()
+
+    def get_absolute_url(self):
+        return "."
+
+

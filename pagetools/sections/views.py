@@ -40,7 +40,7 @@ class BaseAjaxNodeViewMixin(AJAXMixin):
         context['AJAXVIEW'] = True
         context['css_block'] = "css_ajax"
         context['js_block'] = "css_ajax"
-        context['scale'] = "0.9"
+        #  context['scale'] = "0.9"
         return context
 
 class BaseAjaxNodeView(BaseAjaxNodeViewMixin, BaseNodeView):
@@ -78,3 +78,5 @@ def admin_pagenodesview(request, slug):
                              user=request.user)
     listtxt += '</ol>'
     return HttpResponse(listtxt)
+
+

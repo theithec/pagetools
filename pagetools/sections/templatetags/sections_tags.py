@@ -7,18 +7,15 @@ register = template.Library()
 from pagetools.sections import render_node_extradata
 
 
-#@register.inclusion_tag('sections/pagenode.html')
 class ContentNode(template.Node):
     def __init__(self, obj, user):
         self.object_var = template.Variable(obj)
         self.user_var = template.Variable(user)
 
     def render(self, context):
-        #pdb.set_trace()
         obj =  self.object_var.resolve(context)
         user =  self.user_var.resolve(context)
         real_template = get_template_names_for_obj(obj)
-        #print ("O", obj, real_template)
         for k, v in render_node_extradata.items():
             context[k] = v
         context['object'] = obj
@@ -27,7 +24,7 @@ class ContentNode(template.Node):
         if not  obj.enabled:
             context['unpublished'] = True
 
-        return select_template(real_template).render( context)
+        return select_template(real_template).render(context)
 
 
 @register.tag

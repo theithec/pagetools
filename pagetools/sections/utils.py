@@ -1,6 +1,5 @@
 import logging
-from django.contrib.contenttypes.models import ContentType
-logger = logging.getLogger('sections')
+logger = logging.getLogger('pagetoolpagetools')
 
 
 def get_template_names_for_obj(obj):
@@ -8,13 +7,13 @@ def get_template_names_for_obj(obj):
     n = []
     node_type = getattr(obj, 'node_type', None)
     if node_type:
-        n = ["sections/%s.html" % (node_type)]
-    n +=  [
-        "sections/%s-%s.html" % (obj._meta.model_name,obj.slug ),
+        n = [
+            "sections/%s-%s.html" % (node_type, obj.slug),
+            "sections/%s.html" % (node_type)
+        ]
+    n += [
+        "sections/%s-%s.html" % (obj._meta.model_name, obj.slug),
         "sections/%s.html" % obj._meta.model_name,
     ]
-    logger.debug("Templates for %s: %s" % ( obj, n))
+    logger.debug("Templates for %s: %s" % (obj, n))
     return n
-
-
-

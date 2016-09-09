@@ -12,12 +12,12 @@ jQuery = grp.jQuery;
             .done(function( script, Status ) {
                 $(".add-another").each(function(i, obj){
                     var $obj = $(obj);
-                    $obj.removeAttr("href").removeAttr("onclick"); 
+                    $obj.removeAttr("href").removeAttr("onclick");
                     var linklist='<ul class="nodechildrenlinklist">';
                     var links = [];
                     {% for c in request.parent_model.allowed_children_classes %}
-                    linklist += '<li><a href="{{c.get_adminadd_url }}?_to_field=id&_popup=1" ' + 
-                        ' class="in_group_chooser in_group_chooser_{{ forloop.counter }}"' + 
+                    linklist += '<li><a href="{{c.get_adminadd_url }}?_to_field=id&_popup=1" ' +
+                        ' class="in_group_chooser in_group_chooser_{{ forloop.counter }}"' +
                         ' >{{c.get_classname}}</a></li>';
                     links.push("{{ c.get_adminadd_url}}");
                     {% endfor %}
@@ -29,7 +29,6 @@ jQuery = grp.jQuery;
                         showComplete: function(){
                             for (var i=0; i<links.length;i++){
                                 $(".in_group_chooser_" + (i+1)).bind("click",function(i){
-                                    console.log("i2",i);
                                     return function(){
                                         var $cpy = $obj.clone();
                                         $cpy.attr("href", links[i]+"?_to_field=id&_popup=1" );
@@ -37,8 +36,8 @@ jQuery = grp.jQuery;
                                     };
                                 }(i));
                             }
-                        }    
-                    }); 
+                        }
+                    });
 
                 });
             })
@@ -53,7 +52,7 @@ jQuery = grp.jQuery;
                 $obj.attr("href", "{{request.parent_model.allowed_children_classes.0.get_adminadd_url }}?_to_field=id&_popup=1");
         });
 
-        {% endif %}    
+        {% endif %}
     });
 }(grp.jQuery));
 </script>

@@ -1,6 +1,5 @@
 from django.views.generic.base import View
 from django.utils.translation import get_language
-from slugify import slugify
 from django.template.context_processors import csrf
 
 from .models import PageType
