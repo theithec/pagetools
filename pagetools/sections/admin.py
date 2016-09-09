@@ -6,6 +6,7 @@ from django.utils.html import format_html
 from django.contrib.contenttypes.models import ContentType
 from grappelli.forms import GrappelliSortableHiddenMixin
 from pagetools.core.admin import PagelikeAdmin
+from pagetools.menus.admin import EntrieableAdmin
 from .models import (PageNode, PageNodePos, SimpleArticle, SimpleSection,
                      SimpleSectionPage)
 
@@ -47,7 +48,7 @@ class BasePageNodePosAdmin(GrappelliSortableHiddenMixin, admin.TabularInline):
             )
 
 
-class BasePageNodeAdmin(PagelikeAdmin):
+class BasePageNodeAdmin(EntrieableAdmin, PagelikeAdmin):
 
     inlines = [BasePageNodePosAdmin]
     change_form_template = 'admin/change_form_chooser.html'

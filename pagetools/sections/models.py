@@ -7,6 +7,7 @@ otherwise a proxy model is sufficient.
 import importlib
 import warnings
 from django.core.exceptions import ValidationError
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
@@ -113,7 +114,7 @@ class PageNode(PagelikeModel):
         super(PageNode, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
-        return "/#%s" % self.slug
+        return reverse("sections:node", args=(self.slug,))
 
     @classmethod
     def get_contenttype_pk(cls):
@@ -148,6 +149,7 @@ class SimpleArticle(PageNode):
     allowed_children_classes = ['pagetools.sections.models.SimpleArticle', ]
     content = models.TextField(_('Content'), blank=True)
     objects = PageNodeManager()
+
 
 
 class SimpleSection(TypeMixin, PageNode):

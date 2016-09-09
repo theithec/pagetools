@@ -11,7 +11,8 @@ from django_ajax.mixin import AJAXMixin
 from .utils import get_template_names_for_obj
 from .models import PageNode
 from .dashboard_modules import PageNodesModule
-
+from pagetools.menus.views import SelectedMenuentriesMixin
+from pagetools.widgets.views import WidgetPagelikeMixin
 
 class BaseNodeView(DetailView):
     model = PageNode
@@ -33,6 +34,10 @@ class BaseNodeView(DetailView):
         context['contents'] = self.object.ordered_content(
                 user=self.request.user)
         return context
+
+class PagelikeNodeView(SelectedMenuentriesMixin, WidgetPagelikeMixin,
+                       BaseNodeView):
+    pass
 
 class BaseAjaxNodeViewMixin(AJAXMixin):
     def get_context_data(self, **kwargs):
