@@ -64,7 +64,6 @@ class PageNode(PagelikeModel):
 
     def get_real_obj(self):
         real = self
-        print("npk",self.title,  real.content_type_pk)
         #try:
         if self.pk:
             clz = ContentType.objects.get_for_id(real.content_type_pk)

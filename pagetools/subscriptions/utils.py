@@ -7,7 +7,7 @@ Created on 03.09.2012
 from django.template.loader import render_to_string
 from django.utils.translation import activate, get_language
 from django.contrib.sites.models import Site
-from pagetools.subscribe import settings as subs_settings
+from . import settings as subs_settings
 from .models import QueuedEmail, SendStatus
 
 
@@ -19,7 +19,7 @@ def to_queue(content, **kwargs):
     else:
         activate(orglang)
     site = Site.objects.get_current()
-    msg = render_to_string('subscribe/msg.html', {
+    msg = render_to_string('subscriptions/msg.html', {
         'title': content['title'],
         'content': content['body'],
         'site_name': site.name,

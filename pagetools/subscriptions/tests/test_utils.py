@@ -1,7 +1,7 @@
 from django.test.testcases import TestCase
 
-from pagetools.subscribe.models import Subscriber, QueuedEmail
-from pagetools.subscribe.utils import to_queue, send_max
+from pagetools.subscriptions.models import Subscriber, QueuedEmail
+from pagetools.subscriptions.utils import to_queue, send_max
 
 
 class TC1Tests(TestCase):

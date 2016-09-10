@@ -28,5 +28,5 @@ SUBSCRIBER_MODEL = getattr(settings, "PT_SUBSCR_SUBSCRIBER_MODEL", 'Subscriber')
 
 DELETE_QUEUED_MAILS = getattr(settings, "PT_DELETE_QUEUED_MAILS", True)
 
-SUBSCRIBER_LANG_ONLY = getattr(settings, "PT_SUBSCRIBER_LANG_ONLY", True)
+SUBSCRIBER_LANG_ONLY = getattr(settings, "PT_SUBSCRIBER_LANG_ONLY", False)
 

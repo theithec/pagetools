@@ -16,8 +16,8 @@ from django.utils import timezone
 from django.utils.translation import get_language, ugettext_lazy as _
 from django.contrib.sites.models import Site
 from django.contrib import messages
-from pagetools.subscribe.forms import SubscribeForm
-from pagetools.subscribe.models import Subscriber
+from .forms import SubscribeForm
+from .models import Subscriber
 
 from . import settings as subs_settings
 
@@ -40,11 +40,11 @@ def _subscribe(request):
                 'site_url': site_url,
                 'activation_url': "%s%s?mk=%s/" % (
                     site_url,
-                    (reverse('activate', kwargs={'key': s.key})),
+                    (reverse('subscriptions:activate', kwargs={'key': s.key})),
                     s.mailkey()
                 )
             }
-            t = template.loader.get_template('subscribe/activation_msg.txt')
+            t = template.loader.get_template('subscriptions/activation_msg.txt')
             mailmsg = t.render(Context(context))
             try:
                 send_mail(
@@ -70,7 +70,7 @@ def _subscribe_fallback(request, res):
     #todo - add to context c['referer'] = request.META.get('HTTP_REFERER', '/')
     return render(
         request,
-        'subscribe/subscribe_msg.html',
+        'subscriptions/subscribe_msg.html',
     )
 
 

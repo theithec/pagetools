@@ -331,8 +331,6 @@ class ViewLink(AbstractLink):
             for k in pagetools.menus.utils._entrieable_reverse_names
         ))
         self._meta.get_field('name').choices = choices
-        if self.name in pagetools.menus.utils._entrieable_auto_children:
-            self.auto_children = True
 
     def __str__(self):
         return self.name

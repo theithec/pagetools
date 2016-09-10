@@ -1,7 +1,6 @@
 from django import template
 from django.template.loader import render_to_string, get_template, select_template
 from django.template import Context, Template
-import pdb
 from pagetools.sections.utils import get_template_names_for_obj
 register = template.Library()
 from pagetools.sections import render_node_extradata

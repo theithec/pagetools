@@ -22,7 +22,7 @@ window.onload = function (){
 	$("#submit-id-subscribe").click(function(){
 		$("subscribe-msgs").replaceWith('<span id="subscribe-msgs"></span>');
 		$.post(
-				"{% url "subscribe" %}",
+				"{% url "subscriptions:subscribe" %}",
 				$("#subscribeform").serializeArray(),
 				function(data){
 					parsed = JSON.parse(data);

@@ -1,14 +1,6 @@
-from django.core.urlresolvers import reverse
-from django.utils.translation import ugettext_lazy as _
-from django.utils.http import urlquote
 from django.utils.html import format_html
 from grappelli.dashboard.modules import DashboardModule
-from .models import PageNode
-#from grappelli.dashboard.utils import get_admin_site_name
-#from pagetools.menus.models import Menu
-#from pagetools.menus.utils import entrieable_models
-#from pagetools.core.utils import get_classname
-#from django.core.exceptions import MultipleObjectsReturned
+from .models import SimpleSectionPage
 
 
 class PageNodesModule(DashboardModule):
@@ -41,7 +33,7 @@ class PageNodesModule(DashboardModule):
 
     """
 
-    model = PageNode
+    model = SimpleSectionPage
     template = 'admin/dashboard_pagenodes_module.html'
 
     def __init__(self, *args, **kwargs):

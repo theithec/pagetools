@@ -6,7 +6,7 @@ Created on 29.02.2012
 
 from django import template
 
-from pagetools.subscribe.forms import SubscribeForm
+from pagetools.subscriptions.forms import SubscribeForm
 
 
 register = template.Library()
@@ -15,7 +15,7 @@ register = template.Library()
 class NewsSubscribtionNode(template.Node):
 
     def render(self, context):
-        t = template.loader.get_template('subscribe/block_subscribtion.html')
+        t = template.loader.get_template('subscriptions/block_subscribtion.html')
         context['sform'] = SubscribeForm()
         return t.render(context)
 

@@ -51,11 +51,14 @@ class Subscriber(BaseSubscriberMixin, LangModel):
         return str(self.email)
 
     @classmethod
-    def get_subscribers(cls, **kwargs):
+    def get_subscribers(clz, **kwargs):
+        print("LANG", [ s.lang for s in clz.objects.all()])
+
         fkwargs = {'is_activated': True}
         if subs_settings.SUBSCRIBER_LANG_ONLY:
             fkwargs['lang'] = kwargs.pop('lang', None)
-        return cls.objects.lfilter(**fkwargs)
+        print("SKWARGS", fkwargs)
+        return clz.objects.lfilter(**fkwargs)
 
 _subscriber_model = None
 
@@ -112,7 +115,7 @@ class QueuedEmail(LangModel):
         super(QueuedEmail, self).save()  # force_insert, force_update)
         modelname = subs_settings.SUBSCRIBER_MODEL
         if modelname == "Subscriber":
-            modelname = "subscribe.Subscriber"
+            modelname = "subscriptions.Subscriber"
         SubsModel = apps.get_model(*modelname.rsplit('.', 1))
         kwargs['lang'] = self.lang
         subscribers = SubsModel.get_subscribers(**kwargs)
@@ -153,7 +156,7 @@ class QueuedEmail(LangModel):
                     s.subscriber.get_email(),
                     conn,
                     "/%s?mk=%s" % (
-                        reverse('unsubscribe', kwargs={'key': s.subscriber.key}),
+                        reverse('subscriptions:unsubscribe', kwargs={'key': s.subscriber.key}),
                         s.subscriber.mailkey()
                      )
                 )

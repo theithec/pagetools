@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 from django.db import migrations, models
 from django.conf import settings
-import pagetools.subscribe.models
+import pagetools.subscriptions.models
 
 
 class Migration(migrations.Migration):
@@ -33,7 +33,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
                 ('status', models.IntegerField()),
-                ('queued_email', models.ForeignKey(to='subscribe.QueuedEmail')),
+                ('queued_email', models.ForeignKey(to='subscriptions.QueuedEmail')),
             ],
             options={
                 'verbose_name': 'Status',
@@ -48,7 +48,7 @@ class Migration(migrations.Migration):
                 ('is_activated', models.BooleanField(default=False)),
                 ('subscribtion_date', models.DateTimeField(auto_now_add=True)),
                 ('failures', models.IntegerField(default=0)),
-                ('key', models.CharField(max_length=32, default=pagetools.subscribe.models._mk_key)),
+                ('key', models.CharField(max_length=32, default=pagetools.subscriptions.models._mk_key)),
                 ('email', models.EmailField(max_length=254, unique=True)),
             ],
             options={
@@ -58,6 +58,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='sendstatus',
             name='subscriber',
-            field=models.ForeignKey(to='subscribe.Subscriber'),
+            field=models.ForeignKey(to='subscriptions.Subscriber'),
         ),
     ]
