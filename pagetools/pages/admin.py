@@ -57,7 +57,7 @@ class BasePageAdmin(EntrieableAdmin, PagelikeAdmin):
             settings.STATIC_URL, 'pagetools', 'js', 'formreceiver.js')]
 
 
-class PageAdmin(EntrieableAdmin): #BasePageAdmin):
+class PageAdmin(BasePageAdmin):
     # inlines = (PageDynFieldAdmin,)
 
     fieldsets = (
@@ -74,6 +74,9 @@ class PageAdmin(EntrieableAdmin): #BasePageAdmin):
         (_('Protection'), {'fields': [
             'login_required',
         ] }),
+        (_('Show in menus'), {'fields': [
+            'menus',
+        ] })
 
     )
 

@@ -31,4 +31,9 @@ def entrieable_auto_populated(name, callback):
     _auto_children_funcs[name] = callback
 
 def entrieable_models():
-    return _ENTRIEABLE_MODELS
+    models = []
+    for model in _ENTRIEABLE_MODELS:
+        validator =  getattr(model, 'show_in_menu_add', None)
+        if not validator or validator():
+            models.append(model)
+    return models

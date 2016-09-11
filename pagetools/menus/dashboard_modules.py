@@ -51,7 +51,7 @@ class MenuModule(DashboardModule):
                     "?title=",
                     urlquote(self.menu_title)])
             }
-
+            context['existing'] = []
         if self.menu:
             context['menu'] = {
                 'name': self.menu,

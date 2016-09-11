@@ -29,6 +29,8 @@ import pagetools.menus.utils
 from .settings import MENU_TEMPLATE
 
 logger = logging.getLogger("pagetools")
+
+
 class MenuManager(TreeManager, LangManager):
     def create(self, *args, **kwargs):
         raise AttributeError(
@@ -140,16 +142,16 @@ class Menu(MenuEntry):
         sel_entries = SelectedEntries()
         for s in selected:
             sel_entries['sel_' + s] = 'active'
-        x = "SELECTED: %s, KEYS: %s" % (selected,  ", ".join(sel_entries.keys()))
         use_cache = self.enabled
         t = None
         if use_cache:
             t = MenuCache.objects.get(menu=self).cache
         else:
             t = self._render_no_sel()
-        logger.debug("Menuentry " + x + " Template" +t)
-        x = t % sel_entries
-        return x
+        logger.debug(" TEMPLATE %s,  SELECTED: %s, KEYS: %s" % (
+            t, selected,  ", ".join(sel_entries.keys())))
+        rendered = t % sel_entries
+        return rendered
 
     def update_entries(self, orderstr):
         '''orderstr = jquery.mjs.nestedSortable.js / serialize()'''
@@ -338,9 +340,14 @@ class ViewLink(AbstractLink):
     def get_absolute_url(self):
         return reverse(self.name)
 
+    @classmethod
+    def show_in_menu_add(Clz):
+        print("ERN", pagetools.menus.utils._entrieable_reverse_names)
+        return len(pagetools.menus.utils._entrieable_reverse_names) > 0
+
     class Meta:
-        verbose_name = _("ViewLink")
-        verbose_name_plural = _("ViewLinks")
+        verbose_name = _("View")
+        verbose_name_plural = _("View")
 
 
 class AutoPopulated(AbstractLink):
@@ -361,6 +368,11 @@ class AutoPopulated(AbstractLink):
     def get_absolute_url(self):
         return "."
 
+    @classmethod
+    def show_in_menu_add(Clz):
+        return len(pagetools.menus.utils._entrieable_auto_children) > 0
+
     class Meta:
         verbose_name = _("Autopopulated Entry")
         verbose_name_plural = _("Autopopulated Entries")
+#AutoPopulated.show_in_menu_add_entry
