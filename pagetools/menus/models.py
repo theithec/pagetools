@@ -361,4 +361,6 @@ class AutoPopulated(AbstractLink):
     def get_absolute_url(self):
         return "."
 
-
+    class Meta:
+        verbose_name = _("Autopopulated Entry")
+        verbose_name_plural = _("Autopopulated Entries")

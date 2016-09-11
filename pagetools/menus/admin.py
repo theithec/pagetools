@@ -193,6 +193,7 @@ class EntrieableForm(forms.ModelForm):
 
 class EntrieableAdmin(admin.ModelAdmin):
     form = EntrieableForm
+    is_menu_entrieable = True
 
     def save_related(self, request, form, formsets, change):
         super(EntrieableAdmin, self).save_related(request, form,

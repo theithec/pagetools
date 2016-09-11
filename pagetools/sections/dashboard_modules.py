@@ -1,6 +1,5 @@
 from django.utils.html import format_html
 from grappelli.dashboard.modules import DashboardModule
-from .models import SimpleSectionPage
 
 
 class PageNodesModule(DashboardModule):
@@ -33,7 +32,7 @@ class PageNodesModule(DashboardModule):
 
     """
 
-    model = SimpleSectionPage
+    # model = SimpleSectionPage
     template = 'admin/dashboard_pagenodes_module.html'
 
     def __init__(self, *args, **kwargs):

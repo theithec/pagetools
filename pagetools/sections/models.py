@@ -4,16 +4,18 @@ A PageNode is a model which may contains other PageNodes.
 Inheritated models with own fields needs concrete inheritance,
 otherwise a proxy model is sufficient.
 '''
-import importlib
 import warnings
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
-from pagetools.core.models import PagelikeModel, PublishableLangManager
-from pagetools.core.utils import get_adminadd_url, get_classname
 
+from filebrowser.fields import FileBrowseField
+
+from pagetools.core.models import PagelikeModel, PublishableLangManager
+from pagetools.core.utils import get_adminadd_url, get_classname, importer
+_
 
 class PageNodeManager(PublishableLangManager):
     pass
@@ -55,10 +57,7 @@ class PageNode(PagelikeModel):
         if allowed:
             repl = []
             for c in allowed:
-                if type(c) == str:
-                    modname, clsname = c.rsplit(".", 1)
-                    c = getattr(importlib.import_module(modname), clsname)
-                repl.append(c)
+                repl.append(importer(c))
 
             self.__class__.allowed_children_classes = repl
 
@@ -140,21 +139,31 @@ class PageNodePos(models.Model):
 
     class Meta:
         ordering = ['position']
-        verbose_name = _('Content Position')
-        verbose_name_plural = _('Content Positions')
+        verbose_name = _('Included Content')
+        verbose_name_plural = _('Included Content')
 
-
+'''
 class SimpleArticle(PageNode):
     allowed_children_classes = ['pagetools.sections.models.SimpleArticle', ]
     content = models.TextField(_('Content'), blank=True)
+
+    teaser = models.TextField(_('Teaser'), blank=True)
+    image = FileBrowseField("Image", max_length=200)
     objects = PageNodeManager()
 
+    class Meta:
+        verbose_name = _("Article")
+        verbose_name_plural = _("Articles")
 
 
 class SimpleSection(TypeMixin, PageNode):
     allowed_children_classes = [SimpleArticle, ]
     node_choices = (('list', 'List', ), )
     objects = PageNodeManager()
+
+    class Meta:
+        verbose_name = _("Section")
+        verbose_name_plural = _("Sections")
 
 
 class SimpleSectionPage(PageNode):
@@ -163,3 +172,6 @@ class SimpleSectionPage(PageNode):
 
     class Meta:
         proxy = True
+        verbose_name = _("Section-Page")
+        verbose_name_plural = _("Section-Pages")
+'''

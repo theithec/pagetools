@@ -7,7 +7,7 @@ Created on 15.12.2013
 import sys
 import warnings
 
-from .settings import ENTRIEABLE_MODELS
+from . import _ENTRIEABLE_MODELS
 from django.utils.translation import ugettext as _
 
 
@@ -31,12 +31,4 @@ def entrieable_auto_populated(name, callback):
     _auto_children_funcs[name] = callback
 
 def entrieable_models():
-    models = []
-    for module, clz in ENTRIEABLE_MODELS:
-        try:
-            model = getattr(getattr(sys.modules[module], 'models'), clz)
-            models.append(model)
-        except (KeyError, AttributeError):
-            warnings.warn('Could not find Model "%s:%s".' % (module, clz))
-
-    return models
+    return _ENTRIEABLE_MODELS

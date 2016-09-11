@@ -1,4 +1,6 @@
+import importlib
 from django.core.urlresolvers import reverse
+
 
 
 # http://code.activestate.com/recipes/576949-find-all-subclasses-of-a-given-class/
@@ -72,3 +74,13 @@ def get_addperm_name(cls):
         cls._meta.app_label,
         cls.__name__.lower()
     )
+
+def importer(str_or_obj):
+    if type(str_or_obj) == str:
+        modname, clsname = str_or_obj.rsplit(".", 1)
+        str_or_obj = getattr(importlib.import_module(modname), clsname)
+    return str_or_obj
+
+
+
+

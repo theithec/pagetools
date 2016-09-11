@@ -7,8 +7,7 @@ from django.contrib.contenttypes.models import ContentType
 from grappelli.forms import GrappelliSortableHiddenMixin
 from pagetools.core.admin import PagelikeAdmin
 from pagetools.menus.admin import EntrieableAdmin
-from .models import (PageNode, PageNodePos, SimpleArticle, SimpleSection,
-                     SimpleSectionPage)
+from .models import PageNode, PageNodePos
 
 
 class BasePageNodePosAdmin(GrappelliSortableHiddenMixin, admin.TabularInline):
@@ -48,7 +47,7 @@ class BasePageNodePosAdmin(GrappelliSortableHiddenMixin, admin.TabularInline):
             )
 
 
-class BasePageNodeAdmin(EntrieableAdmin, PagelikeAdmin):
+class BasePageNodeAdmin(PagelikeAdmin):
 
     inlines = [BasePageNodePosAdmin]
     change_form_template = 'admin/change_form_chooser.html'
@@ -77,7 +76,50 @@ class BasePageNodeAdmin(EntrieableAdmin, PagelikeAdmin):
     containing_nodes.allow_tags = _("Parents")
 
 
-admin.site.register(
-    [SimpleArticle, SimpleSection, SimpleSectionPage],
-    BasePageNodeAdmin)
 admin.site.register(PageNode)
+
+
+'''
+@admin.register(SimpleArticle)
+class SimpleArticleAdmin(BasePageNodeAdmin):
+    inlines = [BasePageNodePosAdmin]
+    fieldsets = (
+        ('', {'fields': [
+            'status',
+            'title',
+            'slug',
+            'content',
+            'containing_nodes',
+        ]}),
+        (_('Teaser'), {'fields': ['teaser', ]}),
+    )
+    readonly_fields = ('status_changed','containing_nodes')
+
+
+@admin.register(SimpleSection)
+class SimpleSectionAdmin(BasePageNodeAdmin):
+    inlines = [BasePageNodePosAdmin]
+    fieldsets = (
+        ('', {'fields': [
+            'status',
+            'title',
+            'slug',
+            'containing_nodes',
+        ]}),
+    )
+    readonly_fields = ('status_changed','containing_nodes')
+
+@admin.register(SimpleSectionPage)
+class SimplePageAdmin(EntrieableAdmin, BasePageNodeAdmin):
+    inlines = [BasePageNodePosAdmin]
+    fieldsets = (
+        ('', {'fields': [
+            'status',
+            'title',
+            'slug',
+            'description',
+        ]}),
+        ('', {'fields': ['menus']}),
+    )
+
+'''

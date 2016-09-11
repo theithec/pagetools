@@ -7,17 +7,17 @@
                                                                   value="{{ c.entry_pk}}" />
                 <a href="{{ c.obj_admin_url }}?menu={{ original.pk }}"
                    class="obj_admin_link menuentryobj-{{ c.obj_status}}">{{ c.obj_classname }}: {{ c.obj_title }}
-                </a>    
+                </a>
 
 		        <a class="del_entry" href="{{ c.entry_del_url }}">
                 <span title="Click to delete item."  class="deleteMenu ui-icon ui-icon-closethick">
-                </a> 
+                </a>
             </div>
             <input name="entry-text-{{c.entry_order_id}}" type="text"
-                                                          value="{{ c.entry_title }}" /> 
-            <input  type="checkbox" name="entry-published-{{ c.entry_order_id }}" 
+                                                          value="{{ c.entry_title }}" />
+            <input  type="checkbox" name="entry-published-{{ c.entry_order_id }}"
                                     value="1"{{ c.entry_enabled }}>Show
-                                    <a class="change_entry" href="{{ c.entry_change_url }}">[entry]</a> 
+                                    <a class="change_entry" href="{{ c.entry_change_url }}">[entry]</a>
 
        </div>
 

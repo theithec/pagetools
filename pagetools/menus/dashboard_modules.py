@@ -38,28 +38,35 @@ class MenuModule(DashboardModule):
         return collected
 
     def init_with_context(self, context):
+        self.menu = None
         try:
             self.menu = Menu.objects.lfilter().get(title=self.menu_title)
         except (Menu.DoesNotExist, MultipleObjectsReturned) as e:
-            self.pre_content = 'Menu not found <a href="%s?title=%s">create</a>' % (
-                reverse('admin:menus_menu_add'),
-                urlquote(self.menu_title)
-            )
-            return
-        context['menu'] = {
-            'name': self.menu,
-            'url': reverse("admin:menus_menu_change", args=[self.menu.pk])
-        }
-        nested_children = self.menu.children_list(for_admin=True)
-        context['existing'] = self.add_entrychildren(nested_children)
-        emods = entrieable_models()
-        for em in emods:
-            self.children.append({
-                'name': get_classname(em),
-                'url': reverse("admin:%s_%s_add" % (
-                    em.__module__[:-7].split('.')[-1],
-                    em.__name__.lower()
-                )) + '?menu=%s' % self.menu.pk
-            })
+            self.pre_content = _("Menu not found!")
+
+            context['menu'] = {
+                'name': "Create the menu",
+                'url': "".join([
+                    reverse("admin:menus_menu_add"),
+                    "?title=",
+                    urlquote(self.menu_title)])
+            }
+
+        if self.menu:
+            context['menu'] = {
+                'name': self.menu,
+                'url': reverse("admin:menus_menu_change", args=[self.menu.pk])
+            }
+            nested_children = self.menu.children_list(for_admin=True)
+            context['existing'] = self.add_entrychildren(nested_children)
+            emods = entrieable_models()
+            for em in emods:
+                self.children.append({
+                    'name': get_classname(em),
+                    'url': reverse("admin:%s_%s_add" % (
+                        em.__module__[:-7].split('.')[-1],
+                        em.__name__.lower()
+                    )) + '?menu=%s' % self.menu.pk
+                })
         super(MenuModule, self).init_with_context(context)
         self._initialized = True

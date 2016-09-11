@@ -8,6 +8,8 @@ import os
 from django import forms
 from django.conf import settings
 from django.contrib import admin
+from django.utils.translation import ugettext_lazy as _
+
 from grappelli.forms import GrappelliSortableHiddenMixin
 
 from pagetools.core.admin import PagelikeAdmin
@@ -55,8 +57,25 @@ class BasePageAdmin(EntrieableAdmin, PagelikeAdmin):
             settings.STATIC_URL, 'pagetools', 'js', 'formreceiver.js')]
 
 
-class PageAdmin(BasePageAdmin):
+class PageAdmin(EntrieableAdmin): #BasePageAdmin):
     # inlines = (PageDynFieldAdmin,)
+
+    fieldsets = (
+        ('', {'fields': [
+            'status',
+            'title',
+            'slug',
+            'content',
+        ]}),
+        (_('Included form'), {'fields': [
+            'included_form',
+            'email_receivers',
+        ] }),
+        (_('Protection'), {'fields': [
+            'login_required',
+        ] }),
+
+    )
 
     class Meta:
         model = Page
