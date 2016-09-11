@@ -84,3 +84,9 @@ class PageAdmin(BasePageAdmin):
         model = Page
 
 admin.site.register(Page, PageAdmin)
+from pagetools.menus.utils import entrieable_auto_populated
+from pagetools.menus.models import MenuEntry
+def pages_auto_entries():
+    return [MenuEntry(title=p.title, content_object=p) for p in Page.public.all()]
+
+entrieable_auto_populated("All pages", pages_auto_entries)
