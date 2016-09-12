@@ -76,7 +76,11 @@ class PageAdmin(BasePageAdmin):
         ] }),
         (_('Show in menus'), {'fields': [
             'menus',
-        ] })
+        ] }),
+        (_('Pagetype'), {'fields': [
+            'pagetype',
+        ] }),
+
 
     )
 

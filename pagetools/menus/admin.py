@@ -147,7 +147,11 @@ class MenuAdmin(TinyMCEMixin, admin.ModelAdmin):
         css = {'all': ('pagetools/admin/css/menuentries.css', )}
 
 
+
 class EntrieableForm(forms.ModelForm):
+    '''Adds a field: menus to the form. Preselect all menus which contain an
+       entry for the obj'''
+
     menus = forms.Field()
 
     def __init__(self, *args, **kwargs):
@@ -190,13 +194,89 @@ class EntrieableForm(forms.ModelForm):
         js = TinyMCEMixin.Media.js + [settings.STATIC_URL +
                                       'pagetools/admin/js/pre_sel_menu.js']
 
+def entrieable_admin_save_related(self, request, form, formsets, change):
+    '''Entrieable save_related (for monkeypatching)'''
+    superfunc = super(self.__class__, self).save_related
+    if not getattr(superfunc, "for_entrieable",  False):
+        superfunc(request, form, formsets, change)
+
+    obj = form.instance
+    menupk_from_request = request.GET.get('menu', None)
+    if 'menus' not in form.changed_data and not menupk_from_request:
+        return
+
+    selected_menus = form.sel_menus
+    existing_menuentries = form.existing_menuentries
+    all_menus = Menu.objects.root_nodes()
+    for am in all_menus:
+        found = None
+        for e in existing_menuentries:
+            if e.get_root().pk == am.pk:
+                found = e
+                break
+
+        is_selected = am in selected_menus
+        if is_selected and not found:
+            root = Menu.objects.get(pk=am.pk)
+            title = getattr(obj, 'title', None)
+            kwargs = {}
+            if title:
+                kwargs['title'] = title
+
+            e = Menu.objects.add_child(root, form.instance, **kwargs)
+            e.move_to(root, 'last-child')
+            e.save()
+
+        elif found and not is_selected:
+            e.delete()
+
+
+def entrieable_admin_get_fields(self, request, obj):
+    '''Entrieable get_fields (for monkeypatching)'''
+    superfunc = super(self.__class__, self).get_fields
+    if not getattr(superfunc, "for_entrieable",  False):
+        self.fields = superfunc(request, obj)
+
+    if not "menus" in self.fields:
+        self.fields = self.fields + type(self.fields)(("menus",) )
+
+    return self.fields
+
+
+def entrieable_admin_get_fieldsets(self, request, obj):
+    '''Entrieable get_fieldsets (for monkeypatching)'''
+    superfunc = super(self.__class__, self).get_fieldsets
+    if not getattr(superfunc, "for_entrieable",  False):
+        self.fieldsets = superfunc(request, obj)
+
+    added = False
+    for fs in self.fieldsets:
+        if "menus" in fs[1]['fields']:
+            added = True
+            break
+
+    if not added:
+        self.fieldsets = self.fieldsets + type(self.fieldsets)((
+            (_("In menus"),{'fields':['menus',]}),
+        ),)
+
+    return self.fieldsets
 
 class EntrieableAdmin(admin.ModelAdmin):
     form = EntrieableForm
     is_menu_entrieable = True
 
+    def get_fields(self, request, obj):
+        return entrieable_admin_get_fields(self, request, obj=None)
+    get_fields.for_entrieable = True
+    def get_fieldsets(self, request, obj):
+        return entrieable_admin_get_fieldsets(self, request, obj=None)
+    get_fieldsets.for_entrieable = True
+
     def save_related(self, request, form, formsets, change):
-        super(EntrieableAdmin, self).save_related(request, form,
+        return entrieable_admin_save_related(self, request, form, formsets, change)
+
+        super().save_related(request, form,
                                                   formsets, change)
         obj = form.instance
         if 'menus' not in form.changed_data:
@@ -222,6 +302,7 @@ class EntrieableAdmin(admin.ModelAdmin):
                 e.save()
             elif found and not is_selected:
                 e.delete()
+    save_related.for_entrieable = True
 
     def _redirect(self, action, request, obj, *args, **kwargs):
         s = request.GET.get('menu', None)
@@ -242,6 +323,13 @@ class EntrieableAdmin(admin.ModelAdmin):
     def response_change(self, request, obj, *args, **kwargs):
         return self._redirect("change", request, obj, *args, **kwargs)
 
+
+def make_entrieable_admin(clz):
+    clz.is_menu_entrieable = True
+    clz.save_related =  EntrieableAdmin.save_related
+    clz.get_fields =  EntrieableAdmin.get_fields
+    clz.get_fieldsets =  EntrieableAdmin.get_fieldsets
+    clz.form = EntrieableForm
 
 class MenuEntryAdmin(admin.ModelAdmin):
     list_display = ('title',  'lang', 'enabled')

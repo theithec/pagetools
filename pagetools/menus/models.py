@@ -342,7 +342,6 @@ class ViewLink(AbstractLink):
 
     @classmethod
     def show_in_menu_add(Clz):
-        print("ERN", pagetools.menus.utils._entrieable_reverse_names)
         return len(pagetools.menus.utils._entrieable_reverse_names) > 0
 
     class Meta:

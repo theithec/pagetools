@@ -52,12 +52,10 @@ class Subscriber(BaseSubscriberMixin, LangModel):
 
     @classmethod
     def get_subscribers(clz, **kwargs):
-        print("LANG", [ s.lang for s in clz.objects.all()])
-
         fkwargs = {'is_activated': True}
         if subs_settings.SUBSCRIBER_LANG_ONLY:
             fkwargs['lang'] = kwargs.pop('lang', None)
-        print("SKWARGS", fkwargs)
+
         return clz.objects.lfilter(**fkwargs)
 
 _subscriber_model = None

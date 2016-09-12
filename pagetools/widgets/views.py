@@ -8,6 +8,9 @@ from .utils import get_areas_for_type
 
 class WidgetViewMixin(object):
 
+    add_pagetype_promise = True
+    '''If set, the widget context processor will not adding areas'''
+
     def get_context_data(self, **kwargs):
         kwargs = super(WidgetViewMixin, self).get_context_data(**kwargs)
         ptname = self.get_pagetype_name(**kwargs)
