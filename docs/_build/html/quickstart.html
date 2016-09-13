@@ -1,0 +1,380 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Quickstart &mdash; django-pagetools 0.4.5 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="django-pagetools 0.4.5 documentation" href="index.html"/>
+        <link rel="next" title="Pages" href="pages.html"/>
+        <link rel="prev" title="Installation" href="install.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> django-pagetools
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.4.5
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#setup">Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#create-a-menu-with-a-page">Create a menu with a page</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#widgets-create-a-sidebar">Widgets - Create a sidebar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#search">Search</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sections">Sections</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pages.html">Pages</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">django-pagetools</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Quickstart</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/quickstart.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="quickstart">
+<h1>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="setup">
+<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h2>
+<p>It&#8217;s more interesting to show how pagetools works with existing apps.
+But let&#8217;s start with a pure pagetools installation.</p>
+<p>Add the pagetools apps you want to use and their requirements to <code class="docutils literal"><span class="pre">INSTALLED_APPS</span></code>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;grappelli.dashboard&#39;</span><span class="p">,</span><span class="c1"># optional (pagetools provides two dashboard modules), needs further configuration</span>
+    <span class="s1">&#39;grappelli&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.contrib.admin&#39;</span><span class="p">,</span>
+    <span class="o">...</span>
+    <span class="s1">&#39;django.contrib.sites&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;crispy_forms&#39;</span><span class="p">,</span>      <span class="c1"># required for pages</span>
+    <span class="s1">&#39;sekizai&#39;</span><span class="p">,</span>           <span class="c1"># required for sections. Needs further configuration</span>
+    <span class="s1">&#39;pagetools.core&#39;</span><span class="p">,</span>    <span class="c1"># needed for all pagetools modules</span>
+    <span class="s1">&#39;pagetools.widgets&#39;</span><span class="p">,</span> <span class="c1"># Widgets (e.g. for sidebars)</span>
+    <span class="s1">&#39;pagetools.pages&#39;</span><span class="p">,</span>   <span class="c1"># Simple Pages</span>
+    <span class="s1">&#39;pagetools.menus&#39;</span><span class="p">,</span>   <span class="c1">#</span>
+    <span class="s1">&#39;pagetools.sections&#39;</span><span class="p">,</span><span class="c1"># Nested Content (e.g. for a singlepage site)</span>
+    <span class="s1">&#39;pagetools.search&#39;</span><span class="p">,</span>  <span class="c1"># Simple Search on database fields</span>
+    <span class="s1">&#39;pagetools.subscriptions&#39;</span><span class="p">,</span> <span class="c1"># Subscriptions to whatever</span>
+    <span class="o">...</span>
+  <span class="p">]</span>
+
+  <span class="n">SITE_ID</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># required by contrib.sites</span>
+</pre></div>
+</div>
+<p>Add the urls to your project:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1">#  for the section dashboard module</span>
+<span class="c1">#  from pagetools.sections.views import admin_pagenodesview</span>
+
+<span class="c1"># Optional</span>
+<span class="kn">from</span> <span class="nn">pagetools.pages.views</span> <span class="k">import</span> <span class="n">IndexView</span>
+
+<span class="n">url_patterns</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">url</span><span class="p">(</span><span class="s1">r&#39;^$&#39;</span><span class="p">,</span> <span class="n">IndexView</span><span class="o">.</span><span class="n">as_view</span><span class="p">()),</span> <span class="c1"># Optional</span>
+    <span class="n">url</span><span class="p">(</span><span class="s1">r&#39;^grappelli/&#39;</span><span class="p">,</span> <span class="n">include</span><span class="p">(</span><span class="s1">&#39;grappelli.urls&#39;</span><span class="p">)),</span>
+    <span class="n">url</span><span class="p">(</span><span class="s1">r&#39;^admin/&#39;</span><span class="p">,</span> <span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">urls</span><span class="p">),</span>
+    <span class="o">...</span>
+    <span class="n">url</span><span class="p">(</span><span class="s1">r&#39;pages/&#39;</span><span class="p">,</span> <span class="n">include</span><span class="p">(</span><span class="s1">&#39;pagetools.pages.urls&#39;</span><span class="p">)),</span>
+    <span class="n">url</span><span class="p">(</span><span class="s1">r&#39;^node/&#39;</span><span class="p">,</span> <span class="n">include</span><span class="p">(</span><span class="s1">&#39;pagetools.sections.urls&#39;</span><span class="p">)),</span>
+    <span class="c1"># url(r&#39;^adminnodes/(?P&lt;slug&gt;[\w-]+)/$&#39;,</span>
+    <span class="c1">#     admin_pagenodesview,</span>
+    <span class="c1">#     name=&#39;admin_pagenodesview&#39;),</span>
+    <span class="n">url</span><span class="p">(</span><span class="s1">r&#39;search/&#39;</span><span class="p">,</span> <span class="n">include</span><span class="p">(</span><span class="s1">&#39;pagetools.search.urls&#39;</span><span class="p">)),</span>
+    <span class="n">url</span><span class="p">(</span><span class="s1">r&#39;subscribe/&#39;</span><span class="p">,</span> <span class="n">include</span><span class="p">(</span><span class="s1">&#39;pagetools.subscriptions.urls&#39;</span><span class="p">)),</span>
+    <span class="o">...</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>Migrate.</p>
+<p>Create the dashboard:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">manage</span><span class="o">.</span><span class="n">py</span> <span class="n">customdashboard</span>
+</pre></div>
+</div>
+<p>and add it in settings:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">GRAPPELLI_INDEX_DASHBOARD</span> <span class="o">=</span> <span class="s1">&#39;dashboard.CustomIndexDashboard&#39;</span>
+</pre></div>
+</div>
+<p>Edit <cite>dashboard.py</cite> to include the menu module:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pagetools.menus.dashboard_modules</span> <span class="k">import</span> <span class="n">MenuModule</span>
+<span class="o">...</span>
+
+<span class="k">class</span> <span class="nc">CustomIndexDashboard</span><span class="p">(</span><span class="n">Dashboard</span><span class="p">):</span>
+        <span class="o">...</span>
+        <span class="k">def</span> <span class="nf">init_with_context</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+                <span class="o">...</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">MenuModule</span><span class="p">(</span><span class="n">column</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span> <span class="c1"># default menu title is MainMenu</span>
+                <span class="c1"># or</span>
+                <span class="c1"># self.children.append(MenuModule(column=1, menu_title=&quot;mymenu&quot;))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="create-a-menu-with-a-page">
+<h2>Create a menu with a page<a class="headerlink" href="#create-a-menu-with-a-page" title="Permalink to this headline">¶</a></h2>
+<p>Click on <code class="docutils literal"><span class="pre">Menu</span> <span class="pre">not</span> <span class="pre">found.</span> <span class="pre">Create</span></code> in the Menu Module.
+After <code class="docutils literal"><span class="pre">Save</span> <span class="pre">and</span> <span class="pre">continue</span> <span class="pre">editing</span></code> you can add entries to the menu.</p>
+<p>Add a <code class="docutils literal"><span class="pre">Page</span></code> to the menu. Set status to published, give it a title and some content.
+Make sure under <cite>Menus</cite> your menu is selected. Save and return to the menu.</p>
+<p>Select <code class="docutils literal"><span class="pre">Show</span></code> for your new menu entry and save the menu.</p>
+<p>Call the menu in your template:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span><span class="o">%</span> <span class="n">load</span> <span class="p">[</span><span class="o">...</span><span class="p">]</span> <span class="n">menus_tags</span> <span class="o">%</span><span class="p">}</span>
+<span class="o">...</span>
+
+<span class="o">&lt;</span><span class="n">ul</span><span class="o">&gt;</span>
+        <span class="p">{</span><span class="o">%</span> <span class="n">menu</span> <span class="n">MainMenu</span> <span class="o">%</span><span class="p">}</span>
+<span class="o">&lt;/</span><span class="n">ul</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Some notes:</p>
+<ul class="simple">
+<li>Views can be added to the menu trough the <cite>ViewLink</cite> class. See #Search for an example.</li>
+<li>You are not restricted to the models listed on the menu admin. Everything with an <cite>get_absolute_url</cite> callable  may be allowed as an entry. See &#8220;add menu entrieables (todo)&#8221;. Entries may be created dynamically.</li>
+<li>Note that entries may be nested (just drag and drop).</li>
+<li>Use a <cite>Link</cite> to &#8220;#&#8221; if you want a dummy parent entry.</li>
+<li>The menu template may be overwritten in settings.</li>
+<li>The pagetools templates expects a <cite>base.html</cite> template with <cite>{% block main %}</cite>, <cite>{% block css %}</cite> and <cite>{% block js %}</cite>.</li>
+<li>If the slug of the page is &#8220;start&#8221;, the <cite>pages.IndexView</cite> will use it.</li>
+<li>Most pagetools models have a language field. If you don&#8217;t need different languages just ignore them.</li>
+</ul>
+</div>
+<div class="section" id="widgets-create-a-sidebar">
+<h2>Widgets - Create a sidebar<a class="headerlink" href="#widgets-create-a-sidebar" title="Permalink to this headline">¶</a></h2>
+<p>The idea:</p>
+<ol class="arabic simple">
+<li>Some parts of the base template are defined as <cite>areas</cite>. An area may be a sidebar with some boxes or just a background picture.
+Areas are defined in settings. It make no sense to add areas on the fly because they have to be defined in the template also.</li>
+<li>Somewhere in your views or your model or your object you define <cite>pagetypes</cite>.
+Pagetypes may be created dynamically or in code.</li>
+<li>Combine areas and pagetypes to define what additional content is shown for your view (or object - or model, depends on your implementation).</li>
+</ol>
+<p>Add something like this to your base template.:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">sidebar</span><span class="o">&gt;</span>
+        <span class="p">{</span><span class="o">%</span> <span class="k">with</span> <span class="n">areas</span><span class="o">.</span><span class="n">sidebar</span> <span class="k">as</span> <span class="n">widgets</span> <span class="o">%</span><span class="p">}</span>
+        <span class="p">{</span><span class="o">%</span> <span class="k">for</span> <span class="n">widget</span> <span class="ow">in</span> <span class="n">widgets</span> <span class="o">%</span><span class="p">}</span>
+        <span class="p">{</span><span class="o">%</span> <span class="k">if</span> <span class="n">widget</span><span class="o">.</span><span class="n">title</span> <span class="o">%</span><span class="p">}</span><span class="o">&lt;</span><span class="n">h4</span><span class="o">&gt;</span><span class="p">{{</span><span class="n">widget</span><span class="o">.</span><span class="n">title</span><span class="p">}}</span><span class="o">&lt;/</span><span class="n">h4</span><span class="o">&gt;</span><span class="p">{</span><span class="o">%</span> <span class="n">endif</span> <span class="o">%</span><span class="p">}</span>
+        <span class="p">{{</span> <span class="n">widget</span><span class="o">.</span><span class="n">content</span><span class="o">|</span><span class="n">safe</span> <span class="p">}}</span>
+        <span class="p">{</span><span class="o">%</span> <span class="n">endfor</span> <span class="o">%</span><span class="p">}</span>
+        <span class="p">{</span><span class="o">%</span> <span class="n">endwith</span> <span class="o">%</span><span class="p">}</span>
+<span class="o">&lt;/</span><span class="n">sidebar</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Go to admin-&gt;widgets-&gt;Pagetype-Areas. There is one default area named &#8220;sidebar&#8221;. Create a Pagetype and call it &#8220;base&#8221;.
+<cite>Save and continue editing</cite>. Add a Content Widget. The name is the internal name for the widget. Save and return to the Pagetype-Area. Enable the new widget. Save.</p>
+<p>A <cite>PageType</cite> called  <cite>base</cite> is used as the default/fallback pagetype, therefor the widget is visible.</p>
+<p>You could create a new <cite>Pagetype-Area</cite> with a new <cite>Pagetype</cite>, e.g. named &#8216;special&#8217; with different widgets and change the pagetype of the former created page to the new type.</p>
+<p>Some notes:</p>
+<ul class="simple">
+<li>Pagetypes can be nested, however this is only useful if you have multiple areas (e.g. sidebar and header).</li>
+<li>Creating custom widget classes is easy. If you have a templatetag that doesn&#8217;t require arguments, you can just add it
+to the <cite>PT_TEMPLATETAG_WIDGETS</cite> setting.</li>
+<li>To enable the whole thing, somewhere <cite>pagetools.widgets.utils.get_areas_for_type(&#8220;pagetypename&#8221;, kwargs)</cite> must be integrated
+in the template context(e.g. as <cite>areas</cite>) where <cite>kwargs</cite> will be passed to the included  widgets <cite>get_content</cite> call.</li>
+</ul>
+</div>
+<div class="section" id="search">
+<h2>Search<a class="headerlink" href="#search" title="Permalink to this headline">¶</a></h2>
+<p>The search is just a simple database query.
+Define somwhere:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pagetools</span> <span class="k">import</span> <span class="n">search</span>
+
+<span class="n">search</span><span class="o">.</span><span class="n">search_mods</span> <span class="o">=</span> <span class="p">(</span>
+       <span class="p">(</span><span class="n">Page</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">,</span> <span class="s1">&#39;content&#39;</span><span class="p">),),</span>
+       <span class="c1"># or</span>
+       <span class="c1"># (Page, (&#39;title&#39;, &#39;content&#39;),{&#39;replacements&#39;: &#39;content&#39;}),</span>
+        <span class="o">...</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>If replacement is defined as a json file, it will be used as source for replacements.
+(e.g. &#8220;&amp;auml;&#8221; to &#8220;ä&#8221;).
+You can also set search.extra_filter to a callable that receives the resulting queryset (and should return one)</p>
+<p>The SearchView is also an example for adding a view to the Menu.
+All is required is a call to pagetools.menus.utils.entrieable_reverse_name with one or two arguments (viewname, appname).
+Because the function returns the viewname, this can be done in the urls:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">urlpatterns</span> <span class="o">=</span> <span class="p">[</span>
+
+<span class="n">url</span><span class="p">(</span><span class="s1">r&#39;^&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">SearchResultsView</span><span class="o">.</span><span class="n">as_view</span><span class="p">()),</span> <span class="n">name</span><span class="o">=</span><span class="n">entrieable_reverse_name</span><span class="p">(</span><span class="s1">&#39;search&#39;</span><span class="p">,</span> <span class="n">app_name</span><span class="o">=</span><span class="s2">&quot;search&quot;</span><span class="p">)),</span>
+<span class="c1"># or - if no app_name is used</span>
+<span class="c1"># url(r&#39;^&#39;, (SearchResultsView.as_view()), name=entrieable_reverse_name(&#39;search&#39;)),</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="sections">
+<h2>Sections<a class="headerlink" href="#sections" title="Permalink to this headline">¶</a></h2>
+<p>This is for nested content. There are three small concrete models, with them you could build a typical singe-page structure with sections like portfolio, team, and contact.</p>
+<p>Go to &#8220;Your Menu&#8221; -&gt; Add -&gt; Section-Page. Give the page a title and <code class="docutils literal"><span class="pre">Save</span> <span class="pre">and</span> <span class="pre">continue</span> <span class="pre">editing</span></code>.
+In the  <code class="docutils literal"><span class="pre">Positioned</span> <span class="pre">Content</span></code>-area click on the &#8220;+&#8221; to add a section. Give the section also a title and save and continue.
+In the section you can add articles.</p>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="pages.html" class="btn btn-neutral float-right" title="Pages" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="install.html" class="btn btn-neutral" title="Installation" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Tim Heithecker.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.4.5',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

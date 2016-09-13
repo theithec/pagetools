@@ -1,0 +1,233 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Models &mdash; django-pagetools 0.4.5 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="django-pagetools 0.4.5 documentation" href="../index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> django-pagetools
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.4.5
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pages.html">Pages</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">django-pagetools</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+    <li>Models</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/modules/core.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-pagetools.core.models">
+<span id="models"></span><h1>Models<a class="headerlink" href="#module-pagetools.core.models" title="Permalink to this headline">¶</a></h1>
+<p>core modules for pagetools</p>
+<dl class="class">
+<dt id="pagetools.core.models.LangManager">
+<em class="property">class </em><code class="descclassname">pagetools.core.models.</code><code class="descname">LangManager</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pagetools.core.models.LangManager" title="Permalink to this definition">¶</a></dt>
+<dd><p>Manager for models with a lang-field</p>
+<dl class="method">
+<dt id="pagetools.core.models.LangManager.lfilter">
+<code class="descname">lfilter</code><span class="sig-paren">(</span><em>lang=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pagetools.core.models.LangManager.lfilter" title="Permalink to this definition">¶</a></dt>
+<dd><p>uses keyword-argument or system-language to add &#8216;lang&#8217; to filter-
+arguments if settings.LANGUAGES compares to not null</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pagetools.core.models.LangModel">
+<em class="property">class </em><code class="descclassname">pagetools.core.models.</code><code class="descname">LangModel</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pagetools.core.models.LangModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Model with &#8216;lang&#8217;-field
+To avoid &#8220;NOT NULL constraint failed&#8221; errors,
+empty lang is saved as &#8220;&#8221;</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pagetools.core.models.PagelikeModel">
+<em class="property">class </em><code class="descclassname">pagetools.core.models.</code><code class="descname">PagelikeModel</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pagetools.core.models.PagelikeModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>This may for everything that inclines a detail_view</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pagetools.core.models.PublishableLangManager">
+<em class="property">class </em><code class="descclassname">pagetools.core.models.</code><code class="descname">PublishableLangManager</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pagetools.core.models.PublishableLangManager" title="Permalink to this definition">¶</a></dt>
+<dd><p>Manager that finds published content language  filtered</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pagetools.core.models.PublishableLangModel">
+<em class="property">class </em><code class="descclassname">pagetools.core.models.</code><code class="descname">PublishableLangModel</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pagetools.core.models.PublishableLangModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Model with model_utils...StatusModel for status and a language-field</p>
+</dd></dl>
+
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Tim Heithecker.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.4.5',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

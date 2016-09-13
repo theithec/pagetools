@@ -1,0 +1,326 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pagetools.search package &mdash; django-pagetools 0.4.5 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="django-pagetools 0.4.5 documentation" href="../index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> django-pagetools
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.4.5
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pages.html">Pages</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">django-pagetools</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+    <li>pagetools.search package</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/d2/pagetools.search.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="pagetools-search-package">
+<h1>pagetools.search package<a class="headerlink" href="#pagetools-search-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pagetools.search.tests.html">pagetools.search.tests package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pagetools.search.tests.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pagetools.search.tests.html#pagetools-search-tests-test-views-module">pagetools.search.tests.test_views module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pagetools.search.tests.html#module-pagetools.search.tests">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pagetools.search.forms">
+<span id="pagetools-search-forms-module"></span><h2>pagetools.search.forms module<a class="headerlink" href="#module-pagetools.search.forms" title="Permalink to this headline">¶</a></h2>
+<p>Created on 01.01.2014</p>
+<p>&#64;author: lotek</p>
+<dl class="class">
+<dt id="pagetools.search.forms.AdvSearchForm">
+<em class="property">class </em><code class="descclassname">pagetools.search.forms.</code><code class="descname">AdvSearchForm</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pagetools.search.forms.AdvSearchForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">django.forms.forms.Form</span></code></p>
+<dl class="attribute">
+<dt id="pagetools.search.forms.AdvSearchForm.base_fields">
+<code class="descname">base_fields</code><em class="property"> = OrderedDict([('contains_all', &lt;django.forms.fields.CharField object&gt;), ('contains_any', &lt;django.forms.fields.CharField object&gt;), ('contains_exact', &lt;django.forms.fields.CharField object&gt;), ('contains_not', &lt;django.forms.fields.CharField object&gt;)])</em><a class="headerlink" href="#pagetools.search.forms.AdvSearchForm.base_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pagetools.search.forms.AdvSearchForm.declared_fields">
+<code class="descname">declared_fields</code><em class="property"> = OrderedDict([('contains_all', &lt;django.forms.fields.CharField object&gt;), ('contains_any', &lt;django.forms.fields.CharField object&gt;), ('contains_exact', &lt;django.forms.fields.CharField object&gt;), ('contains_not', &lt;django.forms.fields.CharField object&gt;)])</em><a class="headerlink" href="#pagetools.search.forms.AdvSearchForm.declared_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pagetools.search.forms.AdvSearchForm.media">
+<code class="descname">media</code><a class="headerlink" href="#pagetools.search.forms.AdvSearchForm.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pagetools.search.urls">
+<span id="pagetools-search-urls-module"></span><h2>pagetools.search.urls module<a class="headerlink" href="#module-pagetools.search.urls" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pagetools.search.views">
+<span id="pagetools-search-views-module"></span><h2>pagetools.search.views module<a class="headerlink" href="#module-pagetools.search.views" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pagetools.search.views.SearchResultsView">
+<em class="property">class </em><code class="descclassname">pagetools.search.views.</code><code class="descname">SearchResultsView</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pagetools.search.views.SearchResultsView" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="pagetools.core.html#pagetools.core.views.PaginatorMixin" title="pagetools.core.views.PaginatorMixin"><code class="xref py py-class docutils literal"><span class="pre">pagetools.core.views.PaginatorMixin</span></code></a></p>
+<dl class="attribute">
+<dt id="pagetools.search.views.SearchResultsView.context_object_name">
+<code class="descname">context_object_name</code><em class="property"> = 'results'</em><a class="headerlink" href="#pagetools.search.views.SearchResultsView.context_object_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pagetools.search.views.SearchResultsView.filtered_queryset">
+<code class="descname">filtered_queryset</code><span class="sig-paren">(</span><em>mod</em><span class="sig-paren">)</span><a class="headerlink" href="#pagetools.search.views.SearchResultsView.filtered_queryset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pagetools.search.views.SearchResultsView.form_cls">
+<code class="descname">form_cls</code><a class="headerlink" href="#pagetools.search.views.SearchResultsView.form_cls" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">AdvSearchForm</span></code></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pagetools.search.views.SearchResultsView.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>request</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pagetools.search.views.SearchResultsView.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pagetools.search.views.SearchResultsView.get_context_data">
+<code class="descname">get_context_data</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pagetools.search.views.SearchResultsView.get_context_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pagetools.search.views.SearchResultsView.get_queryset">
+<code class="descname">get_queryset</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pagetools.search.views.SearchResultsView.get_queryset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pagetools.search.views.SearchResultsView.replacements">
+<code class="descname">replacements</code><em class="property"> = {'ä': '&amp;auml;', 'Ö': '&amp;Ouml;', 'ß': '&amp;szlig;', 'Ä': '&amp;Auml;', 'ü': '&amp;uuml;', 'ö': '&amp;ouml;', 'Ü': '&amp;Uuml;'}</em><a class="headerlink" href="#pagetools.search.views.SearchResultsView.replacements" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pagetools.search.views.SearchResultsView.result_">
+<code class="descname">result_</code><span class="sig-paren">(</span><em>sterms</em>, <em>combine_op</em><span class="sig-paren">)</span><a class="headerlink" href="#pagetools.search.views.SearchResultsView.result_" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pagetools.search.views.SearchResultsView.result_all">
+<code class="descname">result_all</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pagetools.search.views.SearchResultsView.result_all" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pagetools.search.views.SearchResultsView.result_any">
+<code class="descname">result_any</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pagetools.search.views.SearchResultsView.result_any" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pagetools.search.views.SearchResultsView.search_params">
+<code class="descname">search_params</code><em class="property"> = {}</em><a class="headerlink" href="#pagetools.search.views.SearchResultsView.search_params" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pagetools.search.views.SearchResultsView.sep">
+<code class="descname">sep</code><em class="property"> = ''</em><a class="headerlink" href="#pagetools.search.views.SearchResultsView.sep" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pagetools.search.views.SearchResultsView.template_name">
+<code class="descname">template_name</code><em class="property"> = 'search_results.html'</em><a class="headerlink" href="#pagetools.search.views.SearchResultsView.template_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="pagetools.search.views.search">
+<code class="descclassname">pagetools.search.views.</code><code class="descname">search</code><span class="sig-paren">(</span><em>self</em>, <em>request</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pagetools.search.views.search" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-pagetools.search">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pagetools.search" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pagetools.search.extra_filter">
+<code class="descclassname">pagetools.search.</code><code class="descname">extra_filter</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="headerlink" href="#pagetools.search.extra_filter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Tim Heithecker.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.4.5',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,548 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pagetools.core package &mdash; django-pagetools 0.4.5 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="django-pagetools 0.4.5 documentation" href="../index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> django-pagetools
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.4.5
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pages.html">Pages</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">django-pagetools</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+    <li>pagetools.core package</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/d2/pagetools.core.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="pagetools-core-package">
+<h1>pagetools.core package<a class="headerlink" href="#pagetools-core-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pagetools.core.tests.html">pagetools.core.tests package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pagetools.core.tests.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pagetools.core.tests.html#pagetools-core-tests-test-models-module">pagetools.core.tests.test_models module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pagetools.core.tests.html#module-pagetools.core.tests">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pagetools.core.admin">
+<span id="pagetools-core-admin-module"></span><h2>pagetools.core.admin module<a class="headerlink" href="#module-pagetools.core.admin" title="Permalink to this headline">¶</a></h2>
+<p>Created on 14.12.2013</p>
+<p>&#64;author: lotek</p>
+<dl class="class">
+<dt id="pagetools.core.admin.PagelikeAdmin">
+<em class="property">class </em><code class="descclassname">pagetools.core.admin.</code><code class="descname">PagelikeAdmin</code><span class="sig-paren">(</span><em>model</em>, <em>admin_site</em><span class="sig-paren">)</span><a class="headerlink" href="#pagetools.core.admin.PagelikeAdmin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pagetools.core.admin.TinyMCEMixin" title="pagetools.core.admin.TinyMCEMixin"><code class="xref py py-class docutils literal"><span class="pre">pagetools.core.admin.TinyMCEMixin</span></code></a>, <code class="xref py py-class docutils literal"><span class="pre">django.contrib.admin.options.ModelAdmin</span></code></p>
+<p>prepopulate slug from title and tinymce-media</p>
+<dl class="attribute">
+<dt id="pagetools.core.admin.PagelikeAdmin.media">
+<code class="descname">media</code><a class="headerlink" href="#pagetools.core.admin.PagelikeAdmin.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pagetools.core.admin.PagelikeAdmin.prepopulated_fields">
+<code class="descname">prepopulated_fields</code><em class="property"> = {'slug': ('title',)}</em><a class="headerlink" href="#pagetools.core.admin.PagelikeAdmin.prepopulated_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pagetools.core.admin.TinyMCEMixin">
+<em class="property">class </em><code class="descclassname">pagetools.core.admin.</code><code class="descname">TinyMCEMixin</code><a class="headerlink" href="#pagetools.core.admin.TinyMCEMixin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>add tinyme-media</p>
+<dl class="class">
+<dt id="pagetools.core.admin.TinyMCEMixin.Media">
+<em class="property">class </em><code class="descname">Media</code><a class="headerlink" href="#pagetools.core.admin.TinyMCEMixin.Media" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="attribute">
+<dt id="pagetools.core.admin.TinyMCEMixin.Media.js">
+<code class="descname">js</code><em class="property"> = ['Nonegrappelli/tinymce/jscripts/tiny_mce/tiny_mce.js', 'Nonegrappelli/tinymce_setup/tinymce_setup.js']</em><a class="headerlink" href="#pagetools.core.admin.TinyMCEMixin.Media.js" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="pagetools.core.admin.fieldset_copy">
+<code class="descclassname">pagetools.core.admin.</code><code class="descname">fieldset_copy</code><span class="sig-paren">(</span><em>fieldset</em><span class="sig-paren">)</span><a class="headerlink" href="#pagetools.core.admin.fieldset_copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>ugly helper for reuse of filedsets</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pagetools.core.models">
+<span id="pagetools-core-models-module"></span><h2>pagetools.core.models module<a class="headerlink" href="#module-pagetools.core.models" title="Permalink to this headline">¶</a></h2>
+<p>core modules for pagetools</p>
+<dl class="class">
+<dt id="pagetools.core.models.LangManager">
+<em class="property">class </em><code class="descclassname">pagetools.core.models.</code><code class="descname">LangManager</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pagetools.core.models.LangManager" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">django.db.models.manager.Manager</span></code></p>
+<p>Manager for models with a lang-field</p>
+<dl class="method">
+<dt id="pagetools.core.models.LangManager.lfilter">
+<code class="descname">lfilter</code><span class="sig-paren">(</span><em>lang=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pagetools.core.models.LangManager.lfilter" title="Permalink to this definition">¶</a></dt>
+<dd><p>uses keyword-argument or system-language to add &#8216;lang&#8217; to filter-
+arguments if settings.LANGUAGES compares to not null</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pagetools.core.models.LangModel">
+<em class="property">class </em><code class="descclassname">pagetools.core.models.</code><code class="descname">LangModel</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pagetools.core.models.LangModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">django.db.models.base.Model</span></code></p>
+<p>Model with &#8216;lang&#8217;-field
+To avoid &#8220;NOT NULL constraint failed&#8221; errors,
+empty lang is saved as &#8220;&#8221;</p>
+<dl class="class">
+<dt id="pagetools.core.models.LangModel.Meta">
+<em class="property">class </em><code class="descname">Meta</code><a class="headerlink" href="#pagetools.core.models.LangModel.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="attribute">
+<dt id="pagetools.core.models.LangModel.Meta.abstract">
+<code class="descname">abstract</code><em class="property"> = False</em><a class="headerlink" href="#pagetools.core.models.LangModel.Meta.abstract" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="method">
+<dt id="pagetools.core.models.LangModel.get_lang_display">
+<code class="descclassname">LangModel.</code><code class="descname">get_lang_display</code><span class="sig-paren">(</span><em>*moreargs</em>, <em>**morekwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pagetools.core.models.LangModel.get_lang_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pagetools.core.models.LangModel.objects">
+<code class="descclassname">LangModel.</code><code class="descname">objects</code><a class="headerlink" href="#pagetools.core.models.LangModel.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pagetools.core.models.LangModel.save">
+<code class="descclassname">LangModel.</code><code class="descname">save</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pagetools.core.models.LangModel.save" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pagetools.core.models.PagelikeModel">
+<em class="property">class </em><code class="descclassname">pagetools.core.models.</code><code class="descname">PagelikeModel</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pagetools.core.models.PagelikeModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">model_utils.models.TimeStampedModel</span></code>, <a class="reference internal" href="../modules/core.html#pagetools.core.models.PublishableLangModel" title="pagetools.core.models.PublishableLangModel"><code class="xref py py-class docutils literal"><span class="pre">pagetools.core.models.PublishableLangModel</span></code></a></p>
+<p>This may for everything that inclines a detail_view</p>
+<dl class="class">
+<dt id="pagetools.core.models.PagelikeModel.Meta">
+<em class="property">class </em><code class="descname">Meta</code><a class="headerlink" href="#pagetools.core.models.PagelikeModel.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="attribute">
+<dt id="pagetools.core.models.PagelikeModel.Meta.abstract">
+<code class="descname">abstract</code><em class="property"> = False</em><a class="headerlink" href="#pagetools.core.models.PagelikeModel.Meta.abstract" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="method">
+<dt id="pagetools.core.models.PagelikeModel.get_absolute_url">
+<code class="descclassname">PagelikeModel.</code><code class="descname">get_absolute_url</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pagetools.core.models.PagelikeModel.get_absolute_url" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pagetools.core.models.PagelikeModel.get_lang_display">
+<code class="descclassname">PagelikeModel.</code><code class="descname">get_lang_display</code><span class="sig-paren">(</span><em>*moreargs</em>, <em>**morekwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pagetools.core.models.PagelikeModel.get_lang_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pagetools.core.models.PagelikeModel.get_next_by_created">
+<code class="descclassname">PagelikeModel.</code><code class="descname">get_next_by_created</code><span class="sig-paren">(</span><em>*moreargs</em>, <em>**morekwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pagetools.core.models.PagelikeModel.get_next_by_created" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pagetools.core.models.PagelikeModel.get_next_by_modified">
+<code class="descclassname">PagelikeModel.</code><code class="descname">get_next_by_modified</code><span class="sig-paren">(</span><em>*moreargs</em>, <em>**morekwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pagetools.core.models.PagelikeModel.get_next_by_modified" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pagetools.core.models.PagelikeModel.get_next_by_status_changed">
+<code class="descclassname">PagelikeModel.</code><code class="descname">get_next_by_status_changed</code><span class="sig-paren">(</span><em>*moreargs</em>, <em>**morekwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pagetools.core.models.PagelikeModel.get_next_by_status_changed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pagetools.core.models.PagelikeModel.get_previous_by_created">
+<code class="descclassname">PagelikeModel.</code><code class="descname">get_previous_by_created</code><span class="sig-paren">(</span><em>*moreargs</em>, <em>**morekwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pagetools.core.models.PagelikeModel.get_previous_by_created" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pagetools.core.models.PagelikeModel.get_previous_by_modified">
+<code class="descclassname">PagelikeModel.</code><code class="descname">get_previous_by_modified</code><span class="sig-paren">(</span><em>*moreargs</em>, <em>**morekwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pagetools.core.models.PagelikeModel.get_previous_by_modified" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pagetools.core.models.PagelikeModel.get_previous_by_status_changed">
+<code class="descclassname">PagelikeModel.</code><code class="descname">get_previous_by_status_changed</code><span class="sig-paren">(</span><em>*moreargs</em>, <em>**morekwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pagetools.core.models.PagelikeModel.get_previous_by_status_changed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pagetools.core.models.PagelikeModel.get_status_display">
+<code class="descclassname">PagelikeModel.</code><code class="descname">get_status_display</code><span class="sig-paren">(</span><em>*moreargs</em>, <em>**morekwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pagetools.core.models.PagelikeModel.get_status_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pagetools.core.models.PagelikeModel.objects">
+<code class="descclassname">PagelikeModel.</code><code class="descname">objects</code><a class="headerlink" href="#pagetools.core.models.PagelikeModel.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pagetools.core.models.PagelikeModel.public">
+<code class="descclassname">PagelikeModel.</code><code class="descname">public</code><a class="headerlink" href="#pagetools.core.models.PagelikeModel.public" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pagetools.core.models.PublishableLangManager">
+<em class="property">class </em><code class="descclassname">pagetools.core.models.</code><code class="descname">PublishableLangManager</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pagetools.core.models.PublishableLangManager" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../modules/core.html#pagetools.core.models.LangManager" title="pagetools.core.models.LangManager"><code class="xref py py-class docutils literal"><span class="pre">pagetools.core.models.LangManager</span></code></a></p>
+<p>Manager that finds published content language  filtered</p>
+<dl class="method">
+<dt id="pagetools.core.models.PublishableLangManager.lfilter">
+<code class="descname">lfilter</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pagetools.core.models.PublishableLangManager.lfilter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pagetools.core.models.PublishableLangModel">
+<em class="property">class </em><code class="descclassname">pagetools.core.models.</code><code class="descname">PublishableLangModel</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pagetools.core.models.PublishableLangModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../modules/core.html#pagetools.core.models.LangModel" title="pagetools.core.models.LangModel"><code class="xref py py-class docutils literal"><span class="pre">pagetools.core.models.LangModel</span></code></a>, <code class="xref py py-class docutils literal"><span class="pre">model_utils.models.StatusModel</span></code></p>
+<p>Model with model_utils...StatusModel for status and a language-field</p>
+<dl class="class">
+<dt id="pagetools.core.models.PublishableLangModel.Meta">
+<em class="property">class </em><code class="descname">Meta</code><a class="headerlink" href="#pagetools.core.models.PublishableLangModel.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="attribute">
+<dt id="pagetools.core.models.PublishableLangModel.Meta.abstract">
+<code class="descname">abstract</code><em class="property"> = False</em><a class="headerlink" href="#pagetools.core.models.PublishableLangModel.Meta.abstract" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pagetools.core.models.PublishableLangModel.STATUS">
+<code class="descclassname">PublishableLangModel.</code><code class="descname">STATUS</code><em class="property"> = Choices(('draft', 'draft', &lt;django.utils.functional.lazy.&lt;locals&gt;.__proxy__ object&gt;), ('published', 'published', &lt;django.utils.functional.lazy.&lt;locals&gt;.__proxy__ object&gt;))</em><a class="headerlink" href="#pagetools.core.models.PublishableLangModel.STATUS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pagetools.core.models.PublishableLangModel.enabled">
+<code class="descclassname">PublishableLangModel.</code><code class="descname">enabled</code><a class="headerlink" href="#pagetools.core.models.PublishableLangModel.enabled" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pagetools.core.models.PublishableLangModel.get_lang_display">
+<code class="descclassname">PublishableLangModel.</code><code class="descname">get_lang_display</code><span class="sig-paren">(</span><em>*moreargs</em>, <em>**morekwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pagetools.core.models.PublishableLangModel.get_lang_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pagetools.core.models.PublishableLangModel.get_next_by_status_changed">
+<code class="descclassname">PublishableLangModel.</code><code class="descname">get_next_by_status_changed</code><span class="sig-paren">(</span><em>*moreargs</em>, <em>**morekwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pagetools.core.models.PublishableLangModel.get_next_by_status_changed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pagetools.core.models.PublishableLangModel.get_previous_by_status_changed">
+<code class="descclassname">PublishableLangModel.</code><code class="descname">get_previous_by_status_changed</code><span class="sig-paren">(</span><em>*moreargs</em>, <em>**morekwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pagetools.core.models.PublishableLangModel.get_previous_by_status_changed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pagetools.core.models.PublishableLangModel.get_status_display">
+<code class="descclassname">PublishableLangModel.</code><code class="descname">get_status_display</code><span class="sig-paren">(</span><em>*moreargs</em>, <em>**morekwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pagetools.core.models.PublishableLangModel.get_status_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pagetools.core.models.PublishableLangModel.objects">
+<code class="descclassname">PublishableLangModel.</code><code class="descname">objects</code><a class="headerlink" href="#pagetools.core.models.PublishableLangModel.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pagetools.core.models.PublishableLangModel.public">
+<code class="descclassname">PublishableLangModel.</code><code class="descname">public</code><a class="headerlink" href="#pagetools.core.models.PublishableLangModel.public" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pagetools.core.settings">
+<span id="pagetools-core-settings-module"></span><h2>pagetools.core.settings module<a class="headerlink" href="#module-pagetools.core.settings" title="Permalink to this headline">¶</a></h2>
+<dl class="data">
+<dt id="pagetools.core.settings.STATUS_CHOICES">
+<code class="descclassname">pagetools.core.settings.</code><code class="descname">STATUS_CHOICES</code><em class="property"> = (('draft', 'draft'), ('published', 'published'))</em><a class="headerlink" href="#pagetools.core.settings.STATUS_CHOICES" title="Permalink to this definition">¶</a></dt>
+<dd><p>status-key of content shown to everybody</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pagetools.core.urls">
+<span id="pagetools-core-urls-module"></span><h2>pagetools.core.urls module<a class="headerlink" href="#module-pagetools.core.urls" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pagetools.core.utils">
+<span id="pagetools-core-utils-module"></span><h2>pagetools.core.utils module<a class="headerlink" href="#module-pagetools.core.utils" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pagetools.core.utils.get_addperm_name">
+<code class="descclassname">pagetools.core.utils.</code><code class="descname">get_addperm_name</code><span class="sig-paren">(</span><em>cls</em><span class="sig-paren">)</span><a class="headerlink" href="#pagetools.core.utils.get_addperm_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pagetools.core.utils.get_adminadd_url">
+<code class="descclassname">pagetools.core.utils.</code><code class="descname">get_adminadd_url</code><span class="sig-paren">(</span><em>cls</em><span class="sig-paren">)</span><a class="headerlink" href="#pagetools.core.utils.get_adminadd_url" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pagetools.core.utils.get_adminedit_url">
+<code class="descclassname">pagetools.core.utils.</code><code class="descname">get_adminedit_url</code><span class="sig-paren">(</span><em>obj</em><span class="sig-paren">)</span><a class="headerlink" href="#pagetools.core.utils.get_adminedit_url" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pagetools.core.utils.get_classname">
+<code class="descclassname">pagetools.core.utils.</code><code class="descname">get_classname</code><span class="sig-paren">(</span><em>cls</em><span class="sig-paren">)</span><a class="headerlink" href="#pagetools.core.utils.get_classname" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pagetools.core.utils.importer">
+<code class="descclassname">pagetools.core.utils.</code><code class="descname">importer</code><span class="sig-paren">(</span><em>str_or_obj</em><span class="sig-paren">)</span><a class="headerlink" href="#pagetools.core.utils.importer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pagetools.core.utils.itersubclasses">
+<code class="descclassname">pagetools.core.utils.</code><code class="descname">itersubclasses</code><span class="sig-paren">(</span><em>cls</em><span class="sig-paren">)</span><a class="headerlink" href="#pagetools.core.utils.itersubclasses" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generator over all subclasses of a given class, in depth first order.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">itersubclasses</span><span class="p">(</span><span class="nb">int</span><span class="p">))</span> <span class="o">==</span> <span class="p">[</span><span class="nb">bool</span><span class="p">]</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">A</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span> <span class="k">pass</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">B</span><span class="p">(</span><span class="n">A</span><span class="p">):</span> <span class="k">pass</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">C</span><span class="p">(</span><span class="n">A</span><span class="p">):</span> <span class="k">pass</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">D</span><span class="p">(</span><span class="n">B</span><span class="p">,</span><span class="n">C</span><span class="p">):</span> <span class="k">pass</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">E</span><span class="p">(</span><span class="n">D</span><span class="p">):</span> <span class="k">pass</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">cls</span> <span class="ow">in</span> <span class="n">itersubclasses</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">cls</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
+<span class="go">B</span>
+<span class="go">D</span>
+<span class="go">E</span>
+<span class="go">C</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># get ALL (new-style) classes currently defined</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">cls</span><span class="o">.</span><span class="n">__name__</span> <span class="k">for</span> <span class="n">cls</span> <span class="ow">in</span> <span class="n">itersubclasses</span><span class="p">(</span><span class="nb">object</span><span class="p">)]</span> 
+<span class="go">[&#39;type&#39;, ...&#39;tuple&#39;, ...]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pagetools.core.views">
+<span id="pagetools-core-views-module"></span><h2>pagetools.core.views module<a class="headerlink" href="#module-pagetools.core.views" title="Permalink to this headline">¶</a></h2>
+<p>Created on 20.12.2013</p>
+<p>&#64;author: lotek</p>
+<dl class="class">
+<dt id="pagetools.core.views.PaginatorMixin">
+<em class="property">class </em><code class="descclassname">pagetools.core.views.</code><code class="descname">PaginatorMixin</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pagetools.core.views.PaginatorMixin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">django.views.generic.list.ListView</span></code></p>
+<p>Paginator Implemtation
+If your urls use already GET-vars set sep to =&#8221;&amp;&#8221; in subclass</p>
+<dl class="method">
+<dt id="pagetools.core.views.PaginatorMixin.get_context_data">
+<code class="descname">get_context_data</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pagetools.core.views.PaginatorMixin.get_context_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pagetools.core.views.PaginatorMixin.paginate_by">
+<code class="descname">paginate_by</code><em class="property"> = 20</em><a class="headerlink" href="#pagetools.core.views.PaginatorMixin.paginate_by" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pagetools.core.views.PaginatorMixin.sep">
+<code class="descname">sep</code><em class="property"> = '?'</em><a class="headerlink" href="#pagetools.core.views.PaginatorMixin.sep" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pagetools.core">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pagetools.core" title="Permalink to this headline">¶</a></h2>
+<p>Shared and unbound functionality of pagetools</p>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Tim Heithecker.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.4.5',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

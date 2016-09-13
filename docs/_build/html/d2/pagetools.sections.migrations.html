@@ -1,0 +1,221 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pagetools.sections.migrations package &mdash; django-pagetools 0.4.5 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="django-pagetools 0.4.5 documentation" href="../index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> django-pagetools
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.4.5
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pages.html">Pages</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">django-pagetools</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+    <li>pagetools.sections.migrations package</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/d2/pagetools.sections.migrations.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="pagetools-sections-migrations-package">
+<h1>pagetools.sections.migrations package<a class="headerlink" href="#pagetools-sections-migrations-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pagetools.sections.migrations.0001_initial">
+<span id="pagetools-sections-migrations-0001-initial-module"></span><h2>pagetools.sections.migrations.0001_initial module<a class="headerlink" href="#module-pagetools.sections.migrations.0001_initial" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pagetools.sections.migrations.0001_initial.Migration">
+<em class="property">class </em><code class="descclassname">pagetools.sections.migrations.0001_initial.</code><code class="descname">Migration</code><span class="sig-paren">(</span><em>name</em>, <em>app_label</em><span class="sig-paren">)</span><a class="headerlink" href="#pagetools.sections.migrations.0001_initial.Migration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">django.db.migrations.migration.Migration</span></code></p>
+<dl class="attribute">
+<dt id="pagetools.sections.migrations.0001_initial.Migration.dependencies">
+<code class="descname">dependencies</code><em class="property"> = []</em><a class="headerlink" href="#pagetools.sections.migrations.0001_initial.Migration.dependencies" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pagetools.sections.migrations.0001_initial.Migration.operations">
+<code class="descname">operations</code><em class="property"> = [&lt;CreateModel  fields=[('id', &lt;django.db.models.fields.AutoField&gt;), ('created', &lt;model_utils.fields.AutoCreatedField&gt;), ('modified', &lt;model_utils.fields.AutoLastModifiedField&gt;), ('status', &lt;model_utils.fields.StatusField&gt;), ('status_changed', &lt;model_utils.fields.MonitorField&gt;), ('lang', &lt;django.db.models.fields.CharField&gt;), ('title', &lt;django.db.models.fields.CharField&gt;), ('slug', &lt;django.db.models.fields.SlugField&gt;), ('description', &lt;django.db.models.fields.CharField&gt;), ('classes', &lt;django.db.models.fields.CharField&gt;), ('content_type_pk', &lt;django.db.models.fields.SmallIntegerField&gt;)], options={'verbose_name_plural': 'Nodes', 'verbose_name': 'Node'}, name='PageNode'&gt;, &lt;CreateModel  fields=[('id', &lt;django.db.models.fields.AutoField&gt;), ('position', &lt;django.db.models.fields.PositiveIntegerField&gt;), ('content', &lt;django.db.models.fields.related.ForeignKey&gt;), ('owner', &lt;django.db.models.fields.related.ForeignKey&gt;)], options={'verbose_name_plural': 'Content Positions', 'ordering': ['position'], 'verbose_name': 'Content Position'}, name='PageNodePos'&gt;, &lt;AddField  field=&lt;django.db.models.fields.related.ManyToManyField&gt;, name='in_nodes', model_name='pagenode'&gt;]</em><a class="headerlink" href="#pagetools.sections.migrations.0001_initial.Migration.operations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="pagetools-sections-migrations-0002-auto-20160120-2021-module">
+<h2>pagetools.sections.migrations.0002_auto_20160120_2021 module<a class="headerlink" href="#pagetools-sections-migrations-0002-auto-20160120-2021-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pagetools.sections.migrations">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pagetools.sections.migrations" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Tim Heithecker.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.4.5',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

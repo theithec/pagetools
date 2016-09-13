@@ -1,0 +1,259 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pagetools.pages.migrations package &mdash; django-pagetools 0.4.5 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="django-pagetools 0.4.5 documentation" href="../index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> django-pagetools
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.4.5
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pages.html">Pages</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">django-pagetools</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+    <li>pagetools.pages.migrations package</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/d2/pagetools.pages.migrations.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="pagetools-pages-migrations-package">
+<h1>pagetools.pages.migrations package<a class="headerlink" href="#pagetools-pages-migrations-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pagetools.pages.migrations.0001_initial">
+<span id="pagetools-pages-migrations-0001-initial-module"></span><h2>pagetools.pages.migrations.0001_initial module<a class="headerlink" href="#module-pagetools.pages.migrations.0001_initial" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pagetools.pages.migrations.0001_initial.Migration">
+<em class="property">class </em><code class="descclassname">pagetools.pages.migrations.0001_initial.</code><code class="descname">Migration</code><span class="sig-paren">(</span><em>name</em>, <em>app_label</em><span class="sig-paren">)</span><a class="headerlink" href="#pagetools.pages.migrations.0001_initial.Migration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">django.db.migrations.migration.Migration</span></code></p>
+<dl class="attribute">
+<dt id="pagetools.pages.migrations.0001_initial.Migration.dependencies">
+<code class="descname">dependencies</code><em class="property"> = []</em><a class="headerlink" href="#pagetools.pages.migrations.0001_initial.Migration.dependencies" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pagetools.pages.migrations.0001_initial.Migration.operations">
+<code class="descname">operations</code><em class="property"> = [&lt;CreateModel  fields=[('id', &lt;django.db.models.fields.AutoField&gt;), ('created', &lt;model_utils.fields.AutoCreatedField&gt;), ('modified', &lt;model_utils.fields.AutoLastModifiedField&gt;), ('status', &lt;model_utils.fields.StatusField&gt;), ('status_changed', &lt;model_utils.fields.MonitorField&gt;), ('lang', &lt;django.db.models.fields.CharField&gt;), ('title', &lt;django.db.models.fields.CharField&gt;), ('slug', &lt;django.db.models.fields.SlugField&gt;), ('description', &lt;django.db.models.fields.CharField&gt;), ('included_form', &lt;django.db.models.fields.CharField&gt;), ('login_required', &lt;django.db.models.fields.BooleanField&gt;), ('content', &lt;django.db.models.fields.TextField&gt;)], options={'abstract': False, 'verbose_name_plural': 'Pages', 'verbose_name': 'Page'}, name='Page'&gt;, &lt;CreateModel  fields=[('id', &lt;django.db.models.fields.AutoField&gt;), ('field_type', &lt;django.db.models.fields.CharField&gt;), ('name', &lt;django.db.models.fields.CharField&gt;), ('required', &lt;django.db.models.fields.BooleanField&gt;), ('position', &lt;django.db.models.fields.PositiveSmallIntegerField&gt;), ('help_text', &lt;django.db.models.fields.CharField&gt;), ('initial', &lt;django.db.models.fields.CharField&gt;), ('form_containing_model', &lt;django.db.models.fields.related.ForeignKey&gt;)], options={'abstract': False, 'verbose_name_plural': 'Dynamic Form Fields', 'ordering': ['position'], 'verbose_name': 'Dynamic Form Field'}, name='PageDynFormField'&gt;]</em><a class="headerlink" href="#pagetools.pages.migrations.0001_initial.Migration.operations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pagetools.pages.migrations.0002_page_pagetype">
+<span id="pagetools-pages-migrations-0002-page-pagetype-module"></span><h2>pagetools.pages.migrations.0002_page_pagetype module<a class="headerlink" href="#module-pagetools.pages.migrations.0002_page_pagetype" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pagetools.pages.migrations.0002_page_pagetype.Migration">
+<em class="property">class </em><code class="descclassname">pagetools.pages.migrations.0002_page_pagetype.</code><code class="descname">Migration</code><span class="sig-paren">(</span><em>name</em>, <em>app_label</em><span class="sig-paren">)</span><a class="headerlink" href="#pagetools.pages.migrations.0002_page_pagetype.Migration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">django.db.migrations.migration.Migration</span></code></p>
+<dl class="attribute">
+<dt id="pagetools.pages.migrations.0002_page_pagetype.Migration.dependencies">
+<code class="descname">dependencies</code><em class="property"> = [('pages', '0001_initial'), ('widgets', '0001_initial')]</em><a class="headerlink" href="#pagetools.pages.migrations.0002_page_pagetype.Migration.dependencies" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pagetools.pages.migrations.0002_page_pagetype.Migration.operations">
+<code class="descname">operations</code><em class="property"> = [&lt;AddField  field=&lt;django.db.models.fields.related.ForeignKey&gt;, name='pagetype', model_name='page'&gt;]</em><a class="headerlink" href="#pagetools.pages.migrations.0002_page_pagetype.Migration.operations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pagetools.pages.migrations.0003_auto_20151220_1809">
+<span id="pagetools-pages-migrations-0003-auto-20151220-1809-module"></span><h2>pagetools.pages.migrations.0003_auto_20151220_1809 module<a class="headerlink" href="#module-pagetools.pages.migrations.0003_auto_20151220_1809" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pagetools.pages.migrations.0003_auto_20151220_1809.Migration">
+<em class="property">class </em><code class="descclassname">pagetools.pages.migrations.0003_auto_20151220_1809.</code><code class="descname">Migration</code><span class="sig-paren">(</span><em>name</em>, <em>app_label</em><span class="sig-paren">)</span><a class="headerlink" href="#pagetools.pages.migrations.0003_auto_20151220_1809.Migration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">django.db.migrations.migration.Migration</span></code></p>
+<dl class="attribute">
+<dt id="pagetools.pages.migrations.0003_auto_20151220_1809.Migration.dependencies">
+<code class="descname">dependencies</code><em class="property"> = [('pages', '0002_page_pagetype')]</em><a class="headerlink" href="#pagetools.pages.migrations.0003_auto_20151220_1809.Migration.dependencies" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pagetools.pages.migrations.0003_auto_20151220_1809.Migration.operations">
+<code class="descname">operations</code><em class="property"> = [&lt;AlterModelOptions  options={'verbose_name_plural': 'Additional form fields', 'verbose_name': 'Form field'}, name='pagedynformfield'&gt;, &lt;AddField  field=&lt;django.db.models.fields.CharField&gt;, name='email_receivers', model_name='page'&gt;, &lt;AlterField  field=&lt;django.db.models.fields.CharField&gt;, name='field_type', model_name='pagedynformfield'&gt;, &lt;AlterField  field=&lt;django.db.models.fields.related.ForeignKey&gt;, name='form_containing_model', model_name='pagedynformfield'&gt;, &lt;AlterField  field=&lt;django.db.models.fields.CharField&gt;, name='help_text', model_name='pagedynformfield'&gt;, &lt;AlterField  field=&lt;django.db.models.fields.CharField&gt;, name='initial', model_name='pagedynformfield'&gt;, &lt;AlterField  field=&lt;django.db.models.fields.CharField&gt;, name='name', model_name='pagedynformfield'&gt;, &lt;AlterField  field=&lt;django.db.models.fields.BooleanField&gt;, name='required', model_name='pagedynformfield'&gt;]</em><a class="headerlink" href="#pagetools.pages.migrations.0003_auto_20151220_1809.Migration.operations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="pagetools-pages-migrations-0004-auto-20160203-0008-module">
+<h2>pagetools.pages.migrations.0004_auto_20160203_0008 module<a class="headerlink" href="#pagetools-pages-migrations-0004-auto-20160203-0008-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pagetools.pages.migrations">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pagetools.pages.migrations" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Tim Heithecker.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.4.5',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
