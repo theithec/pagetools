@@ -1,9 +1,3 @@
-'''
-Created on 14.12.2013
-
-@author: lotek
-'''
-
 from django.db import models
 from django.template.context import Context
 from django.contrib.contenttypes.fields import (GenericRelation,
@@ -59,11 +53,15 @@ class TemplateTagWidget(BaseWidget):
 
     def get_rendererobject(self):
         if not self.robj:
-            self.robj = settings.TEMPLATETAG_WIDGETS.get(
+            print ("TW", settings.TEMPLATETAG_WIDGETS, "SELF:R", self.renderclasskey)
+            clzname = settings.TEMPLATETAG_WIDGETS.get(
                 self.renderclasskey,
                 (None)
             )
-        return importer(self.robj)
+            clz = importer(clzname)
+            if clz:
+                self.robj = clz()
+        return self.robj
 
     def get_title(self):
         return '%s' % self.title

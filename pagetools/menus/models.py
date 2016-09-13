@@ -211,7 +211,7 @@ class Menu(MenuEntry):
         dict_['entry_url'] = entry.get_absolute_url()
         cslugs = []
         # cslugs += entry.slugs.split(' ') if entry.slugs else [
-        cslugs +=  [
+        cslugs += [
             getattr(
                 entry_obj,
                 'slug',
@@ -226,6 +226,7 @@ class Menu(MenuEntry):
 
             )
             curr_dict = curr_dict['dict_parent']
+
         return dict_
 
     def children_list(self, mtree=None, children=None, for_admin=False,
@@ -292,8 +293,6 @@ class Menu(MenuEntry):
             return mtree
         return _children_list(for_admin=for_admin)
 
-
-
     class Meta:
         verbose_name = _('Menu')
         proxy = True
@@ -303,11 +302,16 @@ class AbstractLink(models.Model):
     title = models.CharField(_('Title'), max_length=128)
     enabled = models.BooleanField(_('enabled'), default=True)
     #  auto_children = False
+
+    def __str__(self):
+        return self.name
+
     class Meta:
         abstract = True
 
     #  def get_children(self, parent=None):
     #    return super().get_children()
+
 
 class Link(AbstractLink):
     url = models.CharField(_('URL'), max_length=255)
@@ -333,9 +337,6 @@ class ViewLink(AbstractLink):
             for k in pagetools.menus.utils._entrieable_reverse_names
         ))
         self._meta.get_field('name').choices = choices
-
-    def __str__(self):
-        return self.name
 
     def get_absolute_url(self):
         return reverse(self.name)
@@ -374,4 +375,3 @@ class AutoPopulated(AbstractLink):
     class Meta:
         verbose_name = _("Autopopulated Entry")
         verbose_name_plural = _("Autopopulated Entries")
-#AutoPopulated.show_in_menu_add_entry

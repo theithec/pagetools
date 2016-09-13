@@ -19,6 +19,8 @@ class MenuRenderer(template.Node):
         menukeys = []
         try:
             menukeys = self.menukeys.resolve(context)
+            if type(menukeys) != list:
+                menukeys = [menukeys]
 
         except template.VariableDoesNotExist:
             pass
