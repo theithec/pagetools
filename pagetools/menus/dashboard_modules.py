@@ -11,7 +11,7 @@ from django.core.exceptions import MultipleObjectsReturned
 
 class MenuModule(DashboardModule):
     """
-    A module that displays a pagettools.menus.menu.
+    A module that displays a pagetools.menus.menu.
 
      in dashboard:
      self.children.append(MenuModule(menu_title='myMenu', column=1,))

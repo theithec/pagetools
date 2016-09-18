@@ -1,4 +1,8 @@
-''' core modules for pagetools '''
+'''Core models for pagetools
+'''
+
+import warnings
+
 from django.conf import settings
 from django.db import models
 from django.utils.translation import ugettext_lazy as _, get_language
@@ -16,8 +20,9 @@ class LangManager(models.Manager):
         self.use_lang = bool(getattr(settings, 'LANGUAGES', False))
 
     def lfilter(self, lang=False, **kwargs):
-        '''uses keyword-argument or system-language to add 'lang' to filter-
-        arguments if settings.LANGUAGES compares to not null'''
+        '''Uses keyword-argument or system-language to add 'lang' to filter-
+        arguments if settings.LANGUAGES compares not to null'''
+
         if self.use_lang and not kwargs.pop('skip_lang', False):
             if lang is False:
                 lang = get_language() or ""
@@ -26,9 +31,15 @@ class LangManager(models.Manager):
 
 
 class LangModel(models.Model):
-    '''Model with 'lang'-field
-    To avoid "NOT NULL constraint failed" errors,
-    empty lang is saved as ""
+    '''Model with ``lang``-field.
+
+    Args:
+        lang(str): Language code
+
+    Note:
+        To avoid `NOT NULL constraint failed` errors,
+        empty lang is saved as "".
+
     '''
     objects = models.Manager()
     # public = LangManager()
@@ -49,9 +60,16 @@ class LangModel(models.Model):
 
 
 class PublishableLangManager(LangManager):
-    '''Manager that finds published content language  filtered'''
+    '''Manager that finds published content language filtered
+    '''
 
     def lfilter(self, **kwargs):
+        '''
+        For non authenticated users returns only published content
+        and filters for language (if settings.LANGUAGES has entries)
+        See :class: `LangManager`
+        '''
+
         user = kwargs.pop('user', None)
         if not user or not user.is_authenticated():
             kwargs['status'] = ptsettings.STATUS_PUBLISHED
@@ -59,7 +77,9 @@ class PublishableLangManager(LangManager):
 
 
 class PublishableLangModel(LangModel, StatusModel):
-    '''Model with model_utils...StatusModel for status and a language-field'''
+    '''
+    Model with a language and a status field and a ``PublishableLangManager``
+    '''
 
     _translated_choices = [(slug, _(name))
                            for(slug, name)
@@ -68,23 +88,38 @@ class PublishableLangModel(LangModel, StatusModel):
     public = PublishableLangManager()
 
     def _enabled(self):
+        warnings.warn("Depricated. Bad naming. Use ``is_published``.")
         return self.status == ptsettings.STATUS_PUBLISHED
     _enabled.boolean = True
     _enabled.admin_order_field = 'status'
     enabled = property(_enabled)
 
+    def _is_published(self):
+        return self.status == ptsettings.STATUS_PUBLISHED
+    _is_published.boolean = True
+    _is_published.admin_order_field = 'status'
+    is_published = property(_enabled)
+
     class Meta:
         abstract = True
 
+
 class PagelikeModel(TimeStampedModel, PublishableLangModel):
-    '''This may for everything that inclines a detail_view'''
+    '''
+    This could be a base model for everything that inclines a detail_view
+
+    Args:
+        title (str)
+        slug (str)
+        description (Optional[str]): for metatag/seo
+    '''
 
     title = models.CharField(_('Title'), max_length=255)
     slug = models.SlugField(_('Slug'), max_length=255, allow_unicode=True)
     description = models.CharField(
         _('Description'),
         max_length=139,
-        help_text='''Description (for Metatag/seo)''', blank=True)
+        help_text='''Description (for searchengines)''', blank=True)
 
 
     def get_absolute_url(self):

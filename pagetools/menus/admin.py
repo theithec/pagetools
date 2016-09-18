@@ -1,7 +1,7 @@
 '''
 Created on 14.12.2013
 
-@author: lotek
+@author: Tim Heithecker
 '''
 
 import sys
@@ -22,6 +22,10 @@ from pagetools.core.utils import get_adminadd_url, get_classname
 
 
 class MenuChildrenWidget(forms.Widget):
+    '''
+    Drag and dropable menu entries
+    '''
+
     def __init__(self, *args, **kwargs):
         self.instance = kwargs.pop('instance', None)
         super(MenuChildrenWidget, self).__init__(*args, **kwargs)
@@ -80,7 +84,6 @@ class MenuAdmin(TinyMCEMixin, admin.ModelAdmin):
                 get_classname(c),
             )
         return txt+"</ul>"
-
     addable_entries.short_description = _("Add")
     addable_entries.allow_tags = True
 
@@ -147,10 +150,11 @@ class MenuAdmin(TinyMCEMixin, admin.ModelAdmin):
         css = {'all': ('pagetools/admin/css/menuentries.css', )}
 
 
-
 class EntrieableForm(forms.ModelForm):
-    '''Adds a field: menus to the form. Preselect all menus which contain an
-       entry for the obj'''
+    '''
+    Adds a field: menus to the form. Preselect all menus which contain an
+    entry for the obj
+    '''
 
     menus = forms.Field()
 
@@ -191,8 +195,8 @@ class EntrieableForm(forms.ModelForm):
         return s
 
     class Media(TinyMCEMixin.Media):
-        js = TinyMCEMixin.Media.js + [settings.STATIC_URL +
-                                      'pagetools/admin/js/pre_sel_menu.js']
+        js = TinyMCEMixin.Media.js + [
+            settings.STATIC_URL + 'pagetools/admin/js/pre_sel_menu.js']
 
 def entrieable_admin_save_related(self, request, form, formsets, change):
     '''Entrieable save_related (for monkeypatching)'''
@@ -267,42 +271,25 @@ class EntrieableAdmin(admin.ModelAdmin):
     is_menu_entrieable = True
 
     def get_fields(self, request, obj):
+        '''
+        See :func:`pagetools.menus.admin.entrieable_admin_get_fields`
+        '''
+
         return entrieable_admin_get_fields(self, request, obj=None)
     get_fields.for_entrieable = True
+
     def get_fieldsets(self, request, obj):
+        '''
+        See :func:`pagetools.menus.admin.entrieable_admin_get_fieldsets`
+        '''
         return entrieable_admin_get_fieldsets(self, request, obj=None)
     get_fieldsets.for_entrieable = True
 
     def save_related(self, request, form, formsets, change):
+        '''
+        See :func:`pagetools.menus.admin.entrieable_admin_save_related
+        '''
         return entrieable_admin_save_related(self, request, form, formsets, change)
-
-        super().save_related(request, form,
-                                                  formsets, change)
-        obj = form.instance
-        if 'menus' not in form.changed_data:
-            return
-        selected_menus = form.sel_menus
-        existing_menuentries = form.existing_menuentries
-        all_menus = Menu.objects.root_nodes()
-        for am in all_menus:
-            found = None
-            for e in existing_menuentries:
-                if e.get_root().pk == am.pk:
-                    found = e
-                    break
-            is_selected = am in selected_menus
-            if is_selected and not found:
-                root = Menu.objects.get(pk=am.pk)
-                title = getattr(obj, 'title', None)
-                kwargs = {}
-                if title:
-                    kwargs['title'] = title
-                e = Menu.objects.add_child(root, form.instance, **kwargs)
-                e.move_to(root, 'last-child')
-                e.save()
-            elif found and not is_selected:
-                e.delete()
-    save_related.for_entrieable = True
 
     def _redirect(self, action, request, obj, *args, **kwargs):
         s = request.GET.get('menu', None)
@@ -311,7 +298,8 @@ class EntrieableAdmin(admin.ModelAdmin):
                 reverse("admin:menus_menu_change", args=(s,))
             )
         else:
-            #calling super may lead to recursive calls
+            # calling super may lead to recursive calls
+            # todo: fix like entriable
             return getattr(admin.ModelAdmin,
                            "response_%s" % action)(
                 self, request, obj, *args, **kwargs
@@ -325,11 +313,19 @@ class EntrieableAdmin(admin.ModelAdmin):
 
 
 def make_entrieable_admin(clz):
+    '''
+    Monkeypatch an admin class
+
+    Call this with an admin class to allow the instance class to
+    be a menu entry.
+    '''
+
     clz.is_menu_entrieable = True
     clz.save_related =  EntrieableAdmin.save_related
     clz.get_fields =  EntrieableAdmin.get_fields
     clz.get_fieldsets =  EntrieableAdmin.get_fieldsets
     clz.form = EntrieableForm
+
 
 class MenuEntryAdmin(admin.ModelAdmin):
     list_display = ('title',  'lang', 'enabled')

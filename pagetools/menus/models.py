@@ -1,7 +1,7 @@
 '''
 Created on 14.12.2013
 
-@author: lotek
+@author: Tim Heithecker
 '''
 
 from collections import defaultdict
@@ -351,6 +351,10 @@ class ViewLink(AbstractLink):
 
 
 class AutoPopulated(AbstractLink):
+    '''
+    Add entries from a function.
+
+    '''
     auto_children = True
     name = models.CharField(_('Name'), max_length=255, choices=(("a", "1"),))
 

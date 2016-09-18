@@ -1,3 +1,7 @@
+'''Models (mostly) for pages.
+
+@author Tim Heithecker
+'''
 from django import forms
 from django.core.urlresolvers import reverse
 from django.db import models
@@ -11,11 +15,22 @@ from .forms import ContactForm, DynMultipleChoiceField, MailReceiverField
 
 
 class IncludedForm(models.Model):
+    '''Mixin to include a choosable form to an object
+
+    The forms are defined in ``includeable_forms`` like
+    {stringkey: <Class>, ...}
+    '''
+
     included_form = models.CharField(
         _("Included form"), max_length=255, blank=True, choices=(('dummy', 'dummy'),))
     includable_forms = {'Contactform': ContactForm}
 
     def __init__(self, *args, **kwargs):
+        '''
+        Args:
+            included_form(django.db.models.CharField)
+        '''
+
         super(IncludedForm, self).__init__(*args, **kwargs)
         #self._meta.get_field_by_name('included_form')[0]._choices = [
         self._meta.get_field('included_form').choices = [
@@ -115,9 +130,18 @@ class AuthPage(models.Model):
 
 
 class BasePage(IncludedEmailForm, AuthPage, PagelikeModel):
+    '''A basemodel for a page with one main content area
+
+    Args:
+        content(django.db.models.TextField)
+
+        pagetype(pagetools.widgets.models.Pagetype)
+    '''
     content = models.TextField(_('Content'))
     objects = models.Manager()
     pagetype = models.ForeignKey(PageType, blank=True, null=True)
+    '''See :class:`pagetools.widgets.models.PageType`
+    '''
 
     def get_pagetype(self, **kwargs):
         return self.pagetype

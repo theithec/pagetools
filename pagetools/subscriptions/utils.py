@@ -1,7 +1,7 @@
 '''
 Created on 03.09.2012
 
-@author: lotek
+@author: Tim Heithecker
 '''
 
 from django.template.loader import render_to_string

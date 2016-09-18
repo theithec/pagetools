@@ -1,7 +1,7 @@
 '''
 Created on 09.05.2013
 
-@author: lotek
+@author: Tim Heithecker
 '''
 from django import template
 from django.core.exceptions import ObjectDoesNotExist

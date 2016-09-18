@@ -1,7 +1,7 @@
 '''
 Created on 26.02.2012
 
-@author: lotek
+@author: Tim Heithecker
 '''
 from django.contrib import admin
 

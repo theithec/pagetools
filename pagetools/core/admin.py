@@ -1,14 +1,16 @@
 '''
 Created on 14.12.2013
 
-@author: lotek
+@author: Tim Heithecker
 '''
 from django.conf import settings
 from django.contrib import admin
 
-#
+# todo remove
 def fieldset_copy(fieldset):
-    '''ugly helper for reuse of filedsets'''
+    '''Ugly helper for reuse of fieldsets. To be removed.
+    '''
+
     fscopy = (fieldset[0],
               {'fields': [f for f in fieldset[1]['fields']]}
               )
@@ -19,16 +21,22 @@ def fieldset_copy(fieldset):
 
 
 class TinyMCEMixin(object):
-    '''add tinyme-media'''
+    '''Add tinymce media files
+    '''
+
     class Media:
+
         js = [
             '%sgrappelli/tinymce/jscripts/tiny_mce/tiny_mce.js' %
             settings.STATIC_URL,
             '%sgrappelli/tinymce_setup/tinymce_setup.js' %
             settings.STATIC_URL,
         ]
+        '''Sphinx shows this as a hardcoded string, but it is not.'''
 
 
 class PagelikeAdmin(TinyMCEMixin, admin.ModelAdmin):
-    '''prepopulate slug from title and tinymce-media'''
+    '''Prepopulate slug from title and add tinymce-media
+    '''
+
     prepopulated_fields = {"slug": ("title",)}

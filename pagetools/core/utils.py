@@ -70,17 +70,25 @@ def get_adminedit_url(obj):
 
 
 def get_addperm_name(cls):
+    '''
+    Example:
+
+        .. code-block:: python
+
+            if not user.has_perm(get_addperm_name(clz)):
+                continue
+    '''
     return "%s.add_%s" % (
         cls._meta.app_label,
         cls.__name__.lower()
     )
 
+
 def importer(str_or_obj):
+    '''
+    If the argument is a string import it with importlib
+    '''
     if type(str_or_obj) == str:
         modname, clsname = str_or_obj.rsplit(".", 1)
         str_or_obj = getattr(importlib.import_module(modname), clsname)
     return str_or_obj
-
-
-
-

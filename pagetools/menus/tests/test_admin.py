@@ -1,7 +1,7 @@
 '''
 Created on 15.12.2013
 
-@author: lotek
+@author: Tim Heithecker
 '''
 from django.contrib.auth.models import User
 from django.core import urlresolvers

@@ -1,7 +1,7 @@
 '''
 Created on 22.05.2013
 
-@author: lotek
+@author: Tim Heithecker
 '''
 
 from pagetools.widgets.models import PageType, TypeArea

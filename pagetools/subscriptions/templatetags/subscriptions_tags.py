@@ -1,7 +1,7 @@
 '''
 Created on 29.02.2012
 
-@author: lotek
+@author: Tim Heithecker
 '''
 
 from django import template
