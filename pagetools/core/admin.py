@@ -20,7 +20,7 @@ def fieldset_copy(fieldset):
     return fscopy
 
 
-class TinyMCEMixin(object):
+class TinyMCEMixin(admin.ModelAdmin):
     '''Add tinymce media files
     '''
 
@@ -35,7 +35,7 @@ class TinyMCEMixin(object):
         '''Sphinx shows this as a hardcoded string, but it is not.'''
 
 
-class PagelikeAdmin(TinyMCEMixin, admin.ModelAdmin):
+class PagelikeAdmin(TinyMCEMixin):
     '''Prepopulate slug from title and add tinymce-media
     '''
 

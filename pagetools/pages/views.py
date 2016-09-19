@@ -96,13 +96,14 @@ class AuthPageMixin(object):
         return qs
 
 
+
+class BasePageView( SelectedMenuentriesMixin, WidgetPagelikeMixin, DetailView):
+    pass
+
 class PageView(
-        SelectedMenuentriesMixin,
-        WidgetPagelikeMixin,
         AuthPageMixin,
         IncludedFormMixin,
-        DetailView):
-
+        BasePageView):
     model = Page
 
     def get_pagetype_name(self, **kwargs):
