@@ -1,0 +1,4 @@
+div.unpublished, div.unpublished>div.columns>article
+{
+	background: #FF8888;
+}
