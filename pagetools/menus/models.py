@@ -206,7 +206,7 @@ class Menu(MenuEntry):
         return s
 
     def _with_child(self, dict_, entry, entry_obj, dict_parent):
-        if not getattr(entry_obj, 'enabled', True):
+        if not getattr(entry_obj, 'is_published', True):
             return
         dict_['entry_url'] = entry.get_absolute_url()
         cslugs = []

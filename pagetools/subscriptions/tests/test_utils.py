@@ -1,6 +1,6 @@
 from django.test.testcases import TestCase
 
-from pagetools.subscriptions.models import Subscriber, QueuedEmail
+from pagetools.subscriptions.models import Subscriber, QueuedEmail, SendStatus
 from pagetools.subscriptions.utils import to_queue, send_max
 
 
@@ -14,6 +14,7 @@ class TC1Tests(TestCase):
 
     def test_queues(self):
         self.assertEqual(len(QueuedEmail.objects.all()), 2)
+        self.assertEqual(len(SendStatus.objects.all()), 6)
 
     def test_send(self):
         send_max()

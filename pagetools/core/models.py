@@ -98,7 +98,7 @@ class PublishableLangModel(LangModel, StatusModel):
         return self.status == ptsettings.STATUS_PUBLISHED
     _is_published.boolean = True
     _is_published.admin_order_field = 'status'
-    is_published = property(_enabled)
+    is_published = property(_is_published)
 
     class Meta:
         abstract = True

@@ -53,7 +53,6 @@ class TemplateTagWidget(BaseWidget):
 
     def get_rendererobject(self):
         if not self.robj:
-            print ("TW", settings.TEMPLATETAG_WIDGETS, "SELF:R", self.renderclasskey)
             clzname = settings.TEMPLATETAG_WIDGETS.get(
                 self.renderclasskey,
                 (None)
