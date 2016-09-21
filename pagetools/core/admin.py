@@ -6,22 +6,10 @@ Created on 14.12.2013
 from django.conf import settings
 from django.contrib import admin
 
-# todo remove
-def fieldset_copy(fieldset):
-    '''Ugly helper for reuse of fieldsets. To be removed.
-    '''
-
-    fscopy = (fieldset[0],
-              {'fields': [f for f in fieldset[1]['fields']]}
-              )
-    clzs = fieldset[1].get('classes')
-    if clzs:
-        fscopy[1]['classes'] = [c for c in clzs]
-    return fscopy
-
 
 class TinyMCEMixin(admin.ModelAdmin):
-    '''Add tinymce media files
+    '''
+    Add tinymce media files
     '''
 
     class Media:
@@ -36,7 +24,7 @@ class TinyMCEMixin(admin.ModelAdmin):
 
 
 class PagelikeAdmin(TinyMCEMixin):
-    '''Prepopulate slug from title and add tinymce-media
     '''
-
+    Prepopulate slug from title and add tinymce-media
+    '''
     prepopulated_fields = {"slug": ("title",)}

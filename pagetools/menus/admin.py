@@ -200,102 +200,33 @@ class EntrieableForm(forms.ModelForm):
         js = TinyMCEMixin.Media.js + [
             settings.STATIC_URL + 'pagetools/admin/js/pre_sel_menu.js']
 
-def entrieable_admin_save_related(self, request, form, formsets, change):
-    '''Entrieable save_related (for monkeypatching)'''
-    superfunc = super(self.__class__, self).save_related
-    if not getattr(superfunc, "for_entrieable",  False):
-        superfunc(request, form, formsets, change)
-    else:
-        admin.ModelAdmin.save_related(self, request, form, formsets, change)
 
-    obj = form.instance
-    menupk_from_request = request.GET.get('menu', None)
-    if 'menus' not in form.changed_data:  # and not menupk_from_request:
-        return
-
-    selected_menus = form.sel_menus
-    existing_menuentries = form.existing_menuentries
-    all_menus = Menu.objects.root_nodes()
-    for am in all_menus:
-        found = None
-        for e in existing_menuentries:
-            if e.get_root().pk == am.pk:
-                found = e
-                break
-
-        is_selected = am in selected_menus
-        if is_selected and not found:
-            root = Menu.objects.get(pk=am.pk)
-            title = getattr(obj, 'title', None)
-            kwargs = {}
-            if title:
-                kwargs['title'] = title
-
-            e = Menu.objects.add_child(root, form.instance, **kwargs)
-            e.move_to(root, 'last-child')
-            e.save()
-
-        elif found and not is_selected:
-            e.delete()
-
-
-def entrieable_admin_get_fields(self, request, obj):
-    '''Entrieable get_fields (for monkeypatching)'''
-
-    superfunc = super(self.__class__, self).get_fields
-    if not getattr(superfunc, "for_entrieable",  False):
-        fields = superfunc(request, obj)
-    else:
-        fields = admin.ModelAdmin.get_fields(self, request, obj)
-    if not "menus" in fields:
-        fields = fields + type(fields)(("menus",) )
-    return fields
-
-
-def entrieable_admin_get_fieldsets(self, request, obj):
-    '''Entrieable get_fieldsets (for monkeypatching)'''
-    superfunc = super(self.__class__, self).get_fieldsets
-    #import pdb; pdb.set_trace()
-    if not getattr(superfunc, "for_entrieable",  False):
-        self.fieldsets = superfunc(request, obj)
-    if not self.fieldsets:
-        return
-
-    added = False
-    for fs in self.fieldsets:
-        if "menus" in fs[1]['fields']:
-            added = True
-            break
-
-    if not added:
-        self.fieldsets = self.fieldsets + type(self.fieldsets)((
-            (_("In menus"),{'fields':['menus',]}),
-        ),)
-
-    return self.fieldsets
 
 class EntrieableAdmin(admin.ModelAdmin):
 
     form = EntrieableForm
     is_menu_entrieable = True
 
-    def get_form2(self, request, obj):
-        import pdb; pdb.set_trace()
-        return EntrieableForm(clz=obj.__class__)
-        return super().get_form()
 
     def get_fields(self, request, obj):
         '''
         See :func:`pagetools.menus.admin.entrieable_admin_get_fields`
         '''
+        '''Entrieable get_fields (for monkeypatching)'''
 
-        return entrieable_admin_get_fields(self, request, obj=None)
+        superfunc = super(self.__class__, self).get_fields
+        if not getattr(superfunc, "for_entrieable",  False):
+            fields = superfunc(request, obj)
+        else:
+            fields = admin.ModelAdmin.get_fields(self, request, obj)
+
+        if not "menus" in fields:
+            fields = fields + type(fields)(("menus",) )
+        return fields
     get_fields.for_entrieable = True
 
     def get_fieldsets(self, request, obj):
-        #  print("BASE", self.__bases__)
         superfunc = super(self.__class__, self).get_fieldsets
-        #  import pdb; pdb.set_trace()
         if not getattr(superfunc, "for_entrieable",  False):
             self.fieldsets = superfunc(request, obj)
         else:
@@ -313,22 +244,45 @@ class EntrieableAdmin(admin.ModelAdmin):
             ),)
 
         return self.fieldsets
-
-
-
-
-    def get_fieldsets2(self, request, obj):
-        '''
-        See :func:`pagetools.menus.admin.entrieable_admin_get_fieldsets`
-        '''
-        return entrieable_admin_get_fieldsets(self, request, obj=None)
     get_fieldsets.for_entrieable = True
 
     def save_related(self, request, form, formsets, change):
-        '''
-        See :func:`pagetools.menus.admin.entrieable_admin_save_related
-        '''
-        return entrieable_admin_save_related(self, request, form, formsets, change)
+        '''Entrieable save_related (for monkeypatching)'''
+        superfunc = super(self.__class__, self).save_related
+        if not getattr(superfunc, "for_entrieable",  False):
+            superfunc(request, form, formsets, change)
+        else:
+            admin.ModelAdmin.save_related(self, request, form, formsets, change)
+
+        obj = form.instance
+        menupk_from_request = request.GET.get('menu', None)
+        if 'menus' not in form.changed_data:  # and not menupk_from_request:
+            return
+
+        selected_menus = form.sel_menus
+        existing_menuentries = form.existing_menuentries
+        all_menus = Menu.objects.root_nodes()
+        for am in all_menus:
+            found = None
+            for e in existing_menuentries:
+                if e.get_root().pk == am.pk:
+                    found = e
+                    break
+
+            is_selected = am in selected_menus
+            if is_selected and not found:
+                root = Menu.objects.get(pk=am.pk)
+                title = getattr(obj, 'title', None)
+                kwargs = {}
+                if title:
+                    kwargs['title'] = title
+
+                e = Menu.objects.add_child(root, form.instance, **kwargs)
+                e.move_to(root, 'last-child')
+                e.save()
+
+            elif found and not is_selected:
+                e.delete()
     save_related.for_entrieable = True
 
     def _redirect(self, action, request, obj, *args, **kwargs):

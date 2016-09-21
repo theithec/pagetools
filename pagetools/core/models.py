@@ -14,7 +14,9 @@ from . import settings as ptsettings
 
 
 class LangManager(models.Manager):
-    '''Manager for models with a lang-field'''
+    '''
+    Manager for models with a lang-field
+    '''
     def __init__(self, *args, **kwargs):
         super(LangManager, self).__init__(*args, **kwargs)
         self.use_lang = bool(getattr(settings, 'LANGUAGES', False))
@@ -31,15 +33,12 @@ class LangManager(models.Manager):
 
 
 class LangModel(models.Model):
-    '''Model with ``lang``-field.
-
-    Args:
-        lang(str): Language code
+    '''
+    Model with ``lang``-field.
 
     Note:
         To avoid `NOT NULL constraint failed` errors,
         empty lang is saved as "".
-
     '''
     objects = models.Manager()
     # public = LangManager()
@@ -60,7 +59,8 @@ class LangModel(models.Model):
 
 
 class PublishableLangManager(LangManager):
-    '''Manager that finds published content language filtered
+    '''
+    Manager that finds published content language filtered
     '''
 
     def lfilter(self, **kwargs):
