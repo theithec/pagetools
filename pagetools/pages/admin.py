@@ -47,7 +47,7 @@ class PageDynFieldAdmin(DynFieldAdmin):
 
 class BasePageAdmin(EntrieableAdmin, PagelikeAdmin):
     readonly_fields = ('status_changed',)
-    list_display = ('title', 'lang', 'status')
+    list_display = ('title', 'lang','slug',  'status')
     list_filter = ('lang', 'status')
     search_fields = ('title', 'content')
     save_as = True
@@ -62,6 +62,7 @@ class PageAdmin(BasePageAdmin):
 
     fieldsets = (
         ('', {'fields': [
+            'lang',
             'status',
             'title',
             'slug',

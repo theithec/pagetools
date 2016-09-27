@@ -1,6 +1,8 @@
 {% extends "base.html" %}
+{% load menus_tags %}
+
 {% block menu %}
-{% include "menutag.html" with menukeys=question|slugify %}
+{% menu "MainMenu" question|slugify %}
 {% endblock menu %}
 
 {% block main %}

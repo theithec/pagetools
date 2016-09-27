@@ -98,6 +98,15 @@ class MenuEntry(MPTTModel, LangModel):
     def get_absolute_url(self):
         return self.content_object.get_absolute_url()
 
+    def clean(self):
+        try:
+            e = MenuEntry.objects.get(title=self.title, lang=self.lang)
+            if not (self.pk and e.pk == self.pk):
+                raise ValidationError(
+                    _('An entry with this title and language already exists'))
+        except MenuEntry.DoesNotExist:
+            pass
+
     class Meta:
         unique_together = ('title', 'lang')
 

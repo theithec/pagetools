@@ -31,9 +31,10 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 
 INSTALLED_APPS = [
-    'grappelli.dashboard',# optional (pagetools provides two dashboard modules), needs further configuration
-    'grappelli',
-    'filebrowser',
+    'grappelli.dashboard',  # optional (pagetools provides two dashboard modules),
+                            # needs further configuration
+    'grappelli',            # required
+    'filebrowser',          # required
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

@@ -55,3 +55,7 @@ class TC1Tests(TestCase):
         self.menu.save()
         self.assertEqual(self.menu.get_children()[0].slug, "P1")
 
+
+    def test_doubleslug(self):
+        with self.assertRaises(ValidationError):
+            Menu.objects.add_child(self.menu, self.p1)

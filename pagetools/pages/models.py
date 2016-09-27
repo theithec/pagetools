@@ -152,6 +152,7 @@ class BasePage(IncludedEmailForm, AuthPage, PagelikeModel):
     class Meta(PagelikeModel.Meta):
         verbose_name = _('Page')
         verbose_name_plural = _('Pages')
+        unique_together = ("slug", "lang")
         abstract = True
 
 
