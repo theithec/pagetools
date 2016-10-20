@@ -1,20 +1,15 @@
-'''
-Created on 14.12.2013
-
-@author: lotek
-'''
-
-import importlib
 from django.db import models
 from django.template.context import Context
-from django.contrib.contenttypes.fields import GenericRelation, GenericForeignKey
+from django.contrib.contenttypes.fields import (GenericRelation,
+                                                GenericForeignKey)
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ValidationError
 from django.utils.html import format_html
 from django.utils.translation import ugettext_lazy as _
 
+
 from pagetools.core.models import LangModel, LangManager
-from pagetools.core.utils import get_adminedit_url
+from pagetools.core.utils import get_adminedit_url, importer
 
 from . import settings
 
@@ -40,6 +35,10 @@ class ContentWidget(BaseWidget):
     def get_content(self, contextdict):
         return self.content
 
+    class Meta:
+        verbose_name = _("Simple Text Widget")
+        verbose_name_plural = _("Simple Text Widgets")
+
 
 class TemplateTagWidget(BaseWidget):
     key_choices = [(k, k) for k in sorted(settings.TEMPLATETAG_WIDGETS.keys())]
@@ -54,15 +53,13 @@ class TemplateTagWidget(BaseWidget):
 
     def get_rendererobject(self):
         if not self.robj:
-            modulename, clsname = settings.TEMPLATETAG_WIDGETS.get(
+            clzname = settings.TEMPLATETAG_WIDGETS.get(
                 self.renderclasskey,
-                (None, None)
+                (None)
             )
-            module = importlib.import_module(modulename)
-            try:
-                self.robj = getattr(module, clsname)()
-            except KeyError:
-                pass
+            clz = importer(clzname)
+            if clz:
+                self.robj = clz()
         return self.robj
 
     def get_title(self):
@@ -71,6 +68,7 @@ class TemplateTagWidget(BaseWidget):
     def get_content(self, contextdict):
         if self.get_rendererobject():
             return self.robj.render(Context(contextdict, True))
+
 
 class PageType(models.Model):
     name = models.CharField('Name', max_length=128)
@@ -101,8 +99,6 @@ class PageTypeDescription(LangModel):
         unique_together = ('pagetype', 'lang',)
 
 
-
-
 class TypeArea(LangModel):
 
     area = models.CharField(max_length=64, choices=sorted(settings.AREAS))
@@ -128,7 +124,7 @@ class TypeArea(LangModel):
 
 
 class WidgetInArea(models.Model):
-    typearea = models.ForeignKey(TypeArea,related_name="widgets")
+    typearea = models.ForeignKey(TypeArea, related_name="widgets")
     content_type = models.ForeignKey(ContentType)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
@@ -151,3 +147,5 @@ class WidgetInArea(models.Model):
 
     class Meta:
         ordering = ['position']
+        verbose_name = _("Included widget")
+        verbose_name_plural = _("Included widgets")

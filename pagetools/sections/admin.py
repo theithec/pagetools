@@ -6,6 +6,7 @@ from django.utils.html import format_html
 from django.contrib.contenttypes.models import ContentType
 from grappelli.forms import GrappelliSortableHiddenMixin
 from pagetools.core.admin import PagelikeAdmin
+from pagetools.menus.admin import EntrieableAdmin
 from .models import PageNode, PageNodePos
 
 
@@ -15,6 +16,7 @@ class BasePageNodePosAdmin(GrappelliSortableHiddenMixin, admin.TabularInline):
     readonly_fields = ('admin_link',)
     fk_name = "owner"
     sortable_field_name = "position"
+    extra = 2
 
     def get_queryset(self, request):
         request.parent_model = self.parent_model
@@ -47,6 +49,11 @@ class BasePageNodePosAdmin(GrappelliSortableHiddenMixin, admin.TabularInline):
 
 class BasePageNodeAdmin(PagelikeAdmin):
 
+    inlines = [BasePageNodePosAdmin]
+    change_form_template = 'admin/change_form_chooser.html'
+
+    prepopulated_fields = {"slug": ("title",)}
+    readonly_fields = ('status_changed','containing_nodes')
 
     def admin_link(self, instance):
         realobj = instance.get_real_obj()
@@ -69,6 +76,50 @@ class BasePageNodeAdmin(PagelikeAdmin):
     containing_nodes.allow_tags = _("Parents")
 
 
+admin.site.register(PageNode)
 
 
+'''
+@admin.register(SimpleArticle)
+class SimpleArticleAdmin(BasePageNodeAdmin):
+    inlines = [BasePageNodePosAdmin]
+    fieldsets = (
+        ('', {'fields': [
+            'status',
+            'title',
+            'slug',
+            'content',
+            'containing_nodes',
+        ]}),
+        (_('Teaser'), {'fields': ['teaser', ]}),
+    )
+    readonly_fields = ('status_changed','containing_nodes')
 
+
+@admin.register(SimpleSection)
+class SimpleSectionAdmin(BasePageNodeAdmin):
+    inlines = [BasePageNodePosAdmin]
+    fieldsets = (
+        ('', {'fields': [
+            'status',
+            'title',
+            'slug',
+            'containing_nodes',
+        ]}),
+    )
+    readonly_fields = ('status_changed','containing_nodes')
+
+@admin.register(SimpleSectionPage)
+class SimplePageAdmin(EntrieableAdmin, BasePageNodeAdmin):
+    inlines = [BasePageNodePosAdmin]
+    fieldsets = (
+        ('', {'fields': [
+            'status',
+            'title',
+            'slug',
+            'description',
+        ]}),
+        ('', {'fields': ['menus']}),
+    )
+
+'''

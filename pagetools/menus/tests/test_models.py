@@ -1,7 +1,7 @@
 '''
 Created on 14.12.2013
 
-@author: lotek
+@author: Tim Heithecker
 '''
 
 from django.test import TestCase
@@ -38,10 +38,6 @@ class TC1Tests(TestCase):
         u0 = c[0].get_absolute_url()
         if u0.startswith("/%s/" % lang ):
             u0 = u0[3:]
-        self.assertEqual(
-            u0,
-            '/%sp1/' % settings.PAGE_PREFIX
-        )
         u1 = c[1].get_absolute_url()
         if u1.startswith("/%s/" % lang):
             u1 = u0[3:]
@@ -51,11 +47,15 @@ class TC1Tests(TestCase):
         )
 
     def test_entry_slugs(self):
-        self.assertEqual(self.e1.slugs, "p1")
+        self.assertEqual(self.e1.slug, "p1")
 
     def test_renamed_entry_slugs(self):
         self.p1.slug = "P1"
         self.p1.save()
         self.menu.save()
-        self.assertEqual(self.menu.get_children()[0].slugs, "P1")
+        self.assertEqual(self.menu.get_children()[0].slug, "P1")
 
+
+    def test_doubleslug(self):
+        with self.assertRaises(ValidationError):
+            Menu.objects.add_child(self.menu, self.p1)

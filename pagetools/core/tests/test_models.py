@@ -4,7 +4,7 @@ from pagetools.core.models import *
 
 
 class ConcretePublishableLangModel(PublishableLangModel):
-
+    foo = models.CharField("Foo", max_length=32)
     def __str__(self):
         return "%s:%s" % (self.lang, self.status)
 

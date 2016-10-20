@@ -1,46 +1,21 @@
 '''
 Created on 20.12.2013
 
-@author: lotek
+@author: Tim Heithecker
 '''
 
 from django.conf import settings
-from django.template.defaultfilters import slugify
-from django.views.generic import View
 from django.views.generic.list import ListView
 
 
-class BasePagelikeView(View):
-    '''[TODO: refactor to pagetools.menus]
-    Tries to find a slug from view or model add adds it to
-    context. Used for find the selected menu-entries.
-    [Use session-data instead?]
-    '''
-    def get_context_data(self, *args, **kwargs):
-        kwargs = super(BasePagelikeView, self).get_context_data(**kwargs)
-        sel = kwargs.get('selected', [])
-        sel.append(self.get_menukey())
-        kwargs['selected'] = sel
-        return kwargs
-
-    def get_menukey(self):
-        try:
-            return self.get_object().slug
-        except AttributeError:
-            try:
-                return self.menukey
-            except AttributeError:
-                return slugify(self.__class__.__name__.lower())
-
-    # reduce queries
-    def get_object(self):
-        if not getattr(self, 'object', None):
-            self.object = super(BasePagelikeView, self).get_object()
-        return self.object
-
 class PaginatorMixin(ListView):
-    '''Paginator Implemtation
-    If your urls use already GET-vars set sep to ="&" in subclass'''
+    '''
+    Paginator Implementation
+
+    If your urls use already GET-vars set sep to ="&" in subclass
+    (uh, that's old and creepy)
+    '''
+
     paginate_by = getattr(settings, 'PAGINATE_BY', 20)
     sep = '?'
 

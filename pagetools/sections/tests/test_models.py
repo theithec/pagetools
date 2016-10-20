@@ -2,7 +2,7 @@
 '''
 Created on 14.12.2013
 
-@author: lotek
+@author: Tim Heithecker
 '''
 
 from django.contrib.auth.models import User

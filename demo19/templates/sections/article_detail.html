@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% load fb_versions %}
+{% block main %}
+<article class="{{ object.classes }}">
+	<h4>{{object.title}}</h4>
+	{{ object.content|safe}}
+	<img src="{% version object.image 'large' %}" />
+</article>
+{% endblock main %}

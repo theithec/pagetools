@@ -1,7 +1,7 @@
 '''
 Created on 14.12.2013
 
-@author: lotek
+@author: Tim Heithecker
 '''
 
 from django.contrib import admin
@@ -43,24 +43,18 @@ class TypeAreaAdmin(admin.ModelAdmin):
                                                    position=pos)
             except ValueError as e:
                 pass
-    # for save_as?
-    def save_formset2(self, request, form, formset, change):
-        instances = formset.save(commit=False)
-        #safe w/o instances
-        for instance in instances:
-            instance.save()
-        formset.save_m2m()
 
     def render_change_form(self, request, context, add=False,
                            change=False, form_url='', obj=None):
 
         if obj:
+            #  self.readonly_fields = ['area']
             user = request.user
             clslist = itersubclasses(BaseWidget)
             context['addable_objs'] = []
             context['addable_widgets'] = []
             found = [c.content_object for c in obj.widgets.all()]
-            #self.readonly_fields = ( "area", "type")
+            self.readonly_fields = ( "area", "type")
             for c in clslist:
                 if not user.has_perm(get_addperm_name(c)):
                     continue
@@ -87,7 +81,12 @@ class TypeAreaAdmin(admin.ModelAdmin):
                                                    add=add, change=change,
                                               form_url=form_url, obj=obj)
 
-
+    def get_readonly_fields(self, request, obj=None):
+            if obj:
+                return ['area', 'type']
+            else:
+                return []
+                                            #
 class BaseWidgetAdmin(admin.ModelAdmin):
 
     save_as = True
@@ -136,9 +135,15 @@ class ContentWidgetAdmin(BaseWidgetAdmin, TinyMCEMixin):
 
 
 class TemplateTagWidgetAdmin(BaseWidgetAdmin):
-    prepopulated_fields = {"name": ("renderclasskey",)}
 
-
+    def get_readonly_fields(self, request, obj=None):
+            if obj:
+                self.prepopulated_fields = {}
+                return ['renderclasskey']
+            else:
+                self.prepopulated_fields = {"name": ("renderclasskey",)}
+                return []
+                                        #
 admin.site.register(TypeArea, TypeAreaAdmin)
 admin.site.register(ContentWidget, ContentWidgetAdmin)
 admin.site.register(TemplateTagWidget, TemplateTagWidgetAdmin)

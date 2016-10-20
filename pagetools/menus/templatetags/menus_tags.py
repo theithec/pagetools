@@ -1,7 +1,7 @@
 '''
 Created on 09.05.2013
 
-@author: lotek
+@author: Tim Heithecker
 '''
 from django import template
 from django.core.exceptions import ObjectDoesNotExist
@@ -11,14 +11,16 @@ register = template.Library()
 
 
 class MenuRenderer(template.Node):
-    def __init__(self, selected, menu_title):
-        self.selected = template.Variable("selected")
+    def __init__(self, menukeys, menu_title):
+        self.menukeys = template.Variable("menukeys")
         self.menu_title = menu_title
 
     def render(self, context):
-        selected = []
+        menukeys = []
         try:
-            selected = self.selected.resolve(context)
+            menukeys = self.menukeys.resolve(context)
+            if type(menukeys) != list:
+                menukeys = [menukeys]
 
         except template.VariableDoesNotExist:
             pass
@@ -28,10 +30,10 @@ class MenuRenderer(template.Node):
         except ObjectDoesNotExist:
             e = "<!--UNKNOWN MENU %s !-->" % self.menu_title
             return e
-        return menu.render(selected)
+        return menu.render(menukeys)
 
 
 @register.tag(name="menu")
 def do_menu(parser, token):
-    menu_title, selected = token.contents.split()[1:]
-    return MenuRenderer(selected, menu_title)
+    menu_title, menukeys = token.contents.split()[1:]
+    return MenuRenderer(menukeys, menu_title)

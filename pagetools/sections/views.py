@@ -11,7 +11,8 @@ from django_ajax.mixin import AJAXMixin
 from .utils import get_template_names_for_obj
 from .models import PageNode
 from .dashboard_modules import PageNodesModule
-
+from pagetools.menus.views import SelectedMenuentriesMixin
+from pagetools.widgets.views import WidgetPagelikeMixin
 
 class BaseNodeView(DetailView):
     model = PageNode
@@ -34,13 +35,17 @@ class BaseNodeView(DetailView):
                 user=self.request.user)
         return context
 
+class PagelikeNodeView(SelectedMenuentriesMixin, WidgetPagelikeMixin,
+                       BaseNodeView):
+    pass
+
 class BaseAjaxNodeViewMixin(AJAXMixin):
     def get_context_data(self, **kwargs):
         context = super(BaseAjaxNodeViewMixin, self).get_context_data(**kwargs)
         context['AJAXVIEW'] = True
         context['css_block'] = "css_ajax"
         context['js_block'] = "css_ajax"
-        context['scale'] = "0.9"
+        #  context['scale'] = "0.9"
         return context
 
 class BaseAjaxNodeView(BaseAjaxNodeViewMixin, BaseNodeView):
@@ -78,3 +83,5 @@ def admin_pagenodesview(request, slug):
                              user=request.user)
     listtxt += '</ol>'
     return HttpResponse(listtxt)
+
+

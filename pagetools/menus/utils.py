@@ -1,52 +1,32 @@
 '''
 Created on 15.12.2013
 
-@author: lotek
+@author: Tim Heithecker
 '''
 
-import sys
-import warnings
-
-from .settings import ENTRIEABLE_MODELS
-from django.utils.translation import ugettext as _
-
+from . import _ENTRIEABLE_MODELS
 
 _entrieable_reverse_names = []
 _entrieable_auto_children = []
 _auto_children_funcs = {}
 
 
-def entrieable_reverse_name(name, auto_children=False):
+def entrieable_reverse_name(name, app_name=None):
     global _entrieable_reverse_names
-    _entrieable_reverse_names.append(name)
-    if auto_children:
-        _entrieable_auto_children.append(name)
-        _auto_children_funcs[name] = auto_children
+    fullname  = "%s:%s" % (app_name, name) if app_name else name
+    _entrieable_reverse_names.append(fullname)
     _entrieable_reverse_names = sorted([_f for _f in _entrieable_reverse_names if _f])
     return name
 
-
-def entrieable_url(url):
-    try:
-        name = url.name
-    except ValueError:
-        raise ValueError(_('Entrieable urls need a name'))
-    entrieable_reverse_name(name)
-    return url
-
-
-def entrieable_view(url):
-    warnings.warn(_("deprecated, wrong naming, use entrieable_url"),
-                  DeprecationWarning)
-    return entrieable_url(url)
-
+# todo prefix add_
+def entrieable_auto_populated(name, callback):
+    _entrieable_auto_children.append(name)
+    _auto_children_funcs[name] = callback
 
 def entrieable_models():
     models = []
-    for module, cls in ENTRIEABLE_MODELS:
-        models.append(
-            getattr(
-                getattr(sys.modules[module], 'models'), cls
-            )
-        )
+    for model in _ENTRIEABLE_MODELS:
+        validator =  getattr(model, 'show_in_menu_add', None)
+        if not validator or validator():
+            models.append(model)
     return models
