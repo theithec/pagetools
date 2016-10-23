@@ -6,6 +6,7 @@ Created on 14.12.2013
 
 import sys
 from django import forms
+from django.core.exceptions import ValidationError
 from django.conf import settings
 from django.contrib import admin
 from django.contrib.contenttypes.models import ContentType
@@ -54,6 +55,19 @@ class MenuChangeForm(forms.ModelForm):
         self.fields['children'] = forms.Field(
             required=False,
             widget=MenuChildrenWidget(instance=kwargs['instance']))
+
+    def clean_children(self, *args, **kwargs):
+        names = []
+        cnt = 0
+        while True:
+            try:
+                name = self.data['entry-text-%s' % cnt]
+            except KeyError:
+                break
+            if name in names:
+                raise ValidationError(_('Entry "%s" already exists' % name))
+            names.append(name)
+            cnt += 1
 
     class Meta:
         model = Menu
@@ -151,16 +165,13 @@ class MenuAdmin(TinyMCEMixin, admin.ModelAdmin):
 
 
 class EntrieableForm(forms.ModelForm):
-    '''
-    Adds a field: menus to the form. Preselect all menus which contain an
+    '''Adds a field: menus to the form. Preselect all menus which contain an
     entry for the obj
     '''
 
     menus = forms.Field()
 
     def __init__(self, *args, **kwargs):
-        #oimport pdb; pdb.set_trace()
-        # self._meta.model = kwargs.pop('clz')
         super(EntrieableForm, self).__init__(*args, **kwargs)
         menus = [(m.id, '%s' % m) for m in Menu.objects.root_nodes()]
         try:
@@ -181,7 +192,7 @@ class EntrieableForm(forms.ModelForm):
 
     def clean(self):
         s = super(EntrieableForm, self).clean()
-        if self.instance  and 'menus' in self.changed_data:
+        if self.instance and 'menus' in self.changed_data:
             obj = self.instance
             cmp_data = self.cleaned_data.copy()
             fmenu_ids = [int(m) for m in cmp_data.pop('menus', [])]
@@ -201,12 +212,10 @@ class EntrieableForm(forms.ModelForm):
             settings.STATIC_URL + 'pagetools/admin/js/pre_sel_menu.js']
 
 
-
 class EntrieableAdmin(admin.ModelAdmin):
 
     form = EntrieableForm
     is_menu_entrieable = True
-
 
     def get_fields(self, request, obj):
         '''
@@ -220,8 +229,8 @@ class EntrieableAdmin(admin.ModelAdmin):
         else:
             fields = admin.ModelAdmin.get_fields(self, request, obj)
 
-        if not "menus" in fields:
-            fields = fields + type(fields)(("menus",) )
+        if "menus" not in fields:
+            fields = fields + type(fields)(("menus",))
         return fields
     get_fields.for_entrieable = True
 
@@ -240,7 +249,7 @@ class EntrieableAdmin(admin.ModelAdmin):
 
         if not added:
             self.fieldsets = self.fieldsets + type(self.fieldsets)((
-                (_("In menus"),{'fields':['menus',]}),
+                (_("In menus"), {'fields': ['menus', ]}),
             ),)
 
         return self.fieldsets
@@ -255,8 +264,7 @@ class EntrieableAdmin(admin.ModelAdmin):
             admin.ModelAdmin.save_related(self, request, form, formsets, change)
 
         obj = form.instance
-        menupk_from_request = request.GET.get('menu', None)
-        if 'menus' not in form.changed_data:  # and not menupk_from_request:
+        if 'menus' not in form.changed_data:
             return
 
         selected_menus = form.sel_menus

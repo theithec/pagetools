@@ -6,8 +6,8 @@ Created on 15.12.2013
 from django.contrib.auth.models import User
 from django.core import urlresolvers
 from django.test.testcases import TestCase
-from pagetools.menus.models import Menu
-from pagetools.menus.admin import MenuAddForm
+from pagetools.menus.models import Menu, Link
+from pagetools.menus.admin import MenuAddForm, MenuChangeForm
 
 
 class MenuAdminTests(TestCase):
@@ -31,3 +31,28 @@ class MenuAdminTests(TestCase):
         response = self.client.post(menuaddurl, {'title':'Testmenu1'})
         print ("MENU ADD", response.status_code)
         self.assertTrue(response.status_code in (200, 302))
+
+
+    def test_dublicate_entry(self):
+        menu = Menu.objects.add_root(title="Menu1")
+        e1 = Menu.objects.add_child(
+            parent=menu,
+            slug="l1",
+            title="l1",
+            content_object=Link.objects.create(url="#1")
+        )
+        e2 = Menu.objects.add_child(
+            parent=menu,
+            slug="l2",
+            title="l2",
+            content_object=Link.objects.create(url="#2")
+        )
+        data = menu.__dict__
+        data['entry-text-0'] = "a"
+        data['entry-text-1'] = "a"
+        mf = MenuChangeForm(data, instance=menu)
+        self.assertFalse(mf.is_valid())
+
+        data['entry-text-1'] = "b"
+        mf = MenuChangeForm(data, instance=menu)
+        self.assertTrue(mf.is_valid())
