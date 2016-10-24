@@ -2,6 +2,7 @@ language: python
 python:
     - "3.4"
     - "3.5"
-install: "pip install -e ."
-install: "pip install -r dev-requirements.txt"
+install:
+    - "pip install -e ."
+    - "pip install -r dev-requirements.txt"
 script: "cd demo19 && python manage.py test pagetools"
