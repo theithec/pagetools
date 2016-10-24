@@ -3,4 +3,4 @@ python:
     - "3.4"
     - "3.5"
 install: "pip install -e . --user"
-script "cd demo19 && python manage.py test pagetools"
+script: "cd demo19 && python manage.py test pagetools"
