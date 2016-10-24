@@ -3,6 +3,7 @@ Created on 14.12.2013
 
 @author: Tim Heithecker
 '''
+
 from django.conf import settings
 from django.contrib import admin
 

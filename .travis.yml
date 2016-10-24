@@ -5,4 +5,4 @@ python:
 install:
     - "pip install -e ."
     - "pip install -r dev-requirements.txt"
-script: "cd demo19 && python manage.py test pagetools"
+script: "cd demo19 && coverage run --source pagetools manage.py test pagetools"

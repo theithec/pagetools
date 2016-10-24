@@ -78,7 +78,7 @@ class PageNode(PagelikeModel):
         return real_child
 
     def get_real_content(self, child):
-        warnings.warn(_("deprecated, use get_real_child"),
+        warnings.warn("deprecated, use get_real_child",
                       DeprecationWarning)
 
         return self.get_real_child(child)
@@ -88,8 +88,8 @@ class PageNode(PagelikeModel):
         return [self.get_real_child(c) for c in o]
 
     def ordered_content(self, **kwargs):
-        warnings.warn(_("deprecated, use get_real_child"),
-                      DeprecationWarning)
+        #warnings.warn("deprecated, use get_real_child",
+        #              DeprecationWarning)
         return self.children(**kwargs)
 
     def __str__(self):

@@ -1,5 +1,6 @@
 from django.test import TestCase
 from django.utils.translation import activate
+import pagetools.core
 from pagetools.core.models import *
 
 
