@@ -44,7 +44,7 @@ class BaseAjaxNodeViewMixin(AJAXMixin):
         context = super(BaseAjaxNodeViewMixin, self).get_context_data(**kwargs)
         context['AJAXVIEW'] = True
         context['css_block'] = "css_ajax"
-        context['js_block'] = "css_ajax"
+        context['js_block'] = "js_ajax"
         #  context['scale'] = "0.9"
         return context
 
