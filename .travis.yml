@@ -6,3 +6,5 @@ install:
     - "pip install -e ."
     - "pip install -r dev-requirements.txt"
 script: "cd demo19 && coverage run --source pagetools manage.py test pagetools"
+after_success:
+  coveralls
