@@ -1,3 +1,7 @@
+https://travis-ci.org/theithec/pagetools.svg?branch=master
+[![Build Status](https://travis-ci.org/theithec/pagetools.svg?branch=master)](https://travis-ci.org/theithec/pagetools)
+
+
 Pagetools
 =========
 
