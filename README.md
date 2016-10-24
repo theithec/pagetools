@@ -1,6 +1,5 @@
 [![Build Status](https://travis-ci.org/theithec/pagetools.svg?branch=master)](https://travis-ci.org/theithec/pagetools)
-[![Build Status](https://travis-ci.org/dwyl/learn-travis.svg?branch=master )](https://travis-ci.org/dwyl/learn-travis)
-
+[![Coverage][https://coveralls.io/repos/github/theithec/pagetools/badge.svg?branch=master)](https://coveralls.io/repos/github/theithec/pagetools/)
 
 Pagetools
 =========
