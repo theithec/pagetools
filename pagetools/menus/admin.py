@@ -116,7 +116,6 @@ class MenuAdmin(TinyMCEMixin, admin.ModelAdmin):
                 ])
             menu_obj = Menu.objects.filter(pk=obj.pk)[0]
             context['menu_entries'] = menu_obj.children_list(for_admin=True)
-
         return admin.ModelAdmin.render_change_form(
             self, request, context, add=add, change=change,
             form_url=form_url, obj=obj)
@@ -126,7 +125,8 @@ class MenuAdmin(TinyMCEMixin, admin.ModelAdmin):
         entry_order = form.data.get('entry-order')
         if entry_order:
             obj.update_entries(entry_order)
-        if form.cleaned_data.get('addeentry'):
+        '''if form.cleaned_data.get('addeentry'):
+            import pdb; pdb.set_trace()
             modulename, classname, id = form.cleaned_data['addentry'].split("#")
             o = getattr(sys.modules[modulename], classname).objects.get(pk=id)
             MenuEntry.objects.create(
@@ -135,6 +135,7 @@ class MenuAdmin(TinyMCEMixin, admin.ModelAdmin):
                 parent=form.instance,
                 status='draft'
             )
+        '''
         cnt = 0
         while True:
             try:

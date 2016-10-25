@@ -179,7 +179,7 @@ class Menu(MenuEntry):
                 parent = MenuEntry.objects.get(id=int(v))
             e.move_to(parent, 'last-child')
             e = MenuEntry.objects.get(pk=e.pk)
-            parent = MenuEntry.objects.get(pk=parent.pk)
+            # parent = MenuEntry.objects.get(pk=parent.pk)
         MenuEntry.objects.rebuild()
         self.save()
 

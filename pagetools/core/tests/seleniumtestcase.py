@@ -1,3 +1,4 @@
+'''
 import django
 from selenium import webdriver
 from django.contrib.auth.models import User
@@ -20,3 +21,4 @@ class SeleniumTestCase(StaticLiveServerTestCase):
         self.admin = User.objects.create_superuser('admin', 'q@w.de', 'password')
         self.client.login(username="admin", password='password')
         super().setUp()
+'''
