@@ -17,7 +17,7 @@ class WidgetTests(TestCase):
         self.type1 = PageType.objects.get_or_create(name='base')[0]
         self.typearea1 = TypeArea.objects.get_or_create(
             area='sidebar',
-            type=self.type1)[0]
+            pagetype=self.type1)[0]
 
     def test_model_creation(self):
         w1 = ContentWidget.objects.get_or_create(
@@ -31,4 +31,4 @@ class WidgetTests(TestCase):
         self.assertEqual(self.typearea1.widgets.all()[0].content_object, w1)
 
     def test_lists(self):
-        self.assertEqual(self.typearea1.type, self.type1)
+        self.assertEqual(self.typearea1.pagetype, self.type1)

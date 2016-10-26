@@ -54,7 +54,7 @@ class TypeAreaAdmin(admin.ModelAdmin):
             context['addable_objs'] = []
             context['addable_widgets'] = []
             found = [c.content_object for c in obj.widgets.all()]
-            self.readonly_fields = ( "area", "type")
+            self.readonly_fields = ( "area", "pagetype")
             for c in clslist:
                 if not user.has_perm(get_addperm_name(c)):
                     continue

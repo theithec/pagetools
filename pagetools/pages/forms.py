@@ -99,6 +99,7 @@ class SendEmailForm(BaseDynForm):
         except AttributeError:
             logger.error("no email receivers for %s" % self)
 
+        _is_valid = super(SendEmailForm, self).is_valid()
     def is_valid(self, **kwargs):
         _is_valid = super(SendEmailForm, self).is_valid()
         if _is_valid:

@@ -102,6 +102,7 @@ class MenuAdmin(TinyMCEMixin, admin.ModelAdmin):
     addable_entries.allow_tags = True
 
     def get_queryset(self, request):
+        # import pdb; pdb.set_trace()
         return Menu.objects.root_nodes()
 
     def render_change_form(self, request, context, add=False,
@@ -223,7 +224,7 @@ class EntrieableAdmin(admin.ModelAdmin):
         See :func:`pagetools.menus.admin.entrieable_admin_get_fields`
         '''
         '''Entrieable get_fields (for monkeypatching)'''
-
+        # import pdb;pdb.set_trace()
         superfunc = super(self.__class__, self).get_fields
         if not getattr(superfunc, "for_entrieable",  False):
             fields = superfunc(request, obj)
@@ -236,6 +237,7 @@ class EntrieableAdmin(admin.ModelAdmin):
     get_fields.for_entrieable = True
 
     def get_fieldsets(self, request, obj):
+        # import pdb;pdb.set_trace()
         superfunc = super(self.__class__, self).get_fieldsets
         if not getattr(superfunc, "for_entrieable",  False):
             self.fieldsets = superfunc(request, obj)

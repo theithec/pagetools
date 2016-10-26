@@ -27,7 +27,7 @@ def get_areas_for_type(pagetype, contextdict, tmpdict=None):
             return
 
         return get_areas_for_type(pagetype, contextdict, tmpdict)
-    tas = TypeArea.objects.lfilter(type=pagetype)
+    tas = TypeArea.objects.lfilter(pagetype=pagetype)
     for ta in tas:
         if tmpdict.get(ta.area) is not None:
             continue

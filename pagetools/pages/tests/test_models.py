@@ -13,7 +13,7 @@ from django.conf import settings
 settings.IS_TEST = True
 
 
-class TC1Tests(TestCase):
+class PageTests(TestCase):
     def setUp(self):
         self.username = 'admin'
         self.email = 'test@test.com'
@@ -23,7 +23,12 @@ class TC1Tests(TestCase):
             self.email,
             self.password)
         self.admin.save()
-        self.page = Page.objects.get_or_create(title='p1', slug="p1")[0]
+        self.page = Page.objects.create(
+            title='p1',
+            slug="p1",
+            included_form=list(Page.includable_forms.keys())[0]
+        )
+
 
     def test_title(self):
         self.assertEqual(self.page.title, 'p1')

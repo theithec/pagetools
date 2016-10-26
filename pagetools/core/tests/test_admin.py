@@ -6,15 +6,21 @@ import django.conf
 
 from pagetools.core.admin import *
 
+class TestMediaMixin(object):
+    """Check required static files"""
 
-class TestAdminStaticFiles(TestCase):
-    """Check if app contains required static files"""
     def test_media(self):
-        js = TinyMCEMixin.Media.js
+        js = self.clz.Media.js
         for f in js:
             p = finders.find(f[8:])
             # self.assertTrue(staticfiles_storage.exists(p))
             self.assertTrue(os.path.exists(p))
+
+
+class TestAdminStaticFiles(TestMediaMixin, TestCase):
+    def __init__(self, *args, **kwargs):
+        self.clz = TinyMCEMixin
+        super().__init__(*args, **kwargs)
 
 '''
 # too complicated

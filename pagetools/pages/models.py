@@ -52,7 +52,7 @@ class IncludedEmailForm(IncludedForm):
     class Meta:
         abstract = True
 
-
+'''
 class DynFormField(models.Model):
 
     field_for_type = {
@@ -120,7 +120,7 @@ class DynFormField(models.Model):
         verbose_name_plural = _('Dynamic Form Fields')
         ordering = ['position']
         abstract = True
-
+'''
 
 class AuthPage(models.Model):
     login_required = models.BooleanField(_('Login required'), default=False)
@@ -159,7 +159,7 @@ class BasePage(IncludedEmailForm, AuthPage, PagelikeModel):
 class Page(BasePage):
     pass
 
-
+'''
 class PageDynFormField(DynFormField):
     form_containing_model = models.ForeignKey(
         Page,
@@ -169,7 +169,7 @@ class PageDynFormField(DynFormField):
     class Meta:
         verbose_name = _("Form field")
         verbose_name_plural = _("Additional form fields")
-
+'''
 
 class PageBlockMixin(models.Model):
     content = models.TextField(_('Content'), blank=True)

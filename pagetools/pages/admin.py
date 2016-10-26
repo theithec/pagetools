@@ -14,9 +14,9 @@ from grappelli.forms import GrappelliSortableHiddenMixin
 
 from pagetools.core.admin import PagelikeAdmin
 from pagetools.menus.admin import EntrieableAdmin
-from pagetools.pages.models import Page, DynFormField, PageDynFormField
+from pagetools.pages.models import Page # , DynFormField, PageDynFormField
 
-
+'''
 class DynFieldInlineFormset(forms.models.BaseInlineFormSet):
 
     def clean(self):
@@ -43,7 +43,7 @@ class PageDynFieldAdmin(DynFieldAdmin):
     sortable_field_name = "position"
     extra = 1
     formset = DynFieldInlineFormset
-
+'''
 
 class BasePageAdmin(EntrieableAdmin, PagelikeAdmin):
     readonly_fields = ('status_changed',)

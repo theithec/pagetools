@@ -32,10 +32,11 @@ class AdminTests(TestCase):
              'slug': slug,
              'content': content,
              'status': status,
-             'dynformfields-TOTAL_FORMS': 1,
-             'dynformfields-INITIAL_FORMS': 0
+             #'dynformfields-TOTAL_FORMS': 1,
+             #'dynformfields-INITIAL_FORMS': 0
              }
         )
+        # self.assertEqual(False, True)
         return response.status_code
 
     def test_add_page(self):

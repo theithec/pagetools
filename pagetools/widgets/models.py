@@ -102,23 +102,23 @@ class PageTypeDescription(LangModel):
 class TypeArea(LangModel):
 
     area = models.CharField(max_length=64, choices=sorted(settings.AREAS))
-    type = models.ForeignKey(PageType)
+    pagetype = models.ForeignKey(PageType)
     objects = LangManager()
 
-    def full_clean(self, *args, **kwargs):
+    def clean(self, *args, **kwargs):
+        super().clean(*args, **kwargs)
         f = TypeArea.objects.filter(
-            area=self.area, type=self.type, lang=''
+            area=self.area, pagetype=self.pagetype, lang=''
         ).exclude(pk=self.pk)
         if f:
             raise ValidationError({'__all__': ('Language Error',)})
-        return super(TypeArea, self).full_clean(*args, **kwargs)
 
     def __str__(self):
-        return "%s_%s%s" % (self.area, self.type,
+        return "%s_%s%s" % (self.area, self.pagetype,
                             ("_%s" % self.lang if self.lang else ""))
 
     class Meta:
-        unique_together = ('area', 'type', 'lang')
+        unique_together = ('area', 'pagetype', 'lang')
         verbose_name = _("Pagetype-Area")
         verbose_name_plural = _("Pagetype-Areas")
 
