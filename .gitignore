@@ -16,10 +16,13 @@ pagetoolsdemo1/.coverage
 META-INF
 build.properties
 .ropeproject/
-.ropeproject/*	
+.ropeproject/*
 .django-setup
 pagetoolsdemo1/db.sqlite3
 pagetoolsdemo1/debug.log
 pagetoolsdemo1/htmlcov/
 pagetoolsdemo1/media/
 README.html
+docs/_build
+docs/mymake
+
