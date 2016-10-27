@@ -12,7 +12,6 @@ class MenuFormTests(TestCase):
     def test_add_menu(self):
         menuaddurl = urlresolvers.reverse('admin:menus_menu_add', args=[])
         response = self.client.post(menuaddurl, {'title': 'Testmenu1'})
-        print("MENU ADD", response.status_code)
         self.assertTrue(response.status_code in (200, 302))
 
     def test_menuchildrenwidgets(self):

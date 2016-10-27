@@ -123,8 +123,6 @@ class MenuAdminTests(TestCase):
         ca = CA(model=ConcretePublishableLangModel, admin_site=self.site)
         c = ConcretePublishableLangModel.objects.create(foo="x")
         m = Menu.objects.add_root(title="Menu1")
-        print("CLZ", dir(CA.__dict__))
-        print("CLZ2", c.__class__, c.__module__)
         self.assertTrue(ca.get_fields({}, c), [])
         self.assertTrue(ca.get_fieldsets({}, c), [])
         F = CA.form
@@ -148,6 +146,4 @@ class MenuAdminTests(TestCase):
         data['status_changed_1'] = "23:00"
         # import pdb; pdb.set_trace()
         response = self.client.post(adminurl, data)
-        print("CONT\n", response.content)
-        #print("\n", data)
         self.assertTrue(response.status_code in (200, 302))

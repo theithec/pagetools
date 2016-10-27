@@ -83,7 +83,7 @@ class TypeAreaAdmin(admin.ModelAdmin):
 
     def get_readonly_fields(self, request, obj=None):
             if obj:
-                return ['area', 'type']
+                return ['area', 'pagetype']
             else:
                 return []
                                             #

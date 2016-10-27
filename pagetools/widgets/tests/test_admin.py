@@ -12,7 +12,8 @@ from django.contrib import admin
 from django.test.testcases import TestCase
 
 from pagetools.core.utils import get_adminedit_url, get_adminadd_url
-from pagetools.widgets.models import (TypeArea, PageType)
+from pagetools.widgets.models import (TypeArea, PageType, WidgetInArea,
+                                      ContentWidget)
 
 
 class TypeAreaAdminTests(TestCase):
@@ -25,7 +26,7 @@ class TypeAreaAdminTests(TestCase):
         #self.typearea = TypeArea.objects.create(
         #    type=self.pagetype, area="sidebar")
 
-    def _test_add(self):
+    def _test_add_typearea(self):
         response = self.client.post(
             get_adminadd_url(TypeArea),
             {
@@ -40,9 +41,36 @@ class TypeAreaAdminTests(TestCase):
         )
         self.assertEqual(response.status_code, 200)
 
+    def _test_add_contentwidget(self):
+        response = self.client.post(
+            get_adminadd_url(ContentWidget),
+            {
+                'name': 'name1',
+                'content': 'txt1',
+            },
+            follow=True
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            len(ContentWidget.objects.filter(name="name1")),
+            1)
+
+
+
+
     def test_edit(self):
-        self._test_add()
+        self._test_add_typearea()
+        self._test_add_contentwidget()
         typearea = TypeArea.objects.get(
             pagetype=self.pagetype, area="sidebar")
-        response = self.client.get(get_adminedit_url(typearea))
+        adminurl = get_adminedit_url(typearea)
+        response = self.client.get(adminurl)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(str(typearea), "sidebar_base")
+        data = typearea.__dict__
+        data.update({
+            'widgets-TOTAL_FORMS':1,
+            'widgets-INITIAL_FORMS':1,
+        })
+        #response = self.client.post(adminurl, **data)
         self.assertEqual(response.status_code, 200)

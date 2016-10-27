@@ -10,12 +10,13 @@ from django.test.testcases import TestCase
 
 from django.utils.text import slugify
 
+from pagetools.pages.models import Page
 
 class AdminTests(TestCase):
 
     def setUp(self):
         self.client = Client()
-        self.admin = User.objects.create_superuser('admin', 'q@w.de', 'alice')
+        self.admin = User.objects.create_superuser('admin', 'q@w.de', 'password')
         self.addpageurl = urlresolvers.reverse('admin:pages_page_add', args=[])
         self.pages_data = [
             ('P1', 'Foo', True),
@@ -44,3 +45,4 @@ class AdminTests(TestCase):
         for data in self.pages_data:
             c = self._add_page(data)
             self.assertTrue(c in (200, 302))
+        self.assertEqual(len(Page.objects.all()), len(self.pages_data))

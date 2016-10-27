@@ -1,15 +1,9 @@
-{% extends "sections/base_node.html" %}
+{% extends "base.html" %}
 {% load fb_versions %}
-
-{% block node %}
-<div class="columns small-1 medium-3">
-<article class="callout callout-{{ object.classes }}">
+{% block main %}
+<article class="{{ object.classes }}">
 	<h4>{{object.title}}</h4>
-	{{ object.teaser|safe}}
-	<img src="{% version object.image 'small' %}" />
-	<p>
-	<a href="{{ object.get_absolute_url }}" class="button small info">Read more</a>
-	</p>
+	{{ object.content|safe}}
+	<img src="{% version object.image 'large' %}" />
 </article>
-</div>
-{% endblock node %}
+{% endblock main %}

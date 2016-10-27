@@ -143,7 +143,7 @@ class WidgetInArea(models.Model):
         return h
 
     def __str__(self):
-        return "%s@%s" % (self.content_object, self.typearea.type)
+        return "%s@%s" % (self.content_object, self.typearea.pagetype)
 
     class Meta:
         ordering = ['position']

@@ -5,7 +5,6 @@ from django.db import models
 
 from pagetools.sections.models import PageNode
 from pagetools.sections.admin import BasePageNodeAdmin
-# from .models import TSectionPage1
 
 class MockRequest(object):
     pass

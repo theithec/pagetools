@@ -1,3 +1,14 @@
+.. |travisbadge| image:: https://travis-ci.org/theithec/pagetools.svg?branch=master
+.. _travisbadge: https://travis-ci.org/theithec/pagetools
+
+
+.. |coverallsbadge| image:: https://coveralls.io/repos/github/theithec/pagetools/badge.svg?branch=master
+.. _coverallsbadge: https://coveralls.io/github/theithec/pagetools/
+
+
+|travisbadge|_ |coverallsbadge|_
+
+
 Welcome to django-pagetools's documentation!
 ============================================
 
