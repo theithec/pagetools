@@ -58,6 +58,7 @@ class MenuModule(DashboardModule):
                 'url': reverse("admin:menus_menu_change", args=[self.menu.pk])
             }
             nested_children = self.menu.children_list(for_admin=True)
+            # print("NEC", nested_children)
             context['existing'] = self.add_entrychildren(nested_children)
             emods = entrieable_models()
             for em in emods:

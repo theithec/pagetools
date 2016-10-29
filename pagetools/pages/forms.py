@@ -22,6 +22,7 @@ from .settings import MAILFORM_RECEIVERS, MAILFORM_SENDER
 import logging
 logger = logging.getLogger(__name__)
 
+'''
 class DynMultipleChoiceField(forms.MultipleChoiceField):
 
     def __init__(self, **kwargs):
@@ -36,7 +37,7 @@ class DynMultipleChoiceField(forms.MultipleChoiceField):
             'widget': widgets.CheckboxSelectMultiple
         })
         super(DynMultipleChoiceField, self).__init__(**kwargs)
-
+'''
 
 class MailReceiverField(object):
     help_text = _('comma separated list of e-mails')
@@ -51,6 +52,7 @@ class MailReceiverField(object):
             raise ValidationError(self.help_text)
 
 
+'''
 class BaseDynForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
@@ -80,9 +82,10 @@ class BaseDynForm(forms.Form):
         else:
             self.msg = (messages.ERROR, _('An error occured'))
         return _is_valid
+'''
 
 
-class SendEmailForm(BaseDynForm):
+class SendEmailForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         self.email_receivers = kwargs.pop('email_receivers', None)
@@ -99,7 +102,7 @@ class SendEmailForm(BaseDynForm):
         except AttributeError:
             logger.error("no email receivers for %s" % self)
 
-        _is_valid = super(SendEmailForm, self).is_valid()
+
     def is_valid(self, **kwargs):
         _is_valid = super(SendEmailForm, self).is_valid()
         if _is_valid:

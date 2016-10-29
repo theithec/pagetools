@@ -115,7 +115,7 @@ Call the menu in your template::
         </ul>
 
 
-`MainMenu` is the internal name of the menu, `menuykeys` is a contextvariable set to the slugs of the menuentries related to the current page (if any).
+`MainMenu` is the internal name of the menu, `menuykeys` is a contextvariable set to the slugs of the menuentries related to the current page (if any); it's used to set ``class="active"`` to these entries.
 
 Some notes:
 
@@ -125,7 +125,7 @@ Some notes:
 - Use a `Link` to "#" if you want a dummy parent entry.
 - The menu template may be overwritten in settings.
 - The pagetools templates expects a `base.html` template with `{% block main %}`, `{% block css %}` and `{% block js %}`.
-- If the slug of the page is "start", the `pages.IndexView` will use it.
+- If the slug of the page is "start", the `pages.IndexView` will show it. Therefore only one is allowed.
 - Most pagetools models have a language field. If you don't need different languages just ignore them.
 
 
@@ -163,7 +163,7 @@ You could create a new `Pagetype-Area` with a new `Pagetype`, e.g. named 'specia
 Some notes:
 
 - Pagetypes can be nested, however this is only useful if you have multiple areas (e.g. sidebar and header).
-- Creating custom widget classes is easy. If you have a templatetag that doesn't require arguments, you can just add it
+- Creating custom widget classes is easy. A templatetag that doesn't require arguments can be added
   to the `PT_TEMPLATETAG_WIDGETS` setting.
 - To enable the whole thing, somewhere `pagetools.widgets.utils.get_areas_for_type("pagetypename", kwargs)` must be integrated
   in the template context(e.g. as `areas`) where `kwargs` will be passed to the included  widgets `get_content` call.

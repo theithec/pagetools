@@ -15,9 +15,11 @@ class SelectedMenuentriesMixin(object):
         return kwargs
 
     def get_menukey(self):
+        # print("\n\nS", self, self.get_object())
         try:
             return self.get_object().slug
         except AttributeError:
+            import pdb; pdb.set_trace()
             try:
                 return self.menukey
             except AttributeError:

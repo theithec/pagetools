@@ -106,8 +106,8 @@ def activate(request, key):
         messages.add_message(request, messages.INFO,  _('activation: ok'))
 
         return render(request, subs_settings.MSG_BASE_TEMPLATE,
-                      {'msg': _('activation: ok')}
-                      )
+            {'msg': _('activation: ok')}
+        )
     raise Http404()
 
 
@@ -117,5 +117,5 @@ def unsubscribe(request, key):
         s.delete()
         messages.add_message(request, messages.INFO,  _('unsubscribe: ok'))
         return render(request,
-                      subs_settings.MSG_BASE_TEMPLATE,
-                      {'msg': _('unsubscribe: ok')})
+            subs_settings.MSG_BASE_TEMPLATE,
+            {'msg': _('unsubscribe: ok')})

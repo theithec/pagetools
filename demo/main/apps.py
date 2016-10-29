@@ -9,6 +9,7 @@ def question_get_absolute_url(self):
 
 class MainConfig(AppConfig):
     name = 'main'
+
     def ready(self):
         import polls.admin
         from polls.views import DetailView
@@ -21,7 +22,7 @@ class MainConfig(AppConfig):
         from pagetools.pages.models import Page
         import pagetools.search
 
-        # To allow questions to be menu entries, tweak their admin:
+        # To enable questions to be added easily to a menu, tweak their admin:
         make_entrieable_admin(polls.admin.QuestionAdmin)
 
         # (But) ...

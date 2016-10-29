@@ -55,7 +55,7 @@ All question detail pages would have no highlightning for the corresponding menu
 on the list item).
 
 The menu tag expects a parameter ``menukeys`` - a string or a list - that indicates which entries are active.
-For pagetype models this is done in the ```pagetools.menus.views.SelectedMenuentriesMixin```,
+For pagetools's models this is done in the ```pagetools.menus.views.SelectedMenuentriesMixin```,
 so a subclass of ´´polls.views.DetailView´´ that inherits the mixin would be one way.
 
 Another would one is to overwrite the templates for the questions detail and index view.
