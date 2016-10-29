@@ -31,13 +31,11 @@ class Views2Test(MenuDataTestCase):
         self.menu.children.add_child(
             parent=self.menu,
             content_object=qv,
-            title="Polls234",
+            title="Polls",
             enabled=True
         )
-        print ("\n\nMC", self.menu.children_list(for_admin=True))
         response = self.client.get(
             reverse("polls:index"))
-        print("r2", response.content)
 
         self.assertEqual(response.status_code, 200)
 

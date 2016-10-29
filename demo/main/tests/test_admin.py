@@ -3,6 +3,7 @@ from pagetools.core.utils import get_adminadd_url, get_adminedit_url
 
 from main.models import Article, Section, SectionList
 from main.tests import SectionsDataTestCase
+import pagetools.sections.dashboard_modules
 
 class AdminTest(SectionsDataTestCase):
 
@@ -23,4 +24,13 @@ class AdminTest(SectionsDataTestCase):
         response = self.client.get(get_adminedit_url(self.sectionlist1))
         self.assertTrue(response.status_code, 200)
 
+    def test_adminnodeview(self):
+        pagetools.sections.dashboard_modules.PageNodesModule.model = SectionList
+        #  print("ALL", SectionList.objects.all())
+        response = self.client.get(
+            '/adminnodes/%s/' % self.sectionlist1.slug,
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest'
+        )
+        # self.assertTrue(str(response.content).startswith("<ol"))
+        self.assertTrue(response.status_code, 200)
 
