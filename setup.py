@@ -21,7 +21,6 @@ setup(
         'django-filebrowser==3.7.2',
         'django-mptt==0.8.6',
         'django-crispy-forms==1.6.0',
-        #  'awesome-slugify=',
         'django-model-utils==2.5.2',
         'Pillow==3.3.1',
         'beautifulsoup4==4.5.1',

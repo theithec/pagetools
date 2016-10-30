@@ -4,6 +4,8 @@ Created on 15.12.2013
 
 @author: Tim Heithecker
 '''
+from django.contrib.contenttypes.models import ContentType
+
 from django.contrib.auth.models import User
 from django.core.urlresolvers import resolve
 
@@ -35,7 +37,7 @@ class TypeAreaAdminTests(TestCase):
                 'area': "sidebar",
                 'widgets-TOTAL_FORMS':1,
                 'widgets-INITIAL_FORMS':0,
-                'save': True
+                # 'save': True
             },
             follow=True
         )
@@ -56,8 +58,6 @@ class TypeAreaAdminTests(TestCase):
             1)
 
 
-
-
     def test_edit(self):
         self._test_add_typearea()
         self._test_add_contentwidget()
@@ -67,10 +67,16 @@ class TypeAreaAdminTests(TestCase):
         response = self.client.get(adminurl)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(str(typearea), "sidebar_base")
+        cw = ContentWidget.objects.get(name="name1")
         data = typearea.__dict__
         data.update({
             'widgets-TOTAL_FORMS':1,
-            'widgets-INITIAL_FORMS':1,
+            'widgets-INITIAL_FORMS':0,
+            # 'widgets-MAX_NUM_FORMS':1000,
+            'add_objs': '%s_%s' % (
+                ContentType.objects.get_for_model(cw).pk,
+                cw.pk)
+
         })
-        #response = self.client.post(adminurl, **data)
+        response = self.client.post(adminurl,data, follow=True)
         self.assertEqual(response.status_code, 200)

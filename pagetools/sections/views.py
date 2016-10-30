@@ -16,6 +16,7 @@ from pagetools.widgets.views import WidgetPagelikeMixin
 
 class BaseNodeView(DetailView):
     model = PageNode
+    template_suffix = ""
 
     def get_queryset(self, *args, **kwargs):
         return self.model.public.lfilter(user=self.request.user)
@@ -25,8 +26,11 @@ class BaseNodeView(DetailView):
         return o.get_real_obj()
 
     def get_template_names(self):
-        return self.template_name or get_template_names_for_obj(self.object) or \
+        return (
+            self.template_name or
+            get_template_names_for_obj(self.object, self.template_suffix) or
             super(BaseNodeView, self).get_template_names()
+        )
 
     def get_context_data(self, **kwargs):
         context = super(BaseNodeView, self).get_context_data(**kwargs)
@@ -49,6 +53,7 @@ class BaseAjaxNodeViewMixin(AJAXMixin):
         return context
 
 class BaseAjaxNodeView(BaseAjaxNodeViewMixin, BaseNodeView):
+    template_suffix = "_ajax"
     pass
 
 

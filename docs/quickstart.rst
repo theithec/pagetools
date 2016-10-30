@@ -4,6 +4,16 @@
 Quickstart
 ==========
 
+
+Demo
+~~~~
+
+Clone the project.
+Go to the `demo` dir.
+
+Run ``./manage.py createdemodata``, ``./manage.py runserver``
+
+
 Setup
 ~~~~~
 
@@ -60,6 +70,7 @@ Add the urls to your project::
 
 
 .. _dashboard :
+
 
 Configuring the Dashboard
 ^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -205,9 +216,5 @@ Sections
 ~~~~~~~~
 
 This is for nested content, e.g. to build a typical singe-page structure with sections like portfolio, team, and contact.
-
-
-Go to "Your Menu" -> Add -> Section-Page. Give the page a title and ``Save and continue editing``.
-In the  ``Positioned Content``-area click on the "+" to add a section. Give the section also a title and save and continue.
-In the section you can add articles.
+See the demo for an example.
 

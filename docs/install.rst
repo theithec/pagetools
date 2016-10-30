@@ -3,16 +3,10 @@ Installation
 
 Install from github::
 
-    pip install -e git+https://theithec/pagetools.git#0.5
+    pip install -e git+https://theithec/pagetools.git#0.5.2
 
 
+With demo::
 
-Requirements
-~~~~~~~~~~~~
-
-- Django 1.9
-
-- See setup.py
-
-- The templates in `pagetools.sections` require django-sekizai.
+    git clone git+https://theithec/pagetools.git#0.5.2
 

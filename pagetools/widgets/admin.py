@@ -137,13 +137,13 @@ class ContentWidgetAdmin(BaseWidgetAdmin, TinyMCEMixin):
 class TemplateTagWidgetAdmin(BaseWidgetAdmin):
 
     def get_readonly_fields(self, request, obj=None):
-            if obj:
-                self.prepopulated_fields = {}
-                return ['renderclasskey']
-            else:
-                self.prepopulated_fields = {"name": ("renderclasskey",)}
-                return []
-                                        #
+        if obj:
+            self.prepopulated_fields = {}
+            return ['renderclasskey']
+        else:
+            self.prepopulated_fields = {"name": ("renderclasskey",)}
+            return []
+                                    #
 admin.site.register(TypeArea, TypeAreaAdmin)
 admin.site.register(ContentWidget, ContentWidgetAdmin)
 admin.site.register(TemplateTagWidget, TemplateTagWidgetAdmin)
