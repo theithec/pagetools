@@ -29,8 +29,7 @@ class TypeMixin(models.Model):
     node_choices = ()
     node_type = models.CharField(
         max_length=128,
-        blank=True,
-        choices=(('dummy', 'dummy'),)
+        blank=True
     )
 
     def __init__(self, *args, **kwargs):

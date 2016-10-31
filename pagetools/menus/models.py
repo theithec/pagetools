@@ -337,7 +337,7 @@ class Link(AbstractLink):
 
 
 class ViewLink(AbstractLink):
-    name = models.CharField(_('Name'), max_length=255, choices=(("a", "1"),))
+    name = models.CharField(_('Name'), max_length=255)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
