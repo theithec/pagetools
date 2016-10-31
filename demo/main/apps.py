@@ -1,11 +1,26 @@
 from django.apps import AppConfig
 from django.utils import timezone
 from django.core.urlresolvers import reverse
+from django.db.models.signals import post_save
+
+from django.dispatch import receiver
 
 # This will be added to ``polls.models.Question``
 def question_get_absolute_url(self):
     return reverse("polls:detail", args=(self.pk,))
 
+
+@receiver(post_save)
+def questions_post_savecallback(sender, **kwargs):
+    from pagetools.subscriptions.utils import to_queue
+    if sender.__name__ == 'Question' and kwargs['created'] == True:
+        to_queue({
+            'title': 'New Question',
+            'body': 'There is a great new question: %s.' % (
+                kwargs['instance'].question_text )
+        })
+
+    # print("Request finished!", sender, kwargs)
 
 class MainConfig(AppConfig):
     name = 'main'

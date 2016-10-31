@@ -68,6 +68,7 @@ Add the urls to your project::
         ]
 
 
+Note: Most pagetools models have a language field. If you don't need different languages just ignore them.
 
 .. _dashboard :
 

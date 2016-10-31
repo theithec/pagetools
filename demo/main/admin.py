@@ -6,12 +6,12 @@ from pagetools.menus.admin import EntrieableAdmin, EntrieableForm
 
 from .models import Article, Section, SectionList
 
-@admin.register(SectionList)
-class SectionListAdmin(BasePageNodeAdmin,EntrieableAdmin ):
+# @admin.register(SectionList)
+class MainSectionsAdmin(BasePageNodeAdmin,EntrieableAdmin):
     form = EntrieableForm
-    pass
+    exclude =  ['content_type_pk', 'object_id',]
 
-admin.site.register([Article, Section, ], BasePageNodeAdmin)
+admin.site.register([Article, Section, SectionList], MainSectionsAdmin)
 
 
 

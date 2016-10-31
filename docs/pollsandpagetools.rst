@@ -83,8 +83,17 @@ index.html::
 Note: "pollsindex" is the slugified version of "polls:index", see above.
 
 
+Last thing is using `pagetools.subscriptions` to allow users subscribing for new questions::
 
-
+    @receiver(post_save)
+    def questions_post_savecallback(sender, **kwargs):
+        from pagetools.subscriptions.utils import to_queue
+        if sender.__name__ == 'Question' and kwargs['created'] == True:
+            to_queue({
+                'title': 'New Question',
+                'body': 'There is a great new question: %s.' % (
+                    kwargs['instance'].question_text )
+            })
 
 
 

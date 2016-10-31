@@ -18,7 +18,7 @@ class Views1Test(SectionsDataTestCase):
         response = self.client.get(
             reverse("sections:ajax",
                     kwargs={
-                        'slug': self.sectionlist1.slug,
+                        'slug': self.articles[0].slug,
                     }), HTTP_X_REQUESTED_WITH='XMLHttpRequest')
 
         self.assertEqual(response.status_code, 200)
