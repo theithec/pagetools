@@ -135,7 +135,7 @@ class QueuedEmail(LangModel):
                             "%s" % self.subject,
                             self.body.replace(
                                 '_unsubscribe_path_',
-                                'unsubscribe/%s' % unsubscribe_path),
+                                '/unsubscribe/%s' % unsubscribe_path),
                             subs_settings.NEWS_FROM,
                             [to],
                             connection=conn,
