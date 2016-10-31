@@ -21,7 +21,7 @@ class SubscribeNode(template.Node):
 
 
 @register.tag(name="subscribe_widget")
-def do_subscribte_node(parser, token):
+def do_subscribe_node(parser, token):
     return SubscribeNode()
 
 
