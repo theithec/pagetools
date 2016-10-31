@@ -66,7 +66,7 @@ were modified by :func:`pagetools.menus.admin.make_entrieable_admin` are shown t
 Link
 ^^^^
 
-:class:`pagetools.menus.models.Link`. Just a simple link to anything.
+:class:`pagetools.menus.models.Link`.  Just a simple link to anything.
 
 
 ViewLink
@@ -78,14 +78,14 @@ To be shown in the corresponding admin choice field, somewhere
 so that could be done directly in a `urls.py`::
 
         patterns = [
-                (r'/foo', MyView.as_view(), name=entriebale_reverse_name("Foo")),
+            (r'/foo', MyView.as_view(), name=entriebale_reverse_name("Foo")),
         ]
 
 With an app name in the urls::
 
         app_name = "myapp"
         patterns = [
-                (r'/foo', MyView.as_view(), name=entriebale_reverse_name("Foo", app_name="myapp")),
+            (r'/foo', MyView.as_view(), name=entriebale_reverse_name("Foo", app_name="myapp")),
         ]
 
 

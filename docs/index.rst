@@ -18,6 +18,7 @@ Contents:
    pagelike
    menus
    pages
+   widgets
    :ref:`modindex`
 
 

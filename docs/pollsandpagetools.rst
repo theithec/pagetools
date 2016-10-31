@@ -21,20 +21,13 @@ The only changes i made to the version from the end of the tutorial  was wrappin
 The polls app in the example is regarded as a third party app, no further changes will be made to it,
 though one may have to overwrite the templates to add a bit of information, but that's a custom fashion.
 
+The demo contains a `main` app where the integration is done, mostly in the app config:
 
-Continuing from :ref:`dashboard`
-
-
-The demo also contains a `main` app where the integration is done, mostly in the app config:
-
-
-.. literalinclude:: ../demo19/main/apps.py
-
+.. literalinclude:: ../demo/main/apps.py
 
 There is also a templatetag for the latest question in`main`:
 
-.. literalinclude:: ../demo19/main/templatetags.py
-
+.. literalinclude:: ../demo/main/templatetags.py
 
 and it gets registered in the `settings`::
 
@@ -44,19 +37,19 @@ and it gets registered in the `settings`::
     }
 
 
-Now a ``TemplatetagWidget`` with the name 'latest_questions' could be created
+Now a ``TemplatetagWidget`` with the name 'latest_questions' can be created
 and added to a ``PagetypeArea``.
 
-Now a single question could be added to the menu; there is an entry with all children as subentries,
+Integration so far: a single question can be added to the menu; there is an entry with all children as subentries,
 a widget that shows the latest question and questions are searchable.
 
 There is still one problem:
-All question detail pages would have no highlightning for the corresponding menu entry (the ``class="active"`` is missing
+All question detail pages would have no highlighting for the corresponding menu entry (the ``class="active"`` is missing
 on the list item).
 
 The menu tag expects a parameter ``menukeys`` - a string or a list - that indicates which entries are active.
 For pagetools's models this is done in the ```pagetools.menus.views.SelectedMenuentriesMixin```,
-so a subclass of ´´polls.views.DetailView´´ that inherits the mixin would be one way.
+so a subclass of ´´polls.views.DetailView´´ that inherits the mixin would solve this.
 
 Another would one is to overwrite the templates for the questions detail and index view.
 

@@ -104,8 +104,8 @@ Edit `dashboard.py` to include the menu module::
 
 
 
-Create a menu with a page
-~~~~~~~~~~~~~~~~~~~~~~~~~
+Create a menu with a page as entry
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Click on ``Menu not found. Create`` in the Menu Module.
 After ``Save and continue editing`` you can add entries to the menu.
@@ -137,8 +137,7 @@ Some notes:
 - Use a `Link` to "#" if you want a dummy parent entry.
 - The menu template may be overwritten in settings.
 - The pagetools templates expects a `base.html` template with `{% block main %}`, `{% block css %}` and `{% block js %}`.
-- If the slug of the page is "start", the `pages.IndexView` will show it. Therefore only one is allowed.
-- Most pagetools models have a language field. If you don't need different languages just ignore them.
+- If the slug of the page is "start", the `pages.IndexView` will show it.
 
 
 
@@ -147,7 +146,7 @@ Widgets - Create a sidebar
 
 The idea:
 
-1. Some parts of the base template are defined as `areas`. An area may be a sidebar with some boxes or just a background picture.
+1. Some parts of the base template are defined as `areas`. An area may contains widgets. . An area may be a sidebar with some boxes or just a background picture.
    Areas are defined in settings. It make no sense to add areas on the fly because they have to be defined in the template also.
 2. Somewhere in your views or your model or your object you define `pagetypes`.
    Pagetypes may be created dynamically or in code.
