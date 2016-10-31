@@ -1,7 +1,9 @@
 {% extends "base.html" %}
+{% load menus_tags %}
 
 {% block menu %}
-{% include "menutag.html" with menukeys="pollsindex" %}
+{# % include "menutag.html" with menukeys="pollsindex" %#}
+{% menu MainMenu "pollsindex" %}
 {% endblock menu %}
 
 {% block main %}

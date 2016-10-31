@@ -65,7 +65,9 @@ detail.html::
         {% load menus_tags %}
 
         {% block menu %}
-        {% menu "MainMenu" question|slugify %}
+        {% with question|slugify as menukeys %}
+        {% menu "MainMenu" menukeys %}
+        {% endwith %}
         {% endblock menu %}
 
 
