@@ -62,12 +62,9 @@ class PageNode(PagelikeModel):
 
     def get_real_obj(self):
         real = self
-        #try:
         if self.pk:
             clz = ContentType.objects.get_for_id(real.content_type_pk)
             real = clz.model_class().objects.get(pk=real.pk)
-        #except (AttributeError, ContentType.DoesNotExist):
-        #    real = node
         return real
 
     def get_real_child(self, child):
