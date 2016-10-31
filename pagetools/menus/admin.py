@@ -189,7 +189,8 @@ class EntrieableForm(forms.ModelForm):
             label=_('Menus'),
             choices=menus,
             required=False,
-            initial=menuroot_ids
+            initial=menuroot_ids,
+            widget=forms.CheckboxSelectMultiple
         )
 
     def clean(self):
