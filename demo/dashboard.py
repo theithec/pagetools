@@ -23,29 +23,9 @@ class CustomIndexDashboard(Dashboard):
     """
 
     def init_with_context(self, context):
-        site_name = get_admin_site_name(context)
+        # site_name = get_admin_site_name(context)
         self.children.append(MenuModule(column=1))
         self.children.append(PageNodesModule(column=1))
-        # append a group for "Administration" & "Applications"
-        self.children.append(modules.Group(
-            _('Group: Administration & Applications'),
-            column=1,
-            collapsible=True,
-            children = [
-                modules.AppList(
-                    _('Administration'),
-                    column=1,
-                    collapsible=False,
-                    models=('django.contrib.*',),
-                ),
-                modules.AppList(
-                    _('Applications'),
-                    column=1,
-                    css_classes=('collapse closed',),
-                    exclude=('django.contrib.*',),
-                )
-            ]
-        ))
 
         # append an app list module for "Applications"
         self.children.append(modules.AppList(
@@ -53,7 +33,7 @@ class CustomIndexDashboard(Dashboard):
             collapsible=True,
             column=1,
             css_classes=('collapse closed',),
-            exclude=('django.contrib.*',),
+            exclude=('django.contrib.*','pagetools.sections.*'),
         ))
 
         # append an app list module for "Administration"
