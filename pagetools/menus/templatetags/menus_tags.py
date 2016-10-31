@@ -12,7 +12,7 @@ register = template.Library()
 
 class MenuRenderer(template.Node):
     def __init__(self, menukeys, menu_title):
-        self.menukeys = template.Variable("menukeys")
+        self.menukeys = template.Variable(menukeys)
         self.menu_title = menu_title
 
     def render(self, context):
