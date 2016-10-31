@@ -12,17 +12,17 @@ from pagetools.subscriptions.forms import SubscribeForm
 register = template.Library()
 
 
-class NewsSubscribtionNode(template.Node):
+class SubscribeNode(template.Node):
 
     def render(self, context):
-        t = template.loader.get_template('subscriptions/block_subscribtion.html')
+        t = template.loader.get_template('subscriptions/block_subscription.html')
         context['sform'] = SubscribeForm()
         return t.render(context)
 
 
 @register.tag(name="subscribe_widget")
-def do_news_subscribtion(parser, token):
-    return NewsSubscribtionNode()
+def do_subscribte_node(parser, token):
+    return SubscribeNode()
 
 
 

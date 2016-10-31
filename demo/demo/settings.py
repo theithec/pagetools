@@ -174,7 +174,7 @@ GRAPPELLI_INDEX_DASHBOARD = 'dashboard.CustomIndexDashboard'
 
 PT_TEMPLATETAG_WIDGETS = {
     'subscribe':
-        'pagetools.subscriptions.templatetags.subscriptions_tags.NewsSubscribtionNode',
+        'pagetools.subscriptions.templatetags.subscriptions_tags.SubscribeNode',
     'latest_question': 'main.templatetags.LatestQuestionNode',
 }
 PT_MENU_TEMPLATE = 'foundation6_nav_menu.html'
