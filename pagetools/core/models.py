@@ -2,7 +2,7 @@
 '''
 
 import warnings
-
+import django
 from django.conf import settings
 from django.db import models
 from django.utils.translation import ugettext_lazy as _, get_language
@@ -103,7 +103,33 @@ class PublishableLangModel(LangModel, StatusModel):
     class Meta:
         abstract = True
 
+class USlugField(models.CharField):
+    '''Slugfield that allows unicode'''
+    default_validators = [validate_unicode_slug]
 
+
+class PagelikeModel(TimeStampedModel, PublishableLangModel):
+    '''This may everything that inclines a detail_view'''
+
+    title = models.CharField(_('Title'), max_length=255)
+    if django.VERSION<"1.9":
+        slug = USlugField(_('Slug'), max_length=255)
+    else:
+        slug = SlugField(_('Slug'), max_length=255)
+    description = models.CharField(
+        _('Description'),
+        max_length=139,
+        help_text='''Description (for Metatag/seo)''', blank=True)
+
+
+    def get_absolute_url(self):
+        return '/%s' % self.slug
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        a
 class PagelikeModel(TimeStampedModel, PublishableLangModel):
     '''
     This could be a base model for everything that inclines a detail_view
@@ -115,7 +141,11 @@ class PagelikeModel(TimeStampedModel, PublishableLangModel):
     '''
 
     title = models.CharField(_('Title'), max_length=255)
-    slug = models.SlugField(_('Slug'), max_length=255, allow_unicode=True)
+    slug = None
+    if django.VERSION<"1.9":
+        slug = models.USlugField(_('Slug'), max_length=255)
+    else:
+        slug = models.SlugField(_('Slug'), max_length=255, allow_unicode=True)
     description = models.CharField(
         _('Description'),
         max_length=139,
