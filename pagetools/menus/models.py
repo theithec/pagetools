@@ -377,7 +377,11 @@ class AutoPopulated(AbstractLink):
             ('%s' % k, '%s' % k)
             for k in pagetools.menus.utils._entrieable_auto_children
         ))
-        self._meta.get_field('name').choices = choices
+        # import sys; sys.exit(django.VERSION)
+        if django.VERSION < (1,9):
+            self._meta.get_field('name')._choices = choices
+        else:
+            self._meta.get_field('name').choices = choices
 
     def get_children(self, parent):
         return pagetools.menus.utils._auto_children_funcs[self.name]()

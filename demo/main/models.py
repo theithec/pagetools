@@ -9,7 +9,7 @@ class Article(PageNode):
     content = models.TextField("Content")
     teaser = models.TextField("Teaser")
     image = FileBrowseField("Image",max_length=200)
-    allowed_children_classes = ["main.models.Article",]
+    allowed_children_classes = ["main.models.Article", "main.models.SectionList"]
     objects = PageNodeManager()
 
     def get_absolute_url(self):
