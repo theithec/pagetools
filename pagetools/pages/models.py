@@ -2,6 +2,7 @@
 
 @author Tim Heithecker
 '''
+import django
 from django import forms
 from django.core.urlresolvers import reverse
 from django.db import models
@@ -33,10 +34,13 @@ class IncludedForm(models.Model):
 
         super(IncludedForm, self).__init__(*args, **kwargs)
         #self._meta.get_field_by_name('included_form')[0]._choices = [
-        self._meta.get_field('included_form').choices = [
-        #self.included_form.choices = [
-            (i, _(i)) for i, j in list(self.includable_forms.items())
-        ]
+        choices = [
+            (i, _(i)) for i, j in list(self.includable_forms.items())]
+        if django.VERSION < (1, 9):
+            self._meta.get_field('included_form')._choices = choices
+            #self.included_form._choices = choices
+        else:
+            self._meta.get_field('included_form').choices = choices
 
     class Meta:
         abstract = True

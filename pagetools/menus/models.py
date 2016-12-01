@@ -6,7 +6,7 @@ Created on 14.12.2013
 
 from collections import defaultdict
 import logging
-
+import django
 from django import template
 from django.core import urlresolvers
 from django.core.exceptions import ValidationError
@@ -345,7 +345,11 @@ class ViewLink(AbstractLink):
             ('%s' % k, '%s' % k)
             for k in pagetools.menus.utils._entrieable_reverse_names
         ))
-        self._meta.get_field('name').choices = choices
+        if django.VERSION < (1, 9):
+            self._meta.get_field('name')._choices = choices
+        else:
+            self._meta.get_field('name').choices = choices
+
 
     def get_absolute_url(self):
         return reverse(self.name)

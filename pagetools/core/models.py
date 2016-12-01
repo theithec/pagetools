@@ -103,33 +103,39 @@ class PublishableLangModel(LangModel, StatusModel):
     class Meta:
         abstract = True
 
-class USlugField(models.CharField):
-    '''Slugfield that allows unicode'''
-    default_validators = [validate_unicode_slug]
+
+USlugField = None
+
+if django.VERSION<(1, 9):
+# c&p from django1.9
+    from django.core.validators import RegexValidator
+    import re
+    import six
+    from django.utils.functional import SimpleLazyObject
 
 
-class PagelikeModel(TimeStampedModel, PublishableLangModel):
-    '''This may everything that inclines a detail_view'''
+    def _lazy_re_compile(regex, flags=0):
+        """Lazily compile a regex with flags."""
+        def _compile():
+            # Compile the regex if it was not passed pre-compiled.
+            if isinstance(regex, six.string_types):
+                return re.compile(regex, flags)
+            else:
+                assert not flags, "flags must be empty if regex is passed pre-compiled"
+                return regex
+        return SimpleLazyObject(_compile)
+    slug_unicode_re = _lazy_re_compile(r'^[-\w]+\Z', re.U)
+    validate_unicode_slug = RegexValidator(
+        slug_unicode_re,
+        _("Enter a valid 'slug' consisting of Unicode letters, numbers, underscores, or hyphens."),
+        'invalid'
+    )
+    class _USlugField(models.CharField):
+        '''Slugfield that allows unicode'''
+        default_validators = [validate_unicode_slug]
+    USlugField = _USlugField
 
-    title = models.CharField(_('Title'), max_length=255)
-    if django.VERSION<"1.9":
-        slug = USlugField(_('Slug'), max_length=255)
-    else:
-        slug = SlugField(_('Slug'), max_length=255)
-    description = models.CharField(
-        _('Description'),
-        max_length=139,
-        help_text='''Description (for Metatag/seo)''', blank=True)
 
-
-    def get_absolute_url(self):
-        return '/%s' % self.slug
-
-    def __str__(self):
-        return self.title
-
-    class Meta:
-        a
 class PagelikeModel(TimeStampedModel, PublishableLangModel):
     '''
     This could be a base model for everything that inclines a detail_view
@@ -142,8 +148,8 @@ class PagelikeModel(TimeStampedModel, PublishableLangModel):
 
     title = models.CharField(_('Title'), max_length=255)
     slug = None
-    if django.VERSION<"1.9":
-        slug = models.USlugField(_('Slug'), max_length=255)
+    if django.VERSION<(1, 9):
+        slug = USlugField(_('Slug'), max_length=255)
     else:
         slug = models.SlugField(_('Slug'), max_length=255, allow_unicode=True)
     description = models.CharField(

@@ -5,6 +5,7 @@ Inheritated models with own fields needs concrete inheritance,
 otherwise a proxy model is sufficient.
 '''
 import warnings
+import django
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.db import models
@@ -25,7 +26,6 @@ class TypeMixin(models.Model):
     '''Pagenodes that differs only in their representation may use the same
     model but different node choices.
     The node choice is is part of the template names'''
-
     node_choices = ()
     node_type = models.CharField(
         max_length=128,
@@ -34,7 +34,10 @@ class TypeMixin(models.Model):
 
     def __init__(self, *args, **kwargs):
         super(TypeMixin, self).__init__(*args, **kwargs)
-        self._meta.get_field('node_type').choices = self.node_choices
+        if django.VERSION < (1, 9):
+            self._meta.get_field('node_type')._choices = self.node_choices
+        else:
+            self.node_type.choices  = self.node_choices
 
     class Meta:
         abstract = True

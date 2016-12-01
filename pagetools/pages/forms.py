@@ -22,7 +22,6 @@ from .settings import MAILFORM_RECEIVERS, MAILFORM_SENDER
 import logging
 logger = logging.getLogger(__name__)
 
-'''
 class DynMultipleChoiceField(forms.MultipleChoiceField):
 
     def __init__(self, **kwargs):
@@ -37,7 +36,6 @@ class DynMultipleChoiceField(forms.MultipleChoiceField):
             'widget': widgets.CheckboxSelectMultiple
         })
         super(DynMultipleChoiceField, self).__init__(**kwargs)
-'''
 
 class MailReceiverField(object):
     help_text = _('comma separated list of e-mails')
