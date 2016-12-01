@@ -21,5 +21,5 @@ urlpatterns = [
          admin_pagenodesview,
          name='admin_pagenodesview'),
     url(r'search/', include('pagetools.search.urls')),
-    url(r'subscribe/', include('pagetools.subscriptions.urls')),
+    url(r'subscribe/', include('pagetools.subscriptions.urls', namespace="subscriptions")),
 ]

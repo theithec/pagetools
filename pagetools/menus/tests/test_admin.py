@@ -16,6 +16,7 @@ from pagetools.core.tests.test_models import ConcretePublishableLangModel
 
 from pagetools.core.utils import get_adminedit_url
 
+
 class CPMAdmin(admin.ModelAdmin):
     model = ConcretePublishableLangModel
 admin.site.register(ConcretePublishableLangModel, CPMAdmin)
@@ -26,13 +27,14 @@ class MenuAdminTests(TestCase):
     def setUp(self):
         self.admin = User.objects.create_superuser('admin', 'q@w.de', 'password')
         self.client.login(username="admin", password='password')
-        self.site=admin.sites.AdminSite()
+        self.site=admin.site #sites.AdminSite()
+
 
     def test_admin_index(self):
         ''' test index because customdashboard with MenuModule is may used'''
-        adminindex = urlresolvers.reverse('admin:index', args=[])
-        response = self.client.get(adminindex, {})
-        self.assertTrue(response.status_code in (200, 302))
+        adminindex = urlresolvers.reverse('admin:index')
+        response = self.client.get(adminindex, follow=True , extra={'app_label':"admin"}) # adminindex)
+        self.assertIn(response.status_code, (200, 302))
 
     def test_add(self):
         adminurl = urlresolvers.reverse('admin:menus_menu_add', args=[])
@@ -146,4 +148,4 @@ class MenuAdminTests(TestCase):
         data['status_changed_1'] = "23:00"
         # import pdb; pdb.set_trace()
         response = self.client.post(adminurl, data)
-        self.assertTrue(response.status_code in (200, 302))
+        self.assertIn(response.status_code, (200, 302))

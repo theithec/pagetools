@@ -42,7 +42,7 @@ class ModelTests(MenuDataTestCase):
             u1 = u0[3:]
         self.assertEqual(
             u1,
-            '/pages/start/'
+            self.p1.get_absolute_url()
         )
         self.assertEqual(self.e_v1.get_absolute_url(), "/")
 

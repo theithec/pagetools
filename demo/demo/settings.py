@@ -171,6 +171,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 GRAPPELLI_INDEX_DASHBOARD = 'dashboard.CustomIndexDashboard'
 
 
+ADMIN_URL = r'^admin/'
 
 PT_TEMPLATETAG_WIDGETS = {
     'subscribe':
