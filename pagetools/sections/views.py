@@ -35,6 +35,11 @@ class BaseNodeView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(BaseNodeView, self).get_context_data(**kwargs)
         #if self.object.positioned_content:
+        #print("obj1", self.object)
+        #import pdb; pdb.set_trace()
+        self.object  = self.get_object()
+        # self.object  = self.object or self.get_object()
+        #print("obj2", self.object)
         context['contents'] = self.object.ordered_content(
                 user=self.request.user)
         return context
@@ -49,7 +54,6 @@ class BaseAjaxNodeViewMixin(AJAXMixin):
         context['AJAXVIEW'] = True
         context['css_block'] = "css_ajax"
         context['js_block'] = "js_ajax"
-        #  context['scale'] = "0.9"
         return context
 
 class BaseAjaxNodeView(BaseAjaxNodeViewMixin, BaseNodeView):

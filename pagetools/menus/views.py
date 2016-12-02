@@ -18,7 +18,7 @@ class SelectedMenuentriesMixin(object):
         try:
             return self.get_object().slug
         except AttributeError:
-            import pdb; pdb.set_trace()
+            # import pdb; pdb.set_trace()
             try:
                 return self.menukey
             except AttributeError:

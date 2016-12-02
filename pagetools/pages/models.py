@@ -10,6 +10,7 @@ from django.utils.html import strip_tags
 from django.utils.translation import ugettext_lazy as _
 
 from pagetools.core.models import PagelikeModel
+from pagetools.core.utils import choices2field
 from pagetools.widgets.models import PageType
 
 from .forms import ContactForm, MailReceiverField #  , DynMultipleChoiceField
@@ -36,11 +37,12 @@ class IncludedForm(models.Model):
         #self._meta.get_field_by_name('included_form')[0]._choices = [
         choices = [
             (i, _(i)) for i, j in list(self.includable_forms.items())]
-        if django.VERSION < (1, 9):
-            self._meta.get_field('included_form')._choices = choices
-            #self.included_form._choices = choices
-        else:
-            self._meta.get_field('included_form').choices = choices
+        choices2field(self._meta.get_field('included_form'), choices)
+        # if django.VERSION < (1, 9):
+        #     self._meta.get_field('included_form')._choices = choices
+        #     #self.included_form._choices = choices
+        # else:
+        #     self._meta.get_field('included_form').choices = choices
 
     class Meta:
         abstract = True

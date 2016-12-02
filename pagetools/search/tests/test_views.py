@@ -18,7 +18,7 @@ class SearchViewTests(TestCase):
         self.client = Client()
         for title, content, is_pub in [
             ('P%s' % i, 'Foo%s' % i, True) for i in range(4)
-            
+
         ]:
             Page.objects.create(**{
                 'title':title,
