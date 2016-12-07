@@ -54,8 +54,9 @@ INSTALLED_APPS = [
     'pagetools.sections.tests',
     'pagetools.search',  # Simple Search on database fields
     'pagetools.subscriptions',  # Subscriptions to whatever
+    'captcha',
     'behave_django',
-    # 'debug_toolbar',
+    #'debug_toolbar',
 ]
 
 SITE_ID = 1  # required by contrib.sites

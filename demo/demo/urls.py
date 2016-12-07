@@ -12,6 +12,7 @@ urlpatterns = [
     url(r'^admin/filebrowser/', include(site.urls)),
     url(r'^grappelli/', include('grappelli.urls')),
     url(r'^admin/', admin.site.urls),
+    url(r'^captcha/', include('captcha.urls')),
     url(r'polls/', include('polls.urls', namespace="polls")),
     url(r'', include('main.urls', namespace="main")),
     url(r'', include('pagetools.core.urls')),

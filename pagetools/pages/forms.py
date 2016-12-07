@@ -17,6 +17,8 @@ from django.utils.translation import ugettext_lazy as _
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 
+from captcha.fields import CaptchaField
+
 from .settings import MAILFORM_RECEIVERS, MAILFORM_SENDER
 
 import logging
@@ -106,7 +108,7 @@ class SendEmailForm(forms.Form):
         if _is_valid:
             txt = os.linesep.join(
                 ["%s\t%s" % (field.name, field.value())
-                    for field in self
+                    for field in self if field.name not in ('captcha',)
                  ])
             send_mail(_("Form"), txt, MAILFORM_SENDER,
                       self.get_mailreceivers(), fail_silently=False)
@@ -120,3 +122,7 @@ class ContactForm(SendEmailForm):
     sender = forms.EmailField(label=_("E-Mail"))
     message = forms.CharField(
         widget=forms.widgets.Textarea(), label=_("Message"))
+
+    captcha = CaptchaField()
+
+

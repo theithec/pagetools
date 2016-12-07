@@ -37,7 +37,7 @@ class TypeMixin(models.Model):
         if django.VERSION < (1, 9):
             self._meta.get_field('node_type')._choices = self.node_choices
         else:
-            self.node_type.choices  = self.node_choices
+            self._meta.get_field('node_type').choices  = self.node_choices
 
     class Meta:
         abstract = True
@@ -140,37 +140,3 @@ class PageNodePos(models.Model):
         ordering = ['position']
         verbose_name = _('Included Content')
         verbose_name_plural = _('Included Content')
-
-'''
-class SimpleArticle(PageNode):
-    allowed_children_classes = ['pagetools.sections.models.SimpleArticle', ]
-    content = models.TextField(_('Content'), blank=True)
-
-    teaser = models.TextField(_('Teaser'), blank=True)
-    image = FileBrowseField("Image", max_length=200)
-    objects = PageNodeManager()
-
-    class Meta:
-        verbose_name = _("Article")
-        verbose_name_plural = _("Articles")
-
-
-class SimpleSection(TypeMixin, PageNode):
-    allowed_children_classes = [SimpleArticle, ]
-    node_choices = (('list', 'List', ), )
-    objects = PageNodeManager()
-
-    class Meta:
-        verbose_name = _("Section")
-        verbose_name_plural = _("Sections")
-
-
-class SimpleSectionPage(PageNode):
-    allowed_children_classes = [SimpleSection, ]
-    objects = PageNodeManager()
-
-    class Meta:
-        proxy = True
-        verbose_name = _("Section-Page")
-        verbose_name_plural = _("Section-Pages")
-'''

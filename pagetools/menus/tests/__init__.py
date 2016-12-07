@@ -1,11 +1,11 @@
-from django.test import TestCase
+from django.test import TransactionTestCase
 
 from pagetools.menus.models import Menu, Link, ViewLink
 from pagetools.pages.models import Page
 from pagetools.core.settings import STATUS_PUBLISHED
 
-
-class MenuDataTestCase(TestCase):
+class MenuDataTestCase(TransactionTestCase):
+    fixtures = ["testdata.json"]
     def setUp(self):
         k1 = {'status': STATUS_PUBLISHED}
         k2 = {'enabled': True}
