@@ -7,6 +7,18 @@ Created on 14.12.2013
 from django.conf import settings
 from django.contrib import admin
 
+def fieldset_copy(fieldset):
+    '''ugly helper for reuse of filedsets'''
+    fscopy = (
+        fieldset[0],
+        {'fields': [f for f in fieldset[1]['fields']]}
+    )
+    clzs = fieldset[1].get('classes', None)
+    if clzs:
+        fscopy[1]['classes'] = [c for c in clzs]
+
+    return fscopy
+
 
 class TinyMCEMixin(admin.ModelAdmin):
     '''

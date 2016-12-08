@@ -92,7 +92,7 @@ class MenuAdmin(TinyMCEMixin, admin.ModelAdmin):
         ems = entrieable_models()
         txt = "<ul>"
         for c in ems:
-            txt += '<li><a href="%s?menu=%s">%s</a></li>' % (
+            txt += '<li><a href="%s?menus=%s">%s</a></li>' % (
                 get_adminadd_url(c),
                 obj.pk,
                 get_classname(c),
@@ -102,7 +102,6 @@ class MenuAdmin(TinyMCEMixin, admin.ModelAdmin):
     addable_entries.allow_tags = True
 
     def get_queryset(self, request):
-        # import pdb; pdb.set_trace()
         return Menu.objects.root_nodes()
 
     def render_change_form(self, request, context, add=False,
@@ -298,7 +297,7 @@ class EntrieableAdmin(admin.ModelAdmin):
     save_related.for_entrieable = True
 
     def _redirect(self, action, request, obj, *args, **kwargs):
-        s = request.GET.get('menu', None)
+        s = request.GET.get('menus', None)
         if s and '_save' in request.POST:
             return HttpResponseRedirect(
                 reverse("admin:menus_menu_change", args=(s,))

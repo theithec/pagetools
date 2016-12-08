@@ -16,20 +16,18 @@ setup(
     license='BSD License',  # example license
     description='A set of Django apps to to provide some cms-like features',
     install_requires = [
-        'django>=1.8, <1.9',
-        'django-grappelli>=2.7.3',
-        'django>=1.8, <1.10',
-        #'django-grappelli==2.8.1',
+        'django>=1.8,<1.10',
+        'django-grappelli>=2.7.3,<2.9.1',
         'django-filebrowser>=3.6.4',
         'django-mptt==0.8.6',
         'django-crispy-forms==1.6.0',
         'django-model-utils==2.5.2',
-        'Pillow==3.3.1',
+        'Pillow==3.4.2',
         'beautifulsoup4==4.5.1',
         'djangoajax==2.3.6',
         'django-sekizai==0.10.0',
         'django-simple-captcha==0.5.3',
-        'django-debug-toolbar==1.5'
+        # 'django-debug-toolbar==1.5'
     ],
 
     long_description=README,
@@ -47,4 +45,5 @@ setup(
         'Topic :: Internet :: WWW/HTTP',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
     ],
+    test_suite="runtests.runtests",
 )
