@@ -8,9 +8,13 @@ from django.conf import settings
 from django.test import TestCase
 from django.test.client import Client
 from django.utils.text import slugify
-
+from django.core.urlresolvers import reverse
 from pagetools.pages.models import Page
+import pagetools.search
 
+pagetools.search.search_mods = (
+            (Page, ('title', 'content'),{'replacements': 'content'}),
+        )
 
 class SearchViewTests(TestCase):
 
@@ -31,7 +35,7 @@ class SearchViewTests(TestCase):
 
 
     def test_search4page(self):
-        response = self.client.get('/search/?contains_all=Foo1')
+        response = self.client.get(reverse('search') +'/?contains_all=Foo1')
         self.assertTrue("P1" in str(response.content))
         self.assertFalse("P2" in str(response.content))
 

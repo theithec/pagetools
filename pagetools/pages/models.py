@@ -38,11 +38,6 @@ class IncludedForm(models.Model):
         choices = [
             (i, _(i)) for i, j in list(self.includable_forms.items())]
         choices2field(self._meta.get_field('included_form'), choices)
-        # if django.VERSION < (1, 9):
-        #     self._meta.get_field('included_form')._choices = choices
-        #     #self.included_form._choices = choices
-        # else:
-        #     self._meta.get_field('included_form').choices = choices
 
     class Meta:
         abstract = True

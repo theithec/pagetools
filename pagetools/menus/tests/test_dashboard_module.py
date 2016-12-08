@@ -32,5 +32,5 @@ class DashboardTests(MenuDataTestCase):
         self.dm.init_with_context(context)
         self.assertCountEqual(list(context.keys()), ['existing', 'menu'])
         e = context['existing']
-        self.assertEqual(len(context['existing']), 4)
+        self.assertEqual(len(context['existing']), 5)
 

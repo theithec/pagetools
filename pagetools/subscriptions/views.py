@@ -45,7 +45,7 @@ def _subscribe(request):
                 )
             }
             t = template.loader.get_template('subscriptions/activation_msg.txt')
-            mailmsg = t.render(Context(context))
+            mailmsg = t.render(context)
             try:
                 send_mail(
                     subs_settings.ACTIVATION_MAIL_SUBJECT,

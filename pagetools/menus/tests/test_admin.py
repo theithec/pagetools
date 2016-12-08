@@ -13,13 +13,18 @@ from pagetools.menus.models import Menu, MenuEntry, Link
 from pagetools.menus.admin import MenuAdmin, make_entrieable_admin
 from pagetools.menus import _ENTRIEABLE_MODELS
 from pagetools.core.tests.test_models import ConcretePublishableLangModel
-
+from pagetools.sections.tests.test_models import TestNode1
+from pagetools.sections.dashboard_modules import PageNodesModule
 from pagetools.core.utils import get_adminedit_url
 
 
 class CPMAdmin(admin.ModelAdmin):
     model = ConcretePublishableLangModel
 admin.site.register(ConcretePublishableLangModel, CPMAdmin)
+
+
+PageNodesModule.model = TestNode1
+
 
 
 class MenuAdminTests(TestCase):
