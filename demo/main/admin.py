@@ -4,7 +4,7 @@ from pagetools.sections.admin import BasePageNodeAdmin
 
 from pagetools.menus.admin import EntrieableAdmin, EntrieableForm
 
-from .models import Article, Section, SectionList  ChoosableTemplateWidget
+from .models import Article, Section, SectionList, ChoosableTemplateWidget
 
 # @admin.register(SectionList)
 class MainSectionsAdmin(BasePageNodeAdmin,EntrieableAdmin):

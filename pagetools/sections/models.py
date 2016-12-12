@@ -91,6 +91,10 @@ class PageNode(PagelikeModel):
         #              DeprecationWarning)
         return self.children(**kwargs)
 
+    def get_classname(self):
+        o = self.get_real_obj()
+        return get_classname(o)
+
     def __str__(self):
         o = self.get_real_obj()
         return "%s(%s)" % (o.title, get_classname(o))
