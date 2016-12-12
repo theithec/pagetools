@@ -104,36 +104,34 @@ class PublishableLangModel(LangModel, StatusModel):
         abstract = True
 
 
-USlugField = None
 
-if django.VERSION<(1, 9):
 # c&p from django1.9
-    from django.core.validators import RegexValidator
-    import re
-    import six
-    from django.utils.functional import SimpleLazyObject
+from django.core.validators import RegexValidator
+import re
+import six
+from django.utils.functional import SimpleLazyObject
 
 
-    def _lazy_re_compile(regex, flags=0):
-        """Lazily compile a regex with flags."""
-        def _compile():
-            # Compile the regex if it was not passed pre-compiled.
-            if isinstance(regex, six.string_types):
-                return re.compile(regex, flags)
-            else:
-                assert not flags, "flags must be empty if regex is passed pre-compiled"
-                return regex
-        return SimpleLazyObject(_compile)
-    slug_unicode_re = _lazy_re_compile(r'^[-\w]+\Z', re.U)
-    validate_unicode_slug = RegexValidator(
-        slug_unicode_re,
-        _("Enter a valid 'slug' consisting of Unicode letters, numbers, underscores, or hyphens."),
-        'invalid'
-    )
-    class _USlugField(models.CharField):
-        '''Slugfield that allows unicode'''
-        default_validators = [validate_unicode_slug]
-    USlugField = _USlugField
+def _lazy_re_compile(regex, flags=0):
+    """Lazily compile a regex with flags."""
+    def _compile():
+        # Compile the regex if it was not passed pre-compiled.
+        if isinstance(regex, six.string_types):
+            return re.compile(regex, flags)
+        else:
+            assert not flags, "flags must be empty if regex is passed pre-compiled"
+            return regex
+    return SimpleLazyObject(_compile)
+slug_unicode_re = _lazy_re_compile(r'^[-\w]+\Z', re.U)
+validate_unicode_slug = RegexValidator(
+    slug_unicode_re,
+    _("Enter a valid 'slug' consisting of Unicode letters, numbers, underscores, or hyphens."),
+    'invalid'
+)
+class _USlugField(models.CharField):
+    '''Slugfield that allows unicode'''
+    default_validators = [validate_unicode_slug]
+USlugField = _USlugField
 
 
 class PagelikeModel(TimeStampedModel, PublishableLangModel):

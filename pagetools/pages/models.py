@@ -13,7 +13,7 @@ from pagetools.core.models import PagelikeModel
 from pagetools.core.utils import choices2field
 from pagetools.widgets.models import PageType
 
-from .forms import ContactForm, MailReceiverField #  , DynMultipleChoiceField
+from .forms import ContactForm, CaptchaContactForm, MailReceiverField #  , DynMultipleChoiceField
 
 
 class IncludedForm(models.Model):
@@ -25,7 +25,10 @@ class IncludedForm(models.Model):
 
     included_form = models.CharField(
         _("Included form"), max_length=255, blank=True, choices=(('dummy', 'dummy'),))
-    includable_forms = {'Contactform': ContactForm}
+    includable_forms = {
+        'Contactform': ContactForm,
+        'Contactfrom(Captcha)':  CaptchaContactForm,
+    }
 
     def __init__(self, *args, **kwargs):
         '''

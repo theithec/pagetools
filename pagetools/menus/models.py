@@ -31,17 +31,17 @@ from .settings import MENU_TEMPLATE
 logger = logging.getLogger("pagetools")
 
 
-class MenuManager(TreeManager, LangManager):
-    def create(self, *args, **kwargs):
-        raise AttributeError(
-            _("Use 'add_child' or 'add_root' instead of 'create'"))
+class MenuEntryManager(TreeManager, LangManager):
 
-    def add_child(self, parent, content_object, **kwargs):
+    def foo(self, *args, **kwargs):
+        print(self,dir(self), args, kwargs)
+
+    def add_child(self, content_object, **kwargs):
         if not getattr(content_object, 'get_absolute_url', None):
             raise ValidationError(
                 _('MenuEntry.content_object requires get_absolute_url'))
         kwargs['title'] = kwargs.get('title', '%s' % content_object)
-        kwargs['parent'] = parent
+        # kwargs['parent'] = parent
         kwargs['content_type'] = ContentType.objects.get_for_model(
             content_object)
         kwargs['object_id'] = content_object.pk
@@ -50,7 +50,7 @@ class MenuManager(TreeManager, LangManager):
             slugify(content_object))
         try:
             created = False
-            entry, created = TreeManager.get_or_create(self, **kwargs)
+            entry, created = self.get_or_create(**kwargs)
         except KeyError:
             pass
         if not created:
@@ -58,6 +58,15 @@ class MenuManager(TreeManager, LangManager):
                 _('Entry %(title)s already exists in %(parent)s'),
                 params=kwargs)
         return entry
+
+
+class MenuManager(MenuEntryManager):
+
+    def create(self, *args, **kwargs):
+        raise AttributeError(
+            _("Use 'add_child' or 'add_root' instead of 'create'"))
+
+
 
     def add_root(self, title, **kwargs):
         menu, created = TreeManager.get_or_create(
@@ -86,7 +95,7 @@ class MenuEntry(MPTTModel, LangModel):
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
     enabled = models.BooleanField(default=False)
-    objects = MenuManager()
+    objects = MenuEntryManager()
 
     def get_entry_classname(self):
         return get_classname(self.content_object.__class__)
@@ -141,6 +150,7 @@ class MenuCache(models.Model):
 
 
 class Menu(MenuEntry):
+    objects = MenuManager()
 
     def _render_no_sel(self):
         t = template.loader.get_template(MENU_TEMPLATE)

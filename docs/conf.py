@@ -24,7 +24,7 @@ import shlex
 #sys.path.insert(0, os.path.abspath(‘..’))
 project_dir =  os.path.abspath('..')
 sys.path.insert(0, project_dir)
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "tests.settings")
 import django
 django.setup()
 

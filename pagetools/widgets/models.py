@@ -1,12 +1,12 @@
-from django.db import models
-from django.template.context import Context
-from django.contrib.contenttypes.fields import (GenericRelation,
-                                                GenericForeignKey)
+from django import template
+from django.contrib.contenttypes.fields import (GenericRelation, GenericForeignKey)
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ValidationError
+from django.db import models
+from django.template.context import Context
 from django.utils.html import format_html
+from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
-
 
 from pagetools.core.models import LangModel, LangManager
 from pagetools.core.utils import get_adminedit_url, importer
@@ -15,9 +15,24 @@ from . import settings
 
 
 class BaseWidget(models.Model):
+    template_name = "widgets/basewidget.html"
     title = models.CharField(max_length=128, blank=True)
     name = models.SlugField(_('name'), unique=True)
     adapter = GenericRelation('WidgetInArea')
+
+    def get_title(self, context):
+        return self.title
+
+    def get_template_name(self, context):
+        return self.template_name
+
+    def render(self, context):
+        t = template.loader.get_template(self.get_template_name(context))
+        context['title'] = self.get_title(context)
+        context['content'] = self.get_content(context)
+        return mark_safe(t.render(context))
+
+
 
     def __str__(self):
         return "%s:%s" % (self.name, self.title)
@@ -28,9 +43,6 @@ class BaseWidget(models.Model):
 
 class ContentWidget(BaseWidget):
     content = models.TextField(_('Content'))
-
-    def get_title(self):
-        return self.title or self.name
 
     def get_content(self, contextdict):
         return self.content
@@ -62,13 +74,9 @@ class TemplateTagWidget(BaseWidget):
                 self.robj = clz()
         return self.robj
 
-    def get_title(self):
-        return '%s' % self.title
-
     def get_content(self, contextdict):
         if self.get_rendererobject():
             return self.robj.render(contextdict)
-            return self.robj.render(Context(contextdict, True))
 
 
 class PageType(models.Model):
@@ -136,7 +144,7 @@ class WidgetInArea(models.Model):
         return '%s' % self.content_object.title
 
     def get_content(self, contextdict):
-        return self.content_object.get_content(contextdict)
+        return self.content_object.render(contextdict)
 
     def adminedit_url(self):
         co = self.content_object

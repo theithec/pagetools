@@ -70,19 +70,16 @@ def get_adminedit_url(obj):
     ), args=(obj.id,))
 
 
-def get_addperm_name(cls):
+def get_perm_str(cls, perm="add"):
     '''
     Example:
 
         .. code-block:: python
 
-            if not user.has_perm(get_addperm_name(clz)):
+            if not user.has_perm(get_addperm_str(clz)):
                 continue
     '''
-    return "%s.add_%s" % (
-        cls._meta.app_label,
-        cls.__name__.lower()
-    )
+    return "%s.%s_%s" % (cls._meta.app_label, perm, cls.__name__.lower())
 
 
 def importer(str_or_obj):

@@ -6,7 +6,6 @@ Created on 18.12.2013
 import os
 
 from django import forms
-from django.contrib import messages
 from django.core.exceptions import ValidationError
 from django.core.mail import send_mail
 from django.core.validators import EmailValidator
@@ -24,6 +23,7 @@ from .settings import MAILFORM_RECEIVERS, MAILFORM_SENDER
 import logging
 logger = logging.getLogger(__name__)
 
+
 class DynMultipleChoiceField(forms.MultipleChoiceField):
 
     def __init__(self, **kwargs):
@@ -39,6 +39,7 @@ class DynMultipleChoiceField(forms.MultipleChoiceField):
         })
         super(DynMultipleChoiceField, self).__init__(**kwargs)
 
+
 class MailReceiverField(object):
     help_text = _('comma separated list of e-mails')
 
@@ -50,6 +51,51 @@ class MailReceiverField(object):
                 ev(a)
         except (ValueError, ValidationError, KeyError):
             raise ValidationError(self.help_text)
+
+
+class SendEmailForm(forms.Form):
+
+    def __init__(self, *args, **kwargs):
+        self.email_receivers = kwargs.pop('email_receivers', None)
+        super(SendEmailForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = 'post'
+        self.helper.add_input(Submit('submit', _('Submit')))
+
+    def get_mailreceivers(self):
+        try:
+            r = (getattr(self, 'email_receivers', "") or
+                 ",".join(MAILFORM_RECEIVERS)).split(",")
+            logger.debug("Mail receivers %s " % r)
+            return r
+        except AttributeError:
+            logger.error("no email receivers for %s" % self)
+
+    def get_message(self):
+        return os.linesep.join(
+            ["%s\t%s" % (field.name, field.value())
+             for field in self if field.name not in ('captcha',)
+             ])
+
+    def is_valid(self, **kwargs):
+        _is_valid = super(SendEmailForm, self).is_valid()
+        if _is_valid:
+            msg = self.get_message()
+            send_mail(_("Form"), msg, MAILFORM_SENDER,
+                      self.get_mailreceivers(), fail_silently=False)
+        return _is_valid
+
+
+class ContactForm(SendEmailForm):
+    subject = forms.CharField(max_length=100, label=_("About"), required=True)
+    name = forms.CharField(label=_("Your Name"))
+    sender = forms.EmailField(label=_("E-Mail"))
+    message = forms.CharField(
+        widget=forms.widgets.Textarea(), label=_("Message"))
+
+
+class CaptchaContactForm(ContactForm):
+    captcha = CaptchaField()
 
 
 '''
@@ -83,46 +129,3 @@ class BaseDynForm(forms.Form):
             self.msg = (messages.ERROR, _('An error occured'))
         return _is_valid
 '''
-
-
-class SendEmailForm(forms.Form):
-
-    def __init__(self, *args, **kwargs):
-        self.email_receivers = kwargs.pop('email_receivers', None)
-        super(SendEmailForm, self).__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.form_method = 'post'
-        self.helper.add_input(Submit('submit', _('Submit')))
-
-    def get_mailreceivers(self):
-        try:
-            r = (getattr(self, 'email_receivers', "") or ",".join(MAILFORM_RECEIVERS)).split(",")
-            logger.debug("Mail receivers %s " %  r)
-            return r
-        except AttributeError:
-            logger.error("no email receivers for %s" % self)
-
-
-    def is_valid(self, **kwargs):
-        _is_valid = super(SendEmailForm, self).is_valid()
-        if _is_valid:
-            txt = os.linesep.join(
-                ["%s\t%s" % (field.name, field.value())
-                    for field in self if field.name not in ('captcha',)
-                 ])
-            send_mail(_("Form"), txt, MAILFORM_SENDER,
-                      self.get_mailreceivers(), fail_silently=False)
-            # messages.add_message(request, messages.INFO, _('send ok'))
-        return _is_valid
-
-
-class ContactForm(SendEmailForm):
-    subject = forms.CharField(max_length=100, label=_("About"), required=True)
-    name = forms.CharField(label=_("Your Name"))
-    sender = forms.EmailField(label=_("E-Mail"))
-    message = forms.CharField(
-        widget=forms.widgets.Textarea(), label=_("Message"))
-
-    captcha = CaptchaField()
-
-

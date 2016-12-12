@@ -52,7 +52,7 @@ def create():
             status=STATUS_PUBLISHED,
             **kwargs
         )[0]
-        Menu.objects.add_child(menu, page, enabled=True)
+        menu.children.add_child(page, enabled=True)
 
     print("MENU", menu)
     #  menu = Menu.objects.get(title="MainMenu")
@@ -101,12 +101,12 @@ def create():
         for c in d[1]:
             q.choice_set.create(choice_text=c)
     a = AutoPopulated.objects.create(name="All questions")
-    Menu.objects.add_child(menu, a, enabled=True)
+    menu.children.add_child(a, enabled=True)
 
     sl1 = SectionList.objects.create(
         title="Sectionlist1", slug="sectionlist1", status=STATUS_PUBLISHED)
 
-    Menu.objects.add_child(menu, sl1, enabled=True, title="Sections")
+    menu.children.add_child(sl1, enabled=True, title="Sections")
     s1 = Section.objects.create(title="Section1", slug="section1",
                                 status=STATUS_PUBLISHED )
     pp = s1.pagenodepos_set.create(position=1, content=s1, owner=sl1)

@@ -3,7 +3,7 @@ from django.core.urlresolvers import reverse
 from filebrowser.fields import FileBrowseField
 
 from pagetools.sections.models import TypeMixin, PageNode, PageNodeManager
-
+from pagetools.widgets.models import BaseWidget
 
 class Article(PageNode):
     content = models.TextField("Content")
@@ -29,3 +29,20 @@ class Section(TypeMixin, PageNode):
 class SectionList(PageNode):
     allowed_children_classes = [Section,]
     objects = PageNodeManager()
+
+
+class ChoosableTemplateWidget(BaseWidget):
+
+    content = models.TextField('Content')
+    template = models.CharField(
+        "Template",
+        max_length=128,
+        choices=[
+            ("widgets/baswidget.html","Base" ),
+            ("main/specialwidget.html", "Special"),]
+
+    )
+
+    def get_template_name(self, context):
+        return self.template
+

@@ -4,7 +4,6 @@ Created on 14.12.2013
 @author: Tim Heithecker
 '''
 
-import sys
 from django import forms
 from django.core.exceptions import ValidationError
 from django.conf import settings
@@ -242,7 +241,8 @@ class EntrieableAdmin(admin.ModelAdmin):
         if not getattr(superfunc, "for_entrieable",  False):
             self.fieldsets = superfunc(request, obj)
         else:
-            self.fieldsets = super(admin.ModelAdmin, self).get_fieldsets(request, obj)
+            self.fieldsets = super(admin.ModelAdmin, self).get_fieldsets(
+                request, obj)
 
         added = False
         for fs in self.fieldsets:
@@ -288,7 +288,7 @@ class EntrieableAdmin(admin.ModelAdmin):
                 if title:
                     kwargs['title'] = title
 
-                e = Menu.objects.add_child(root, form.instance, **kwargs)
+                e = root.children.add_child(form.instance, **kwargs)
                 e.move_to(root, 'last-child')
                 e.save()
 
@@ -326,9 +326,9 @@ def make_entrieable_admin(clz):
     '''
 
     clz.is_menu_entrieable = True
-    clz.save_related =  EntrieableAdmin.save_related
-    clz.get_fields =  EntrieableAdmin.get_fields
-    clz.get_fieldsets =  EntrieableAdmin.get_fieldsets
+    clz.save_related = EntrieableAdmin.save_related
+    clz.get_fields = EntrieableAdmin.get_fields
+    clz.get_fieldsets = EntrieableAdmin.get_fieldsets
     clz.form = EntrieableForm
 
 

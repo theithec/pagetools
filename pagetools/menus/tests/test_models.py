@@ -23,12 +23,12 @@ class ModelTests(MenuDataTestCase):
     def test_validation(self):
         self.assertRaises(
             ValidationError,
-            Menu.objects.add_child, self.menu, self.p1)
+            self.menu.children.add_child, self.p1)
 
     def test_rm_and_add_again(self):
         self.e_p1.delete()
         self.menu.save()
-        self.e_p1 = Menu.objects.add_child(self.menu, self.p1)
+        self.e_p1 = self.menu.children.add_child(self.p1)
 
     def test_childen(self):
         lang = get_language()
@@ -58,4 +58,12 @@ class ModelTests(MenuDataTestCase):
 
     def test_doubleslug(self):
         with self.assertRaises(ValidationError):
-            Menu.objects.add_child(self.menu, self.p1)
+            self.menu.children.add_child(self.p1)
+
+class M2Tests(TestCase):
+    def test_create(self):
+        m = Menu.objects.add_root("M1")
+        p = Page.objects.create(title="t1", slug="t1", content="t1", status="published")
+        m.children.add_child(p)
+        self.assertEqual(p, m.children.first().content_object)
+

@@ -59,8 +59,7 @@
 				{% with areas.sidebar as sidebar %}
 				{% for widget in sidebar %}
 				<div class="callout">
-					{% if widget.title %}<h5>{{ widget.title }}</h5>{% endif %}
-					{{ widget.content|safe }}
+					{{ widget }}
 				</div>
 				{% endfor %}
 				{% endwith %}

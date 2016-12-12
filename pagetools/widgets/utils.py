@@ -34,11 +34,8 @@ def get_areas_for_type(pagetype, contextdict, tmpdict=None):
 
         orderedwidgets = ta.widgets.filter(enabled=True).order_by('position')
         tmpdict[ta.area] = [
-            {'title': w.get_title(),
-             'content': w.get_content(contextdict),
-             'type': slugify('%s' % w.content_type)
-             }
-            for w in orderedwidgets  # allareawidgets
+            ow.get_content(contextdict)
+            for ow in orderedwidgets  # allareawidgets
         ]
 
     if pagetype.parent:

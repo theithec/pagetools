@@ -10,7 +10,7 @@ from django.core.urlresolvers import reverse
 from django.http.response import HttpResponseRedirect
 
 from pagetools.core.admin import TinyMCEMixin
-from pagetools.core.utils import itersubclasses, get_classname, get_addperm_name
+from pagetools.core.utils import itersubclasses, get_classname, get_perm_str
 
 from .models import (TypeArea, ContentWidget, PageType, PageTypeDescription,
     WidgetInArea, BaseWidget, TemplateTagWidget)
@@ -56,7 +56,7 @@ class TypeAreaAdmin(admin.ModelAdmin):
             found = [c.content_object for c in obj.widgets.all()]
             self.readonly_fields = ( "area", "pagetype")
             for c in clslist:
-                if not user.has_perm(get_addperm_name(c)):
+                if not user.has_perm(get_perm_str(c)):
                     continue
                 context['addable_widgets'].append(
                     '<li>+  <a href="%s">%s</a></li>' % (
