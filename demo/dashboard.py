@@ -103,7 +103,7 @@ class CustomIndexDashboard(Dashboard):
                     "bower_components/jquery-bonsai/jquery.bonsai.js",
                     "js/nodetree.js"
                     ],
-                css = {'all': ['bower_components/jquery-bonsai/jquery.bonsai.css ']}
+                css = {'all': ['bower_components/jquery-bonsai/jquery.bonsai.css']}
             )
 
     media = property(_media)

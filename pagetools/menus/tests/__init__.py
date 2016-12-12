@@ -7,7 +7,7 @@ from pagetools.core.tests.test_models import ConcretePublishableLangModel
 
 
 class MenuDataTestCase(TransactionTestCase):
-    fixtures = ["testdata.json"]
+    # fixtures = ["testdata.json"]
     def setUp(self):
         k1 = {'status': STATUS_PUBLISHED}
         k2 = {'enabled': True}

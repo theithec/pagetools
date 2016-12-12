@@ -261,6 +261,7 @@ class Menu(MenuEntry):
 
                 d['dict_parent'] = dict_parent
                 obj = childentry.content_object
+
                 filterkwargs['parent'] = childentry
                 cc = []
                 if not for_admin and getattr(obj, 'auto_children', False):

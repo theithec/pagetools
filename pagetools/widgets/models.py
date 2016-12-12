@@ -67,6 +67,7 @@ class TemplateTagWidget(BaseWidget):
 
     def get_content(self, contextdict):
         if self.get_rendererobject():
+            return self.robj.render(contextdict)
             return self.robj.render(Context(contextdict, True))
 
 
