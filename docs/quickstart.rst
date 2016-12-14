@@ -4,16 +4,6 @@
 Quickstart
 ==========
 
-
-Demo
-~~~~
-
-Clone the project.
-Go to the `demo` dir.
-
-Run ``./manage.py createdemodata``, ``./manage.py runserver``
-
-
 Setup
 ~~~~~
 
@@ -31,10 +21,11 @@ Add the pagetools apps you want to use and their requirements to ``INSTALLED_APP
             'django.contrib.sites',
             'crispy_forms',      # required for pages
             'sekizai',           # required for sections. Needs further configuration
+            'captcha'            # required for `pages.forms.CaptchaContactForm` 
             'pagetools.core',    # needed for all pagetools modules
             'pagetools.widgets', # Widgets (e.g. for sidebars)
             'pagetools.menus',   #
-            'pagetools.pages',   # Simple Pages, requires menus and widgets
+            'pagetools.pages',   # Simple Pages, requires `menus` and `widgets`
             'pagetools.sections',# Nested Content (e.g. for a singlepage site)
             'pagetools.search',  # Simple Search on database fields
             'pagetools.subscriptions', # Subscriptions to whatever
@@ -155,12 +146,10 @@ The idea:
 Add something like this to your base template.::
 
         <sidebar>
-                {% with areas.sidebar as widgets %}
-                {% for widget in widgets %}
-                {% if widget.title %}<h4>{{widget.title}}</h4>{% endif %}
-                {{ widget.content|safe }}
-                {% endfor %}
-                {% endwith %}
+            {% with areas.sidebar as widgets %}
+            {% for widget in widgets %}
+            {{ widget|safe }}
+            {% endwith %}
         </sidebar>
 
 Go to admin->widgets->Pagetype-Areas. Select the one default area named "sidebar". Create a Pagetype and call it "base".
@@ -174,10 +163,9 @@ You could create a new `Pagetype-Area` with a new `Pagetype`, e.g. named 'specia
 Some notes:
 
 - Pagetypes can be nested, however this is only useful if you have multiple areas (e.g. sidebar and header).
-- Creating custom widget classes is easy. A templatetag that doesn't require arguments can be added
+- Creating custom widget classes is easy. A templatetag class that doesn't require arguments can just be added
   to the `PT_TEMPLATETAG_WIDGETS` setting.
-- To enable the whole thing, somewhere `pagetools.widgets.utils.get_areas_for_type("pagetypename", kwargs)` must be integrated
-  in the template context(e.g. as `areas`) where `kwargs` will be passed to the included  widgets `get_content` call.
+- To enable the whole thing, somewhere the result of `pagetools.widgets.utils.get_areas_for_type("pagetypename", kwargs)` must be added to the template context(e.g. as `areas`) where `kwargs` will be passed to the included  widgets `render` call.
 
 
 Search
@@ -215,6 +203,6 @@ Because the function returns the viewname, this can be done in the urls::
 Sections
 ~~~~~~~~
 
-This is for nested content, e.g. to build a typical singe-page structure with sections like portfolio, team, and contact.
-See the demo for an example.
+This is for nested content, e.g. to build a typical singe-page structure with sections like portfolio, team, and contact. 
+This app needs you to define your own ``PageNode`` subclasses, therefor no quickstart available. See the demo for an example.
 

@@ -46,10 +46,13 @@ But there is no limitation of the number of menus, so this possible::
 The menu template
 -----------------
 
-The template used to render the menu is set in `settings.PT_MENU_TEMPLATE`.
-To support nested menus it must be able to call it self recursively,
-see the templates :doc:`../pagetools/menus/templates/menu.html`.
-There are also `foundation_nav_menu.html`, `foundation6_nav_menu.html`, `bootstrap_nav_menu`.
+The template used to render the menu is set in ``settings.PT_MENU_TEMPLATE``.
+ To support nested menus it must be able to call it self recursively,
+see the templates :any:`django-pagetools/pagetools/menus/templates/menu.html`.
+There are also
+- `foundation_nav_menu.html`
+- `foundation6_nav_menu.html`
+- `bootstrap_nav_menu`.
 
 
 .. _menuentrieables:
@@ -66,7 +69,8 @@ were modified by :func:`pagetools.menus.admin.make_entrieable_admin` are shown t
 Link
 ^^^^
 
-:class:`pagetools.menus.models.Link`.  Just a simple link to anything.
+:class:`pagetools.menus.models.Link`.
+ Just a simple link to anything.
 
 
 ViewLink

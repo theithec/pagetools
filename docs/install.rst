@@ -3,10 +3,11 @@ Installation
 
 Install from github::
 
-    pip install -e git+https://theithec/pagetools.git#0.5.2
+    pip install -e git+https://theithec/django-pagetools.git
 
 
 With demo::
 
-    git clone git+https://theithec/pagetools.git#0.5.2
+    git clone git+https://theithec/django-pagetools.git
+
 

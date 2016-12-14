@@ -4,9 +4,9 @@ App integration
 ===============
 
 Here is how the Polls app (the one from the Django tutorial)
-plays together nicely  with Django-pagetools in the demo.
+works together with Django-pagetools in the demo.
 
-The only changes i made to the version from the end of the tutorial  was wrapping the templates in::
+The only changes i made to the version from the end of the tutorial was wrapping the templates in::
 
         {% extends base.html %}
 
@@ -17,9 +17,6 @@ The only changes i made to the version from the end of the tutorial  was wrappin
         {% endblock main %}
 
 
-
-The polls app in the example is regarded as a third party app, no further changes will be made to it,
-though one may have to overwrite the templates to add a bit of information, but that's a custom fashion.
 
 The demo contains a `main` app where the integration is done, mostly in the app config:
 
@@ -51,7 +48,7 @@ The menu tag expects a parameter ``menukeys`` - a string or a list - that indica
 For pagetools's models this is done in the ```pagetools.menus.views.SelectedMenuentriesMixin```,
 so a subclass of ´´polls.views.DetailView´´ that inherits the mixin would solve this.
 
-Another would one is to overwrite the templates for the questions detail and index view.
+Another way is to overwrite the templates for the questions detail and index view.
 
 detail.html::
 
@@ -83,7 +80,7 @@ Last thing is using `pagetools.subscriptions` to allow users subscribing for new
     @receiver(post_save)
     def questions_post_savecallback(sender, **kwargs):
         from pagetools.subscriptions.utils import to_queue
-        if sender.__name__ == 'Question' and kwargs['created'] == True:
+        if der.__name__ == 'Question' and kwargs['created'] == True:
             to_queue({
                 'title': 'New Question',
                 'body': 'There is a great new question: %s.' % (
