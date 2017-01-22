@@ -104,8 +104,7 @@ class PublishableLangModel(LangModel, StatusModel):
         abstract = True
 
 
-
-# c&p from django1.9
+#  c&p from django1.9
 from django.core.validators import RegexValidator
 import re
 import six

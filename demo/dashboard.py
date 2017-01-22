@@ -14,7 +14,7 @@ from grappelli.dashboard.utils import get_admin_site_name
 from pagetools.menus.dashboard_modules import MenuModule
 
 from pagetools.sections.dashboard_modules import PageNodesModule
-from main.models import SectionList
+from demo_sections.models import SectionList
 PageNodesModule.model = SectionList
 
 class CustomIndexDashboard(Dashboard):
