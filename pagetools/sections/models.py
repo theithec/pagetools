@@ -126,6 +126,10 @@ class PageNode(PagelikeModel):
     def get_adminadd_url(Clz):
         return get_adminadd_url(Clz)
 
+    @classmethod
+    def get_classname(Clz):
+        return Clz._meta.verbose_name
+
     class Meta:
         verbose_name = _('Node')
         verbose_name_plural = _('Nodes')

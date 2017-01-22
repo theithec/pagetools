@@ -57,7 +57,7 @@ INSTALLED_APPS = [
     'pagetools.subscriptions',  # Subscriptions to whatever
     'captcha',
     'behave_django',
-    #'debug_toolbar',
+    'debug_toolbar',
 ]
 
 SITE_ID = 1  # required by contrib.sites
