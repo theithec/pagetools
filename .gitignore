@@ -26,7 +26,10 @@ README.html
 docs/_build
 docs/mymake
 demo/django-ajax
+demo/media/_versions/*
 .coverage
 .tox
 .eggs
 build
+htmlcov
+pylint_global.txt
