@@ -3,6 +3,8 @@
 
 
 .. |coverallsbadge| image:: https://coveralls.io/repos/github/theithec/django-pagetools/badge.svg?branch=master
+.. _coverallsbadge: https://coveralls.io/github/theithec/django-pagetools/
+
 
 |travisbadge|_ |coverallsbadge|_
 
