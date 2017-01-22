@@ -1,100 +1,79 @@
 .. widgets_
 
+=======
 Widgets
-~~~~~~~
+=======
 
-This is about showing different additional content for a page.
-Connenect widgets to areas through pagetypes
-A `Widget` contains some kind of content.
-A `Pagetype` is a small model with a name and and an optional other pagetype as parent. A `Pagetype` named `base` will be used as default/fallback.
-`Areas` are defined in settings::
+Introducion
+-----------
+
+This app is about showing different additional content for different pages.
+The additional content(the widgets) is shown in "areas" which, are defined in settings::
 
     AREAS = getattr(settings, 'PT_AREAS',
                 (('sidebar', _('Sidebar'),),)
                 )
 
-A `PagetypeArea` contains both, a pagetype and an area and widgets can be added to it through a `WidgetInArea`.
-
-`pagetools.views.WidgetPagelikeMixin` tries
-- 'pagetype_name' in context_data
-- self.pagetype_name
-- self.get_pagetype_name()
-- self.get_pagetype(pagetypename=None)
-
-to find a pagetype as an argument for :func:`pagetools.widgets.utils.get_areas_for_type`. The result gets added to the context_data as a dict named 'areas'.::
-
-    {
-        'sidebar':[
-            {'content':'Foo'},
-            {'content':'Bar'}
-            ],
-        # other areas ....
-    }
-
-The content fields are the result of the widgets `get_content` call.
-Note: The context_data that already exits gets passed to `get_content`.
-
-Everything that has an
+and in the template(s)::
 
 
+    {% for widget in areas.sidebar %}
+    {{ widget|safe }}
+    {% endfor %}
+
+Next, there is `Pagetype`, which is a small model with a name and and an optional another pagetype as parent.
+Pagetypes and areas gets combined trough the `TypeArea` model, which is where the widgets are organized,
+so the content of an area can be different for different pagetypes.
+
+In code::
+    
+    from pagetools.widgets.models import *
+    from pagetools.widgets.utils import get_areas_for_type
+
+    pt1 = PageType.objects.create(name="pt1")
+    ta1 = TypeArea.objects.create(pagetype=pt1, area="sidebar")
+
+    w1 = ContentWidget.objects.create(name="w1", content="Foo")
+    wia1 = WidgetInArea.objects.create(content_object=w1, typearea=ta1, position=1, enabled=True)
+
+    get_areas_for_type(pt1, {})
+    >> {'sidebar': ['\nFoo\n']}
+
+Admin
+-----
+
+In the backend, most things can be done in the PageType admin.
+All subclasses of `BaseWidget` are listed in the "Add Widget" section.
+Other Classes may be added also, as long as they have a `render` callable and a unique `name` attribute, through the `WidgetInArea` (Included Widgets) admin.
+
+WidgetPagelikeMixin
+-------------------
+
+To define a pagetype 
+
+- add a 'pagetype_name' to the context_data or
+- define `pagetype_name` or
+- overwrite `get_pagetype_name()`
 
 
+ContextProcessors
+-----------------
 
-The WidgetViewMixin.get_context_data tries to find an argument for this function calling self.get_pagetype with the result of self.get_pagetype_name.
+In `pagetools.widgets.context_processors`
+- base_pagetype
+  Uses the pagetype named "base"
 
+- pagetype_from_view
+  Tries to find an attribute "pagetype_name" in the view.
+  (So this is possible: thirdparty.views.FooView.pagetype_name="special")
 
+Some notes:
+-----------
 
+- Pagetypes can be nested, however this is only useful if you have multiple areas (e.g. sidebar and header).
+- A Pagetype called "base" will be used as default/fallback if exists.
 
-from context_data or it's own attributes, then calls get_pagetype with that.
-
-
-
-
-looking forit self having an atrribute 'pagetype_name'
-
-looks for a `pagetype_name` and tries to get a pagetype object form it,
-otherwise it looks i
-
-
-
-
-    class WidgetPagelikeMixin(WidgetViewMixin):
-A pagetype could be defined per object
-
-    pagetype = models.ForeignKey(PageType, blank=True, null=True)
+- Creating custom widget classes is easy. A templatetag class that doesn't require arguments can just be added
+  to the `PT_TEMPLATETAG_WIDGETS` setting.
 
 
-Examples::
-
-    # pagetools.pages.models.Page
-
-    # pagetype defined in the object
-    pagetype = models.ForeignKey(PageType, blank=True, null=True)
-
-
-    # pagetools.pages.views.PageView
-
-    # .. or in a view
-    def get_pagetype(self, **kwargs):
-        return self.object.pagetype or super().get_pagetype(self)
-
-
-    # pagetools.widgets.views.WidgetPagelikeMixin:
-
-        def get_context_data(self, **kwargs):
-        ... # for forms in widgets
-        if kwargs.get("request", None) is None:
-            kwargs.update(csrf(self.request))
-        kwargs['areas'] = get_areas_for_type(pt, kwargs)
-        kwargs['pagetype_name'] = ptname
-
-
-
-
-
-`Widgets` are pieces of content that can be added to a `PagetypeArea` instance.
-The idea:
-In the
-
-A widget is a models with a 'content' field.
-A Pagetype is

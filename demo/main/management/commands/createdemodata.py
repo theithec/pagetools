@@ -1,11 +1,9 @@
 import os, sys # noqa
 
-import django
 from django.contrib.auth.models import User #noqa
 from django.contrib.sites.models import Site
-from django.contrib.sites.shortcuts import get_current_site
 from django.core import management  #noqa
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 from django.utils import timezone #noqa
 
 from filebrowser.base import FileObject
@@ -16,13 +14,12 @@ import pagetools.menus.utils #noqa
 from pagetools.core.settings import STATUS_PUBLISHED #noqa
 from pagetools.menus.models import Menu, AutoPopulated, ViewLink #noqa
 from pagetools.pages.models import Page #noqa
-from pagetools.sections.models import PageNodePos
 from pagetools.widgets.models import (PageType,  TypeArea, ContentWidget, # noqa
                                       WidgetInArea, TemplateTagWidget) #noqa
 
 from polls.models import Question, Choice #noqa
 
-from main.models import Article, Section, SectionList
+from demo_sections.models import Article, Section, SectionList
 
 def create():
     site = Site.objects.first()
@@ -126,7 +123,7 @@ def create():
         pp = a.pagenodepos_set.create(position=i, content=a, owner=s1)
 
     vl_polls = ViewLink.objects.create(title="Polls", name="polls:index")
-    Menu.objects.add_child(menu, vl_polls, enabled=True, title="Polls")
+    menu.children.add_child(vl_polls, enabled=True, title="Polls")
 
 
 class Command(BaseCommand):

@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'sekizai',           # required for sections. Needs further configuration
     'polls',
     'main.apps.MainConfig',
+    'demo_sections',
     'pagetools.core',    # needed for all pagetools modules
     'pagetools.widgets', # Widgets (e.g. for sidebars)
     'pagetools.pages',   # Simple Pages

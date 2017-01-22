@@ -39,7 +39,7 @@ class BaseNodeView(DetailView):
         #import pdb; pdb.set_trace()
         self.object  = self.get_object()
         # self.object  = self.object or self.get_object()
-        print("obj2", self.object)
+        #print("obj2", self.object)
         context['contents'] = self.object.ordered_content(
                 user=self.request.user)
         return context

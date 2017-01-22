@@ -3,7 +3,7 @@ import os.path
 from django.test import TestCase
 from filebrowser.base import FileObject
 from pagetools.sections.models import PageNodePos
-from main.models import Article, Section, SectionList
+from demo_sections.models import Article, Section, SectionList
 
 class SectionsDataTestCase(TestCase):
 

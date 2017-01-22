@@ -1,8 +1,8 @@
 from django.contrib.auth.models import User
 from pagetools.core.utils import get_adminadd_url, get_adminedit_url
 
-from main.models import Article, Section, SectionList
-from main.tests import SectionsDataTestCase
+from demo_sections.models import Article, SectionList
+from demo_sections.tests import SectionsDataTestCase
 import pagetools.sections.dashboard_modules
 
 class AdminTest(SectionsDataTestCase):

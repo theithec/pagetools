@@ -1,7 +1,7 @@
 from django.core.urlresolvers import reverse
 from django.test import TestCase, RequestFactory
 
-from main.tests import SectionsDataTestCase
+from demo_sections.tests import SectionsDataTestCase
 from polls.views import IndexView
 from pagetools.menus.tests import MenuDataTestCase
 from pagetools.menus.models import ViewLink

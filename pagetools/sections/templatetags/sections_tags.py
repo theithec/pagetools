@@ -48,4 +48,3 @@ def _ordered_content(value, args):
     if obj is None:
         return []
     return obj.ordered_content(user=args)
-

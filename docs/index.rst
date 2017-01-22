@@ -20,6 +20,8 @@ Contents:
    menus
    pages
    widgets
+   search
+   sections 
    :ref:`modindex`
 
 

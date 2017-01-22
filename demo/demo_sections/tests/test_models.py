@@ -1,12 +1,10 @@
-
 from django.test import TestCase
-
 
 from pagetools.sections.models import PageNodePos
 from pagetools.sections.utils import get_template_names_for_obj
-from main.models import Article, Section
+from demo_sections.models import Article, Section
 
-from main.tests import SectionsDataTestCase
+from demo_sections.tests import SectionsDataTestCase
 
 
 class ModelsTest(SectionsDataTestCase):

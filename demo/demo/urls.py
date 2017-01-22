@@ -14,7 +14,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^captcha/', include('captcha.urls')),
     url(r'polls/', include('polls.urls', namespace="polls")),
-    url(r'', include('main.urls', namespace="main")),
+    # url(r'', include('demo_sections.urls', namespace="demo_sections")),
     url(r'', include('pagetools.core.urls')),
     url(r'pages/', include('pagetools.pages.urls', namespace="pages")),
     url(r'^node/', include('pagetools.sections.urls', namespace ="sections")),

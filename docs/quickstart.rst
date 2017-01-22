@@ -153,19 +153,12 @@ Add something like this to your base template.::
         </sidebar>
 
 Go to admin->widgets->Pagetype-Areas. Select the one default area named "sidebar". Create a Pagetype and call it "base".
-`Save and continue editing`. Add a Content Widget. The name is the internal name for the widget. Save and return to the Pagetype-Area. Enable the new widget. Save.
+`Save and continue editing`. Add a `Simple Text Widget`. The name is the internal name for the widget. Save and return to the Pagetype-Area. Enable the new widget. Save.
 
 A `PageType` called  `base` is used as the default/fallback pagetype, therefor the widget is visible.
 
 You could create a new `Pagetype-Area` with a new `Pagetype`, e.g. named 'special' with different widgets and change the pagetype of the former created page to the new type.
 
-
-Some notes:
-
-- Pagetypes can be nested, however this is only useful if you have multiple areas (e.g. sidebar and header).
-- Creating custom widget classes is easy. A templatetag class that doesn't require arguments can just be added
-  to the `PT_TEMPLATETAG_WIDGETS` setting.
-- To enable the whole thing, somewhere the result of `pagetools.widgets.utils.get_areas_for_type("pagetypename", kwargs)` must be added to the template context(e.g. as `areas`) where `kwargs` will be passed to the included  widgets `render` call.
 
 
 Search
@@ -198,11 +191,4 @@ Because the function returns the viewname, this can be done in the urls::
         # or - if no app_name is used
         # url(r'^', (SearchResultsView.as_view()), name=entrieable_reverse_name('search')),
 
-
-
-Sections
-~~~~~~~~
-
-This is for nested content, e.g. to build a typical singe-page structure with sections like portfolio, team, and contact. 
-This app needs you to define your own ``PageNode`` subclasses, therefor no quickstart available. See the demo for an example.
 

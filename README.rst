@@ -1,10 +1,8 @@
-.. |travisbadge| image:: https://travis-ci.org/theithec/pagetools.svg?branch=master
-.. _travisbadge: https://travis-ci.org/theithec/pagetools
+.. |travisbadge| image:: https://travis-ci.org/theithec/django-pagetools.svg?branch=master
+.. _travisbadge: https://travis-ci.org/theithec/django-pagetools
 
 
-.. |coverallsbadge| image:: https://coveralls.io/repos/github/theithec/pagetools/badge.svg?branch=master
-.. _coverallsbadge: https://coveralls.io/github/theithec/pagetools/
-
+.. |coverallsbadge| image:: https://coveralls.io/repos/github/theithec/django-pagetools/badge.svg?branch=master
 
 |travisbadge|_ |coverallsbadge|_
 
