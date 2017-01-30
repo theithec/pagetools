@@ -18,7 +18,8 @@ class PageNodesModule(DashboardModule):
                     "bower_components/jquery-bonsai/jquery.bonsai.js",
                     "js/nodetree.js"
                     ],
-                css = {'all': ['bower_components/jquery-bonsai/jquery.bonsai.css ']}
+                css = {'all': [
+                'bower_components/jquery-bonsai/jquery.bonsai.css ']}
             )
 
     media = property(_media)
@@ -40,13 +41,14 @@ class PageNodesModule(DashboardModule):
         super(PageNodesModule, self).__init__(*args, **kwargs)
 
     def init_with_context(self, context):
-        pages = self.model.objects.filter(content_type_pk=self.model.get_contenttype_pk())
+        pages = self.model.objects.filter(
+            content_type_pk=self.model.get_contenttype_pk())
         context['pages'] = pages
         context['admin_pagenodesview'] = '/adminnodes/__SLUG__'
-        options=""
+        options = ""
         for p in pages:
             options += format_html(
-                '<option name={}>{}</option>' ,p.slug, p.title)
+                '<option name={}>{}</option>', p.slug, p.title)
         self.pre_content = '''<label>
             Page
             </label>

@@ -3,8 +3,10 @@ from django.test import TestCase
 
 from pagetools.pages.forms import *
 
+
 class TestForm(SendEmailForm):
     dmcf = DynMultipleChoiceField(label="dmcf: 1,2,3")
+
 
 class FormsTestCase(TestCase):
     def test_sendmailform(self):
@@ -23,5 +25,4 @@ class FormsTestCase(TestCase):
     def testBadDyn(self):
         self.assertRaises(
             ValidationError,
-            lambda : DynMultipleChoiceField(label="sowrong"))
-
+            lambda: DynMultipleChoiceField(label="sowrong"))

@@ -12,11 +12,13 @@ from django.utils.text import slugify
 
 from pagetools.pages.models import Page
 
+
 class AdminTests(TestCase):
 
     def setUp(self):
         self.client = Client()
-        self.admin = User.objects.create_superuser('admin', 'q@w.de', 'password')
+        self.admin = User.objects.create_superuser(
+            'admin', 'q@w.de', 'password')
         self.addpageurl = urlresolvers.reverse('admin:pages_page_add', args=[])
         self.pages_data = [
             ('P1', 'Foo', True),
@@ -33,8 +35,8 @@ class AdminTests(TestCase):
              'slug': slug,
              'content': content,
              'status': status,
-             #'dynformfields-TOTAL_FORMS': 1,
-             #'dynformfields-INITIAL_FORMS': 0
+             # 'dynformfields-TOTAL_FORMS': 1,
+             # 'dynformfields-INITIAL_FORMS': 0
              }
         )
         # self.assertEqual(False, True)

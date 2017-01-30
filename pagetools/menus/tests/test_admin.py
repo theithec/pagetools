@@ -20,25 +20,27 @@ from pagetools.core.utils import get_adminedit_url
 
 class CPMAdmin(admin.ModelAdmin):
     model = ConcretePublishableLangModel
+
+
 admin.site.register(ConcretePublishableLangModel, CPMAdmin)
 
 
 PageNodesModule.model = TestNode1
 
 
-
 class MenuAdminTests(TestCase):
 
     def setUp(self):
-        self.admin = User.objects.create_superuser('admin', 'q@w.de', 'password')
+        self.admin = User.objects.create_superuser(
+            'admin', 'q@w.de', 'password')
         self.client.login(username="admin", password='password')
-        self.site=admin.site #sites.AdminSite()
-
+        self.site = admin.site
 
     def test_admin_index(self):
         ''' test index because customdashboard with MenuModule is may used'''
         adminindex = urlresolvers.reverse('admin:index')
-        response = self.client.get(adminindex, follow=True , extra={'app_label':"admin"}) # adminindex)
+        response = self.client.get(
+            adminindex, follow=True, extra={'app_label': "admin"})
         self.assertIn(response.status_code, (200, 302))
 
     def test_add(self):
@@ -51,7 +53,7 @@ class MenuAdminTests(TestCase):
     def test_update(self):
         m = Menu.objects.add_root(title="Menu1")
         e = []
-        for i in range(1,3):
+        for i in range(1, 3):
             e.append(
                 MenuEntry.objects.add_child(
                     parent=m, title="e%s" % i,
@@ -65,9 +67,6 @@ class MenuAdminTests(TestCase):
         data['entry-order-id-0'] = e[0].pk
         data['entry-text-0'] = "changed"
         data['entry-published-0'] = 1
-        #data['entry-order-id-1'] = e[1].pk
-        #data['entry-text-1'] = e[1].title
-        #data['entry-published-1'] = 1
         response = self.client.post(adminurl, data)
         cl = m.children_list()
         self.assertEqual(cl[0]['entry_title'], "changed")
@@ -75,7 +74,7 @@ class MenuAdminTests(TestCase):
     def test_reorder(self):
         m = Menu.objects.add_root(title="Menu1")
         e = []
-        for i in range(1,3):
+        for i in range(1, 3):
             e.append(
                 MenuEntry.objects.add_child(
                     parent=m, title="e%s" % i,
@@ -88,18 +87,18 @@ class MenuAdminTests(TestCase):
         data = m.__dict__
         response = self.client.post(adminurl, data)
         self.assertEqual([e['entry_title'] for e in m.children_list()],
-                            ['e1', 'e2'])
-        data.update( {
-            'entry-order':"[%s]=null&[%s]=null" % (e[1].pk, e[0].pk) ,
+                         ['e1', 'e2'])
+        data.update({
+            'entry-order': "[%s]=null&[%s]=null" % (e[1].pk, e[0].pk),
         })
         response = self.client.post(adminurl, data)
         self.assertEqual([e['entry_title'] for e in m.children_list()],
-                            ['e2', 'e1'])
+                         ['e2', 'e1'])
 
     def test_addentry(self):
                 m = Menu.objects.add_root(title="Menu1", enabled=True)
                 e = []
-                for i in range(1,3):
+                for i in range(1, 3):
                     e.append(
                         MenuEntry.objects.add_child(
                             parent=m, title="e%s" % i,
@@ -107,7 +106,8 @@ class MenuAdminTests(TestCase):
                             enabled=True
                         )
                     )
-                    adminurl = urlresolvers.reverse('admin:menus_menu_change', args=[m.pk])
+                    adminurl = urlresolvers.reverse(
+                        'admin:menus_menu_change', args=[m.pk])
                     data = m.__dict__
                     data['addentry'] = 'menus#link'
 
@@ -126,7 +126,6 @@ class MenuAdminTests(TestCase):
         make_entrieable_admin(CA)
         self.assertTrue(CA.is_menu_entrieable)
 
-        #.add_to_class("get_absolute_url", question_get_absolute_url)
         ca = CA(model=ConcretePublishableLangModel, admin_site=self.site)
         c = ConcretePublishableLangModel.objects.create(foo="x")
         m = Menu.objects.add_root(title="Menu1")
@@ -148,8 +147,7 @@ class MenuAdminTests(TestCase):
 
         adminurl = get_adminedit_url(c)
         data = c.__dict__
-        #data['status_changed'] = ("2016-12-01", "22:00" ) # data['status_changed']
-        data['status_changed_0'] = "2016-01-01" # 23:00"
+        data['status_changed_0'] = "2016-01-01"
         data['status_changed_1'] = "23:00"
         # import pdb; pdb.set_trace()
         response = self.client.post(adminurl, data)

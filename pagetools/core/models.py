@@ -12,6 +12,12 @@ from model_utils.choices import Choices
 
 from . import settings as ptsettings
 
+#  c&p from django1.9
+from django.core.validators import RegexValidator
+import re
+import six
+from django.utils.functional import SimpleLazyObject
+
 
 class LangManager(models.Manager):
     '''
@@ -34,7 +40,7 @@ class LangManager(models.Manager):
 
 class LangModel(models.Model):
     '''
-    Model with ``lang``-field.
+    Model with a ``lang``-field.
 
     Note:
         To avoid `NOT NULL constraint failed` errors,
@@ -104,13 +110,6 @@ class PublishableLangModel(LangModel, StatusModel):
         abstract = True
 
 
-#  c&p from django1.9
-from django.core.validators import RegexValidator
-import re
-import six
-from django.utils.functional import SimpleLazyObject
-
-
 def _lazy_re_compile(regex, flags=0):
     """Lazily compile a regex with flags."""
     def _compile():
@@ -121,15 +120,21 @@ def _lazy_re_compile(regex, flags=0):
             assert not flags, "flags must be empty if regex is passed pre-compiled"
             return regex
     return SimpleLazyObject(_compile)
+
+
 slug_unicode_re = _lazy_re_compile(r'^[-\w]+\Z', re.U)
 validate_unicode_slug = RegexValidator(
     slug_unicode_re,
     _("Enter a valid 'slug' consisting of Unicode letters, numbers, underscores, or hyphens."),
     'invalid'
 )
+
+
 class _USlugField(models.CharField):
     '''Slugfield that allows unicode'''
     default_validators = [validate_unicode_slug]
+
+
 USlugField = _USlugField
 
 
@@ -145,7 +150,7 @@ class PagelikeModel(TimeStampedModel, PublishableLangModel):
 
     title = models.CharField(_('Title'), max_length=255)
     slug = None
-    if django.VERSION<(1, 9):
+    if django.VERSION < (1, 9):
         slug = USlugField(_('Slug'), max_length=255)
     else:
         slug = models.SlugField(_('Slug'), max_length=255, allow_unicode=True)
@@ -153,7 +158,6 @@ class PagelikeModel(TimeStampedModel, PublishableLangModel):
         _('Description'),
         max_length=139,
         help_text='''Description (for searchengines)''', blank=True)
-
 
     def get_absolute_url(self):
         return '/%s' % self.slug

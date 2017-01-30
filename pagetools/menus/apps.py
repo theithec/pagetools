@@ -1,4 +1,6 @@
 from django.apps import AppConfig
+
+
 class MenusConfig(AppConfig):
     name = "pagetools.menus"
     verbose_name = "Menu administration"
@@ -12,4 +14,4 @@ class MenusConfig(AppConfig):
             if getattr(admincls.__class__, 'is_menu_entrieable', False):
                 models.append(model)
 
-        _ENTRIEABLE_MODELS += sorted(models, key= str)
+        _ENTRIEABLE_MODELS += sorted(models, key=str)

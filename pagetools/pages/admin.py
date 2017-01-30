@@ -14,7 +14,64 @@ from grappelli.forms import GrappelliSortableHiddenMixin
 
 from pagetools.core.admin import PagelikeAdmin
 from pagetools.menus.admin import EntrieableAdmin
-from pagetools.pages.models import Page # , DynFormField, PageDynFormField
+from pagetools.pages.models import Page  # , DynFormField, PageDynFormField
+
+from pagetools.menus.utils import entrieable_auto_populated
+from pagetools.menus.models import MenuEntry
+
+
+class BasePageAdmin(EntrieableAdmin, PagelikeAdmin):
+    readonly_fields = ('status_changed',)
+    list_display = ('title', 'lang', 'slug',  'status')
+    list_filter = ('lang', 'status')
+    search_fields = ('title', 'content')
+    save_as = True
+
+    class Media:
+        js = [os.path.join(
+            settings.STATIC_URL, 'pagetools', 'js', 'formreceiver.js')]
+
+
+class PageAdmin(BasePageAdmin):
+    # inlines = (PageDynFieldAdmin,)
+
+    fieldsets = (
+        ('', {'fields': [
+            'lang',
+            'status',
+            'title',
+            'slug',
+            'content',
+        ]}),
+        (_('Included form'), {'fields': [
+            'included_form',
+            'email_receivers',
+        ]}),
+        (_('Protection'), {'fields': [
+            'login_required',
+        ]}),
+        (_('Show in menus'), {'fields': [
+            'menus',
+        ]}),
+        (_('Pagetype'), {'fields': [
+            'pagetype',
+        ]}),
+    )
+
+    class Meta:
+        model = Page
+
+
+admin.site.register(Page, PageAdmin)
+
+
+def pages_auto_entries():
+    return [
+        MenuEntry(title=p.title, content_object=p) for p in Page.public.all()]
+
+
+entrieable_auto_populated("All pages", pages_auto_entries)
+
 
 '''
 class DynFieldInlineFormset(forms.models.BaseInlineFormSet):
@@ -44,54 +101,3 @@ class PageDynFieldAdmin(DynFieldAdmin):
     extra = 1
     formset = DynFieldInlineFormset
 '''
-
-class BasePageAdmin(EntrieableAdmin, PagelikeAdmin):
-    readonly_fields = ('status_changed',)
-    list_display = ('title', 'lang','slug',  'status')
-    list_filter = ('lang', 'status')
-    search_fields = ('title', 'content')
-    save_as = True
-
-    class Media:
-        js = [os.path.join(
-            settings.STATIC_URL, 'pagetools', 'js', 'formreceiver.js')]
-
-
-class PageAdmin(BasePageAdmin):
-    # inlines = (PageDynFieldAdmin,)
-
-    fieldsets = (
-        ('', {'fields': [
-            'lang',
-            'status',
-            'title',
-            'slug',
-            'content',
-        ]}),
-        (_('Included form'), {'fields': [
-            'included_form',
-            'email_receivers',
-        ] }),
-        (_('Protection'), {'fields': [
-            'login_required',
-        ] }),
-        (_('Show in menus'), {'fields': [
-            'menus',
-        ] }),
-        (_('Pagetype'), {'fields': [
-            'pagetype',
-        ] }),
-
-
-    )
-
-    class Meta:
-        model = Page
-
-admin.site.register(Page, PageAdmin)
-from pagetools.menus.utils import entrieable_auto_populated
-from pagetools.menus.models import MenuEntry
-def pages_auto_entries():
-    return [MenuEntry(title=p.title, content_object=p) for p in Page.public.all()]
-
-entrieable_auto_populated("All pages", pages_auto_entries)

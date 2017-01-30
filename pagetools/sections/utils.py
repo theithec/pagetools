@@ -15,5 +15,6 @@ def get_template_names_for_obj(obj, suffix=""):
         "sections/%s-%s%s.html" % (obj._meta.model_name, obj.slug, suffix),
         "sections/%s%s.html" % (obj._meta.model_name, suffix),
     ]
-    logger.debug("Templates for %s: %s" % (obj, n))
+    print("N", n)
+    logger.debug("Templates for %s: %s", (obj, n))
     return n

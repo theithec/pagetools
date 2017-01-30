@@ -22,8 +22,7 @@ class SelectedMenuentriesMixinTest(MenuDataTestCase):
             super(*args, **kwargs)
 
         model = ConcretePublishableLangModel
-
-        template_name = 'any_template.html'  # TemplateView requires this attribute
+        template_name = 'any_template.html'  # TemplateView requires this
 
     def setUp(self):
 

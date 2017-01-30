@@ -29,7 +29,6 @@ class PageTests(TestCase):
             included_form=list(Page.includable_forms.keys())[0]
         )
 
-
     def test_title(self):
         self.assertEqual(self.page.title, 'p1')
 

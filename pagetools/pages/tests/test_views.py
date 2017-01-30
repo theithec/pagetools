@@ -38,5 +38,3 @@ class PageViewTestCase(MenuDataTestCase):
             r = self.client.post(self.p1.get_absolute_url(), data)
             self.assertEqual(r.status_code, 200)
             self.assertContains(r, "An error occured")
-
-

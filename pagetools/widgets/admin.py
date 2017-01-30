@@ -13,7 +13,7 @@ from pagetools.core.admin import TinyMCEMixin
 from pagetools.core.utils import itersubclasses, get_classname, get_perm_str
 
 from .models import (TypeArea, ContentWidget, PageType, PageTypeDescription,
-    WidgetInArea, BaseWidget, TemplateTagWidget)
+                     WidgetInArea, BaseWidget, TemplateTagWidget)
 
 
 class WidgetInAreaAdmin(admin.TabularInline):
@@ -27,7 +27,6 @@ class WidgetInAreaAdmin(admin.TabularInline):
 
 class TypeAreaAdmin(admin.ModelAdmin):
     inlines = (WidgetInAreaAdmin,)
-    #save_as = True
 
     def save_model(self, request, obj, form, change):
         super(TypeAreaAdmin, self).save_model(request, obj, form, change)
@@ -54,22 +53,24 @@ class TypeAreaAdmin(admin.ModelAdmin):
             context['addable_objs'] = []
             context['addable_widgets'] = []
             found = [c.content_object for c in obj.widgets.all()]
-            self.readonly_fields = ( "area", "pagetype")
+            self.readonly_fields = ("area", "pagetype")
             for c in clslist:
                 if not user.has_perm(get_perm_str(c)):
                     continue
+
                 context['addable_widgets'].append(
                     '<li>+  <a href="%s">%s</a></li>' % (
-                    (reverse('admin:%s_%s_add' % (
-                        c._meta.app_label, c._meta.model_name)) +
-                        "?typearea=%s" % (context['object_id'])
-                    ), get_classname(c)
-                 ))
+                        (reverse('admin:%s_%s_add' % (
+                            c._meta.app_label, c._meta.model_name)) +
+                            "?typearea=%s" % (context['object_id'])
+                         ), get_classname(c)
+                    ))
                 objs = c.objects.all()
                 ctpk = ContentType.objects.get_for_model(c).pk
                 for o in objs:
                     if o in found:
                         continue
+
                     context['addable_objs'].append(
                         '<option  value="%s_%s">%s</option>' % (ctpk, o.pk, o,)
                     )
@@ -79,14 +80,15 @@ class TypeAreaAdmin(admin.ModelAdmin):
             context['help_text'] = '[save] before adding widgets'
         return admin.ModelAdmin.render_change_form(self, request, context,
                                                    add=add, change=change,
-                                              form_url=form_url, obj=obj)
+                                                   form_url=form_url, obj=obj)
 
     def get_readonly_fields(self, request, obj=None):
             if obj:
                 return ['area', 'pagetype']
             else:
                 return []
-                                            #
+
+
 class BaseWidgetAdmin(admin.ModelAdmin):
 
     save_as = True
@@ -109,7 +111,7 @@ class BaseWidgetAdmin(admin.ModelAdmin):
                 reverse("admin:widgets_typearea_change", args=(s,))
             )
         else:
-            #see menus.admin._redirect
+            # see menus.admin._redirect
             return getattr(admin.ModelAdmin, "response_%s" % action)(
                 self, request, obj, *args, **kwargs
             )
@@ -124,6 +126,7 @@ class BaseWidgetAdmin(admin.ModelAdmin):
 class PageTypeDescriptionAdmin(admin.TabularInline):
     model = PageTypeDescription
     extra = 1
+
 
 class PageTypeAdmin(admin.ModelAdmin):
     model = PageType
@@ -143,7 +146,8 @@ class TemplateTagWidgetAdmin(BaseWidgetAdmin):
         else:
             self.prepopulated_fields = {"name": ("renderclasskey",)}
             return []
-                                    #
+
+
 admin.site.register(TypeArea, TypeAreaAdmin)
 admin.site.register(ContentWidget, ContentWidgetAdmin)
 admin.site.register(TemplateTagWidget, TemplateTagWidgetAdmin)

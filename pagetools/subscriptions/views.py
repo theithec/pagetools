@@ -44,7 +44,8 @@ def _subscribe(request):
                     s.mailkey()
                 )
             }
-            t = template.loader.get_template('subscriptions/activation_msg.txt')
+            t = template.loader.get_template(
+                'subscriptions/activation_msg.txt')
             mailmsg = t.render(context)
             try:
                 send_mail(
@@ -67,7 +68,7 @@ def _subscribe(request):
 
 
 def _subscribe_fallback(request, res):
-    #todo - add to context c['referer'] = request.META.get('HTTP_REFERER', '/')
+    # TODO add to context c['referer'] = request.META.get('HTTP_REFERER', '/')
     return render(
         request,
         'subscriptions/subscribe_msg.html',
@@ -75,13 +76,13 @@ def _subscribe_fallback(request, res):
 
 
 def _subscribe_json(res):
-    return HttpResponse( json.dumps(res))
+    return HttpResponse(json.dumps(res))
 
 
 def subscribe(request):
     res = {}
     res['msg'], res['errors'] = _subscribe(request)
-    #ups, lazy
+    # ups, lazy
     res['msg'] = '%s' % res['msg']
     if request.is_ajax():
         return _subscribe_json(res)
@@ -106,8 +107,7 @@ def activate(request, key):
         messages.add_message(request, messages.INFO,  _('activation: ok'))
 
         return render(request, subs_settings.MSG_BASE_TEMPLATE,
-            {'msg': _('activation: ok')}
-        )
+                      {'msg': _('activation: ok')})
     raise Http404()
 
 
@@ -117,5 +117,5 @@ def unsubscribe(request, key):
         s.delete()
         messages.add_message(request, messages.INFO,  _('unsubscribe: ok'))
         return render(request,
-            subs_settings.MSG_BASE_TEMPLATE,
-            {'msg': _('unsubscribe: ok')})
+                      subs_settings.MSG_BASE_TEMPLATE,
+                      {'msg': _('unsubscribe: ok')})

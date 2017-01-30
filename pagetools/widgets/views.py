@@ -51,6 +51,3 @@ class WidgetPagelikeMixin(WidgetViewMixin):
     #     if not getattr(self, 'object', None):
     #         self.object = super(BasePagelikeView, self).get_object()
     #     return self.object
-
-
-

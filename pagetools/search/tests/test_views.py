@@ -13,8 +13,9 @@ from pagetools.pages.models import Page
 import pagetools.search
 
 pagetools.search.search_mods = (
-            (Page, ('title', 'content'),{'replacements': 'content'}),
-        )
+    (Page, ('title', 'content'), {'replacements': 'content'}),
+)
+
 
 class SearchViewTests(TestCase):
 
@@ -25,7 +26,7 @@ class SearchViewTests(TestCase):
 
         ]:
             Page.objects.create(**{
-                'title':title,
+                'title': title,
                 'content': content,
                 'slug': slugify(title),
                 'status': 'published' if is_pub else 'draft'
@@ -33,9 +34,8 @@ class SearchViewTests(TestCase):
 
             settings.PAGINATE_BY = 3
 
-
     def test_search4page(self):
-        response = self.client.get(reverse('search') +'/?contains_all=Foo1')
+        response = self.client.get(reverse('search') + '/?contains_all=Foo1')
         self.assertTrue("P1" in str(response.content))
         self.assertFalse("P2" in str(response.content))
 

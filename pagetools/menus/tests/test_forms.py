@@ -49,5 +49,3 @@ class MenuFormTests(TestCase):
         data['entry-text-1'] = "b"
         mf = MenuChangeForm(data, instance=menu)
         self.assertTrue(mf.is_valid())
-
-

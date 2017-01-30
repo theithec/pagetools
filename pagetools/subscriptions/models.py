@@ -19,6 +19,7 @@ from pagetools.core.models import LangModel, LangManager
 from . import settings as subs_settings
 from .base_models import BaseSubscriberMixin
 
+
 def _mk_key():
     k = "".join([random.choice(string.ascii_letters + string.digits)
                  for x in range(1, 32)])
@@ -154,7 +155,8 @@ class QueuedEmail(LangModel):
                     s.subscriber.get_email(),
                     conn,
                     "/%s?mk=%s" % (
-                        reverse('subscriptions:unsubscribe', kwargs={'key': s.subscriber.key}),
+                        reverse('subscriptions:unsubscribe', kwargs={
+                            'key': s.subscriber.key}),
                         s.subscriber.mailkey()
                      )
                 )
@@ -169,7 +171,8 @@ class QueuedEmail(LangModel):
                     subscriber.failures += 1
                     subscriber.save()
                     if subscriber.failures > subs_settings.MAX_FAILURES:
-                        SendStatus.objects.filter(subscriber=subscriber).delete()
+                        SendStatus.objects.filter(
+                            subscriber=subscriber).delete()
                         subscriber.delete()
                     else:
                         s.save()

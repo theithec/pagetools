@@ -3,7 +3,6 @@ import importlib
 from django.core.urlresolvers import reverse
 
 
-
 # http://code.activestate.com/recipes/576949-find-all-subclasses-of-a-given-class/
 def itersubclasses(cls, _seen=None):
     """
@@ -90,6 +89,7 @@ def importer(str_or_obj):
         modname, clsname = str_or_obj.rsplit(".", 1)
         str_or_obj = getattr(importlib.import_module(modname), clsname)
     return str_or_obj
+
 
 def choices2field(field, choices):
 

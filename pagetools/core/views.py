@@ -24,6 +24,7 @@ class PaginatorMixin(ListView):
         page = context['page_obj']
         paginator = page.paginator
         _from = page.number - 5 if page.number > 5 else 0
-        context['curr_page_range'] = paginator.page_range[_from:page.number + 5]
+        context['curr_page_range'] = paginator.page_range[
+            _from:page.number + 5]
         context['get_sep'] = self.sep
         return context

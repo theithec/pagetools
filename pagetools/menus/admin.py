@@ -124,17 +124,7 @@ class MenuAdmin(TinyMCEMixin, admin.ModelAdmin):
         entry_order = form.data.get('entry-order')
         if entry_order:
             obj.update_entries(entry_order)
-        '''if form.cleaned_data.get('addeentry'):
-            import pdb; pdb.set_trace()
-            modulename, classname, id = form.cleaned_data['addentry'].split("#")
-            o = getattr(sys.modules[modulename], classname).objects.get(pk=id)
-            MenuEntry.objects.create(
-                content_type=ContentType.objects.get_for_model(o),
-                object_id=o.pk,
-                parent=form.instance,
-                status='draft'
-            )
-        '''
+
         cnt = 0
         while True:
             try:
@@ -264,7 +254,8 @@ class EntrieableAdmin(admin.ModelAdmin):
         if not getattr(superfunc, "for_entrieable",  False):
             superfunc(request, form, formsets, change)
         else:
-            admin.ModelAdmin.save_related(self, request, form, formsets, change)
+            admin.ModelAdmin.save_related(
+                self, request, form, formsets, change)
 
         obj = form.instance
         if 'menus' not in form.changed_data:
@@ -335,6 +326,7 @@ def make_entrieable_admin(clz):
 class MenuEntryAdmin(admin.ModelAdmin):
     list_display = ('title',  'lang', 'enabled')
     list_filter = ('lang', 'enabled',)
+
 
 admin.site.register(Menu, MenuAdmin)
 admin.site.register(Link, EntrieableAdmin)

@@ -15,8 +15,9 @@ from django.contrib.contenttypes.models import ContentType
 from filebrowser.fields import FileBrowseField
 
 from pagetools.core.models import PagelikeModel, PublishableLangManager
-from pagetools.core.utils import get_adminadd_url, get_classname, importer
-_
+from pagetools.core.utils import (get_adminadd_url, get_classname, importer,
+                                  choices2field)
+
 
 class PageNodeManager(PublishableLangManager):
     pass
@@ -34,10 +35,7 @@ class TypeMixin(models.Model):
 
     def __init__(self, *args, **kwargs):
         super(TypeMixin, self).__init__(*args, **kwargs)
-        if django.VERSION < (1, 9):
-            self._meta.get_field('node_type')._choices = self.node_choices
-        else:
-            self._meta.get_field('node_type').choices  = self.node_choices
+        choices2field(self._meta.get_field('node_type'), self.node_choices)
 
     class Meta:
         abstract = True
@@ -45,7 +43,8 @@ class TypeMixin(models.Model):
 
 class PageNode(PagelikeModel):
 
-    classes = models.CharField('Classes', max_length=512, blank=True, null=True)
+    classes = models.CharField(
+        'Classes', max_length=512, blank=True, null=True)
     content_type_pk = models.SmallIntegerField(blank=True)
     in_nodes = models.ManyToManyField("self",
                                       through="PageNodePos",
@@ -87,7 +86,7 @@ class PageNode(PagelikeModel):
         return [self.get_real_child(c) for c in o]
 
     def ordered_content(self, **kwargs):
-        #warnings.warn("deprecated, use get_real_child",
+        # warnings.warn("deprecated, use get_real_child",
         #              DeprecationWarning)
         return self.children(**kwargs)
 

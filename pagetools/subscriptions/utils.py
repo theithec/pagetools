@@ -26,7 +26,8 @@ def to_queue(content, **kwargs):
         'site_domain': site.domain,
     })
     qm = QueuedEmail(
-        subject="%s %s" % (subs_settings.NEWS_SUBJECT_PREFIX, content['title']),
+        subject="%s %s" % (
+            subs_settings.NEWS_SUBJECT_PREFIX, content['title']),
         body=msg,
         lang=lang
     )

@@ -5,7 +5,6 @@ Created on 14.12.2013
 '''
 
 
-
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 from django.utils.translation import get_language
@@ -17,8 +16,8 @@ from pagetools.pages.models import Page
 
 from pagetools.menus.tests import MenuDataTestCase
 
-class ModelTests(MenuDataTestCase):
 
+class ModelTests(MenuDataTestCase):
 
     def test_validation(self):
         self.assertRaises(
@@ -35,7 +34,7 @@ class ModelTests(MenuDataTestCase):
         c = self.menu.get_children()
         self.assertEqual(self.menu.title, 'MainMenu')
         u0 = c[0].get_absolute_url()
-        if u0.startswith("/%s/" % lang ):
+        if u0.startswith("/%s/" % lang):
             u0 = u0[3:]
         u1 = c[1].get_absolute_url()
         if u1.startswith("/%s/" % lang):
@@ -55,15 +54,15 @@ class ModelTests(MenuDataTestCase):
         self.menu.save()
         self.assertEqual(self.menu.get_children()[1].slug, "P1")
 
-
     def test_doubleslug(self):
         with self.assertRaises(ValidationError):
             self.menu.children.add_child(self.p1)
 
+
 class M2Tests(TestCase):
     def test_create(self):
         m = Menu.objects.add_root("M1")
-        p = Page.objects.create(title="t1", slug="t1", content="t1", status="published")
+        p = Page.objects.create(
+            title="t1", slug="t1", content="t1", status="published")
         m.children.add_child(p)
         self.assertEqual(p, m.children.first().content_object)
-

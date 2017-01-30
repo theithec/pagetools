@@ -13,12 +13,13 @@ from crispy_forms.layout import Submit, Layout
 
 class SubscribeForm(forms.Form):
     email = forms.EmailField(label=_("E-Mail"))
+
     def __init__(self, *args, **kwargs):
         super(SubscribeForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.helper.form_id="subscribeform"
+        self.helper.form_id = "subscribeform"
         self.helper.form_action = reverse('subscriptions:subscribe')
         # i think this is wrong but  prevents empty fieldset somehow
-        self.helper.layout = Layout(  'email')
+        self.helper.layout = Layout('email')
         self.helper.add_input(Submit('subscribe', _('Submit')))
         self.helper.form_tag = True

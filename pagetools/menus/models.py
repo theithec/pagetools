@@ -33,9 +33,6 @@ logger = logging.getLogger("pagetools")
 
 class MenuEntryManager(TreeManager, LangManager):
 
-    def foo(self, *args, **kwargs):
-        print(self,dir(self), args, kwargs)
-
     def add_child(self, content_object, **kwargs):
         if not getattr(content_object, 'get_absolute_url', None):
             raise ValidationError(
@@ -65,8 +62,6 @@ class MenuManager(MenuEntryManager):
     def create(self, *args, **kwargs):
         raise AttributeError(
             _("Use 'add_child' or 'add_root' instead of 'create'"))
-
-
 
     def add_root(self, title, **kwargs):
         menu, created = TreeManager.get_or_create(
@@ -130,6 +125,8 @@ def delete_content(sender, **kwargs):
             e.delete()
     except:
         pass
+
+
 pre_delete.connect(delete_content)
 
 
@@ -297,7 +294,8 @@ class Menu(MenuEntry):
                         'obj_title': obj,
                         'obj_status': 'published' if getattr(
                             obj, 'enabled', True) else 'draft',
-                        'entry_enabled': "checked" if childentry.enabled else ""
+                        'entry_enabled':
+                            "checked" if childentry.enabled else ""
                     })
                 else:
                     d = self._with_child(d, childentry, obj, dict_parent)
@@ -361,7 +359,6 @@ class ViewLink(AbstractLink):
         else:
             self._meta.get_field('name').choices = choices
 
-
     def get_absolute_url(self):
         return reverse(self.name)
 
@@ -388,8 +385,7 @@ class AutoPopulated(AbstractLink):
             ('%s' % k, '%s' % k)
             for k in pagetools.menus.utils._entrieable_auto_children
         ))
-        # import sys; sys.exit(django.VERSION)
-        if django.VERSION < (1,9):
+        if django.VERSION < (1, 9):
             self._meta.get_field('name')._choices = choices
         else:
             self._meta.get_field('name').choices = choices

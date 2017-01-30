@@ -1,5 +1,8 @@
 from django.conf import settings
-_ = lambda x: x
+
+
+def _(x):
+    return x
 
 
 STATUS_CHOICES = getattr(settings, 'PT_STATUS_CHOICES', (
@@ -14,4 +17,3 @@ STATUS_PUBLISHED = getattr(settings, 'PT_STATUS_PUBLISHED', 'published')
 '''
 Status key of content shown to everybody
 '''
-

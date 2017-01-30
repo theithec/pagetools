@@ -13,7 +13,9 @@ from pagetools.core.models import PagelikeModel
 from pagetools.core.utils import choices2field
 from pagetools.widgets.models import PageType
 
-from .forms import ContactForm, CaptchaContactForm, MailReceiverField #  , DynMultipleChoiceField
+
+from .forms import ContactForm, CaptchaContactForm, MailReceiverField
+#  , DynMultipleChoiceField
 
 
 class IncludedForm(models.Model):
@@ -24,7 +26,8 @@ class IncludedForm(models.Model):
     '''
 
     included_form = models.CharField(
-        _("Included form"), max_length=255, blank=True, choices=(('dummy', 'dummy'),))
+        _("Included form"), max_length=255, blank=True, choices=(
+            ('dummy', 'dummy'),))
     includable_forms = {
         'Contactform': ContactForm,
         'Contactfrom(Captcha)':  CaptchaContactForm,
@@ -37,7 +40,6 @@ class IncludedForm(models.Model):
         '''
 
         super(IncludedForm, self).__init__(*args, **kwargs)
-        #self._meta.get_field_by_name('included_form')[0]._choices = [
         choices = [
             (i, _(i)) for i, j in list(self.includable_forms.items())]
         choices2field(self._meta.get_field('included_form'), choices)
@@ -55,6 +57,7 @@ class IncludedEmailForm(IncludedForm):
 
     class Meta:
         abstract = True
+
 
 '''
 class DynFormField(models.Model):
@@ -126,6 +129,7 @@ class DynFormField(models.Model):
         abstract = True
 '''
 
+
 class AuthPage(models.Model):
     login_required = models.BooleanField(_('Login required'), default=False)
 
@@ -163,17 +167,6 @@ class BasePage(IncludedEmailForm, AuthPage, PagelikeModel):
 class Page(BasePage):
     pass
 
-'''
-class PageDynFormField(DynFormField):
-    form_containing_model = models.ForeignKey(
-        Page,
-        related_name='dynformfields',
-        help_text='Additional fields and settings for the included form')
-
-    class Meta:
-        verbose_name = _("Form field")
-        verbose_name_plural = _("Additional form fields")
-'''
 
 class PageBlockMixin(models.Model):
     content = models.TextField(_('Content'), blank=True)
@@ -191,3 +184,16 @@ class PageBlockMixin(models.Model):
         lc = len(self.content)
         sc = strip_tags(self.content) or self.content
         return sc[:100 if lc > 100 else lc]
+
+
+'''
+class PageDynFormField(DynFormField):
+    form_containing_model = models.ForeignKey(
+        Page,
+        related_name='dynformfields',
+        help_text='Additional fields and settings for the included form')
+
+    class Meta:
+        verbose_name = _("Form field")
+        verbose_name_plural = _("Additional form fields")
+'''

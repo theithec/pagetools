@@ -14,11 +14,9 @@ from django.conf import settings
 settings.IS_TEST = True
 
 
-
 class TestNode1(PageNode):
     class Meta:
         app_label = "pagetools.sections.tests"
-
 
 
 class ModelTests(TestCase):
@@ -27,5 +25,3 @@ class ModelTests(TestCase):
 
     def test_title(self):
         self.assertEqual(self.n1.title, "w1")
-
-

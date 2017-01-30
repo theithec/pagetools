@@ -22,7 +22,8 @@ class MenuModule(DashboardModule):
 
     def __init__(self, *args, **kwargs):
         self.menu_title = kwargs.pop('menu_title', 'MainMenu')
-        kwargs['title'] = kwargs.get('title',
+        kwargs['title'] = kwargs.get(
+            'title',
             '%s: %s' % (_('Menu Overview'), self.menu_title))
         super(MenuModule, self).__init__(*args, **kwargs)
 

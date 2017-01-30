@@ -11,7 +11,7 @@ from pagetools.menus.templatetags.menus_tags import MenuRenderer
 from pagetools.pages.models import Page
 
 
-class TC1Tests(TestCase):
+class TemplatetagsTests(TestCase):
 
     def setUp(self):
         self.menu = Menu.objects.add_root(title='m1')
