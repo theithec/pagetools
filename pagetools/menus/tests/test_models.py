@@ -33,17 +33,17 @@ class ModelTests(MenuDataTestCase):
         lang = get_language()
         c = self.menu.get_children()
         self.assertEqual(self.menu.title, 'MainMenu')
-        u0 = c[0].get_absolute_url()
+        u0 = c[1].get_absolute_url()
         if u0.startswith("/%s/" % lang):
             u0 = u0[3:]
-        u1 = c[1].get_absolute_url()
+        u1 = c[0].get_absolute_url()
+        print("C",c )
         if u1.startswith("/%s/" % lang):
             u1 = u0[3:]
         self.assertEqual(
             u1,
             self.p1.get_absolute_url()
         )
-        self.assertEqual(self.e_v1.get_absolute_url(), "/")
 
     def test_entry_slugs(self):
         self.assertEqual(self.e_p1.slug, "start")
@@ -52,7 +52,7 @@ class ModelTests(MenuDataTestCase):
         self.p1.slug = "P1"
         self.p1.save()
         self.menu.save()
-        self.assertEqual(self.menu.get_children()[1].slug, "P1")
+        self.assertEqual(self.menu.get_children()[0].slug, "P1")
 
     def test_doubleslug(self):
         with self.assertRaises(ValidationError):

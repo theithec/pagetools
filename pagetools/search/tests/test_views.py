@@ -11,10 +11,15 @@ from django.utils.text import slugify
 from django.core.urlresolvers import reverse
 from pagetools.pages.models import Page
 import pagetools.search
+from pagetools.core.settings import STATUS_PUBLISHED
+
 
 pagetools.search.search_mods = (
     (Page, ('title', 'content'), {'replacements': 'content'}),
 )
+
+pagetools.search.extra_filter = lambda x: x.filter(status=STATUS_PUBLISHED)
+# search.extra_filter = lambda x: x
 
 
 class SearchViewTests(TestCase):
@@ -39,7 +44,11 @@ class SearchViewTests(TestCase):
         self.assertTrue("P1" in str(response.content))
         self.assertFalse("P2" in str(response.content))
 
+        p2 = Page.objects.get(title="P2")
+        p2.status = "draft"
+        p2.save()
+
         response = self.client.get('/search/?contains_any=Foo1 Foo2')
         self.assertTrue("P1" in str(response.content))
-        self.assertTrue("P2" in str(response.content))
+        self.assertFalse("P2" in str(response.content))
         self.assertFalse("P3" in str(response.content))

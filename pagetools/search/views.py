@@ -46,6 +46,7 @@ class SearchResultsView(PaginatorMixin):
         Cls = mod[0]
         fields = mod[1]
         qs = extra_filter(Cls.objects.all())
+        # qs = Cls.objects.all()
         cnots = self.search_params.get('contains_not', '').split()
         if cnots:
             notlist = [Q(**{'%s__icontains' % field:
@@ -70,7 +71,6 @@ class SearchResultsView(PaginatorMixin):
         result = set()
         if not sterms:
             return result
-
         for mod in self._search_mods:
             fields = mod[1]
             queryset = self.filtered_queryset(mod)

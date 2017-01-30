@@ -12,8 +12,8 @@ class MenuDataTestCase(TransactionTestCase):
         k1 = {'status': STATUS_PUBLISHED}
         k2 = {'enabled': True}
         self.menu = Menu.objects.add_root(title='MainMenu')
-        self.v1 = ViewLink.objects.create(name="index")
-        self.e_v1 = self.menu.children.add_child(self.v1, **k2)
+        # self.v1 = ViewLink.objects.create(name="index")
+        # self.e_v1 = self.menu.children.add_child(self.v1, **k2)
         self.p1 = Page.objects.create(title='P1', slug='start', status=STATUS_PUBLISHED, included_form="Contactform")
         self.e_p1 = self.menu.children.add_child(self.p1, **k2)
         self.l1 = Link.objects.create(url='#')
