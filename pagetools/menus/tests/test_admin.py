@@ -13,8 +13,7 @@ from pagetools.menus.models import Menu, MenuEntry, Link
 from pagetools.menus.admin import MenuAdmin, make_entrieable_admin
 from pagetools.menus import _ENTRIEABLE_MODELS
 from pagetools.core.tests.test_models import ConcretePublishableLangModel
-from pagetools.sections.tests.test_models import TestNode1
-from pagetools.sections.dashboard_modules import PageNodesModule
+from pagetools.widgets.settings import TEMPLATETAG_WIDGETS
 from pagetools.core.utils import get_adminedit_url
 
 
@@ -25,7 +24,6 @@ class CPMAdmin(admin.ModelAdmin):
 admin.site.register(ConcretePublishableLangModel, CPMAdmin)
 
 
-PageNodesModule.model = TestNode1
 
 
 class MenuAdminTests(TestCase):
@@ -118,8 +116,14 @@ class MenuAdminTests(TestCase):
 
         m = Menu.objects.add_root(title="Menu1")
         e = ma.addable_entries(obj=m)
+        print("E", e)
+        print("M", _ENTRIEABLE_MODELS)
+        len_e = len(_ENTRIEABLE_MODELS)
+        if len(TEMPLATETAG_WIDGETS) == 0:
+            len_e -= 1
+
         for m in _ENTRIEABLE_MODELS:
-            self.assertEqual(e.count('<li>'), len(_ENTRIEABLE_MODELS))
+            self.assertEqual(e.count('<li>'), len_e)
 
     def test_mk_entriableadmin(self):
         CA = CPMAdmin

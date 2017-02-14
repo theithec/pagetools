@@ -99,11 +99,11 @@ class PageNode(PagelikeModel):
         return "%s(%s)" % (o.title, get_classname(o))
 
     def clean(self):
-        objs = PageNode.objects.filter(slug=self.slug)
+        objs = PageNode.objects.filter(slug=self.slug, lang=self.lang)
         lobjs = len(objs)
         if (lobjs == 1 and objs[0].pk != self.pk) or lobjs > 1:
             raise ValidationError(
-                _('The slug "%s" is already taken') % (self.slug))
+                _('The slug "%s" for language "%s" is already taken') % (self.slug, self.lang))
         return super().clean()
 
     def save(self, *args, **kwargs):

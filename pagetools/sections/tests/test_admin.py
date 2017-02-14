@@ -2,11 +2,14 @@ from django.contrib.admin import AdminSite
 
 from django.test import TestCase
 from django.db import models
+from pagetools.sections.dashboard_modules import PageNodesModule
 
 from pagetools.sections.models import PageNode
 from pagetools.sections.admin import BasePageNodeAdmin
 
+from pagetools.sections.tests.test_models import TestNode1
 
+PageNodesModule.model = TestNode1
 class MockRequest(object):
     pass
 
