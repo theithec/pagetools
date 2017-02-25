@@ -41,6 +41,7 @@ class PageAdmin(BasePageAdmin):
             'status',
             'title',
             'slug',
+            'description',
             'content',
         ]}),
         (_('Included form'), {'fields': [
