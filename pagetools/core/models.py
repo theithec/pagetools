@@ -156,7 +156,7 @@ class PagelikeModel(TimeStampedModel, PublishableLangModel):
         slug = models.SlugField(_('Slug'), max_length=255, allow_unicode=True)
     description = models.CharField(
         _('Description'),
-        max_length=139,
+        max_length=156,
         help_text='''Description (for searchengines)''', blank=True)
 
     def get_absolute_url(self):
