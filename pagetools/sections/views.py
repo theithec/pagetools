@@ -24,7 +24,7 @@ class BaseNodeView(DetailView):
 
     def get_object(self, *args, **kwargs):
         o = super(BaseNodeView, self).get_object(*args, **kwargs)
-        return o.get_real_obj()
+        return o.content_object
 
     def get_template_names(self):
         return (
