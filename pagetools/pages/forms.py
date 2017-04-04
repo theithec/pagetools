@@ -18,7 +18,8 @@ from crispy_forms.layout import Submit
 
 from captcha.fields import CaptchaField
 
-from .settings import MAILFORM_RECEIVERS, MAILFORM_SENDER
+from .settings import MAILFORM_RECEIVERS as MAILFORM_RECEIVERS
+from .settings import MAILFORM_SENDER
 
 import logging
 logger = logging.getLogger(__name__)
@@ -56,15 +57,16 @@ class MailReceiverField(object):
 class SendEmailForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
-        self.email_receivers = kwargs.pop('email_receivers', None)
+        email_receivers = kwargs.pop('email_receivers', None)
         super(SendEmailForm, self).__init__(*args, **kwargs)
+        self.email_receivers = self.get_mailreceivers(email_receivers)
         self.helper = FormHelper()
         self.helper.form_method = 'post'
         self.helper.add_input(Submit('submit', _('Submit')))
 
-    def get_mailreceivers(self):
+    def get_mailreceivers(self, email_receivers):
         try:
-            r = (getattr(self, 'email_receivers', "") or
+            r = (email_receivers or
                  ",".join(MAILFORM_RECEIVERS)).split(",")
             logger.debug("Mail receivers %s " % r)
             return r
@@ -82,8 +84,19 @@ class SendEmailForm(forms.Form):
         if _is_valid:
             msg = self.get_message()
             send_mail(_("Form"), msg, MAILFORM_SENDER,
-                      self.get_mailreceivers(), fail_silently=False)
+                      self.email_receivers, fail_silently=False)
         return _is_valid
+
+    def clean(self):
+        super(SendEmailForm, self).clean()
+        if not self.email_receivers:
+            raise ValidationError(_("An error occured"))
+        try:
+            ev = EmailValidator()
+            for a in self.email_receivers:
+                ev(a)
+        except (ValueError, ValidationError, KeyError):
+            raise ValidationError(_("An error occured"))
 
 
 class ContactForm(SendEmailForm):

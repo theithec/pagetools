@@ -9,6 +9,7 @@ from pagetools.core.tests.test_models import ConcretePublishableLangModel
 class MenuDataTestCase(TransactionTestCase):
     # fixtures = ["testdata.json"]
     def setUp(self):
+        super().setUp()
         k1 = {'status': STATUS_PUBLISHED}
         k2 = {'enabled': True}
         self.menu = Menu.objects.add_root(title='MainMenu')

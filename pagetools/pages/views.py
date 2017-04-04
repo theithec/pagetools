@@ -12,7 +12,6 @@ from pagetools.widgets.views import WidgetPagelikeMixin
 from pagetools.menus.views import SelectedMenuentriesMixin
 from .models import Page
 
-from .settings import MAILFORM_RECEIVERS
 
 
 class IncludedFormMixin(object):
@@ -43,7 +42,11 @@ class IncludedFormMixin(object):
 
 
     def post(self, request, *args, **kwargs):
-        form = self.get_form_class()(request.POST)
+
+        #self.object = self.object or self.get_object()
+        self.get_object()
+        d = self.get_form_kwargs()
+        form = self.get_form_class()(request.POST, **self.get_form_kwargs())
         if form.is_valid():
             kwargs['form'] = None
             return self.form_valid(form)

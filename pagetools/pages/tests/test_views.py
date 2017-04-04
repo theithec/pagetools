@@ -10,8 +10,12 @@ from pagetools.pages.forms import ContactForm
 
 from django.test import override_settings
 
+from .test_forms import ModifyMailReceiverTestCase
 
-class PageViewTestCase(MenuDataTestCase):
+class PageViewTestCase(ModifyMailReceiverTestCase, MenuDataTestCase):
+
+    def setUp(self):
+        super().setUp(["q@w.de"])
 
     def test_detailview(self):
         response = self.client.get(self.p1.get_absolute_url())
