@@ -57,16 +57,16 @@ class MailReceiverField(object):
 class SendEmailForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
-        email_receivers = kwargs.pop('email_receivers', None)
+        mailreceivers = kwargs.pop('mailreceivers', None)
         super(SendEmailForm, self).__init__(*args, **kwargs)
-        self.email_receivers = self.get_mailreceivers(email_receivers)
+        self.mailreceivers = self.get_mailreceivers(mailreceivers)
         self.helper = FormHelper()
         self.helper.form_method = 'post'
         self.helper.add_input(Submit('submit', _('Submit')))
 
-    def get_mailreceivers(self, email_receivers):
+    def get_mailreceivers(self, mailreceivers):
         try:
-            r = (email_receivers or
+            r = (mailreceivers or
                  ",".join(MAILFORM_RECEIVERS)).split(",")
             logger.debug("Mail receivers %s " % r)
             return r
@@ -84,16 +84,16 @@ class SendEmailForm(forms.Form):
         if _is_valid:
             msg = self.get_message()
             send_mail(_("Form"), msg, MAILFORM_SENDER,
-                      self.email_receivers, fail_silently=False)
+                      self.mailreceivers, fail_silently=False)
         return _is_valid
 
     def clean(self):
         super(SendEmailForm, self).clean()
-        if not self.email_receivers:
+        if not self.mailreceivers:
             raise ValidationError(_("An error occured"))
         try:
             ev = EmailValidator()
-            for a in self.email_receivers:
+            for a in self.mailreceivers:
                 ev(a)
         except (ValueError, ValidationError, KeyError):
             raise ValidationError(_("An error occured"))

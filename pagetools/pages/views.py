@@ -81,7 +81,7 @@ class IncludedFormMixin(object):
     def get_form_kwargs(self):
         kwargs = {}
         if getattr(self, 'object') and getattr(self.object, 'email_receivers'):
-            kwargs['email_receivers'] = self.object.email_receivers
+            kwargs['mailreceivers'] = self.object.email_receivers
         # kwargs.update(self.get_extras())
         return kwargs
 
