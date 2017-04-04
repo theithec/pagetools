@@ -7,7 +7,6 @@ jQuery = grp.jQuery;
 (function($){
     $(document).ready(function(){
 
-        console.log("ALLOW", "{{ request.parent_model}}");
         {% if request.parent_model.allowed_children_classes|length > 1 %}
         $.getScript( "{% static "js/jquery.balloon.min.js" %}")
             .done(function( script, Status ) {

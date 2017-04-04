@@ -3,7 +3,7 @@ logger = logging.getLogger('pagetoolpagetools')
 
 
 def get_template_names_for_obj(obj, suffix=""):
-    obj = obj.content_object
+    obj = obj.get_real_obj()
     n = []
     node_type = getattr(obj, 'node_type', None)
     if node_type:

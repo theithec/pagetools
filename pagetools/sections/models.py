@@ -5,16 +5,12 @@ Inheritated models with own fields needs concrete inheritance,
 otherwise a proxy model is sufficient.
 '''
 import warnings
-import sys
-import traceback
 import django
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.db import models
-from django.contrib.contenttypes.fields import GenericForeignKey
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes.fields import GenericForeignKey
 
 from filebrowser.fields import FileBrowseField
 
@@ -22,22 +18,8 @@ from pagetools.core.models import PagelikeModel, PublishableLangManager
 from pagetools.core.utils import (get_adminadd_url, get_classname, importer,
                                   choices2field)
 
+
 class PageNodeManager(PublishableLangManager):
-
-    def __init__(self):
-        super().__init__()
-        print("i")
-
-    def get_queryset(self):
-        print("GETQS", self.model)
-        return super().get_queryset()# .prefetch_related('content_object')
-    def get2(self, *args, **kwargs):
-        if self.model != PageNode and 'pk' in kwargs and len(kwargs) == 1:
-            _REAL_OBJ_CACHE[kwargs['pk']] = _REAL_OBJ_CACHE.get(
-                kwargs['pk'], super().get(*args, **kwargs))
-            # print("ROC", _REAL_OBJ_CACHE.get(kwargs["pk"]) )
-            return _REAL_OBJ_CACHE[kwargs['pk']]
-        return super().get(*args, **kwargs)
     pass
 
 
@@ -63,20 +45,15 @@ class PageNode(PagelikeModel):
 
     classes = models.CharField(
         'Classes', max_length=512, blank=True, null=True)
-    content_type_pk =  models.ForeignKey(ContentType, on_delete=models.CASCADE)
-    content_type_pk =  models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    content_type_pk = models.SmallIntegerField(blank=True)
     in_nodes = models.ManyToManyField("self",
                                       through="PageNodePos",
                                       related_name="positioned_content",
                                       symmetrical=False)
-    content_object = GenericForeignKey('content_type_pk', 'id')
     objects = PageNodeManager()
-
-    content_object = GenericForeignKey('content_type_pk', 'id')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self._real = None
         allowed = getattr(self, 'allowed_children_classes', None)
         if allowed:
             repl = []
@@ -85,8 +62,15 @@ class PageNode(PagelikeModel):
 
             self.__class__.allowed_children_classes = repl
 
+    def get_real_obj(self):
+        real = self
+        if self.pk:
+            clz = ContentType.objects.get_for_id(real.content_type_pk)
+            real = clz.model_class().objects.get(pk=real.pk)
+        return real
+
     def get_real_child(self, child):
-        real_child = child.content_object
+        real_child = child.get_real_obj()
         s = self.slug + "_" + real_child.slug
         real_child.long_slug = s
         return real_child
@@ -98,7 +82,6 @@ class PageNode(PagelikeModel):
         return self.get_real_child(child)
 
     def children(self, **kwargs):
-        print("CHILDREN", self)
         o = self.positioned_content.lfilter(**kwargs).order_by('pagenodepos')
         return [self.get_real_child(c) for c in o]
 
@@ -108,21 +91,11 @@ class PageNode(PagelikeModel):
         return self.children(**kwargs)
 
     def get_classname(self):
-        o = self.content_object #get_real_obj()
+        o = self.get_real_obj()
         return get_classname(o)
 
     def __str__(self):
-        o = self.content_object or self
-        #print("S", self.title)
-        o = self.content_object or self
-        try:
-            raise Exception("STR")
-        except Exception as e:
-            pass
-            exc_type, exc_value, exc_traceback = sys.exc_info()
-            # print("*** print_tb:")
-            #traceback.print_tb(exc_traceback, limit=1, file=sys.stdout)
-        # print(traceback.print_stack())
+        o = self.get_real_obj()
         return "%s(%s)" % (o.title, get_classname(o))
 
     def clean(self):
@@ -134,13 +107,11 @@ class PageNode(PagelikeModel):
         return super().clean()
 
     def save(self, *args, **kwargs):
-        if not self.content_type_pk_id:
+        if not self.content_type_pk:
             ct = ContentType.objects.get_for_model(
                 self, for_concrete_model=False)
-            self.content_type_pk_id = ct.pk
-        self._real = None
-        s = super(PageNode, self).save(*args, **kwargs)
-        return s
+            self.content_type_pk = ct.pk
+        super(PageNode, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
         return reverse("sections:node", args=(self.slug,))
@@ -170,7 +141,7 @@ class PageNodePos(models.Model):
     owner = models.ForeignKey(PageNode, related_name="in_group")
 
     def __str__(self):
-        return "pnp" #%s:%s:%s" % (self.owner, self.content, self.position)
+        return "%s:%s:%s" % (self.owner, self.content, self.position)
 
     class Meta:
         ordering = ['position']
