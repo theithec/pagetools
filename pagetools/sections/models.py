@@ -14,6 +14,7 @@ from django.db import models
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes.fields import GenericForeignKey
 
 from filebrowser.fields import FileBrowseField
 
@@ -63,10 +64,12 @@ class PageNode(PagelikeModel):
     classes = models.CharField(
         'Classes', max_length=512, blank=True, null=True)
     content_type_pk =  models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    content_type_pk =  models.ForeignKey(ContentType, on_delete=models.CASCADE)
     in_nodes = models.ManyToManyField("self",
                                       through="PageNodePos",
                                       related_name="positioned_content",
                                       symmetrical=False)
+    content_object = GenericForeignKey('content_type_pk', 'id')
     objects = PageNodeManager()
 
     content_object = GenericForeignKey('content_type_pk', 'id')
@@ -95,6 +98,7 @@ class PageNode(PagelikeModel):
         return self.get_real_child(child)
 
     def children(self, **kwargs):
+        print("CHILDREN", self)
         o = self.positioned_content.lfilter(**kwargs).order_by('pagenodepos')
         return [self.get_real_child(c) for c in o]
 
@@ -108,7 +112,7 @@ class PageNode(PagelikeModel):
         return get_classname(o)
 
     def __str__(self):
-        # o = self.get_real_obj()
+        o = self.content_object or self
         #print("S", self.title)
         o = self.content_object or self
         try:
