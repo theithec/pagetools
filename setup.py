@@ -16,7 +16,7 @@ setup(
     license='BSD License',  # example license
     description='A set of Django apps to to provide some cms-like features',
     install_requires = [
-        'django>=1.8,<1.10',
+        'django>=1.8,<=1.11',
         'django-grappelli>=2.7.3,<2.9.1',
         'django-filebrowser>=3.6.4',
         'django-mptt==0.8.6',

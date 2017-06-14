@@ -23,7 +23,7 @@ class BaseWidget(models.Model):
     template_name = "widgets/basewidget.html"
     title = models.CharField(max_length=128, blank=True)
     name = models.SlugField(_('name'), unique=True)
-    adapter = GenericRelation('WidgetInArea')
+    adapter = GenericRelation('widgets.WidgetInArea')
 
     def get_title(self, context):  # pylint: disable=unused-argument
         '''get the title'''

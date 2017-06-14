@@ -34,7 +34,10 @@ class ContentNode(template.Node):
         if not obj.enabled:
             context['unpublished'] = True
 
-        return select_template(real_template).render(context)
+        d = {}
+        for cd in context.dicts:
+            d.update(cd)
+        return select_template(real_template).render(d)
 
 
 @register.tag
