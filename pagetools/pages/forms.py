@@ -64,7 +64,7 @@ class SendEmailForm(forms.Form):
         self.helper.form_method = 'post'
         self.helper.add_input(Submit('submit', _('Submit')))
 
-    def get_mailreceivers(self, mailreceivers):
+    def get_mailreceivers(self, mailreceivers=None):
         try:
             r = (mailreceivers or
                  ",".join(MAILFORM_RECEIVERS)).split(",")
