@@ -33,12 +33,13 @@ class PageNodesModule(DashboardModule):
 
     """
 
-    # model = SimpleSectionPage
     template = 'admin/dashboard_pagenodes_module.html'
+    model = None
 
     def __init__(self, *args, **kwargs):
         kwargs['title'] = "Nodes Tree"
-        super(PageNodesModule, self).__init__(*args, **kwargs)
+        self.model = kwargs.pop('model')
+        super().__init__(*args, **kwargs)
 
     def init_with_context(self, context):
         pages = self.model.objects.filter(
