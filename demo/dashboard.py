@@ -25,7 +25,7 @@ class CustomIndexDashboard(Dashboard):
     def init_with_context(self, context):
         # site_name = get_admin_site_name(context)
         self.children.append(MenuModule(column=1))
-        self.children.append(PageNodesModule(column=1))
+        self.children.append(PageNodesModule(model=SectionList, column=1))
 
         # append an app list module for "Applications"
         self.children.append(modules.AppList(
