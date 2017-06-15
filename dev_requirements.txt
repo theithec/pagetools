@@ -1,6 +1,20 @@
-behave==1.2.5
-behave-django==0.4.0
-coverage==4.2
-coveralls
-django-debug-toolbar==1.5
+behave-django==0.5.0
+celery==4.0.2
+crispy-forms-foundation==0.6.0
+Django==1.11.2
+django-admin-sortable==2.1
+django-classy-tags==0.8.0
+django-crispy-forms==1.6.1
+django-debug-toolbar==1.8
+django-email-extras==0.3.3
+-e git+https://github.com/theithec/django-filebrowser@master#egg=django_filebrowser
+django-grappelli==2.10.1
+django-model-utils==3.0.0
+django-mptt==0.8.7
+#-e git+https://github.com/theithec/pagetools.git@master#egg=django_pagetools
+django-reversion==2.0.8
+django-sekizai==0.10.0
+django-simple-captcha==0.5.5
+djangoajax==2.3.7
+ipython==6.1.0
 mock==2.0.0
