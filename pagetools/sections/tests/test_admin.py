@@ -1,15 +1,15 @@
 from django.contrib.admin import AdminSite
+from django.db.models.base import ModelBase
 
 from django.test import TestCase
 from django.db import models
 from pagetools.sections.dashboard_modules import PageNodesModule
+import pagetools.sections.dashboard_modules
 
 from pagetools.sections.models import PageNode
 from pagetools.sections.admin import BasePageNodeAdmin
+from pagetools.sections.tests.test_models import TestModelMixin
 
-from pagetools.sections.tests.test_models import TestNode1
-
-PageNodesModule.model = TestNode1
 class MockRequest(object):
     pass
 
@@ -17,9 +17,11 @@ class MockRequest(object):
 request = MockRequest()
 
 
-class SectionAdminTests(TestCase):
+class SectionAdminTests(TestModelMixin):
 
     def setUp(self):
+        super().setUp()
+
         self.site = AdminSite()
 
     def test_foo1(self):

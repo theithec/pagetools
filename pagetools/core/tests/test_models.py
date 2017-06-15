@@ -12,7 +12,6 @@ class ConcretePublishableLangModel(PublishableLangModel):
     def get_absolute_url(self):
         return "#"
 
-
 class PublishableLangModelTest(TestCase):
 
     def setUp(self):

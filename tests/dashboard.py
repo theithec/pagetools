@@ -6,6 +6,7 @@ To activate your index dashboard add the following to your settings.py::
     GRAPPELLI_INDEX_DASHBOARD = 'demo.dashboard.CustomIndexDashboard'
 """
 from django import forms
+from django.db import connection
 from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
 
@@ -26,7 +27,10 @@ class CustomIndexDashboard(Dashboard):
     def init_with_context(self, context):
         # site_name = get_admin_site_name(context)
         self.children.append(MenuModule(column=1))
-        self.children.append(PageNodesModule(column=1))
+        from pagetools.sections.tests.models import PageNodeDummy
+        with connection.schema_editor() as schema_editor:
+            schema_editor.create_model(PageNodeDummy)
+        self.children.append(PageNodesModule(model=PageNodeDummy, column=1))
 
         # append an app list module for "Applications"
         self.children.append(modules.AppList(

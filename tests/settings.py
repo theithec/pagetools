@@ -11,8 +11,6 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
-import os
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -51,7 +49,7 @@ INSTALLED_APPS = [
     'pagetools.pages',   # Simple Pages
     'pagetools.menus',   #
     'pagetools.sections',# Nested Content (e.g. for a singlepage site)
-    'pagetools.sections.tests',
+    #'pagetools.sections.tests',
     'pagetools.search',  # Simple Search on database fields
     'pagetools.subscriptions',  # Subscriptions to whatever
     'captcha',
@@ -190,10 +188,10 @@ INSTALLED_APPS = [
     'crispy_forms',      # required for pages
     'sekizai',           # required for sections. Needs further configuration
     'pagetools.core',    # needed for all pagetools modules
+    'pagetools.sections',# Nested Content (e.g. for a singlepage site)
     'pagetools.widgets', # Widgets (e.g. for sidebars)
     'pagetools.pages',   # Simple Pages
     'pagetools.menus',   #
-    'pagetools.sections',# Nested Content (e.g. for a singlepage site)
     # 'pagetools.sections.tests',
     'pagetools.search',  # Simple Search on database fields
     'pagetools.subscriptions',  # Subscriptions to whatever
@@ -268,15 +266,15 @@ USE_TZ = True
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 STATIC_URL = '/static/'
-TATICFILES_DIRS = [os.path.join(BASE_DIR, "static"),]
-TATIC_ROOT = os.path.join(BASE_DIR, "static_root")
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static"),]
+STATIC_ROOT = os.path.join(BASE_DIR, "static_root")
 
-EDIA_URL = '/media/'
-EDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 GRAPPELLI_INDEX_DASHBOARD = 'tests.dashboard.CustomIndexDashboard'
 
 
-ADMIN_URL = r'^admin/'
+#ADMIN_URL = r'^admin/'
 
 PT_TEMPLATETAG_WIDGETS = {
     'subscribe':
