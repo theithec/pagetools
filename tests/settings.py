@@ -49,14 +49,13 @@ INSTALLED_APPS = [
     'pagetools.pages',   # Simple Pages
     'pagetools.menus',   #
     'pagetools.sections',# Nested Content (e.g. for a singlepage site)
-    #'pagetools.sections.tests',
+    'pagetools.sections.tests',
     'pagetools.search',  # Simple Search on database fields
     'pagetools.subscriptions',  # Subscriptions to whatever
     'captcha',
     'behave_django',
     #'debug_toolbar',
 ]
-
 SITE_ID = 1  # required by contrib.sites
 
 
@@ -188,10 +187,10 @@ INSTALLED_APPS = [
     'crispy_forms',      # required for pages
     'sekizai',           # required for sections. Needs further configuration
     'pagetools.core',    # needed for all pagetools modules
-    'pagetools.sections',# Nested Content (e.g. for a singlepage site)
     'pagetools.widgets', # Widgets (e.g. for sidebars)
     'pagetools.pages',   # Simple Pages
     'pagetools.menus',   #
+    'pagetools.sections',# Nested Content (e.g. for a singlepage site)
     # 'pagetools.sections.tests',
     'pagetools.search',  # Simple Search on database fields
     'pagetools.subscriptions',  # Subscriptions to whatever
@@ -266,15 +265,15 @@ USE_TZ = True
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static"),]
-STATIC_ROOT = os.path.join(BASE_DIR, "static_root")
+TATICFILES_DIRS = [os.path.join(BASE_DIR, "static"),]
+TATIC_ROOT = os.path.join(BASE_DIR, "static_root")
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+EDIA_URL = '/media/'
+EDIA_ROOT = os.path.join(BASE_DIR, "media")
 GRAPPELLI_INDEX_DASHBOARD = 'tests.dashboard.CustomIndexDashboard'
 
 
-#ADMIN_URL = r'^admin/'
+ADMIN_URL = r'^admin/'
 
 PT_TEMPLATETAG_WIDGETS = {
     'subscribe':
