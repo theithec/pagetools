@@ -52,7 +52,6 @@ INSTALLED_APPS = [
     'pagetools.pages',   # Simple Pages
     'pagetools.menus',   #
     'pagetools.sections',# Nested Content (e.g. for a singlepage site)
-    'pagetools.sections.tests',
     'pagetools.search',  # Simple Search on database fields
     'pagetools.subscriptions',  # Subscriptions to whatever
     'captcha',
@@ -63,7 +62,7 @@ INSTALLED_APPS = [
 SITE_ID = 1  # required by contrib.sites
 
 
-MIDDLEWARE = [
+MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
