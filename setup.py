@@ -30,7 +30,7 @@ setup(
     ],
 
     dependency_links=[
-        'http://github.com/theithec/django-filebrowser/tarball/master#egg=django-filebrowser-4.0-dev'],
+        'http://github.com/theithec/django-filebrowser/tarball/master#egg=django-filebrowser-4.0-dev0'],
 
     long_description=README,
     author='Tim Heithecker',
