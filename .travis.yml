@@ -5,7 +5,7 @@ python:
 env:
     - TOX_ENV=py35-111
 install:
-    - "pip install -e ."
+    - "pip install -e .  --process-dependency-links"
     - "pip install -r dev_requirements.txt"
 # script: "cd demo && coverage run --source pagetools manage.py test pagetools main"
 script: "coverage run setup.py test"
