@@ -2,7 +2,6 @@
 '''
 
 import warnings
-import django
 from django.conf import settings
 from django.db import models
 from django.utils.translation import ugettext_lazy as _, get_language
@@ -11,12 +10,6 @@ from model_utils.models import StatusModel, TimeStampedModel
 from model_utils.choices import Choices
 
 from . import settings as ptsettings
-
-#  c&p from django1.9
-from django.core.validators import RegexValidator
-import re
-import six
-from django.utils.functional import SimpleLazyObject
 
 
 class LangManager(models.Manager):
@@ -110,34 +103,6 @@ class PublishableLangModel(LangModel, StatusModel):
         abstract = True
 
 
-def _lazy_re_compile(regex, flags=0):
-    """Lazily compile a regex with flags."""
-    def _compile():
-        # Compile the regex if it was not passed pre-compiled.
-        if isinstance(regex, six.string_types):
-            return re.compile(regex, flags)
-        else:
-            assert not flags, "flags must be empty if regex is passed pre-compiled"
-            return regex
-    return SimpleLazyObject(_compile)
-
-
-slug_unicode_re = _lazy_re_compile(r'^[-\w]+\Z', re.U)
-validate_unicode_slug = RegexValidator(
-    slug_unicode_re,
-    _("Enter a valid 'slug' consisting of Unicode letters, numbers, underscores, or hyphens."),
-    'invalid'
-)
-
-
-class _USlugField(models.CharField):
-    '''Slugfield that allows unicode'''
-    default_validators = [validate_unicode_slug]
-
-
-USlugField = _USlugField
-
-
 class PagelikeModel(TimeStampedModel, PublishableLangModel):
     '''
     This could be a base model for everything that inclines a detail_view
@@ -149,17 +114,14 @@ class PagelikeModel(TimeStampedModel, PublishableLangModel):
     '''
 
     title = models.CharField(_('Title'), max_length=255)
-    slug = None
-    if django.VERSION < (1, 9):
-        slug = USlugField(_('Slug'), max_length=255)
-    else:
-        slug = models.SlugField(_('Slug'), max_length=255, allow_unicode=True)
+    slug = models.SlugField(_('Slug'), max_length=255, allow_unicode=True)
     description = models.CharField(
         _('Description'),
         max_length=156,
         help_text='''Description (for searchengines)''', blank=True)
 
     def get_absolute_url(self):
+        '''Dummy'''
         return '/%s' % self.slug
 
     def __str__(self):
