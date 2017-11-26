@@ -165,7 +165,7 @@ class BasePage(IncludedEmailForm, AuthPage, PagelikeModel):
 
 
 class Page(BasePage):
-    pass
+    objects = models.Manager()
 
 
 class PageBlockMixin(models.Model):
