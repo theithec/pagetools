@@ -19,7 +19,7 @@ setup(
         'beautifulsoup4==4.6.0',
         'django-crispy-forms==1.6.1',
         'django-debug-toolbar==1.8',
-        'django-filebrowser==3.9',
+        'django-filebrowser==3.9.1',
         'django-grappelli==2.10.1',
         'django-model-utils==3.0.0',
         'django-mptt==0.8.7',
