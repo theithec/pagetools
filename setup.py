@@ -1,5 +1,4 @@
 import os
-
 from setuptools import setup, find_packages
 
 # from distutils.core import setup
@@ -11,26 +10,28 @@ from version import get_git_version
 setup(
     name='django-pagetools',
     version=get_git_version(),
-    packages=find_packages(exclude=("demo","demo.*")),
+    packages=find_packages(exclude=("demo", "demo.*")),
     include_package_data=True,
     license='BSD License',  # example license
     description='A set of Django apps to to provide some cms-like features',
-    install_requires = [
-        Django==1.11.2
-        beautifulsoup4==4.6.0
-        django-crispy-forms==1.6.1
-        django-debug-toolbar==1.8
-        django-filebrowser==4.0.dev0
-        django-grappelli==2.10.1
-        django-model-utils==3.0.0
-        django-mptt==0.8.7
-        django-sekizai==0.10.0
-        django-simple-captcha==0.5.5
-        djangoajax==2.3.7
-        Pillow==4.1.1
+    install_requires=[
+        'Django==1.11.7',
+        'beautifulsoup4==4.6.0',
+        'django-crispy-forms==1.6.1',
+        'django-debug-toolbar==1.8',
+        'django-filebrowser==3.9',
+        'django-grappelli==2.10.1',
+        'django-model-utils==3.0.0',
+        'django-mptt==0.8.7',
+        'django-sekizai==0.10.0',
+        'django-simple-captcha==0.5.5',
+        'djangoajax==2.3.7',
+        'Pillow==4.1.1',
     ],
 
-    dependency_links = ['http://github.com/theithec/django-filebrowser/tarball/master#egg=django-filebrowser-4.0-dev'],
+    #dependency_links=[
+    #    'http://github.com/theithec/django-filebrowser/tarball/master#egg=django-filebrowser-4.1-dev',
+    #],
 
     long_description=README,
     author='Tim Heithecker',
