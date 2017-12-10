@@ -166,18 +166,20 @@ class EntrieableForm(forms.ModelForm):
         menus = [(m.id, '%s' % m) for m in Menu.objects.root_nodes()]
         try:
             entry = kwargs['instance']
+            content_type=ContentType.objects.get_for_model(entry)
             menuEntries = MenuEntry.objects.filter(
-                content_type=ContentType.objects.get_for_model(entry),
+                content_type=content_type,
                 object_id=entry.id
             )
             menuroot_ids = set([m.get_root().id for m in menuEntries])
         except (KeyError, AttributeError):
             menuroot_ids = set()
+
         self.fields['menus'] = forms.MultipleChoiceField(
             label=_('Menus'),
             choices=menus,
             required=False,
-            initial=menuroot_ids,
+            initial=list(menuroot_ids),
             widget=forms.CheckboxSelectMultiple
         )
 
@@ -213,7 +215,6 @@ class EntrieableAdmin(admin.ModelAdmin):
         See :func:`pagetools.menus.admin.entrieable_admin_get_fields`
         '''
         '''Entrieable get_fields (for monkeypatching)'''
-        # import pdb;pdb.set_trace()
         superfunc = super(self.__class__, self).get_fields
         if not getattr(superfunc, "for_entrieable",  False):
             fields = superfunc(request, obj)
@@ -226,7 +227,6 @@ class EntrieableAdmin(admin.ModelAdmin):
     get_fields.for_entrieable = True
 
     def get_fieldsets(self, request, obj):
-        # import pdb;pdb.set_trace()
         superfunc = super(self.__class__, self).get_fieldsets
         if not getattr(superfunc, "for_entrieable",  False):
             self.fieldsets = superfunc(request, obj)
