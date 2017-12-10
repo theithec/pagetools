@@ -17,7 +17,7 @@ setup(
     install_requires=[
         'Django==1.11.7',
         'beautifulsoup4==4.6.0',
-        'django-crispy-forms==1.6.1',
+        'django-crispy-forms==1.7.0',
         'django-debug-toolbar==1.8',
         'django-filebrowser==3.9.1',
         'django-grappelli==2.10.1',
