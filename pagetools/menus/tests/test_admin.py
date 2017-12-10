@@ -116,8 +116,6 @@ class MenuAdminTests(TestCase):
 
         m = Menu.objects.add_root(title="Menu1")
         e = ma.addable_entries(obj=m)
-        print("E", e)
-        print("M", _ENTRIEABLE_MODELS)
         len_e = len(_ENTRIEABLE_MODELS)
         if len(TEMPLATETAG_WIDGETS) == 0:
             len_e -= 1
@@ -153,6 +151,15 @@ class MenuAdminTests(TestCase):
         data = c.__dict__
         data['status_changed_0'] = "2016-01-01"
         data['status_changed_1'] = "23:00"
-        # import pdb; pdb.set_trace()
         response = self.client.post(adminurl, data)
         self.assertIn(response.status_code, (200, 302))
+        self.assertEqual(MenuEntry.objects.count(),2)
+        response = self.client.get(adminurl)
+        c = str(response.content)
+        start = c.find('<input type="checkbox" name="menus"')
+        end = c[start:].find(">")
+        tag = c[start:start+end+1]
+        self.assertTrue(" checked " in tag)
+
+
+
