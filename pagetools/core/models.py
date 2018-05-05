@@ -81,20 +81,21 @@ class PublishableLangModel(LangModel, StatusModel):
     '''
 
     _translated_choices = [(slug, _(name))
-                           for(slug, name)
-                           in ptsettings.STATUS_CHOICES]
+                           for (slug, name) in ptsettings.STATUS_CHOICES]
     STATUS = Choices(*_translated_choices)
     public = PublishableLangManager()
 
     def _enabled(self):
         warnings.warn("Depricated. Bad naming. Use ``is_published``.")
         return self.status == ptsettings.STATUS_PUBLISHED
+
     _enabled.boolean = True
     _enabled.admin_order_field = 'status'
     enabled = property(_enabled)
 
     def _is_published(self):
         return self.status == ptsettings.STATUS_PUBLISHED
+
     _is_published.boolean = True
     _is_published.admin_order_field = 'status'
     is_published = property(_is_published)
