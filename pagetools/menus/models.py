@@ -103,16 +103,50 @@ class MenuEntry(MPTTModel, LangModel):
         return self.content_object.get_absolute_url()
 
     def clean(self):
-        try:
-            e = MenuEntry.objects.get(title=self.title, lang=self.lang)
-            if not (self.pk and e.pk == self.pk):
-                raise ValidationError(
-                    _('An entry with this title and language already exists'))
-        except MenuEntry.DoesNotExist:
-            pass
+        def _raise():
+            raise ValidationError(
+                    _('An entry with this title and language already exists in menu'))
+
+        kwargs = {
+                'title': self.title,
+                'lang': self.lang,
+                 # 'parent__is_null=True
+        }
+        if not self.parent:  # root
+            kwargs['parent__isnull'] = True
+
+        entries = MenuEntry.objects.filter(**kwargs)
+        if self.parent:  # not root
+            root = self.parent.get_root()
+            if entries:
+                for e in entries:
+                    is_same = self.pk and self.pk == e.pk
+                    if not is_same and e.get_root() == root:
+                        raise ValidationError(
+                            _('An entry with this title and language already exists in menu'))
+            else:  # root
+                if entries:
+                    raise ValidationError(
+                        _('A menu with this title and language already exists'))
+
+
+
+
+        #root = self.get_root()
+
+        #try:
+        #    entries = MenuEntry.objects.filter(title=self.title, lang=self.lang)
+        #    for e in entries:
+        #        eroot = e.get_root()
+        #        if root == eroot:
+        #            raise ValidationError(
+        #                _('An entry with this title and language already exists in menu'))
+        #except MenuEntry.DoesNotExist:
+        #    pass
 
     class Meta:
-        unique_together = ('title', 'lang')
+        pass
+        #unique_together = ('title', 'lang')
 
 
 def delete_content(sender, **kwargs):
