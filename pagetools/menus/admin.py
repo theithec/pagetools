@@ -105,7 +105,7 @@ class MenuAdmin(TinyMCEMixin, admin.ModelAdmin):
 
     def render_change_form(self, request, context, add=False,
                            change=False, form_url='', obj=None):
-        if change:
+        if change and obj:
             for c in entrieable_models():
                 context['addable_entries'] = "".join([
                     '<li><a href="%s?menu=%s">%s</a></li>' % (
@@ -197,6 +197,7 @@ class EntrieableForm(forms.ModelForm):
             )
             self.existing_menuentries = []
             for e in existing_menuentries_for_obj:
+                e.clean()
                 self.existing_menuentries.append(e)
         return s
 
@@ -267,7 +268,7 @@ class EntrieableAdmin(admin.ModelAdmin):
         for am in all_menus:
             found = None
             for e in existing_menuentries:
-                if e.get_root().pk == am.pk:
+                if e.parent.get_root().pk == am.pk:
                     found = e
                     break
 
