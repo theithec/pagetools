@@ -15,6 +15,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='page',
             name='pagetype',
-            field=models.ForeignKey(to='widgets.PageType', blank=True, null=True),
+            field=models.ForeignKey(to='widgets.PageType', blank=True, null=True, on_delete=models.CASCADE),
         ),
     ]

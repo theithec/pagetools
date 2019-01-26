@@ -46,8 +46,8 @@ class Migration(migrations.Migration):
                 ('rght', models.PositiveIntegerField(editable=False, db_index=True)),
                 ('tree_id', models.PositiveIntegerField(editable=False, db_index=True)),
                 ('level', models.PositiveIntegerField(editable=False, db_index=True)),
-                ('content_type', models.ForeignKey(to='contenttypes.ContentType')),
-                ('parent', mptt.fields.TreeForeignKey(to='menus.MenuEntry', blank=True, related_name='children', null=True)),
+                ('content_type', models.ForeignKey(to='contenttypes.ContentType', on_delete=models.CASCADE)),
+                ('parent', mptt.fields.TreeForeignKey(to='menus.MenuEntry', blank=True, related_name='children', null=True, on_delete=models.CASCADE)),
             ],
         ),
         migrations.CreateModel(
@@ -80,6 +80,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='menucache',
             name='menu',
-            field=models.OneToOneField(to='menus.Menu', blank=True, null=True),
+            field=models.OneToOneField(to='menus.Menu', blank=True, null=True, on_delete=models.CASCADE),
         ),
     ]

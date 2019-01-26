@@ -1,5 +1,5 @@
 from behave import *
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 import time
 
 from pagetools.pages.models import Page

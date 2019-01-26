@@ -45,7 +45,7 @@ class Migration(migrations.Migration):
                 ('position', models.PositiveSmallIntegerField(verbose_name='Position')),
                 ('help_text', models.CharField(max_length=512, verbose_name='Helptext', blank=True)),
                 ('initial', models.CharField(max_length=512, verbose_name='Default', blank=True)),
-                ('form_containing_model', models.ForeignKey(related_name='dynformfields', to='pages.Page')),
+                ('form_containing_model', models.ForeignKey(related_name='dynformfields', to='pages.Page', on_delete=models.CASCADE)),
             ],
             options={
                 'verbose_name': 'Dynamic Form Field',

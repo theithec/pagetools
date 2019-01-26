@@ -1,5 +1,5 @@
 from django.db import models
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from filebrowser.fields import FileBrowseField
 
 from pagetools.sections.models import TypeMixin, PageNode, PageNodeManager

@@ -1,4 +1,4 @@
-from django.core import urlresolvers
+from django.urls import resolve,  reverse
 from django.test.testcases import TestCase
 from pagetools.menus.models import Menu, Link
 from pagetools.menus.admin import MenuAddForm, MenuChangeForm
@@ -10,7 +10,7 @@ class MenuFormTests(TestCase):
         self.assertTrue(mf.is_valid())
 
     def test_add_menu(self):
-        menuaddurl = urlresolvers.reverse('admin:menus_menu_add', args=[])
+        menuaddurl = reverse('admin:menus_menu_add', args=[])
         response = self.client.post(menuaddurl, {'title': 'Testmenu1'})
         self.assertTrue(response.status_code in (200, 302))
 

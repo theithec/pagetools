@@ -4,7 +4,7 @@ Created on 15.12.2013
 @author: Tim Heithecker
 '''
 from django.contrib.auth.models import User
-from django.core import urlresolvers
+from django.urls import resolve, reverse
 from django.test.client import Client
 from django.test.testcases import TestCase
 
@@ -19,7 +19,7 @@ class AdminTests(TestCase):
         self.client = Client()
         self.admin = User.objects.create_superuser(
             'admin', 'q@w.de', 'password')
-        self.addpageurl = urlresolvers.reverse('admin:pages_page_add', args=[])
+        self.addpageurl = reverse('admin:pages_page_add', args=[])
         self.pages_data = [
             ('P1', 'Foo', True),
             # s (u'P2', u'Bar', False, u'pp2')

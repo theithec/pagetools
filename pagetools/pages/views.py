@@ -92,7 +92,7 @@ class AuthPageMixin(object):
 
         user = self.request.user
         d = {}
-        if not user.is_authenticated():
+        if not user.is_authenticated:
             d['login_required'] = False
         d['user'] = user
         qs = self.model.public.lfilter(**d)

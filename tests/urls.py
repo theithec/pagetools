@@ -9,7 +9,7 @@ from pagetools.sections.views import admin_pagenodesview
 
 urlpatterns = [
     url(r'^$', IndexView.as_view(), name="index"), # Optional
-    url(r'^admin/filebrowser/', include(site.urls)),
+    url(r'^admin/filebrowser/', site.urls),
     url(r'^grappelli/', include('grappelli.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^captcha/', include('captcha.urls')),

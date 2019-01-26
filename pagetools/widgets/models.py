@@ -108,7 +108,7 @@ class PageType(models.Model):
     A key that defines which additional context should be added.
     '''
     name = models.CharField('Name', max_length=128)
-    parent = models.ForeignKey('self', blank=True, null=True)
+    parent = models.ForeignKey('self', blank=True, null=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
@@ -120,7 +120,7 @@ class PageType(models.Model):
 
 class PageTypeDescription(LangModel):
     ''' The description is meant to be used for the meta description tag'''
-    pagetype = models.ForeignKey(PageType)
+    pagetype = models.ForeignKey(PageType, on_delete=models.CASCADE)
     description = models.CharField(
         _('Description'),
         max_length=156,
@@ -141,7 +141,7 @@ class TypeArea(LangModel):
     '''
 
     area = models.CharField(max_length=64, choices=sorted(settings.AREAS))
-    pagetype = models.ForeignKey(PageType)
+    pagetype = models.ForeignKey(PageType, on_delete=models.CASCADE)
     objects = LangManager()
 
     def clean(self, *args, **kwargs):
@@ -166,8 +166,8 @@ class WidgetInArea(models.Model):
     '''
     A widget in a area
     '''
-    typearea = models.ForeignKey(TypeArea, related_name="widgets")
-    content_type = models.ForeignKey(ContentType)
+    typearea = models.ForeignKey(TypeArea, related_name="widgets", on_delete=models.CASCADE)
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
     position = models.PositiveIntegerField()

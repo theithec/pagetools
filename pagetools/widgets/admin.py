@@ -6,7 +6,7 @@ Created on 14.12.2013
 
 from django.contrib import admin
 from django.contrib.contenttypes.models import ContentType
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.http.response import HttpResponseRedirect
 
 from pagetools.core.admin import TinyMCEMixin

@@ -2,9 +2,7 @@
 
 @author Tim Heithecker
 '''
-import django
-from django import forms
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.db import models
 from django.utils.html import strip_tags
 from django.utils.translation import ugettext_lazy as _
@@ -14,8 +12,7 @@ from pagetools.core.utils import choices2field
 from pagetools.widgets.models import PageType
 
 
-from .forms import ContactForm, CaptchaContactForm, MailReceiverField
-#  , DynMultipleChoiceField
+from .forms import ContactForm, CaptchaContactForm
 
 
 class IncludedForm(models.Model):
@@ -147,7 +144,7 @@ class BasePage(IncludedEmailForm, AuthPage, PagelikeModel):
     '''
     content = models.TextField(_('Content'))
     objects = models.Manager()
-    pagetype = models.ForeignKey(PageType, blank=True, null=True)
+    pagetype = models.ForeignKey(PageType, blank=True, null=True, on_delete=models.CASCADE)
     '''See :class:`pagetools.widgets.models.PageType`
     '''
 
@@ -191,7 +188,8 @@ class PageDynFormField(DynFormField):
     form_containing_model = models.ForeignKey(
         Page,
         related_name='dynformfields',
-        help_text='Additional fields and settings for the included form')
+        help_text='Additional fields and settings for the included form',
+        on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = _("Form field")

@@ -3,7 +3,7 @@ import json
 import operator
 from functools import reduce
 
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.db.models.query_utils import Q
 from django.utils.html import strip_tags
 

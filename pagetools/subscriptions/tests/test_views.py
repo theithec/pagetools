@@ -1,7 +1,7 @@
 import mock
 from django.conf import settings
 from django.contrib.messages.storage.fallback import FallbackStorage
-from django.core.urlresolvers import resolve, reverse
+from django.urls import resolve, reverse
 from django.core import mail
 from django.test import TestCase, override_settings, RequestFactory
 

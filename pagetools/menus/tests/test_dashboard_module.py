@@ -4,7 +4,7 @@ Created on 15.12.2013
 @author: Tim Heithecker
 '''
 from django.contrib.auth.models import User
-from django.core import urlresolvers
+from django.urls import resolve, reverse
 from django.test.testcases import TestCase
 from pagetools.menus.models import Menu, MenuEntry, Link
 # from pagetools.menus.admin import MenuAdmin
@@ -21,7 +21,7 @@ class DashboardTests(MenuDataTestCase):
 
     def test_admin_index(self):
         ''' test index because customdashboard with MenuModule is may used'''
-        adminindex = urlresolvers.reverse('admin:index', args=[])
+        adminindex = reverse('admin:index', args=[])
         response = self.client.get(adminindex, {})
         self.assertTrue(response.status_code in (200, 302))
 
