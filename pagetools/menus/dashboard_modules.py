@@ -1,4 +1,4 @@
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.utils.http import urlquote
 from grappelli.dashboard.modules import DashboardModule

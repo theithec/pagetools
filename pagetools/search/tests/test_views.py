@@ -8,7 +8,7 @@ from django.conf import settings
 from django.test import TestCase
 from django.test.client import Client
 from django.utils.text import slugify
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from pagetools.pages.models import Page
 import pagetools.search
 import pagetools.search.views

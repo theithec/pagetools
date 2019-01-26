@@ -1,5 +1,5 @@
 from django.views.generic import DetailView, FormView
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.views.generic import DetailView, FormView, TemplateView
 from django.utils.html import format_html
 from django.http import HttpResponse, HttpResponseRedirect

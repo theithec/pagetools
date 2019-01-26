@@ -28,7 +28,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='pagedynformfield',
             name='form_containing_model',
-            field=models.ForeignKey(help_text='Additional fields and settings for the included form', related_name='dynformfields', to='pages.Page'),
+            field=models.ForeignKey(help_text='Additional fields and settings for the included form', related_name='dynformfields', to='pages.Page', on_delete=models.CASCADE),
         ),
         migrations.AlterField(
             model_name='pagedynformfield',

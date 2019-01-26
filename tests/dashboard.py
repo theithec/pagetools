@@ -8,7 +8,7 @@ To activate your index dashboard add the following to your settings.py::
 from django import forms
 from django.db import connection
 from django.utils.translation import ugettext_lazy as _
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 from grappelli.dashboard import modules, Dashboard
 from grappelli.dashboard.utils import get_admin_site_name
@@ -38,7 +38,7 @@ class CustomIndexDashboard(Dashboard):
             collapsible=True,
             column=1,
             css_classes=('collapse closed',),
-            exclude=('django.contrib.*','pagetools.sections.*'),
+            exclude=('django.contrib.*', 'pagetools.sections.*'),
         ))
 
         # append an app list module for "Administration"

@@ -1,11 +1,12 @@
 import os
 from setuptools import setup, find_packages
 
+from version import get_git_version
+
 # from distutils.core import setup
 README = open(os.path.join(os.path.dirname(__file__), 'README.rst')).read()
 
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
-from version import get_git_version
 
 setup(
     name='django-pagetools',
@@ -29,9 +30,9 @@ setup(
         'Pillow==6.0',
     ],
 
-    dependency_links=[
-        'http://github.com/theithec/django-filebrowser/tarball/master#egg=django-filebrowser-4.1-dev',
-    ],
+    # dependency_links=[
+    #     'http://github.com/theithec/django-filebrowser/tarball/master#egg=django-filebrowser-4.1-dev',
+    # ],
 
     long_description=README,
     author='Tim Heithecker',

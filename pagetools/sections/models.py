@@ -7,7 +7,7 @@ otherwise a proxy model is sufficient.
 import warnings
 import django
 from django.core.exceptions import ValidationError
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
@@ -137,8 +137,8 @@ class PageNode(PagelikeModel):
 class PageNodePos(models.Model):
 
     position = models.PositiveIntegerField()
-    content = models.ForeignKey(PageNode)
-    owner = models.ForeignKey(PageNode, related_name="in_group")
+    content = models.ForeignKey(PageNode, on_delete=models.CASCADE)
+    owner = models.ForeignKey(PageNode, related_name="in_group", on_delete=models.CASCADE)
 
     def __str__(self):
         return "%s:%s:%s" % (self.owner, self.content, self.position)

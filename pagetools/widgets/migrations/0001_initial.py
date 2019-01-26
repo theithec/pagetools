@@ -29,7 +29,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
                 ('name', models.CharField(max_length=128, verbose_name='Name')),
-                ('parent', models.ForeignKey(to='widgets.PageType', blank=True, null=True)),
+                ('parent', models.ForeignKey(to='widgets.PageType', blank=True, null=True, on_delete=models.CASCADE)),
             ],
             options={
                 'verbose_name': 'Pagetype',
@@ -42,7 +42,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
                 ('lang', models.CharField(max_length=20, blank=True, verbose_name='language', choices=settings.LANGUAGES)),
                 ('description', models.CharField(max_length=156, help_text='Description (for Metatag/seo)', blank=True, verbose_name='Description')),
-                ('pagetype', models.ForeignKey(to='widgets.PageType')),
+                ('pagetype', models.ForeignKey(to='widgets.PageType', on_delete=models.CASCADE)),
             ],
             options={
                 'verbose_name': 'Pagetype-Description',
@@ -67,7 +67,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
                 ('lang', models.CharField(max_length=20, blank=True, verbose_name='language', choices=settings.LANGUAGES)),
                 ('area', models.CharField(max_length=64, choices=sorted([(a) for a in widget_settings.AREAS ]))),
-                ('type', models.ForeignKey(to='widgets.PageType')),
+                ('type', models.ForeignKey(to='widgets.PageType', on_delete=models.CASCADE)),
             ],
             options={
                 'verbose_name': 'Pagetype-Area',
@@ -81,8 +81,8 @@ class Migration(migrations.Migration):
                 ('object_id', models.PositiveIntegerField()),
                 ('position', models.PositiveIntegerField()),
                 ('enabled', models.BooleanField(verbose_name='enabled', default=False)),
-                ('content_type', models.ForeignKey(to='contenttypes.ContentType')),
-                ('typearea', models.ForeignKey(related_name='widgets', to='widgets.TypeArea')),
+                ('content_type', models.ForeignKey(to='contenttypes.ContentType', on_delete=models.CASCADE)),
+                ('typearea', models.ForeignKey(related_name='widgets', to='widgets.TypeArea', on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': ['position'],

@@ -8,9 +8,9 @@ from collections import defaultdict
 import logging
 import django
 from django import template
-from django.core import urlresolvers
+from django.urls import resolve
 from django.core.exceptions import ValidationError
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
@@ -85,8 +85,9 @@ class MenuEntry(MPTTModel, LangModel):
         help_text=(_('Slug')),
         default='', blank=True)
     parent = TreeForeignKey('self', null=True, blank=True,
-                            related_name='children')
-    content_type = models.ForeignKey(ContentType)
+                            related_name='children', on_delete=models.CASCADE)
+
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
     enabled = models.BooleanField(default=False)
@@ -170,7 +171,7 @@ class SelectedEntries(defaultdict):
 
 
 class MenuCache(models.Model):
-    menu = models.OneToOneField('Menu', blank=True, null=True)
+    menu = models.OneToOneField('Menu', blank=True, null=True, on_delete=models.CASCADE)
     cache = models.TextField()
 
     def __str__(self):
@@ -317,10 +318,10 @@ class Menu(MenuEntry):
                     d.update({
                         'entry_order_id': self.cnt,
                         'entry_pk': childentry.pk,
-                        'entry_del_url': urlresolvers.reverse(
+                        'entry_del_url': reverse(
                             'admin:menus_menuentry_delete',
                             args=(childentry.pk, )),
-                        'entry_change_url': urlresolvers.reverse(
+                        'entry_change_url': reverse(
                             'admin:menus_menuentry_change',
                             args=(childentry.pk,)),
                         'obj_admin_url': reverseurl,

@@ -4,7 +4,7 @@ Created on 15.12.2013
 @author: Tim Heithecker
 '''
 from django.contrib.auth.models import User
-from django.core import urlresolvers
+from django.urls import resolve, reverse
 
 from django.contrib import admin
 
@@ -36,13 +36,13 @@ class MenuAdminTests(TestCase):
 
     def test_admin_index(self):
         ''' test index because customdashboard with MenuModule is may used'''
-        adminindex = urlresolvers.reverse('admin:index')
+        adminindex = reverse('admin:index')
         response = self.client.get(
             adminindex, follow=True, extra={'app_label': "admin"})
         self.assertIn(response.status_code, (200, 302))
 
     def test_add(self):
-        adminurl = urlresolvers.reverse('admin:menus_menu_add', args=[])
+        adminurl = reverse('admin:menus_menu_add', args=[])
         self.client.post(adminurl, {'title': 'Menu1'})
         m = Menu.objects.get(title="Menu1")
         self.assertEqual(len(m.children.all()), 0)
@@ -59,7 +59,7 @@ class MenuAdminTests(TestCase):
                     enabled=True
                 )
             )
-        adminurl = urlresolvers.reverse('admin:menus_menu_change', args=[m.pk])
+        adminurl = reverse('admin:menus_menu_change', args=[m.pk])
         response = self.client.get(adminurl, {'pk': m.pk})
         data = m.__dict__
         data['entry-order-id-0'] = e[0].pk
@@ -81,7 +81,7 @@ class MenuAdminTests(TestCase):
                 )
             )
 
-        adminurl = urlresolvers.reverse('admin:menus_menu_change', args=[m.pk])
+        adminurl = reverse('admin:menus_menu_change', args=[m.pk])
         data = m.__dict__
         response = self.client.post(adminurl, data)
         self.assertEqual([e['entry_title'] for e in m.children_list()],
@@ -104,7 +104,7 @@ class MenuAdminTests(TestCase):
                             enabled=True
                         )
                     )
-                    adminurl = urlresolvers.reverse(
+                    adminurl = reverse(
                         'admin:menus_menu_change', args=[m.pk])
                     data = m.__dict__
                     data['addentry'] = 'menus#link'

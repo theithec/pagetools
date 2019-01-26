@@ -7,7 +7,7 @@ from django.core.mail import get_connection
 from django.core.mail.message import EmailMessage
 from django.db import models
 from django.apps import apps
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.utils import timezone
 from django.utils.crypto import random
 from django.utils.http import urlquote
@@ -182,8 +182,8 @@ class QueuedEmail(LangModel):
 
 
 class SendStatus(models.Model):
-    subscriber = models.ForeignKey(subs_settings.SUBSCRIBER_MODEL)
-    queued_email = models.ForeignKey(QueuedEmail)
+    subscriber = models.ForeignKey(subs_settings.SUBSCRIBER_MODEL, on_delete=models.CASCADE)
+    queued_email = models.ForeignKey(QueuedEmail, on_delete=models.CASCADE)
     status = models.IntegerField()
 
     def __str__(self):

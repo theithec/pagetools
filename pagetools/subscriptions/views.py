@@ -8,7 +8,7 @@ from smtplib import SMTPException
 
 from django import template
 from django.core.mail import send_mail
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.http.response import HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404
 from django.template.context import Context

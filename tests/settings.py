@@ -59,15 +59,15 @@ INSTALLED_APPS = [
 SITE_ID = 1  # required by contrib.sites
 
 
-MIDDLEWARE_CLASSES = [
+MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
 ]
 
 ROOT_URLCONF = 'tests.urls'
@@ -98,13 +98,18 @@ WSGI_APPLICATION = 'demo.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
 
+DATABASES = {
+
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',  # , 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': 'pagetools',
+    },
+    'TEST': {
+        'NAME': 'pagetools_test',
+    },
+}
+print ("DB", DATABASES)
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
@@ -172,32 +177,6 @@ ALLOWED_HOSTS = ["*"]
 
 # Application definition
 
-INSTALLED_APPS = [
-    'grappelli.dashboard',  # optional (pagetools provides two dashboard modules),
-                            # needs further configuration
-    'grappelli',            # required
-    # 'filebrowser',          # required
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'django.contrib.sites', # required for search
-    'crispy_forms',      # required for pages
-    'sekizai',           # required for sections. Needs further configuration
-    'pagetools.core',    # needed for all pagetools modules
-    'pagetools.widgets', # Widgets (e.g. for sidebars)
-    'pagetools.pages',   # Simple Pages
-    'pagetools.menus',   #
-    'pagetools.sections',# Nested Content (e.g. for a singlepage site)
-    # 'pagetools.sections.tests',
-    'pagetools.search',  # Simple Search on database fields
-    'pagetools.subscriptions',  # Subscriptions to whatever
-    'captcha',
-    # 'behave_django',
-]
-
 SITE_ID = 1  # required by contrib.sites
 
 
@@ -235,18 +214,6 @@ TEMPLATES = [
 ]
 
 # WSGI_APPLICATION = 'demo.wsgi.application'
-
-
-# Database
-# https://docs.djangoproject.com/en/1.9/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
-
 
 
 # Internationalization

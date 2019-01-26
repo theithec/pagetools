@@ -38,8 +38,8 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
                 ('position', models.PositiveIntegerField()),
-                ('content', models.ForeignKey(to='sections.PageNode')),
-                ('owner', models.ForeignKey(related_name='in_group', to='sections.PageNode')),
+                ('content', models.ForeignKey(to='sections.PageNode', on_delete=models.CASCADE)),
+                ('owner', models.ForeignKey(related_name='in_group', to='sections.PageNode', on_delete=models.CASCADE)),
             ],
             options={
                 'verbose_name': 'Content Position',
