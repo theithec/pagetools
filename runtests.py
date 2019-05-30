@@ -11,7 +11,7 @@ def runtests():
     django.setup()
     TestRunner = get_runner(settings)
     test_runner = TestRunner()
-    failures = test_runner.run_tests(['pagetools'])  # , 'demo'])
+    failures = test_runner.run_tests(['pagetools.menus'])  # , 'demo'])
     sys.exit(bool(failures))
 
 
