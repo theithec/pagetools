@@ -12,4 +12,3 @@ class LatestQuestionNode(template.Node):
                 url=q.get_absolute_url(),
                 text=q.question_text)
         return "No question available"
-

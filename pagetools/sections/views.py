@@ -37,7 +37,7 @@ class BaseNodeView(DetailView):
         context = super(BaseNodeView, self).get_context_data(**kwargs)
         self.object = self.get_object()
         context['contents'] = self.object.ordered_content(
-                user=self.request.user)
+            user=self.request.user)
         return context
 
 

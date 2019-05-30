@@ -28,5 +28,3 @@ class SelectedMenuentriesMixin(object):
         if not getattr(self, 'object', None):
             self.object = super().get_object()
         return self.object
-
-

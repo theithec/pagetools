@@ -13,6 +13,7 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
+import django
 import sys
 import os
 import shlex
@@ -21,11 +22,10 @@ import shlex
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #sys.path.insert(0, os.path.abspath('.'))
-#sys.path.insert(0, os.path.abspath(‘..’))
-project_dir =  os.path.abspath('..')
+# sys.path.insert(0, os.path.abspath(‘..’))
+project_dir = os.path.abspath('..')
 sys.path.insert(0, project_dir)
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "tests.settings")
-import django
 django.setup()
 
 
@@ -219,25 +219,25 @@ htmlhelp_basename = 'django-pagetoolsdoc'
 # -- Options for LaTeX output ---------------------------------------------
 
 latex_elements = {
-# The paper size ('letterpaper' or 'a4paper').
-#'papersize': 'letterpaper',
+    # The paper size ('letterpaper' or 'a4paper').
+    # 'papersize': 'letterpaper',
 
-# The font size ('10pt', '11pt' or '12pt').
-#'pointsize': '10pt',
+    # The font size ('10pt', '11pt' or '12pt').
+    # 'pointsize': '10pt',
 
-# Additional stuff for the LaTeX preamble.
-#'preamble': '',
+    # Additional stuff for the LaTeX preamble.
+    # 'preamble': '',
 
-# Latex figure (float) alignment
-#'figure_align': 'htbp',
+    # Latex figure (float) alignment
+    # 'figure_align': 'htbp',
 }
 
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-  (master_doc, 'django-pagetools.tex', 'django-pagetools Documentation',
-   'Tim Heithecker', 'manual'),
+    (master_doc, 'django-pagetools.tex', 'django-pagetools Documentation',
+     'Tim Heithecker', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -280,9 +280,9 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  (master_doc, 'django-pagetools', 'django-pagetools Documentation',
-   author, 'django-pagetools', 'One line description of project.',
-   'Miscellaneous'),
+    (master_doc, 'django-pagetools', 'django-pagetools Documentation',
+     author, 'django-pagetools', 'One line description of project.',
+     'Miscellaneous'),
 ]
 
 # Documents to append as an appendix to all manuals.

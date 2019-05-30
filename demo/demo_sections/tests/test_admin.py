@@ -5,6 +5,7 @@ from demo_sections.models import Article, SectionList
 from demo_sections.tests import SectionsDataTestCase
 import pagetools.sections.dashboard_modules
 
+
 class AdminTest(SectionsDataTestCase):
 
     def setUp(self):
@@ -33,4 +34,3 @@ class AdminTest(SectionsDataTestCase):
         )
         # self.assertTrue(str(response.content).startswith("<ol"))
         self.assertTrue(response.status_code, 200)
-

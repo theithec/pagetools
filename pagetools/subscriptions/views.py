@@ -54,7 +54,7 @@ def _subscribe(request):
                     subs_settings.NEWS_FROM,
                     [form['email'].value()],
                     fail_silently=False
-                    )
+                )
                 s.save()
                 msg = subs_msg
                 errors = False
@@ -104,7 +104,7 @@ def activate(request, key):
     activate_end = s.subscribtion_date + datetime.timedelta(hours=48)
     if s and not s.is_activated and activate_end > timezone.now():
         s.activate()
-        messages.add_message(request, messages.INFO,  _('activation: ok'))
+        messages.add_message(request, messages.INFO, _('activation: ok'))
 
         return render(request, subs_settings.MSG_BASE_TEMPLATE,
                       {'msg': _('activation: ok')})
@@ -115,7 +115,7 @@ def unsubscribe(request, key):
     s = _matching_activated_subscriber(request, key)
     if s and s.is_activated:
         s.delete()
-        messages.add_message(request, messages.INFO,  _('unsubscribe: ok'))
+        messages.add_message(request, messages.INFO, _('unsubscribe: ok'))
         return render(request,
                       subs_settings.MSG_BASE_TEMPLATE,
                       {'msg': _('unsubscribe: ok')})

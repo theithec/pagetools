@@ -9,7 +9,6 @@ from pagetools.menus.models import ViewLink
 
 class Views1Test(SectionsDataTestCase):
 
-
     def test_view(self):
         response = self.client.get(self.sectionlist1.get_absolute_url())
         self.assertEqual(response.status_code, 200)
@@ -38,6 +37,3 @@ class Views2Test(MenuDataTestCase):
             reverse("polls:index"))
 
         self.assertEqual(response.status_code, 200)
-
-
-

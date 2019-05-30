@@ -163,5 +163,5 @@ class MenuAdminTests(TestCase):
         c = str(response.content)
         start = c.find('<input type="checkbox" name="menus"')
         end = c[start:].find(">")
-        tag = c[start:start+end+1]
+        tag = c[start:start + end + 1]
         self.assertTrue(" checked" in tag)

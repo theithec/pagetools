@@ -22,7 +22,7 @@ from pagetools.menus.models import MenuEntry
 
 class BasePageAdmin(EntrieableAdmin, PagelikeAdmin):
     readonly_fields = ('status_changed',)
-    list_display = ('title', 'lang', 'slug',  'status')
+    list_display = ('title', 'lang', 'slug', 'status')
     list_filter = ('lang', 'status')
     search_fields = ('title', 'content')
     save_as = True

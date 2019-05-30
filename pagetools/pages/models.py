@@ -27,7 +27,7 @@ class IncludedForm(models.Model):
             ('dummy', 'dummy'),))
     includable_forms = {
         'Contactform': ContactForm,
-        'Contactfrom(Captcha)':  CaptchaContactForm,
+        'Contactfrom(Captcha)': CaptchaContactForm,
     }
 
     def __init__(self, *args, **kwargs):

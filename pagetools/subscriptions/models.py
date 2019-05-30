@@ -59,6 +59,7 @@ class Subscriber(BaseSubscriberMixin, LangModel):
 
         return clz.objects.lfilter(**fkwargs)
 
+
 _subscriber_model = None
 
 
@@ -158,7 +159,7 @@ class QueuedEmail(LangModel):
                         reverse('subscriptions:unsubscribe', kwargs={
                             'key': s.subscriber.key}),
                         s.subscriber.mailkey()
-                     )
+                    )
                 )
                 if status == 1:
                     if s.subscriber.failures != 0:

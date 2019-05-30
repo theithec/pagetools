@@ -19,7 +19,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Article',
             fields=[
-                ('pagenode_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='sections.PageNode')),
+                ('pagenode_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE,
+                                                      parent_link=True, primary_key=True, serialize=False, to='sections.PageNode')),
                 ('content', models.TextField(verbose_name='Content')),
                 ('teaser', models.TextField(verbose_name='Teaser')),
                 ('image', filebrowser.fields.FileBrowseField(max_length=200, verbose_name='Image')),
@@ -32,7 +33,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Section',
             fields=[
-                ('pagenode_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='sections.PageNode')),
+                ('pagenode_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE,
+                                                      parent_link=True, primary_key=True, serialize=False, to='sections.PageNode')),
                 ('node_type', models.CharField(blank=True, max_length=128)),
                 ('headline', models.CharField(max_length=255, verbose_name='Headline')),
             ],
@@ -44,7 +46,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='SectionList',
             fields=[
-                ('pagenode_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='sections.PageNode')),
+                ('pagenode_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE,
+                                                      parent_link=True, primary_key=True, serialize=False, to='sections.PageNode')),
             ],
             options={
                 'abstract': False,

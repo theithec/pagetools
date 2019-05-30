@@ -25,5 +25,3 @@ class MenuDataTestCase(TransactionTestCase):
             foo="x", status=STATUS_PUBLISHED)
         self.e_c1 = self.menu.children.add_child(self.c1, **k2)
         #  print("CL", self.menu.children , self.menu.children_list(for_admin=True), **k)
-
-

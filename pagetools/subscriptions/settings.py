@@ -5,7 +5,9 @@ Created on 03.09.2012
 '''
 from django.conf import settings
 
-_ = lambda x: x
+
+def _(x): return x
+
 
 MSG_BASE_TEMPLATE = getattr(
     settings, "PT_SUBSCR_MSG_BASE_TEMPLATE", 'base.html')

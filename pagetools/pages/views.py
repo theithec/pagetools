@@ -13,7 +13,6 @@ from pagetools.menus.views import SelectedMenuentriesMixin
 from .models import Page
 
 
-
 class IncludedFormMixin(object):
     '''
         expects in object
@@ -40,7 +39,6 @@ class IncludedFormMixin(object):
             kwargs['form'] = FC(**fkwargs)
         return self.render_to_response(self.get_context_data(**kwargs))
 
-
     def post(self, request, *args, **kwargs):
 
         #self.object = self.object or self.get_object()
@@ -55,7 +53,7 @@ class IncludedFormMixin(object):
 
     def form_valid(self, form):
         if self.request.is_ajax():
-            return JsonResponse({'data':_("Mail send")}, status=200)
+            return JsonResponse({'data': _("Mail send")}, status=200)
         else:
             messages.success(self.request, _("Mail send"))
             return self.get(self.request, form=None)
@@ -99,9 +97,9 @@ class AuthPageMixin(object):
         return qs
 
 
-
-class BasePageView( SelectedMenuentriesMixin, WidgetPagelikeMixin, DetailView):
+class BasePageView(SelectedMenuentriesMixin, WidgetPagelikeMixin, DetailView):
     pass
+
 
 class PageView(
         AuthPageMixin,

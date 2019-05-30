@@ -20,7 +20,8 @@ class Migration(migrations.Migration):
                 ('title', models.CharField(blank=True, max_length=128)),
                 ('name', models.SlugField(unique=True, verbose_name='name')),
                 ('content', models.TextField(verbose_name='Content')),
-                ('template', models.CharField(choices=[('widgets/baswidget.html', 'Base'), ('main/specialwidget.html', 'Special')], max_length=128, verbose_name='Template')),
+                ('template', models.CharField(choices=[
+                 ('widgets/baswidget.html', 'Base'), ('main/specialwidget.html', 'Special')], max_length=128, verbose_name='Template')),
             ],
             options={
                 'abstract': False,

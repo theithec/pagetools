@@ -17,6 +17,7 @@ from pagetools.menus.dashboard_modules import MenuModule
 from pagetools.sections.dashboard_modules import PageNodesModule
 from demo_sections.models import SectionList
 
+
 class CustomIndexDashboard(Dashboard):
     """
     Custom index dashboard for www.
@@ -25,7 +26,7 @@ class CustomIndexDashboard(Dashboard):
     def init_with_context(self, context):
         # site_name = get_admin_site_name(context)
         self.children.append(MenuModule(column=1))
-        #with connection.schema_editor() as schema_editor:
+        # with connection.schema_editor() as schema_editor:
         #    schema_editor.create_model(PageNodeDummy)
         self.children.append(PageNodesModule(model=SectionList, column=1))
 
@@ -98,14 +99,13 @@ class CustomIndexDashboard(Dashboard):
             column=3,
         ))
 
-
     def _media(self):
-            return forms.Media(
-                js=["bower_components/jquery/dist/jquery.min.js",
-                    "bower_components/jquery-bonsai/jquery.bonsai.js",
-                    "js/nodetree.js"
-                    ],
-                css = {'all': ['bower_components/jquery-bonsai/jquery.bonsai.css ']}
-            )
+        return forms.Media(
+            js=["bower_components/jquery/dist/jquery.min.js",
+                "bower_components/jquery-bonsai/jquery.bonsai.js",
+                "js/nodetree.js"
+                ],
+            css={'all': ['bower_components/jquery-bonsai/jquery.bonsai.css ']}
+        )
 
     media = property(_media)

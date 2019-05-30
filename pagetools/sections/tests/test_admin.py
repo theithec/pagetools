@@ -10,6 +10,7 @@ from pagetools.sections.models import PageNode
 from pagetools.sections.admin import BasePageNodeAdmin
 from pagetools.sections.tests.test_models import TestModelMixin
 
+
 class MockRequest(object):
     pass
 
@@ -27,6 +28,6 @@ class SectionAdminTests(TestModelMixin):
     def test_foo1(self):
         ma = BasePageNodeAdmin(PageNode, self.site)
         self.assertEqual(list(ma.get_fields(request)), [
-            'status', 'lang',  'title', 'slug',  'description',
+            'status', 'lang', 'title', 'slug', 'description',
             'classes', 'content_type_pk', 'status_changed',
             'containing_nodes'])

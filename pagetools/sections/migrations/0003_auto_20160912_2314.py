@@ -14,6 +14,9 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AlterModelOptions(
             name='pagenodepos',
-            options={'ordering': ['position'], 'verbose_name': 'Included Content', 'verbose_name_plural': 'Included Content'},
+            options={
+                'ordering': ['position'],
+                'verbose_name': 'Included Content',
+                'verbose_name_plural': 'Included Content'},
         ),
     ]

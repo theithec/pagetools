@@ -4,6 +4,7 @@ from django.test import TestCase
 from pagetools.widgets.settings import TEMPLATETAG_WIDGETS
 from pagetools.widgets.models import *
 
+
 class CommandsTestCase(TestCase):
     def test_mycommand(self):
         " Test my custom command."

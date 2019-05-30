@@ -11,7 +11,7 @@ class Migration(migrations.Migration):
         ('sections', '0001_initial'),
     ]
     operations = []
-    if django.VERSION >= (1,9):
+    if django.VERSION >= (1, 9):
         Operations = [
             migrations.AlterField(
                 model_name='pagenode',

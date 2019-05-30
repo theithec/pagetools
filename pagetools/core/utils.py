@@ -85,7 +85,7 @@ def importer(str_or_obj):
     '''
     If the argument is a string import it with importlib
     '''
-    if type(str_or_obj) == str:
+    if isinstance(str_or_obj, str):
         modname, clsname = str_or_obj.rsplit(".", 1)
         str_or_obj = getattr(importlib.import_module(modname), clsname)
     return str_or_obj
@@ -93,7 +93,7 @@ def importer(str_or_obj):
 
 def choices2field(field, choices):
 
-        if django.VERSION < (1, 9):
-            field._choices = choices
-        else:
-            field.choices = choices
+    if django.VERSION < (1, 9):
+        field._choices = choices
+    else:
+        field.choices = choices
