@@ -34,3 +34,4 @@ build
 htmlcov
 pylint_global.txt
 demo/media/foo_*
+RELEASE-VERSION
