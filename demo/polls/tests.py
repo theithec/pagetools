@@ -35,6 +35,7 @@ class QuestionMethodTests(TestCase):
         recent_question = Question(pub_date=time)
         self.assertEqual(recent_question.was_published_recently(), True)
 
+
 def create_question(question_text, days):
     """
     Creates a question with the given `question_text` and published the

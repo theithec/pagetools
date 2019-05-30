@@ -36,19 +36,19 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.sites', # required for search
+    'django.contrib.sites',  # required for search
     'crispy_forms',      # required for pages
     'sekizai',           # required for sections. Needs further configuration
     'django_ajax',
     'pagetools.core',    # needed for all pagetools modules
-    'pagetools.widgets', # Widgets (e.g. for sidebars)
+    'pagetools.widgets',  # Widgets (e.g. for sidebars)
     'pagetools.pages',   # Simple Pages
     'pagetools.menus',   #
-    'pagetools.sections',# Nested Content (e.g. for a singlepage site)
+    'pagetools.sections',  # Nested Content (e.g. for a singlepage site)
     'pagetools.search',  # Simple Search on database fields
     'pagetools.subscriptions',  # Subscriptions to whatever
     'captcha',
-    #'debug_toolbar',
+    # 'debug_toolbar',
     'polls',
     'demo_sections',
     'main'
@@ -114,7 +114,7 @@ USE_TZ = True
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static"),]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static"), ]
 STATIC_ROOT = os.path.join(BASE_DIR, "static_root")
 
 MEDIA_URL = '/media/'

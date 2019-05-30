@@ -15,15 +15,20 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='page',
             name='description',
-            field=models.CharField(blank=True, help_text='Description (for searchengines)', max_length=139, verbose_name='Description'),
+            field=models.CharField(
+                blank=True,
+                help_text='Description (for searchengines)',
+                max_length=139,
+                verbose_name='Description'),
         ),
         migrations.AlterField(
             model_name='page',
             name='included_form',
-            field=models.CharField(blank=True, choices=[('dummy', 'dummy')], max_length=255, verbose_name='Included form'),
+            field=models.CharField(blank=True, choices=[('dummy', 'dummy')],
+                                   max_length=255, verbose_name='Included form'),
         ),
 
-            ]
+    ]
     if django.VERSION >= (1, 9):
         operations += [
             migrations.AlterField(
@@ -32,5 +37,3 @@ class Migration(migrations.Migration):
                 field=models.SlugField(allow_unicode=True, max_length=255, verbose_name='Slug'),
             ),
         ]
-
-

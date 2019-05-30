@@ -1,4 +1,4 @@
-from django.urls import resolve,  reverse
+from django.urls import resolve, reverse
 from django.test.testcases import TestCase
 from pagetools.menus.models import Menu, Link
 from pagetools.menus.admin import MenuAddForm, MenuChangeForm

@@ -1,6 +1,7 @@
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium.webdriver.firefox.webdriver import WebDriver
 
+
 class MySeleniumTests(StaticLiveServerTestCase):
 
     @classmethod
@@ -20,7 +21,7 @@ class MySeleniumTests(StaticLiveServerTestCase):
         r = self.selenium.get(url)
         print("R", url, r)
         #username_input = self.selenium.find_element_by_name("username")
-        #username_input.send_keys('myuser')
+        # username_input.send_keys('myuser')
         #password_input = self.selenium.find_element_by_name("password")
-        #password_input.send_keys('secret')
+        # password_input.send_keys('secret')
         #self.selenium.find_element_by_xpath('//input[@value="Log in"]').click()

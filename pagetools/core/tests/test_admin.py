@@ -6,6 +6,7 @@ import django.conf
 
 from pagetools.core.admin import *
 
+
 class TestMediaMixin(object):
     """Check required static files"""
 
@@ -21,7 +22,6 @@ class TestAdminStaticFiles(TestMediaMixin, TestCase):
     def __init__(self, *args, **kwargs):
         self.clz = TinyMCEMixin
         super().__init__(*args, **kwargs)
-
 
 
 '''
@@ -42,7 +42,3 @@ class AdminTest(SeleniumTestCase):
             t1 = self.browser.find_element_by_tag_name("body").text
             self.assertFalse(not_found % f in t1)
 '''
-
-
-
-

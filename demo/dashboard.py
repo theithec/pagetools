@@ -17,6 +17,7 @@ from pagetools.sections.dashboard_modules import PageNodesModule
 from demo_sections.models import SectionList
 PageNodesModule.model = SectionList
 
+
 class CustomIndexDashboard(Dashboard):
     """
     Custom index dashboard for www.
@@ -33,7 +34,7 @@ class CustomIndexDashboard(Dashboard):
             collapsible=True,
             column=1,
             css_classes=('collapse closed',),
-            exclude=('django.contrib.*','pagetools.sections.*'),
+            exclude=('django.contrib.*', 'pagetools.sections.*'),
         ))
 
         # append an app list module for "Administration"
@@ -96,14 +97,13 @@ class CustomIndexDashboard(Dashboard):
             column=3,
         ))
 
-
     def _media(self):
-            return forms.Media(
-                js=["bower_components/jquery/dist/jquery.min.js",
-                    "bower_components/jquery-bonsai/jquery.bonsai.js",
-                    "js/nodetree.js"
-                    ],
-                css = {'all': ['bower_components/jquery-bonsai/jquery.bonsai.css']}
-            )
+        return forms.Media(
+            js=["bower_components/jquery/dist/jquery.min.js",
+                "bower_components/jquery-bonsai/jquery.bonsai.js",
+                "js/nodetree.js"
+                ],
+            css={'all': ['bower_components/jquery-bonsai/jquery.bonsai.css']}
+        )
 
     media = property(_media)

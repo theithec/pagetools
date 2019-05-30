@@ -4,15 +4,16 @@ from filebrowser.fields import FileBrowseField
 
 from pagetools.sections.models import TypeMixin, PageNode, PageNodeManager
 
+
 class Article(PageNode):
     content = models.TextField("Content")
     teaser = models.TextField("Teaser")
-    image = FileBrowseField("Image",max_length=200)
-    allowed_children_classes = ["demo_sections.models.Article",]
+    image = FileBrowseField("Image", max_length=200)
+    allowed_children_classes = ["demo_sections.models.Article", ]
     objects = PageNodeManager()
 
     def get_absolute_url(self):
-        return reverse("sections:node", kwargs={'slug': self.slug,})
+        return reverse("sections:node", kwargs={'slug': self.slug, })
 
 
 class Section(TypeMixin, PageNode):
@@ -21,10 +22,10 @@ class Section(TypeMixin, PageNode):
         ('section_style2', 'Style 2'),
     )
     headline = models.CharField("Headline", max_length=255)
-    allowed_children_classes = [Article,]
+    allowed_children_classes = [Article, ]
     objects = PageNodeManager()
 
 
 class SectionList(PageNode):
-    allowed_children_classes = [Section,]
+    allowed_children_classes = [Section, ]
     objects = PageNodeManager()

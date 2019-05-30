@@ -1,25 +1,27 @@
-import os, sys # noqa
+import os
+import sys  # noqa
 
-from django.contrib.auth.models import User #noqa
+from django.contrib.auth.models import User  # noqa
 from django.contrib.sites.models import Site
-from django.core import management  #noqa
+from django.core import management  # noqa
 from django.core.management.base import BaseCommand
-from django.utils import timezone #noqa
+from django.utils import timezone  # noqa
 
 from filebrowser.base import FileObject
 
-import pagetools.menus.utils #noqa
+import pagetools.menus.utils  # noqa
 
 
-from pagetools.core.settings import STATUS_PUBLISHED #noqa
-from pagetools.menus.models import Menu, AutoPopulated, ViewLink #noqa
-from pagetools.pages.models import Page #noqa
-from pagetools.widgets.models import (PageType,  TypeArea, ContentWidget, # noqa
-                                      WidgetInArea, TemplateTagWidget) #noqa
+from pagetools.core.settings import STATUS_PUBLISHED  # noqa
+from pagetools.menus.models import Menu, AutoPopulated, ViewLink  # noqa
+from pagetools.pages.models import Page  # noqa
+from pagetools.widgets.models import (PageType, TypeArea, ContentWidget,  # noqa
+                                      WidgetInArea, TemplateTagWidget)  # noqa
 
-from polls.models import Question, Choice #noqa
+from polls.models import Question, Choice  # noqa
 
 from demo_sections.models import Article, Section, SectionList
+
 
 def create():
     site = Site.objects.first()
@@ -31,12 +33,11 @@ def create():
     pagetype_base = PageType.objects.create(name="base")
     pagetype_special = PageType.objects.create(name="special")
 
-    about_kwargs = {'pagetype': pagetype_special, 'included_form':'Contactform'}
+    about_kwargs = {'pagetype': pagetype_special, 'included_form': 'Contactform'}
     pages_data = [
         ('Welcome', 'start', "This is the start page"),
         ('About', 'about', "That's a good one.<h3>Any questions?</h3>", about_kwargs),
     ]
-
 
     for d in pages_data:
         kwargs = {}
@@ -53,7 +54,6 @@ def create():
 
     print("MENU", menu)
     #  menu = Menu.objects.get(title="MainMenu")
-
 
     typearea_base = TypeArea.objects.create(
         area="sidebar", pagetype=pagetype_base)
@@ -87,7 +87,6 @@ def create():
             position=0,
             enabled=True)
 
-
     questions_data = (
         ("What's up?", ["Something maybe", "Nothing"],),
         ("What should i ask?", ["Not sure", "Nothing"],),
@@ -105,12 +104,12 @@ def create():
 
     menu.children.add_child(sl1, enabled=True, title="Sections")
     s1 = Section.objects.create(title="Section1", slug="section1",
-                                status=STATUS_PUBLISHED )
+                                status=STATUS_PUBLISHED)
     pp = s1.pagenodepos_set.create(position=1, content=s1, owner=sl1)
 
     for i in range(4):
         kwargs = {}
-        if i<3:
+        if i < 3:
             kwargs['status'] = STATUS_PUBLISHED
         a = Article.objects.create(
             title="Article %s" % i,
@@ -134,9 +133,6 @@ class Command(BaseCommand):
         management.call_command("migrate")
         try:
             User.objects.create_superuser("admin", "q@w.de", "pass#word")
-        except:
+        except BaseException:
             sys.exit("Error. DB exists?")
         create()
-
-
-

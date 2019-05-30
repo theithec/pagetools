@@ -5,6 +5,7 @@ from django.db import migrations, models
 from django.conf import settings
 from pagetools.widgets import settings as widget_settings
 
+
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -41,7 +42,11 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
                 ('lang', models.CharField(max_length=20, blank=True, verbose_name='language', choices=settings.LANGUAGES)),
-                ('description', models.CharField(max_length=156, help_text='Description (for Metatag/seo)', blank=True, verbose_name='Description')),
+                ('description',
+                 models.CharField(max_length=156,
+                                  help_text='Description (for Metatag/seo)',
+                                  blank=True,
+                                  verbose_name='Description')),
                 ('pagetype', models.ForeignKey(to='widgets.PageType', on_delete=models.CASCADE)),
             ],
             options={
@@ -55,7 +60,8 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
                 ('title', models.CharField(max_length=128, blank=True)),
                 ('name', models.SlugField(verbose_name='name', unique=True)),
-                ('renderclasskey', models.CharField(max_length=255, choices=sorted([(w, w) for w in widget_settings.TEMPLATETAG_WIDGETS]))),
+                ('renderclasskey', models.CharField(max_length=255, choices=sorted(
+                    [(w, w) for w in widget_settings.TEMPLATETAG_WIDGETS]))),
             ],
             options={
                 'abstract': False,
@@ -66,7 +72,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
                 ('lang', models.CharField(max_length=20, blank=True, verbose_name='language', choices=settings.LANGUAGES)),
-                ('area', models.CharField(max_length=64, choices=sorted([(a) for a in widget_settings.AREAS ]))),
+                ('area', models.CharField(max_length=64, choices=sorted([(a) for a in widget_settings.AREAS]))),
                 ('type', models.ForeignKey(to='widgets.PageType', on_delete=models.CASCADE)),
             ],
             options={

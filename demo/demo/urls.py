@@ -8,7 +8,7 @@ from pagetools.pages.views import IndexView
 from pagetools.sections.views import admin_pagenodesview
 
 urlpatterns = [
-    url(r'^$', IndexView.as_view(), name="index"), # Optional
+    url(r'^$', IndexView.as_view(), name="index"),  # Optional
     url(r'^admin/filebrowser/', site.urls),
     url(r'^grappelli/', include('grappelli.urls')),
     url(r'^admin/', admin.site.urls),
@@ -17,10 +17,10 @@ urlpatterns = [
     # url(r'', include('demo_sections.urls', namespace="demo_sections")),
     url(r'', include('pagetools.core.urls')),
     url(r'pages/', include('pagetools.pages.urls', namespace="pages")),
-    url(r'^node/', include('pagetools.sections.urls', namespace ="sections")),
+    url(r'^node/', include('pagetools.sections.urls', namespace="sections")),
     url(r'^adminnodes/(?P<slug>[\w-]+)/$',
-         admin_pagenodesview,
-         name='admin_pagenodesview'),
+        admin_pagenodesview,
+        name='admin_pagenodesview'),
     url(r'search/', include('pagetools.search.urls')),
     url(r'subscribe/', include('pagetools.subscriptions.urls', namespace="subscriptions")),
 ]

@@ -6,11 +6,13 @@ from pagetools.core.models import *
 
 class ConcretePublishableLangModel(PublishableLangModel):
     foo = models.CharField("Foo", max_length=32)
+
     def __str__(self):
         return "%s:%s" % (self.lang, self.status)
 
     def get_absolute_url(self):
         return "#"
+
 
 class PublishableLangModelTest(TestCase):
 
@@ -28,22 +30,21 @@ class PublishableLangModelTest(TestCase):
 
     def test_find_de_active(self):
         activate("de")
-        self.assertEqual(len(ConcretePublishableLangModel.public.lfilter()),2)
+        self.assertEqual(len(ConcretePublishableLangModel.public.lfilter()), 2)
 
     def test_skip_lang(self):
-        self.assertEqual(len(ConcretePublishableLangModel.public.lfilter(skip_lang=True)),3)
+        self.assertEqual(len(ConcretePublishableLangModel.public.lfilter(skip_lang=True)), 3)
 
     def test_find_en_active(self):
         activate("en")
-        self.assertEqual(len(ConcretePublishableLangModel.public.lfilter()),2)
+        self.assertEqual(len(ConcretePublishableLangModel.public.lfilter()), 2)
 
     def test_find_de_kwarg(self):
-        self.assertEqual(len(ConcretePublishableLangModel.public.lfilter(lang="de")),2)
+        self.assertEqual(len(ConcretePublishableLangModel.public.lfilter(lang="de")), 2)
 
     def test_find_en_kwarg(self):
-        self.assertEqual(len(ConcretePublishableLangModel.public.lfilter(lang="en")),2)
+        self.assertEqual(len(ConcretePublishableLangModel.public.lfilter(lang="en")), 2)
 
     def test_find_nolang(self):
         activate("fr")
-        self.assertEqual(len(ConcretePublishableLangModel.public.lfilter()),1)
-
+        self.assertEqual(len(ConcretePublishableLangModel.public.lfilter()), 1)

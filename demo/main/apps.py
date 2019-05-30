@@ -6,6 +6,8 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 # This will be added to ``polls.models.Question``
+
+
 def question_get_absolute_url(self):
     return reverse("polls:detail", args=(self.pk,))
 
@@ -17,10 +19,11 @@ def questions_post_savecallback(sender, **kwargs):
         to_queue({
             'title': 'New Question',
             'body': 'There is a great new question: %s.' % (
-                kwargs['instance'].question_text )
+                kwargs['instance'].question_text)
         })
 
     # print("Request finished!", sender, kwargs)
+
 
 class MainConfig(AppConfig):
     name = 'main'
@@ -67,5 +70,5 @@ class MainConfig(AppConfig):
         pagetools.search.search_mods = (
             (Question, ('question_text',)),
             # and pages also
-            (Page, ('title', 'content'),{'replacements': 'content'}),
+            (Page, ('title', 'content'), {'replacements': 'content'}),
         )

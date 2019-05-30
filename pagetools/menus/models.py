@@ -106,12 +106,12 @@ class MenuEntry(MPTTModel, LangModel):
     def clean(self):
         def _raise():
             raise ValidationError(
-                    _('An entry with this title and language already exists in menu'))
+                _('An entry with this title and language already exists in menu'))
 
         kwargs = {
-                'title': self.title,
-                'lang': self.lang,
-                 # 'parent__is_null=True
+            'title': self.title,
+            'lang': self.lang,
+            # 'parent__is_null=True
         }
         if not self.parent:  # root
             kwargs['parent__isnull'] = True
@@ -130,19 +130,16 @@ class MenuEntry(MPTTModel, LangModel):
                     raise ValidationError(
                         _('A menu with this title and language already exists'))
 
-
-
-
         #root = self.get_root()
 
-        #try:
+        # try:
         #    entries = MenuEntry.objects.filter(title=self.title, lang=self.lang)
         #    for e in entries:
         #        eroot = e.get_root()
         #        if root == eroot:
         #            raise ValidationError(
         #                _('An entry with this title and language already exists in menu'))
-        #except MenuEntry.DoesNotExist:
+        # except MenuEntry.DoesNotExist:
         #    pass
 
     class Meta:
@@ -158,7 +155,7 @@ def delete_content(sender, **kwargs):
         )
         if e:
             e.delete()
-    except:
+    except BaseException:
         pass
 
 
@@ -200,7 +197,7 @@ class Menu(MenuEntry):
         else:
             t = self._render_no_sel()
         logger.debug(" TEMPLATE %s,  SELECTED: %s, KEYS: %s" % (
-            t, selected,  ", ".join(sel_entries.keys())))
+            t, selected, ", ".join(sel_entries.keys())))
         rendered = t % sel_entries
         return rendered
 
@@ -213,7 +210,7 @@ class Menu(MenuEntry):
                 break
             k, v = entry_str.split("=")
             b1, b2 = list(map(k.find, ("[", "]")))
-            eid = int(entry_str[b1+1: b2])
+            eid = int(entry_str[b1 + 1: b2])
             e = MenuEntry.objects.get(id=eid)
             if v == 'null':
                 parent = e.get_root()

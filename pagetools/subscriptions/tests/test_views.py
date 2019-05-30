@@ -14,11 +14,11 @@ class ViewTest(TestCase):
     @override_settings(
         EMAIL_BACKEND='django.core.mail.backends.locmem.EmailBackend')
     def _test_add_subscriber(self):
-        settings.DEBUG=True
+        settings.DEBUG = True
         u = reverse("subscriptions:subscribe", args=[])
-        response = self.client.post(u+"/",
-            {'email': 'q@w.de' }
-        )
+        response = self.client.post(u + "/",
+                                    {'email': 'q@w.de'}
+                                    )
         subs = Subscriber.objects.all()
         self.assertTrue(len(subs), 1)
         self.assertTrue(len(mail.outbox), 1)
@@ -40,6 +40,3 @@ class ViewTest(TestCase):
         f = activate(request, sub.key)
         sub.refresh_from_db()
         self.assertTrue(sub.is_activated)
-
-
-

@@ -10,7 +10,7 @@ class Migration(migrations.Migration):
     dependencies = [
         ('pages', '0006_auto_20161030_1520'),
     ]
-    if django.VERSION < (1,9):
+    if django.VERSION < (1, 9):
         operations = [
             migrations.AlterField(
                 model_name='page',

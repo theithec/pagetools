@@ -13,6 +13,7 @@ contactform_data = {
     "name": "Name"
 }
 
+
 class ModifyMailReceiverTestCase(TestCase):
     def setUp(self, mailreceivers=None):
         super().setUp()
@@ -25,11 +26,13 @@ class ModifyMailReceiverTestCase(TestCase):
         super().tearDown()
         pagetools.pages.forms.MAILFORM_RECEIVERS = self.org_receivers
 
+
 class TestContactFormMissingReceiver(ModifyMailReceiverTestCase):
 
     def test_sendmailform_no_reveivers(self):
         contactform = ContactForm(contactform_data)
         self.assertFalse(contactform.is_valid())
+
 
 class TestContactFormWithSettingsReceiver(ModifyMailReceiverTestCase):
 
@@ -39,6 +42,7 @@ class TestContactFormWithSettingsReceiver(ModifyMailReceiverTestCase):
     def test_sendmailform_receivers_from_settings(self):
         contactform = ContactForm(contactform_data)
         self.assertTrue(contactform.is_valid())
+
 
 class TestContactFormWithKwargReceiver(ModifyMailReceiverTestCase):
     def setUp(self):

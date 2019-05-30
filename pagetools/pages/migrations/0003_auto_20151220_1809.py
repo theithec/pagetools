@@ -18,27 +18,46 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='page',
             name='email_receivers',
-            field=models.CharField(blank=True, help_text='Comma separated list of emails', verbose_name='Email Receivers', max_length=512),
+            field=models.CharField(
+                blank=True,
+                help_text='Comma separated list of emails',
+                verbose_name='Email Receivers',
+                max_length=512),
         ),
         migrations.AlterField(
             model_name='pagedynformfield',
             name='field_type',
-            field=models.CharField(help_text='The type of the field (e.g. textfield)', verbose_name='Type', max_length=128),
+            field=models.CharField(
+                help_text='The type of the field (e.g. textfield)',
+                verbose_name='Type',
+                max_length=128),
         ),
         migrations.AlterField(
             model_name='pagedynformfield',
             name='form_containing_model',
-            field=models.ForeignKey(help_text='Additional fields and settings for the included form', related_name='dynformfields', to='pages.Page', on_delete=models.CASCADE),
+            field=models.ForeignKey(
+                help_text='Additional fields and settings for the included form',
+                related_name='dynformfields',
+                to='pages.Page',
+                on_delete=models.CASCADE),
         ),
         migrations.AlterField(
             model_name='pagedynformfield',
             name='help_text',
-            field=models.CharField(blank=True, help_text='The helptext of the field ', verbose_name='Helptext', max_length=512),
+            field=models.CharField(
+                blank=True,
+                help_text='The helptext of the field ',
+                verbose_name='Helptext',
+                max_length=512),
         ),
         migrations.AlterField(
             model_name='pagedynformfield',
             name='initial',
-            field=models.CharField(blank=True, help_text='The default value of the field', verbose_name='Default', max_length=512),
+            field=models.CharField(
+                blank=True,
+                help_text='The default value of the field',
+                verbose_name='Default',
+                max_length=512),
         ),
         migrations.AlterField(
             model_name='pagedynformfield',

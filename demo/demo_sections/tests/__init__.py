@@ -6,12 +6,13 @@ from filebrowser.base import FileObject
 from pagetools.sections.models import PageNodePos
 from demo_sections.models import Article, Section, SectionList
 
+
 class SectionsDataTestCase(TestCase):
 
     def setUp(self):
         self.sections = []
         self.articles = []
-        for i in range(1,3):
+        for i in range(1, 3):
             section = Section.objects.create(
                 title="Section%s" % i,
                 headline="HL%s" % i,
@@ -46,4 +47,3 @@ class SectionsDataTestCase(TestCase):
             owner=self.sectionlist1,
             position=0
         )
-

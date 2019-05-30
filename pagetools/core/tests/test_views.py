@@ -15,6 +15,7 @@ urlpatterns = [
     (r'/', CPLMListView.as_view())
 ]
 
+
 @override_settings(ROOT_URLCONF=__name__)
 class PaginatorTest(TestCase):
 
@@ -23,8 +24,8 @@ class PaginatorTest(TestCase):
         self.client.login(username="admin", password='password')
         self.factory = RequestFactory()
 
-        for i in range(0,4):
-           ConcretePublishableLangModel.objects.create(foo="f%s" + str(i))
+        for i in range(0, 4):
+            ConcretePublishableLangModel.objects.create(foo="f%s" + str(i))
 
     def test_view(self):
         request = self.factory.get("/")

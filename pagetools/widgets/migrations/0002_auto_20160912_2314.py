@@ -18,6 +18,9 @@ class Migration(migrations.Migration):
         ),
         migrations.AlterModelOptions(
             name='widgetinarea',
-            options={'ordering': ['position'], 'verbose_name': 'Included widget', 'verbose_name_plural': 'Included widgets'},
+            options={
+                'ordering': ['position'],
+                'verbose_name': 'Included widget',
+                'verbose_name_plural': 'Included widgets'},
         ),
     ]

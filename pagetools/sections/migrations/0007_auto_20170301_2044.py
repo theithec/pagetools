@@ -15,6 +15,10 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='pagenode',
             name='description',
-            field=models.CharField(blank=True, help_text='Description (for searchengines)', max_length=156, verbose_name='Description'),
+            field=models.CharField(
+                blank=True,
+                help_text='Description (for searchengines)',
+                max_length=156,
+                verbose_name='Description'),
         ),
     ]
