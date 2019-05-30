@@ -28,6 +28,7 @@ pylint-django = "*"
 coverage = "*"
 "pysqlite3" = "*"
 tox = "*"
+coveralls = "*"
 
 [requires]
 python_version = "3.6"
