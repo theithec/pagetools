@@ -22,12 +22,7 @@ class TestModelMixin(TestCase):
 
     def setUp(self):
 
-        # from pagetools.sections.tests.models import PageNodeDummy
         self.model = PageNode
-        print("M", self.model._meta.db_table)
-        # with connection.schema_editor() as schema_editor:
-        #    schema_editor.create_model(self.model)
-
         self.n1 = self.model.objects.create(title="w1")
 
 

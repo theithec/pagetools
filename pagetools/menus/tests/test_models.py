@@ -37,7 +37,6 @@ class ModelTests(MenuDataTestCase):
         if u0.startswith("/%s/" % lang):
             u0 = u0[3:]
         u1 = c[0].get_absolute_url()
-        print("C",c )
         if u1.startswith("/%s/" % lang):
             u1 = u0[3:]
         self.assertEqual(
