@@ -153,7 +153,6 @@ class MenuAdminTests(TestCase):
         self.assertTrue(v)
 
         adminurl = get_adminedit_url(c)
-        print("A", adminurl)
         data = c.__dict__
         data['status_changed_0'] = "2016-01-01"
         data['status_changed_1'] = "23:00"
@@ -163,8 +162,6 @@ class MenuAdminTests(TestCase):
         response = self.client.get(adminurl)
         c = str(response.content)
         start = c.find('<input type="checkbox" name="menus"')
-        print("START", start)
         end = c[start:].find(">")
         tag = c[start:start+end+1]
-        print("TAG", tag)
         self.assertTrue(" checked" in tag)

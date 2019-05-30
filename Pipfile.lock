@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "3d4d373ad28fd7eb8e8d8b9eb26966bc06ae82171216645097b7f727f3217827"
+            "sha256": "17ddb010b90c6e96e22cfe68e076398a5e12a5912edca4e84ba4bd38b69c1b1a"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -27,11 +27,11 @@
         },
         "django": {
             "hashes": [
-                "sha256:7c3543e4fb070d14e10926189a7fcf42ba919263b7473dceaefce34d54e8a119",
-                "sha256:a2814bffd1f007805b19194eb0b9a331933b82bd5da1c3ba3d7b7ba16e06dc4b"
+                "sha256:6fcc3cbd55b16f9a01f37de8bcbe286e0ea22e87096557f1511051780338eaea",
+                "sha256:bb407d0bb46395ca1241f829f5bd03f7e482f97f7d1936e26e98dacb201ed4ec"
             ],
             "index": "pypi",
-            "version": "==2.2"
+            "version": "==2.2.1"
         },
         "django-classy-tags": {
             "hashes": [
@@ -413,6 +413,13 @@
                 "sha256:8d9e31d5ea8b7b0003e1f0f136b44a5235896a32e47c5bc2ef1143e9f6ba0b74"
             ],
             "version": "==0.5"
+        },
+        "pysqlite3": {
+            "hashes": [
+                "sha256:51116ba7dc03e5d5bb56db99c1750b618830e39a4ca0f41a2df438cee3ee2071"
+            ],
+            "index": "pypi",
+            "version": "==0.2.1"
         },
         "pytest": {
             "hashes": [
