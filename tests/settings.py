@@ -132,4 +132,3 @@ PT_TEMPLATETAG_WIDGETS = {
 PT_MENU_TEMPLATE = 'foundation6_nav_menu.html'
 
 CAPTCHA_TEST_MODE = True
-print("T", TEMPLATES)
