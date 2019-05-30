@@ -23,13 +23,6 @@ class TestAdminStaticFiles(TestMediaMixin, TestCase):
         super().__init__(*args, **kwargs)
 
 
-class TestMisc(TestCase):
-    def test_fieldset_copy(self):
-        fieldset = (None, {'fields': ['a', 'b']})
-        fieldset2 = fieldset_copy(fieldset)
-        fieldset2[1]['fields'].append("d")
-        self.assertNotEqual(fieldset[1]['fields'], fieldset2[1]['fields'])
-
 
 '''
 # too complicated

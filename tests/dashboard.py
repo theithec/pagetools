@@ -14,10 +14,8 @@ from grappelli.dashboard import modules, Dashboard
 from grappelli.dashboard.utils import get_admin_site_name
 from pagetools.menus.dashboard_modules import MenuModule
 
-#  from pagetools.sections.dashboard_modules import PageNodesModule
-
-# from main.models import SectionList
-# PageNodesModule.model = SectionList
+from pagetools.sections.dashboard_modules import PageNodesModule
+from demo_sections.models import SectionList
 
 class CustomIndexDashboard(Dashboard):
     """
@@ -27,10 +25,9 @@ class CustomIndexDashboard(Dashboard):
     def init_with_context(self, context):
         # site_name = get_admin_site_name(context)
         self.children.append(MenuModule(column=1))
-        #  from pagetools.sections.tests.models import PageNodeDummy
         #with connection.schema_editor() as schema_editor:
         #    schema_editor.create_model(PageNodeDummy)
-        #  self.children.append(PageNodesModule(model=PageNodeDummy, column=1))
+        self.children.append(PageNodesModule(model=SectionList, column=1))
 
         # append an app list module for "Applications"
         self.children.append(modules.AppList(
