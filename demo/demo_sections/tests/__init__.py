@@ -1,6 +1,7 @@
 
 import os.path
 from django.test import TestCase
+from django.conf import settings
 from filebrowser.base import FileObject
 from pagetools.sections.models import PageNodePos
 from demo_sections.models import Article, Section, SectionList
@@ -23,7 +24,7 @@ class SectionsDataTestCase(TestCase):
                 content="Text%s" % i,
                 teaser="Teaser%s" % i,
                 image=FileObject(
-                    "%s/foo.jpg" % os.path.dirname(os.path.abspath(__file__))),
+                    "%s/foo.jpg" % settings.MEDIA_ROOT),
 
                 status="published",
             )

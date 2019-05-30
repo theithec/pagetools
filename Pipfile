@@ -1,0 +1,34 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django-filebrowser = "*"
+django-grappelli = "*"
+django = "*"
+"beautifulsoup4" = "*"
+django-crispy-forms = "*"
+django-debug-toolbar = "*"
+django-model-utils = "*"
+django-mptt = "*"
+django-sekizai = "*"
+django-simple-captcha = "*"
+djangoajax = "*"
+pillow = "*"
+"e1839a8" = {editable = true, path = "."}
+tox = "*"
+
+[dev-packages]
+mock = "*"
+pytest = "*"
+black = "*"
+pylint = "*"
+pylint-django = "*"
+coverage = "*"
+
+[requires]
+python_version = "3.6"
+
+[pipenv]
+allow_prereleases = true

@@ -22,7 +22,7 @@ class TestModelMixin(TestCase):
 
     def setUp(self):
 
-        from pagetools.sections.tests.models import PageNodeDummy
+        # from pagetools.sections.tests.models import PageNodeDummy
         self.model = PageNode
         print("M", self.model._meta.db_table)
         # with connection.schema_editor() as schema_editor:
@@ -30,12 +30,8 @@ class TestModelMixin(TestCase):
 
         self.n1 = self.model.objects.create(title="w1")
 
-    def tearDown(self):
-        # Delete the schema for the test model
-        with connection.schema_editor() as schema_editor:
-            schema_editor.delete_model(self.model)
 
-class ModelTests(TestCase):
+class ModelTests(TestModelMixin):
 
     def test_title(self):
         self.assertEqual(self.n1.title, "w1")

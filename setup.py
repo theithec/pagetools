@@ -16,7 +16,7 @@ setup(
     license='BSD License',  # example license
     description='A set of Django apps to to provide some cms-like features',
     install_requires=[
-        'Django==2.2',
+        'Django>=1.11',
         'beautifulsoup4==4.7.1',
         'django-crispy-forms==1.7.2',
         'django-debug-toolbar==1.11',
