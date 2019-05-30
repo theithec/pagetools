@@ -1,9 +1,9 @@
 dist: xenial
 language: python
-python:
-    #- "3.4"
-    - "3.5"
-    - "3.6"
+#python:
+#    #- "3.4"
+#    - "3.5"
+#    - "3.6"
 env:
     - TOX_ENV=py35-django111
     - TOX_ENV=py36-django22
