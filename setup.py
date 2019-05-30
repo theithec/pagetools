@@ -30,10 +30,6 @@ setup(
         'Pillow==6.0',
     ],
 
-    # dependency_links=[
-    #     'http://github.com/theithec/django-filebrowser/tarball/master#egg=django-filebrowser-4.1-dev',
-    # ],
-
     long_description=README,
     author='Tim Heithecker',
     author_email='tim.heithecker@gmail.com',
