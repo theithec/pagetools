@@ -29,6 +29,7 @@ coverage = "*"
 "pysqlite3" = "*"
 tox = "*"
 coveralls = "*"
+coveralls-python = "*"
 
 [requires]
 python_version = "3.6"

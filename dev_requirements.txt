@@ -28,3 +28,4 @@ wcwidth==0.1.7
 wrapt==1.11.1
 zipp==0.5.1
 coveralls
+coveralls-python
