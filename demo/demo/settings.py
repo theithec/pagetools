@@ -55,7 +55,6 @@ INSTALLED_APPS = [
     'pagetools.search',  # Simple Search on database fields
     'pagetools.subscriptions',  # Subscriptions to whatever
     'captcha',
-    'behave_django',
     'debug_toolbar',
 ]
 
@@ -180,4 +179,3 @@ PT_TEMPLATETAG_WIDGETS = {
     'latest_question': 'main.templatetags.LatestQuestionNode',
 }
 PT_MENU_TEMPLATE = 'foundation6_nav_menu.html'
-
