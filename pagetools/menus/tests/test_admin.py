@@ -3,18 +3,19 @@ Created on 15.12.2013
 
 @author: Tim Heithecker
 '''
-from django.contrib.auth.models import User
-from django.urls import resolve, reverse
 
 from django.contrib import admin
-
+from django.contrib.auth.models import User
 from django.test.testcases import TestCase
-from pagetools.menus.models import Menu, MenuEntry, Link
-from pagetools.menus.admin import MenuAdmin, make_entrieable_admin
-from pagetools.menus import _ENTRIEABLE_MODELS
+from django.urls import reverse
+
+
 from pagetools.core.tests.test_models import ConcretePublishableLangModel
-from pagetools.widgets.settings import TEMPLATETAG_WIDGETS
 from pagetools.core.utils import get_adminedit_url
+from pagetools.menus import _ENTRIEABLE_MODELS
+from pagetools.menus.admin import MenuAdmin, make_entrieable_admin
+from pagetools.menus.models import Link, Menu, MenuEntry
+from pagetools.widgets.settings import TEMPLATETAG_WIDGETS
 
 
 class CPMAdmin(admin.ModelAdmin):
@@ -24,8 +25,6 @@ class CPMAdmin(admin.ModelAdmin):
 admin.site.register(ConcretePublishableLangModel, CPMAdmin)
 
 
-
-
 class MenuAdminTests(TestCase):
 
     def setUp(self):
@@ -33,6 +32,11 @@ class MenuAdminTests(TestCase):
             'admin', 'q@w.de', 'password')
         self.client.login(username="admin", password='password')
         self.site = admin.site
+
+    def _data_from_menu(self, menu):
+        return {key: menu.__dict__[key] for key in (
+            'id', 'lang', 'title', 'slug', 'content_type_id', 'object_id',
+            'enabled', 'lft', 'rght', 'tree_id', 'level',)}
 
     def test_admin_index(self):
         ''' test index because customdashboard with MenuModule is may used'''
@@ -61,10 +65,11 @@ class MenuAdminTests(TestCase):
             )
         adminurl = reverse('admin:menus_menu_change', args=[m.pk])
         response = self.client.get(adminurl, {'pk': m.pk})
-        data = m.__dict__
+        data = self._data_from_menu(m)
         data['entry-order-id-0'] = e[0].pk
         data['entry-text-0'] = "changed"
         data['entry-published-0'] = 1
+        # data.pop("_mptt_cached_fields")
         response = self.client.post(adminurl, data)
         cl = m.children_list()
         self.assertEqual(cl[0]['entry_title'], "changed")
@@ -82,7 +87,7 @@ class MenuAdminTests(TestCase):
             )
 
         adminurl = reverse('admin:menus_menu_change', args=[m.pk])
-        data = m.__dict__
+        data = self._data_from_menu(m)
         response = self.client.post(adminurl, data)
         self.assertEqual([e['entry_title'] for e in m.children_list()],
                          ['e1', 'e2'])
@@ -94,22 +99,22 @@ class MenuAdminTests(TestCase):
                          ['e2', 'e1'])
 
     def test_addentry(self):
-                m = Menu.objects.add_root(title="Menu1", enabled=True)
-                e = []
-                for i in range(1, 3):
-                    e.append(
-                        MenuEntry.objects.add_child(
-                            parent=m, title="e%s" % i,
-                            content_object=Link.objects.create(url='#%s' % i,),
-                            enabled=True
-                        )
-                    )
-                    adminurl = reverse(
-                        'admin:menus_menu_change', args=[m.pk])
-                    data = m.__dict__
-                    data['addentry'] = 'menus#link'
+        m = Menu.objects.add_root(title="Menu1", enabled=True)
+        e = []
+        for i in range(1, 3):
+            e.append(
+                MenuEntry.objects.add_child(
+                    parent=m, title="e%s" % i,
+                    content_object=Link.objects.create(url='#%s' % i,),
+                    enabled=True
+                )
+            )
+            adminurl = reverse(
+                'admin:menus_menu_change', args=[m.pk])
+            data = self._data_from_menu(m)
+            data['addentry'] = 'menus#link'
 
-                response = self.client.post(adminurl, data)
+        response = self.client.post(adminurl, data)
 
     def test_addableentries(self):
         ma = MenuAdmin(model=Menu, admin_site=self.site)
@@ -148,18 +153,18 @@ class MenuAdminTests(TestCase):
         self.assertTrue(v)
 
         adminurl = get_adminedit_url(c)
+        print("A", adminurl)
         data = c.__dict__
         data['status_changed_0'] = "2016-01-01"
         data['status_changed_1'] = "23:00"
         response = self.client.post(adminurl, data)
         self.assertIn(response.status_code, (200, 302))
-        self.assertEqual(MenuEntry.objects.count(),2)
+        self.assertEqual(MenuEntry.objects.count(), 2)
         response = self.client.get(adminurl)
         c = str(response.content)
         start = c.find('<input type="checkbox" name="menus"')
+        print("START", start)
         end = c[start:].find(">")
         tag = c[start:start+end+1]
-        self.assertTrue(" checked " in tag)
-
-
-
+        print("TAG", tag)
+        self.assertTrue(" checked" in tag)
