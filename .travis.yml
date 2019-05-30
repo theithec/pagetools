@@ -8,6 +8,6 @@ install:
     - "pip install -e . "
     - "pip install -r dev_requirements.txt"
 
-script: "coverage run setup.py test"
+script: "coverage run --include='pagetools/*','demo/*' setup.py test"
 after_success:
   coveralls
