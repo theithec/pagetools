@@ -1,6 +1,6 @@
 import django
 import importlib
-from django.core.urlresolvers import reverse
+from django.shortcuts import reverse
 
 
 # http://code.activestate.com/recipes/576949-find-all-subclasses-of-a-given-class/
