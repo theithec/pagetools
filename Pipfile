@@ -6,7 +6,7 @@ name = "pypi"
 [packages]
 django-filebrowser = "*"
 django-grappelli = "*"
-django = "*"
+django = "==2.2.8"
 "beautifulsoup4" = "*"
 django-crispy-forms = "*"
 django-debug-toolbar = "*"
@@ -16,7 +16,7 @@ django-sekizai = "*"
 django-simple-captcha = "*"
 djangoajax = "*"
 pillow = "*"
-"e1839a8" = {editable = true, path = "."}
+e1839a8 = {editable = true,path = "."}
 tox = "*"
 
 [dev-packages]
@@ -29,7 +29,6 @@ coverage = "*"
 "pysqlite3" = "*"
 tox = "*"
 coveralls = "*"
-coveralls-python = "*"
 wily = "*"
 
 [requires]
