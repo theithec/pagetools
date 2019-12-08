@@ -5,14 +5,11 @@ Inheritated models with own fields needs concrete inheritance,
 otherwise a proxy model is sufficient.
 '''
 import warnings
-import django
 from django.core.exceptions import ValidationError
 from django.urls import reverse
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
-
-from filebrowser.fields import FileBrowseField
 
 from pagetools.core.models import PagelikeModel, PublishableLangManager
 from pagetools.core.utils import (get_adminadd_url, get_classname, importer,
@@ -57,8 +54,8 @@ class PageNode(PagelikeModel):
         allowed = getattr(self, 'allowed_children_classes', None)
         if allowed:
             repl = []
-            for c in allowed:
-                repl.append(importer(c))
+            for cls in allowed:
+                repl.append(importer(cls))
 
             self.__class__.allowed_children_classes = repl
 
@@ -71,8 +68,8 @@ class PageNode(PagelikeModel):
 
     def get_real_child(self, child):
         real_child = child.get_real_obj()
-        s = self.slug + "_" + real_child.slug
-        real_child.long_slug = s
+        slug = self.slug + "_" + real_child.slug
+        real_child.long_slug = slug
         return real_child
 
     def get_real_content(self, child):
@@ -82,8 +79,8 @@ class PageNode(PagelikeModel):
         return self.get_real_child(child)
 
     def children(self, **kwargs):
-        o = self.positioned_content.lfilter(**kwargs).order_by('pagenodepos')
-        return [self.get_real_child(c) for c in o]
+        _children = self.positioned_content.lfilter(**kwargs).order_by('pagenodepos')
+        return [self.get_real_child(child) for child in _children]
 
     def ordered_content(self, **kwargs):
         # warnings.warn("deprecated, use get_real_child",
@@ -91,12 +88,12 @@ class PageNode(PagelikeModel):
         return self.children(**kwargs)
 
     def get_classname(self):
-        o = self.get_real_obj()
-        return get_classname(o)
+        obj = self.get_real_obj()
+        return get_classname(obj)
 
     def __str__(self):
-        o = self.get_real_obj()
-        return "%s(%s)" % (o.title, get_classname(o))
+        obj = self.get_real_obj()
+        return "%s(%s)" % (obj.title, get_classname(obj))
 
     def clean(self):
         objs = PageNode.objects.filter(slug=self.slug, lang=self.lang)
@@ -108,9 +105,9 @@ class PageNode(PagelikeModel):
 
     def save(self, *args, **kwargs):
         if not self.content_type_pk:
-            ct = ContentType.objects.get_for_model(
+            ctype = ContentType.objects.get_for_model(
                 self, for_concrete_model=False)
-            self.content_type_pk = ct.pk
+            self.content_type_pk = ctype.pk
         super(PageNode, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
@@ -118,16 +115,12 @@ class PageNode(PagelikeModel):
 
     @classmethod
     def get_contenttype_pk(cls):
-        t = ContentType.objects.get_for_model(cls, for_concrete_model=False)
-        return t.id
+        ctype = ContentType.objects.get_for_model(cls, for_concrete_model=False)
+        return ctype.id
 
     @classmethod
-    def get_adminadd_url(Clz):
-        return get_adminadd_url(Clz)
-
-    @classmethod
-    def get_classname(Clz):
-        return Clz._meta.verbose_name
+    def get_adminadd_url(cls):
+        return get_adminadd_url(cls)
 
     class Meta:
         verbose_name = _('Node')

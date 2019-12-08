@@ -52,12 +52,12 @@ class Subscriber(BaseSubscriberMixin, LangModel):
         return str(self.email)
 
     @classmethod
-    def get_subscribers(clz, **kwargs):
+    def get_subscribers(cls, **kwargs):
         fkwargs = {'is_activated': True}
         if subs_settings.SUBSCRIBER_LANG_ONLY:
             fkwargs['lang'] = kwargs.pop('lang', None)
 
-        return clz.objects.lfilter(**fkwargs)
+        return cls.objects.lfilter(**fkwargs)
 
 
 _subscriber_model = None

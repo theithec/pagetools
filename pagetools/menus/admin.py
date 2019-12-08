@@ -1,9 +1,3 @@
-"""
-Created on 14.12.2013
-
-@author: Tim Heithecker
-"""
-
 from django import forms
 from django.conf import settings
 from django.contrib import admin
@@ -13,6 +7,7 @@ from django.http.response import HttpResponseRedirect
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
+from django.utils.safestring import mark_safe
 
 from pagetools.core.admin import TinyMCEMixin
 from pagetools.core.utils import get_adminadd_url, get_classname
@@ -30,17 +25,18 @@ class MenuChildrenWidget(forms.Widget):
         self.instance = kwargs.pop("instance", None)
         super(MenuChildrenWidget, self).__init__(*args, **kwargs)
 
-    def render(self, *args, **kwargs):
-        m = Menu.objects.get(pk=self.instance.pk)
-        return render_to_string(
+    def render(self, *_args, **_kwargs):
+        menu = Menu.objects.get(pk=self.instance.pk)
+        return mark_safe(render_to_string(
             "menus/admin/menuentries.html",
             {
-                "children": m.children_list(for_admin=True),
-                "cls": 'class="sortable grp-grp-items sortable ui-sortable '
-                + 'mjs-nestedSortable-branch mjs-nestedSortable-expanded"',
-                "original": m,
+                "children": menu.children_list(for_admin=True),
+                "cls":
+                    'class="sortable grp-grp-items sortable ui-sortable '
+                    'mjs-nestedSortable-branch mjs-nestedSortable-expanded"',
+                "original": menu,
             },
-        )
+        ))
 
 
 class MenuAddForm(forms.ModelForm):
@@ -58,7 +54,7 @@ class MenuChangeForm(forms.ModelForm):
             required=False, widget=MenuChildrenWidget(instance=kwargs["instance"])
         )
 
-    def clean_children(self, *args, **kwargs):
+    def clean_children(self, *args, **_kwargs):
         names = []
         cnt = 0
         while True:
@@ -90,16 +86,16 @@ class MenuAdmin(TinyMCEMixin, admin.ModelAdmin):
             self.form = MenuAddForm
         return super(MenuAdmin, self).get_form(request, obj, **kwargs)
 
-    def addable_entries(self, obj, **kwargs):
+    def addable_entries(self, obj, **_kwargs):
         ems = entrieable_models()
         txt = "<ul>"
-        for c in ems:
+        for mod in ems:
             txt += '<li><a href="%s?menus=%s">%s</a></li>' % (
-                get_adminadd_url(c),
+                get_adminadd_url(mod),
                 obj.pk,
-                get_classname(c),
+                get_classname(mod),
             )
-        return txt + "</ul>"
+        return mark_safe(txt + "</ul>")
 
     addable_entries.short_description = _("Add")
     addable_entries.allow_tags = True
@@ -108,17 +104,15 @@ class MenuAdmin(TinyMCEMixin, admin.ModelAdmin):
         return Menu.objects.root_nodes()
 
     def render_change_form(
-        self, request, context, add=False, change=False, form_url="", obj=None
-    ):
+            self, request, context, add=False, change=False, form_url="", obj=None):
         if change and obj:
-            for c in entrieable_models():
-                context["addable_entries"] = "".join(
-                    [
-                        '<li><a href="%s?menu=%s">%s</a></li>'
-                        % (get_adminadd_url(c), context["object_id"], get_classname(c))
-                        for c in entrieable_models()
-                    ]
-                )
+            context["addable_entries"] = mark_safe("".join(
+                [
+                    '<li><a href="%s?menu=%s">%s</a></li>'
+                    % (get_adminadd_url(model), context["object_id"], get_classname(model))
+                    for model in entrieable_models()
+                ]
+            ))
             menu_obj = Menu.objects.filter(pk=obj.pk)[0]
             context["menu_entries"] = menu_obj.children_list(for_admin=True)
         return admin.ModelAdmin.render_change_form(
@@ -173,10 +167,10 @@ class EntrieableForm(forms.ModelForm):
         try:
             entry = kwargs["instance"]
             content_type = ContentType.objects.get_for_model(entry)
-            menuEntries = MenuEntry.objects.filter(
+            containing_menus = MenuEntry.objects.filter(
                 content_type=content_type, object_id=entry.id
             )
-            menuroot_ids = set([m.get_root().id for m in menuEntries])
+            menuroot_ids = {menu.get_root().id for menu in containing_menus}
         except (KeyError, AttributeError):
             menuroot_ids = set()
 
@@ -189,7 +183,7 @@ class EntrieableForm(forms.ModelForm):
         )
 
     def clean(self):
-        s = super(EntrieableForm, self).clean()
+        cleaned_data = super(EntrieableForm, self).clean()
         if self.instance and "menus" in self.changed_data:
             obj = self.instance
             cmp_data = self.cleaned_data.copy()
@@ -200,10 +194,10 @@ class EntrieableForm(forms.ModelForm):
                 object_id=obj.pk,
             )
             self.existing_menuentries = []
-            for e in existing_menuentries_for_obj:
-                e.clean()
-                self.existing_menuentries.append(e)
-        return s
+            for entry in existing_menuentries_for_obj:
+                entry.clean()
+                self.existing_menuentries.append(entry)
+        return cleaned_data
 
     class Media(TinyMCEMixin.Media):
         js = TinyMCEMixin.Media.js + [
@@ -238,12 +232,11 @@ class EntrieableAdmin(admin.ModelAdmin):
         if not getattr(superfunc, "for_entrieable", False):
             self.fieldsets = superfunc(request, obj)
         else:
-            self.fieldsets = super(
-                admin.ModelAdmin, self).get_fieldsets(request, obj)
+            self.fieldsets = super(admin.ModelAdmin, self).get_fieldsets(request, obj)
 
         added = False
-        for fs in self.fieldsets:
-            if "menus" in fs[1]["fields"]:
+        for fieldset in self.fieldsets:
+            if "menus" in fieldset[1]["fields"]:
                 added = True
                 break
 
@@ -265,47 +258,43 @@ class EntrieableAdmin(admin.ModelAdmin):
             admin.ModelAdmin.save_related(
                 self, request, form, formsets, change)
 
-        obj = form.instance
         if "menus" not in form.changed_data:
             return
 
-        selected_menus = form.sel_menus
         existing_menuentries = form.existing_menuentries
         all_menus = Menu.objects.root_nodes()
-        for am in all_menus:
+        for menu in all_menus:
             found = None
-            for e in existing_menuentries:
-                if e.parent.get_root().pk == am.pk:
-                    found = e
+            for entry in existing_menuentries:
+                if entry.parent.get_root().pk == menu.pk:
+                    found = entry
                     break
 
-            is_selected = am in selected_menus
+            is_selected = menu in form.sel_menus
             if is_selected and not found:
-                root = Menu.objects.get(pk=am.pk)
-                title = getattr(obj, "title", None)
+                root = Menu.objects.get(pk=menu.pk)
+                title = getattr(form.instance, "title", None)
                 kwargs = {}
                 if title:
                     kwargs["title"] = title
 
-                e = root.children.add_child(form.instance, **kwargs)
-                e.move_to(root, "last-child")
-                e.save()
+                entry = root.children.add_child(form.instance, **kwargs)
+                entry.move_to(root, "last-child")
+                entry.save()
 
             elif found and not is_selected:
-                e.delete()
+                entry.delete()
 
     save_related.for_entrieable = True
 
     def _redirect(self, action, request, obj, *args, **kwargs):
-        s = request.GET.get("menus", None)
-        if s and "_save" in request.POST:
-            return HttpResponseRedirect(reverse("admin:menus_menu_change", args=(s,)))
-        else:
-            # calling super may lead to recursive calls
-            # todo: fix like entriable
-            return getattr(admin.ModelAdmin, "response_%s" % action)(
-                self, request, obj, *args, **kwargs
-            )
+        menus_param = request.GET.get("menus", None)
+        if menus_param and "_save" in request.POST:
+            return HttpResponseRedirect(reverse("admin:menus_menu_change", args=(menus_param,)))
+
+        return getattr(admin.ModelAdmin, "response_%s" % action)(
+            self, request, obj, *args, **kwargs
+        )
 
     def response_add(self, request, obj, *args, **kwargs):
         return self._redirect("add", request, obj, *args, **kwargs)

@@ -1,10 +1,8 @@
 from django import template
-from django.template.loader import (render_to_string, get_template,
-                                    select_template)
-from django.template import Context, Template
+from django.template.loader import select_template
 
 from pagetools.sections.utils import get_template_names_for_obj
-from pagetools.sections import render_node_extradata
+from pagetools.sections.apps import SectionsConfig
 
 register = template.Library()
 
@@ -26,18 +24,18 @@ class ContentNode(template.Node):
         if self.suffix_var:
             suffix = self.suffix_var.resolve(context)
         real_template = get_template_names_for_obj(obj, suffix)
-        for k, v in render_node_extradata.items():
-            context[k] = v
+        for key, val in SectionsConfig.render_node_extradata.items():
+            context[key] = val
         context['object'] = obj
         if obj.positioned_content:
             context['contents'] = obj.ordered_content(user=user)
         if not obj.enabled:
             context['unpublished'] = True
 
-        d = {}
-        for cd in context.dicts:
-            d.update(cd)
-        return select_template(real_template).render(d)
+        data = {}
+        for dict_ in context.dicts:
+            data.update(dict_)
+        return select_template(real_template).render(data)
 
 
 @register.tag

@@ -179,3 +179,5 @@ PT_TEMPLATETAG_WIDGETS = {
     'latest_question': 'main.templatetags.LatestQuestionNode',
 }
 PT_MENU_TEMPLATE = 'foundation6_nav_menu.html'
+
+PT_MAILFORM_RECEIVERS = ["nobody@localhost.localdomain"]

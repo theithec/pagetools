@@ -29,24 +29,23 @@ class SearchResultsView(PaginatorMixin):
 
     def get(self, request, *args, **kwargs):
         self.form = self.form_cls(request.GET)
-        is_valid = self.form.is_valid()
-        cld = getattr(self.form, 'cleaned_data', None)
-        if any(cld.values()):
-            self.sep = '?%s&' % ('&'.join(
-                ['%s=%s' % (k, v) for k, v in list(cld.items()) if v]
-            ))
-            self.search_params = cld
-            model_pks = cld.get('models')
-            if model_pks:
-                int_pks = [int(s) for s in model_pks]
-                self._search_mods = [search_mods[i] for i in int_pks]
+        if self.form.is_valid():
+            cleaned_data = self.form.cleaned_data
+            if any(cleaned_data.values()):
+                self.sep = '?%s&' % ('&'.join(
+                    ['%s=%s' % (k, v) for k, v in list(cleaned_data.items()) if v]
+                ))
+                self.search_params = cleaned_data
+                model_pks = cleaned_data.get('models')
+                if model_pks:
+                    int_pks = [int(s) for s in model_pks]
+                    self._search_mods = [search_mods[i] for i in int_pks]
         return super(SearchResultsView, self).get(request)
 
-    def filtered_queryset(self, mod):  # qs, fields):
-        Cls = mod[0]
+    def filtered_queryset(self, mod):
+        cls = mod[0]
         fields = mod[1]
-        qs = extra_filter(Cls.objects.all())
-        # qs = Cls.objects.all()
+        qs = extra_filter(cls.objects.all())
         cnots = self.search_params.get('contains_not', '').split()
         if cnots:
             notlist = [Q(**{'%s__icontains' % field:
@@ -62,8 +61,8 @@ class SearchResultsView(PaginatorMixin):
 
         replace = mod[2].get('replacements', {}) if len(mod) > 2 else {}
         if field in replace:
-            for k, v in self.replacements.items():
-                term = term.replace(k, v)
+            for key, val in self.replacements.items():
+                term = term.replace(key, val)
 
         return term
 
@@ -80,9 +79,8 @@ class SearchResultsView(PaginatorMixin):
                     continue
                 qlist = reduce(
                     operator.or_,
-                    [Q(**{'%s__icontains' % field: self._convert(
-                        sterm, field, mod)})
-                        for field in fields])
+                    [Q(**{'%s__icontains' % field: self._convert(sterm, field, mod)})
+                     for field in fields])
                 qlists.append(qlist)
 
             if qlists:
@@ -113,7 +111,6 @@ class SearchResultsView(PaginatorMixin):
         exact = self.search_params.get('contains_exact').lower() or None
         if exact:
             for mod in self._search_mods:
-                Cls = mod[0]
                 fields = mod[1]
                 queryset = self.filtered_queryset(mod)
                 for field in fields:

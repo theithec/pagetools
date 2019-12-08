@@ -1,17 +1,12 @@
-# -*- coding: utf-8 -*-
-# Create your views here.
-
 import datetime
 from hashlib import sha224 as sha
-import json
 from smtplib import SMTPException
 
 from django import template
 from django.core.mail import send_mail
 from django.urls import reverse
-from django.http.response import HttpResponse, Http404
+from django.http.response import Http404, JsonResponse
 from django.shortcuts import render, get_object_or_404
-from django.template.context import Context
 from django.utils import timezone
 from django.utils.translation import get_language, ugettext_lazy as _
 from django.contrib.sites.models import Site
@@ -32,21 +27,20 @@ def _subscribe(request):
         already_there = Subscriber.objects.filter(email=email)
         subs_msg = _('subscribed: %s') % email
         if not already_there:
-            s = Subscriber(email=email, is_activated=False,
-                           lang=get_language())
+            subscriber = Subscriber(email=email, is_activated=False, lang=get_language())
             site_url = "https://%s" % Site.objects.get_current().domain
             context = {
                 'site_name': Site.objects.get_current().name,
                 'site_url': site_url,
                 'activation_url': "%s%s?mk=%s/" % (
                     site_url,
-                    (reverse('subscriptions:activate', kwargs={'key': s.key})),
-                    s.mailkey()
+                    (reverse('subscriptions:activate', kwargs={'key': subscriber.key})),
+                    subscriber.mailkey()
                 )
             }
-            t = template.loader.get_template(
+            tmpl = template.loader.get_template(
                 'subscriptions/activation_msg.txt')
-            mailmsg = t.render(context)
+            mailmsg = tmpl.render(context)
             try:
                 send_mail(
                     subs_settings.ACTIVATION_MAIL_SUBJECT,
@@ -55,7 +49,7 @@ def _subscribe(request):
                     [form['email'].value()],
                     fail_silently=False
                 )
-                s.save()
+                subscriber.save()
                 msg = subs_msg
                 errors = False
             except SMTPException:
@@ -67,8 +61,7 @@ def _subscribe(request):
     return msg, errors
 
 
-def _subscribe_fallback(request, res):
-    # TODO add to context c['referer'] = request.META.get('HTTP_REFERER', '/')
+def _subscribe_fallback(request):
     return render(
         request,
         'subscriptions/subscribe_msg.html',
@@ -76,7 +69,7 @@ def _subscribe_fallback(request, res):
 
 
 def _subscribe_json(res):
-    return HttpResponse(json.dumps(res))
+    return JsonResponse(res)
 
 
 def subscribe(request):
@@ -86,24 +79,24 @@ def subscribe(request):
     res['msg'] = '%s' % res['msg']
     if request.is_ajax():
         return _subscribe_json(res)
-    return _subscribe_fallback(request, res)
+    return _subscribe_fallback(request)
 
 
 def _matching_activated_subscriber(request, key):
     # remove trailing slash
     mailkey = request.GET.get('mk', '/')[:-1]
-    s = get_object_or_404(Subscriber, key=key)
-    mailsha = sha(s.email.encode('utf-8')).hexdigest()
+    subscriber = get_object_or_404(Subscriber, key=key)
+    mailsha = sha(subscriber.email.encode('utf-8')).hexdigest()
     if mailsha == mailkey:
-        return s
+        return subscriber
     return None
 
 
 def activate(request, key):
-    s = _matching_activated_subscriber(request, key)
-    activate_end = s.subscribtion_date + datetime.timedelta(hours=48)
-    if s and not s.is_activated and activate_end > timezone.now():
-        s.activate()
+    subscriber = _matching_activated_subscriber(request, key)
+    activate_end = subscriber.subscribtion_date + datetime.timedelta(hours=48)
+    if subscriber and not subscriber.is_activated and activate_end > timezone.now():
+        subscriber.activate()
         messages.add_message(request, messages.INFO, _('activation: ok'))
 
         return render(request, subs_settings.MSG_BASE_TEMPLATE,
@@ -112,10 +105,12 @@ def activate(request, key):
 
 
 def unsubscribe(request, key):
-    s = _matching_activated_subscriber(request, key)
-    if s and s.is_activated:
-        s.delete()
+    subscriber = _matching_activated_subscriber(request, key)
+    if subscriber and subscriber.is_activated:
+        subscriber.delete()
         messages.add_message(request, messages.INFO, _('unsubscribe: ok'))
+
         return render(request,
                       subs_settings.MSG_BASE_TEMPLATE,
                       {'msg': _('unsubscribe: ok')})
+    raise Http404()

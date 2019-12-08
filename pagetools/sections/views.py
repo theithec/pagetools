@@ -1,30 +1,30 @@
-from django.views.generic import DetailView, FormView
-from django.urls import reverse
-from django.views.generic import DetailView, FormView, TemplateView
-from django.utils.html import format_html
-from django.http import HttpResponse, HttpResponseRedirect
-from django.utils.safestring import mark_safe
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse
+from django.urls import reverse
+from django.utils.html import format_html
+from django.utils.safestring import mark_safe
+from django.views.generic import DetailView
 from django_ajax.decorators import ajax
 from django_ajax.mixin import AJAXMixin
-from .utils import get_template_names_for_obj
-from .models import PageNode
-from .dashboard_modules import PageNodesModule
+
 from pagetools.menus.views import SelectedMenuentriesMixin
 from pagetools.widgets.views import WidgetPagelikeMixin
+
+from .dashboard_modules import PageNodesModule
+from .models import PageNode
+from .utils import get_template_names_for_obj
 
 
 class BaseNodeView(DetailView):
     model = PageNode
     template_suffix = ""
 
-    def get_queryset(self, *args, **kwargs):
+    def get_queryset(self, *_args, **_kwargs):
         return self.model.public.lfilter(user=self.request.user)
 
     def get_object(self, *args, **kwargs):
-        o = super(BaseNodeView, self).get_object(*args, **kwargs)
-        return o.get_real_obj()
+        obj = super(BaseNodeView, self).get_object(*args, **kwargs)
+        return obj.get_real_obj()
 
     def get_template_names(self):
         return (
@@ -57,25 +57,24 @@ class BaseAjaxNodeViewMixin(AJAXMixin):
 
 class BaseAjaxNodeView(BaseAjaxNodeViewMixin, BaseNodeView):
     template_suffix = "_ajax"
-    pass
 
 
 def _add_children(txt, children, user):
-    for c in children:
+    for child in children:
         adminediturl = reverse(
             'admin:%s_%s_change' % (
-                c._meta.app_label,
-                c._meta.model_name
+                child._meta.app_label,
+                child._meta.model_name
             ),
-            args=(c.id,))
+            args=(child.id,))
 
         txt += format_html(
             '''<li><a {} href="{}">{}</a>''',
-            "" if c.enabled else mark_safe("style='color: orange;'"),
+            "" if child.enabled else mark_safe("style='color: orange;'"),
             adminediturl,
-            c
+            child
         )
-        coc = c.ordered_content(user=user)
+        coc = child.ordered_content(user=user)
         if coc:
             txt += '<ul>' + _add_children('', coc, user) + '</ul>'
         txt += "</li>"
@@ -85,10 +84,10 @@ def _add_children(txt, children, user):
 @ajax
 @login_required
 def admin_pagenodesview(request, slug):
-    p = PageNodesModule.model.objects.get(slug=slug)
+    module = PageNodesModule.model.objects.get(slug=slug)
     listtxt = '<ol id="pagenodes">'
     listtxt += _add_children('',
-                             [p],
+                             [module],
                              user=request.user)
     listtxt += '</ol>'
     return HttpResponse(listtxt)

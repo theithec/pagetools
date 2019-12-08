@@ -2,7 +2,7 @@ from django.core.management import call_command
 from django.test import TestCase
 
 from pagetools.widgets.settings import TEMPLATETAG_WIDGETS
-from pagetools.widgets.models import *
+from pagetools.widgets.models import TemplateTagWidget
 
 
 class CommandsTestCase(TestCase):
@@ -12,5 +12,5 @@ class CommandsTestCase(TestCase):
         args = []
         opts = {}
         call_command('mk_templatetagwidgets', *args, **opts)
-        tw = TemplateTagWidget.objects.all()
-        self.assertEqual(len(TEMPLATETAG_WIDGETS), len(tw))
+        widgetobjects = TemplateTagWidget.objects.all()
+        self.assertEqual(len(TEMPLATETAG_WIDGETS), len(widgetobjects))

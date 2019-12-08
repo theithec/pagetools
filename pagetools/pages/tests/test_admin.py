@@ -22,7 +22,6 @@ class AdminTests(TestCase):
         self.addpageurl = reverse('admin:pages_page_add', args=[])
         self.pages_data = [
             ('P1', 'Foo', True),
-            # s (u'P2', u'Bar', False, u'pp2')
         ]
 
     def _add_page(self, args):
@@ -35,16 +34,13 @@ class AdminTests(TestCase):
              'slug': slug,
              'content': content,
              'status': status,
-             # 'dynformfields-TOTAL_FORMS': 1,
-             # 'dynformfields-INITIAL_FORMS': 0
              }
         )
-        # self.assertEqual(False, True)
         return response.status_code
 
     def test_add_page(self):
         self.client.login(username="admin", password='password')
         for data in self.pages_data:
-            c = self._add_page(data)
-            self.assertTrue(c in (200, 302))
+            status_code = self._add_page(data)
+            self.assertTrue(status_code in (200, 302))
         self.assertEqual(len(Page.objects.all()), len(self.pages_data))

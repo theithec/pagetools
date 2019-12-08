@@ -1,7 +1,3 @@
-'''
-Widgets models
-'''
-
 from django import template
 from django.contrib.contenttypes.fields import (
     GenericRelation, GenericForeignKey)
@@ -19,35 +15,25 @@ from . import settings
 
 
 class BaseWidget(models.Model):
-    '''BaseWidget'''
     template_name = "widgets/basewidget.html"
     title = models.CharField(max_length=128, blank=True)
     name = models.SlugField(_('name'), unique=True)
     adapter = GenericRelation('widgets.WidgetInArea')
 
     def get_title(self, context):  # pylint: disable=unused-argument
-        '''get the title'''
         return self.title
 
     def get_template_name(self, context):  # pylint: disable=unused-argument
-        '''get the template name'''
         return self.template_name
 
     def render(self, context):
-        '''
-        render the context
-        '''
-        templ = template.loader.get_template(
-            self.get_template_name(context))
+        templ = template.loader.get_template(self.get_template_name(context))
         context['title'] = self.get_title(context)
         context['content'] = self.get_content(context)
         return mark_safe(templ.render(context))
 
     def get_content(self, context):  # pylint: disable=unused-argument
-        '''
-        override
-        '''
-        raise Exception("Not implemented")
+        raise NotImplementedError()
 
     def __str__(self):
         return "%s:%s" % (self.name, self.title)
@@ -58,11 +44,11 @@ class BaseWidget(models.Model):
 
 class ContentWidget(BaseWidget):
     '''
-    A wiget with atext area
+    A wiget with a text area
     '''
     content = models.TextField(_('Content'))
 
-    def get_content(self, contextdict):  # pylint: disable=unused-argument
+    def get_content(self, context):  # pylint: disable=unused-argument
         return self.content
 
     class Meta:
@@ -82,31 +68,29 @@ class TemplateTagWidget(BaseWidget):
 
     def __init__(self, *args, **kwargs):
         super(TemplateTagWidget, self).__init__(*args, **kwargs)
-        self.robj = None
+        self.templatetag_instance = None
 
-    def get_rendererobject(self):
-        '''
-        Get the TemplateTag-like
-        '''
-        if not self.robj:
+    def load_templatetag_instance(self):
+        """Set the TemplateTag-like instance"""
+        if not self.templatetag_instance:
             clzname = settings.TEMPLATETAG_WIDGETS.get(
                 self.renderclasskey,
                 (None)
             )
             clz = importer(clzname)
             if clz:
-                self.robj = clz()
-        return self.robj
+                self.templatetag_instance = clz()
+        return self.templatetag_instance
 
-    def get_content(self, contextdict):
-        if self.get_rendererobject():
-            return self.robj.render(contextdict)
+    def get_content(self, context):
+        if self.load_templatetag_instance():
+            return self.templatetag_instance.render(context)
+
+        return None
 
 
 class PageType(models.Model):
-    '''
-    A key that defines which additional context should be added.
-    '''
+    """A key that defines which additional context should be added to the context."""
     name = models.CharField('Name', max_length=128)
     parent = models.ForeignKey('self', blank=True, null=True, on_delete=models.CASCADE)
 
@@ -136,9 +120,7 @@ class PageTypeDescription(LangModel):
 
 
 class TypeArea(LangModel):
-    '''
-    A area associated with a type
-    '''
+    """An area associated with a `PageType`"""
 
     area = models.CharField(max_length=64, choices=sorted(settings.AREAS))
     pagetype = models.ForeignKey(PageType, on_delete=models.CASCADE)
@@ -163,9 +145,7 @@ class TypeArea(LangModel):
 
 
 class WidgetInArea(models.Model):
-    '''
-    A widget in a area
-    '''
+    """A widget associated with an area"""
     typearea = models.ForeignKey(TypeArea, related_name="widgets", on_delete=models.CASCADE)
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()

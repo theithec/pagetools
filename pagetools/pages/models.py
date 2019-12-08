@@ -1,7 +1,4 @@
-'''Models (mostly) for pages.
-
-@author Tim Heithecker
-'''
+'''Models (mostly) for pages.'''
 from django.urls import reverse
 from django.db import models
 from django.utils.html import strip_tags
@@ -52,79 +49,11 @@ class IncludedEmailForm(IncludedForm):
         blank=True,
         help_text="Comma separated list of emails")
 
-    class Meta:
-        abstract = True
-
-
-'''
-class DynFormField(models.Model):
-
-    field_for_type = {
-        'ChoiceField': DynMultipleChoiceField,
-        'MailReceiverField': MailReceiverField
-    }
-    field_type = models.CharField(
-        'Type',
-        max_length=128,
-        help_text=_('The type of the field (e.g. textfield)')
-    )
-    name = models.CharField(
-        _('Value'),
-        max_length=512,
-        help_text=_('The visible name of the field')
-    )
-    required = models.BooleanField(
-        _('required'),
-        default=False,
-        help_text=_('Is the field required?'))
-    position = models.PositiveSmallIntegerField("Position")
-    help_text = models.CharField(
-        _('Helptext'),
-        max_length=512,
-        blank=True,
-        help_text='The helptext of the field ')
-    initial = models.CharField(
-        _('Default'),
-        max_length=512,
-        blank=True,
-        help_text=_('The default value of the field')
-    )
-    form_containing_model = None
-    # models.ForeignKey(ConcrteIncludedForm, related_name='dynformfields')
-
-    def __init__(self, *args, **kwargs):
-        super(DynFormField, self).__init__(*args, **kwargs)
-        self._meta.get_field_by_name(
-            'field_type')[0]._choices = self.get_fieldchoices()
-
-    def get_fieldchoices(self):
-        return (
-            ('CharField', "%s#%s" % (_('TextField'), "A field to enter text")),
-            ('EmailField', _('EmailField')),
-            ('ChoiceField', _('ChoiceField')),
-            ('BooleanField', _('CheckField')),
-        )
-
-    def clean(self):
-        # self.to_field().clean()?
-        pass
-
-    def to_field(self):
-        Fieldcls = self.field_for_type.get(self.field_type, None)
-        if not Fieldcls:
-            Fieldcls = getattr(forms, self.field_type)
-            return Fieldcls(label=self.name, required=self.required,
-                            help_text=self.help_text, initial=self.initial)
-
-    def __str__(self):
-        return '%s: %s' % (self.field_type, self.name)
+    def email_receivers_list(self):
+        return [part.strip() for part in self.email_receivers.split(",") if part.strip()]
 
     class Meta:
-        verbose_name = _('Dynamic Form Field')
-        verbose_name_plural = _('Dynamic Form Fields')
-        ordering = ['position']
         abstract = True
-'''
 
 
 class AuthPage(models.Model):
@@ -178,20 +107,6 @@ class PageBlockMixin(models.Model):
         abstract = True
 
     def __str__(self):
-        lc = len(self.content)
-        sc = strip_tags(self.content) or self.content
-        return sc[:100 if lc > 100 else lc]
-
-
-'''
-class PageDynFormField(DynFormField):
-    form_containing_model = models.ForeignKey(
-        Page,
-        related_name='dynformfields',
-        help_text='Additional fields and settings for the included form',
-        on_delete=models.CASCADE)
-
-    class Meta:
-        verbose_name = _("Form field")
-        verbose_name_plural = _("Additional form fields")
-'''
+        content_len = len(self.content)
+        stripped = strip_tags(self.content) or self.content
+        return stripped[:100 if content_len > 100 else content_len]

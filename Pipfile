@@ -5,6 +5,7 @@ name = "pypi"
 
 [packages]
 django-grappelli = "*"
+django-filebrowser = "*"
 django = "==2.2.8"
 "beautifulsoup4" = "*"
 django-crispy-forms = "*"
@@ -20,12 +21,12 @@ tox = "*"
 [dev-packages]
 mock = "*"
 pytest = "*"
-pylint = "*"
-pylint-django = "*"
 coverage = "*"
 "pysqlite3" = "*"
 tox = "*"
 coveralls = "*"
+pylint = "*"
+pylint-django = "*"
 
 [requires]
 python_version = "3.6"

@@ -1,7 +1,7 @@
 from django import forms
 from django.test import TestCase
 
-from pagetools.pages.forms import *
+from pagetools.pages.forms import DynMultipleChoiceField, ValidationError
 
 
 class TestForm(forms.Form):
@@ -9,15 +9,13 @@ class TestForm(forms.Form):
 
 
 class FormsTestCase(TestCase):
-    def test_valid_DMCF(self):
-        f = TestForm({
+    def test_valid_dyn_field(self):
+        form = TestForm({
             'dmcf': ["1", "2"]
         })
-        v = f.is_valid()
-        # print(vars(f))
-        self.assertTrue(v)
+        self.assertTrue(form.is_valid())
 
-    def test_invalid_DMCF(self):
+    def test_invalid_dyn_field(self):
         self.assertRaises(
             ValidationError,
             lambda: DynMultipleChoiceField(label="sowrong"))

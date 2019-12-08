@@ -1,4 +1,3 @@
-
 # Create your views here.
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
@@ -6,14 +5,13 @@ from django.http.response import Http404
 from django.http import JsonResponse
 from django.utils.translation import ugettext as _
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import FormMixin
 
 from pagetools.widgets.views import WidgetPagelikeMixin
 from pagetools.menus.views import SelectedMenuentriesMixin
 from .models import Page
 
 
-class IncludedFormMixin(object):
+class IncludedFormMixin:
     '''
         expects in object
         includable_forms = { 'name1': Form1,
@@ -28,72 +26,55 @@ class IncludedFormMixin(object):
         self.object = self.get_object()
         fname = self.object.included_form
         if fname:
-            FCls = self.object.includable_forms.get(fname)
-            return FCls
+            return self.object.includable_forms.get(fname)
+        return None
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request, *_args, **kwargs):
         form_class = self.get_form_class()
         if form_class and kwargs.get('form', None) is None:
-            FC = self.get_form_class()
+            formcls = self.get_form_class()
             fkwargs = self.get_form_kwargs()
-            kwargs['form'] = FC(**fkwargs)
+            kwargs['form'] = formcls(**fkwargs)
         return self.render_to_response(self.get_context_data(**kwargs))
 
-    def post(self, request, *args, **kwargs):
-
-        #self.object = self.object or self.get_object()
+    def post(self, request, *_args, **kwargs):
         self.get_object()
-        d = self.get_form_kwargs()
         form = self.get_form_class()(request.POST, **self.get_form_kwargs())
         if form.is_valid():
             kwargs['form'] = None
             return self.form_valid(form)
-        else:
-            return self.form_invalid(form)
+
+        return self.form_invalid(form)
 
     def form_valid(self, form):
         if self.request.is_ajax():
             return JsonResponse({'data': _("Mail send")}, status=200)
-        else:
-            messages.success(self.request, _("Mail send"))
-            return self.get(self.request, form=None)
+
+        messages.success(self.request, _("Mail send"))
+        return self.get(self.request, form=None)
 
     def form_invalid(self, form):
         if self.request.is_ajax():
             return JsonResponse(form.errors, status=400)
-        else:
-            messages.error(self.request, _("An error occured"))
+        messages.error(self.request, _("An error occured"))
         return self.get(self.request, form=form)
-
-    '''
-    # todo rename
-    def get_extras(self):
-        d = {}
-        try:
-            d['extras'] = self.object.dynformfields.all()
-        except AttributeError:
-            pass
-        return d
-    '''
 
     def get_form_kwargs(self):
         kwargs = {}
-        if getattr(self, 'object') and getattr(self.object, 'email_receivers'):
-            kwargs['mailreceivers'] = self.object.email_receivers
-        # kwargs.update(self.get_extras())
+        if getattr(self, 'object') and getattr(self.object, 'email_receivers_list'):
+            kwargs['mailreceivers'] = self.object.email_receivers_list()
         return kwargs
 
 
-class AuthPageMixin(object):
+class AuthPageMixin:
 
-    def get_queryset(self, *args, **kwargs):
+    def get_queryset(self, *_args, **kwargs):
 
         user = self.request.user
-        d = {}
         if not user.is_authenticated:
-            d['login_required'] = False
-        d['user'] = user
-        qs = self.model.public.lfilter(**d)
+            kwargs['login_required'] = False
+        kwargs['user'] = user
+        qs = self.model.public.lfilter(**kwargs)
         return qs
 
 
@@ -118,14 +99,13 @@ class PageView(
 
     def get_context_data(self, **kwargs):
         kwargs['page_title'] = self.object.title
-        # obj = self.get_object()
         kwargs = super(PageView, self).get_context_data(**kwargs)
         return kwargs
 
 
 class IndexView(PageView):
 
-    def get_object(self, **kwargs):
+    def get_object(self, **_kwargs):
         try:
             self.object = self.get_queryset().get(
                 slug="start"

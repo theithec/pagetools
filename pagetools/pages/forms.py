@@ -46,7 +46,7 @@ class SendEmailForm(forms.Form):
     IGNORED_FIELDS_IN_MESSAGE = ("captcha",)
 
     def __init__(self, *args, **kwargs):
-        self.mailreceivers = kwargs.pop('mailreceivers', MAILFORM_RECEIVERS)
+        self.mailreceivers = kwargs.pop('mailreceivers', None) or MAILFORM_RECEIVERS
         super(SendEmailForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_method = 'post'
@@ -68,11 +68,11 @@ class SendEmailForm(forms.Form):
     def get_mailsender(self):
         return MAILFORM_SENDER
 
-    def is_valid(self, **kwargs):
+    def is_valid(self):
         _is_valid = super(SendEmailForm, self).is_valid()
         if _is_valid:
             send_mail(self.get_mailsubject(), self.get_mailmessage(),
-                self.get_mailsender(), self.get_mailreceivers(), fail_silently=False)
+                      self.get_mailsender(), self.get_mailreceivers(), fail_silently=False)
         return _is_valid
 
     def clean(self):

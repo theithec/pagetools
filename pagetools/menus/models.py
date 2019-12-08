@@ -1,14 +1,7 @@
-'''
-Created on 14.12.2013
-
-@author: Tim Heithecker
-'''
-
 from collections import defaultdict
 import logging
 import django
 from django import template
-from django.urls import resolve
 from django.core.exceptions import ValidationError
 from django.urls import reverse
 from django.contrib.contenttypes.fields import GenericForeignKey
@@ -27,6 +20,7 @@ from pagetools.core.utils import get_classname, get_adminedit_url
 
 import pagetools.menus.utils
 from .settings import MENU_TEMPLATE
+from .apps import MenusConfig
 
 logger = logging.getLogger("pagetools")
 
@@ -38,7 +32,6 @@ class MenuEntryManager(TreeManager, LangManager):
             raise ValidationError(
                 _('MenuEntry.content_object requires get_absolute_url'))
         kwargs['title'] = kwargs.get('title', '%s' % content_object)
-        # kwargs['parent'] = parent
         kwargs['content_type'] = ContentType.objects.get_for_model(
             content_object)
         kwargs['object_id'] = content_object.pk
@@ -120,9 +113,9 @@ class MenuEntry(MPTTModel, LangModel):
         if self.parent:  # not root
             root = self.parent.get_root()
             if entries:
-                for e in entries:
-                    is_same = self.pk and self.pk == e.pk
-                    if not is_same and e.get_root() == root:
+                for entry in entries:
+                    is_same = self.pk and self.pk == entry.pk
+                    if not is_same and entry.get_root() == root:
                         raise ValidationError(
                             _('An entry with this title and language already exists in menu'))
             else:  # root
@@ -130,33 +123,21 @@ class MenuEntry(MPTTModel, LangModel):
                     raise ValidationError(
                         _('A menu with this title and language already exists'))
 
-        #root = self.get_root()
-
-        # try:
-        #    entries = MenuEntry.objects.filter(title=self.title, lang=self.lang)
-        #    for e in entries:
-        #        eroot = e.get_root()
-        #        if root == eroot:
-        #            raise ValidationError(
-        #                _('An entry with this title and language already exists in menu'))
-        # except MenuEntry.DoesNotExist:
-        #    pass
-
     class Meta:
         pass
-        #unique_together = ('title', 'lang')
 
 
 def delete_content(sender, **kwargs):
     try:
-        e = MenuEntry.objects.filter(
-            content_type=ContentType.objects.get_for_model(sender),
-            object_id=kwargs['instance'].pk
-        )
-        if e:
-            e.delete()
-    except BaseException:
-        pass
+        object_id = int(kwargs['instance'].pk)
+    except ValueError:
+        return
+
+    entries = MenuEntry.objects.filter(
+        content_type=ContentType.objects.get_for_model(sender),
+        object_id=object_id)
+    if entries:
+        entries.delete()
 
 
 pre_delete.connect(delete_content)
@@ -182,51 +163,51 @@ class Menu(MenuEntry):
     objects = MenuManager()
 
     def _render_no_sel(self):
-        t = template.loader.get_template(MENU_TEMPLATE)
+        tmpl = template.loader.get_template(MENU_TEMPLATE)
         children = self.children_list()
-        return t.render({'children': children, })
+        return tmpl.render({'children': children, })
 
     def render(self, selected):
         sel_entries = SelectedEntries()
-        for s in selected:
-            sel_entries['sel_' + s] = 'active'
+        for sel in selected:
+            sel_entries['sel_' + sel] = 'active'
         use_cache = self.enabled
-        t = None
+        tmplstr = None
         if use_cache:
-            t = MenuCache.objects.get(menu=self).cache
+            tmplstr = MenuCache.objects.get(menu=self).cache
         else:
-            t = self._render_no_sel()
-        logger.debug(" TEMPLATE %s,  SELECTED: %s, KEYS: %s" % (
-            t, selected, ", ".join(sel_entries.keys())))
-        rendered = t % sel_entries
+            tmplstr = self._render_no_sel()
+        logger.debug(
+            " TEMPLATE %s,  SELECTED: %s, KEYS: %s",
+            tmplstr, selected, ", ".join(sel_entries.keys()))
+        rendered = tmplstr % sel_entries
         return rendered
 
     def update_entries(self, orderstr):
         '''orderstr = jquery.mjs.nestedSortable.js / serialize()'''
-        entries_str = orderstr.split("&")
+        entry_strs = orderstr.split("&")
         parent = None
-        for entry_str in entries_str:
+        for entry_str in entry_strs:
             if not entry_str:
                 break
-            k, v = entry_str.split("=")
-            b1, b2 = list(map(k.find, ("[", "]")))
-            eid = int(entry_str[b1 + 1: b2])
-            e = MenuEntry.objects.get(id=eid)
-            if v == 'null':
-                parent = e.get_root()
-            else:
-                parent = MenuEntry.objects.get(id=int(v))
-            e.move_to(parent, 'last-child')
-            e = MenuEntry.objects.get(pk=e.pk)
-            # parent = MenuEntry.objects.get(pk=parent.pk)
+            key, parent_id = entry_str.split("=")
+            br1, br2 = list(map(key.find, ("[", "]")))
+            entry_id = int(entry_str[br1 + 1: br2])
+            entry = MenuEntry.objects.get(id=entry_id)
+            try:
+                parent = MenuEntry.objects.get(id=int(parent_id))
+            except ValueError:
+                parent = entry.get_root()
+            entry.move_to(parent, 'last-child')
+            entry = MenuEntry.objects.get(pk=entry.pk)
         MenuEntry.objects.rebuild()
         self.save()
 
     def full_clean(self, *args, **kwargs):
-        f = Menu.objects.filter(
+        found = Menu.objects.filter(
             title=self.title, lang=''
         ).exclude(pk=self.pk)
-        if f:
+        if found:
             raise ValidationError({'__all__': ('Language Error',)})
         return super(Menu, self).full_clean(*args, **kwargs)
 
@@ -238,109 +219,97 @@ class Menu(MenuEntry):
         if self.is_child_node():
             return super(Menu, self).save(*args, **kwargs)
         try:
-            c = self.menucache  # MenuCache.objects.get(menu=self)
+            cache = self.menucache
         except MenuCache.DoesNotExist:
-            c = MenuCache.objects.create()
-            self.content_object = c
-        s = super(Menu, self).save(*args, **kwargs)
+            cache = MenuCache.objects.create()
+            self.content_object = cache
+        menu = super(Menu, self).save(*args, **kwargs)
         for child in self.get_children():
             slug = getattr(child.content_object, 'slug', None)
             if slug:
                 if not slug == child.slug:
                     child.slug = slug
                     child.save()
-        c.menu = self
-        c.save()
-        return s
+        cache.menu = self
+        cache.save()
+        return menu
 
-    def _with_child(self, dict_, entry, entry_obj, dict_parent):
-        if not getattr(entry_obj, 'is_published', True):
-            return
-        dict_['entry_url'] = entry.get_absolute_url()
-        cslugs = []
-        # cslugs += entry.slugs.split(' ') if entry.slugs else [
-        cslugs += [
-            getattr(
-                entry_obj,
-                'slug',
-                getattr(entry_obj, 'menukey', slugify('%s' % entry_obj)))
-        ]
-        curr_dict = dict_
-        while curr_dict:
-            curr_dict['select_class_marker'] = curr_dict.get(
-                'select_class_marker', '')
-            curr_dict['select_class_marker'] += ''.join(
-                '%(sel_' + s + ')s' for s in cslugs
+    def children_list(self, for_admin=False):
 
-            )
-            curr_dict = curr_dict['dict_parent']
+        entry_cnt = 0
 
-        return dict_
+        def get_child_data(for_admin, entry, obj, dict_parent):
+            if for_admin:
+                reverseurl = get_adminedit_url(obj)
+                return{
+                    'entry_order_id': entry_cnt,
+                    'entry_pk': entry.pk,
+                    'entry_del_url': reverse(
+                        'admin:menus_menuentry_delete',
+                        args=(entry.pk, )),
+                    'entry_change_url': reverse(
+                        'admin:menus_menuentry_change',
+                        args=(entry.pk,)),
+                    'obj_admin_url': reverseurl,
+                    'obj_classname': get_classname(obj.__class__),
+                    'obj_title': obj,
+                    'obj_status': 'published' if getattr(
+                        obj, 'enabled', True) else 'draft',
+                    'entry_enabled':
+                        "checked" if entry.enabled else ""
+                }
+            if not getattr(obj, 'is_published', True):
+                return {}
 
-    def children_list(self, mtree=None, children=None, for_admin=False,
-                      dict_parent=None):
-        self.cnt = 0  # a non-recursive counter for a recursive fuction
+            child_data = {'entry_url': entry.get_absolute_url(), "dict_parent": dict_parent}
+            cslug = getattr(obj, 'slug', getattr(obj, 'menukey', slugify('%s' % obj)))
+            curr_dict = child_data
+            while curr_dict:
+                curr_dict['select_class_marker'] = curr_dict.get('select_class_marker', '')
+                curr_dict['select_class_marker'] += ' %(sel_' + cslug + ')s'
+                curr_dict = curr_dict['dict_parent']
 
-        def _children_list(mtree=None, children=None, for_admin=False,
-                           dict_parent=None):
-            filterkwargs = {'parent': self}
+            return child_data
+
+        def _children_list(children=None, for_admin=False, dict_parent=None):
+            nonlocal entry_cnt
+            children_filter_kwargs = {'parent': self}
             if not for_admin:
-                filterkwargs['enabled'] = True
-
-            if mtree is None:
-                mtree = []
+                children_filter_kwargs['enabled'] = True
 
             if children is None:
-                children = self.get_children().filter(**filterkwargs)
+                children = self.get_children().filter(**children_filter_kwargs)
 
-            for childentry in children:
-                d = {
-                    'entry_title': childentry.title,
+            nested_children = []
+
+            for child in children:
+                child_data = {
+                    'entry_title': child.title,
+                    'dict_parent': dict_parent
                 }
+                obj = child.content_object
 
-                d['dict_parent'] = dict_parent
-                obj = childentry.content_object
-
-                filterkwargs['parent'] = childentry
-                cc = []
+                children_filter_kwargs['parent'] = child
+                child_children = []
                 if not for_admin and getattr(obj, 'auto_children', False):
-                    d['auto_entry'] = True
-                    cc = obj.get_children(parent=self)
+                    child_data['auto_entry'] = True
+                    child_children = obj.get_children(parent=self)
                 elif dict_parent and dict_parent.get('auto_entry', False):
-                    cc = MenuEntry.objects.none()
+                    child_children = MenuEntry.objects.none()
                 else:
-                    cc = childentry.get_children().filter(**filterkwargs)
-                if for_admin:
-                    reverseurl = get_adminedit_url(obj)
-                    d.update({
-                        'entry_order_id': self.cnt,
-                        'entry_pk': childentry.pk,
-                        'entry_del_url': reverse(
-                            'admin:menus_menuentry_delete',
-                            args=(childentry.pk, )),
-                        'entry_change_url': reverse(
-                            'admin:menus_menuentry_change',
-                            args=(childentry.pk,)),
-                        'obj_admin_url': reverseurl,
-                        'obj_classname': get_classname(obj.__class__),
-                        'obj_title': obj,
-                        'obj_status': 'published' if getattr(
-                            obj, 'enabled', True) else 'draft',
-                        'entry_enabled':
-                            "checked" if childentry.enabled else ""
-                    })
-                else:
-                    d = self._with_child(d, childentry, obj, dict_parent)
+                    child_children = child.get_children().filter(**children_filter_kwargs)
 
-                self.cnt += 1
-                if d and cc:
-                    d['children'] = _children_list(
-                        children=cc, for_admin=for_admin, dict_parent=d)
+                child_data.update(get_child_data(for_admin, child, obj, dict_parent))
 
-                if d:
-                    mtree.append(d)
+                entry_cnt += 1
+                if child_data and child_children:
+                    child_data['children'] = _children_list(
+                        children=child_children, for_admin=for_admin, dict_parent=child_data)
 
-            return mtree
+                if child_data:
+                    nested_children.append(child_data)
+
+            return nested_children
         return _children_list(for_admin=for_admin)
 
     class Meta:
@@ -351,16 +320,12 @@ class Menu(MenuEntry):
 class AbstractLink(models.Model):
     title = models.CharField(_('Title'), max_length=128)
     enabled = models.BooleanField(_('enabled'), default=True)
-    #  auto_children = False
 
     def __str__(self):
-        return self.name
+        return self.title
 
     class Meta:
         abstract = True
-
-    #  def get_children(self, parent=None):
-    #    return super().get_children()
 
 
 class Link(AbstractLink):
@@ -383,8 +348,8 @@ class ViewLink(AbstractLink):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         choices = tuple((
-            ('%s' % k, '%s' % k)
-            for k in pagetools.menus.utils._entrieable_reverse_names
+            ('%s' % key, '%s' % key)
+            for key in MenusConfig.entrieable_reverse_names
         ))
         if django.VERSION < (1, 9):
             self._meta.get_field('name')._choices = choices
@@ -395,8 +360,8 @@ class ViewLink(AbstractLink):
         return reverse(self.name)
 
     @classmethod
-    def show_in_menu_add(Clz):
-        return len(pagetools.menus.utils._entrieable_reverse_names) > 0
+    def show_in_menu_add(cls):
+        return len(MenusConfig.entrieable_reverse_names) > 0
 
     class Meta:
         verbose_name = _("View")
@@ -415,22 +380,22 @@ class AutoPopulated(AbstractLink):
         super().__init__(*args, **kwargs)
         choices = tuple((
             ('%s' % k, '%s' % k)
-            for k in pagetools.menus.utils._entrieable_auto_children
+            for k in MenusConfig.entrieable_auto_children
         ))
         if django.VERSION < (1, 9):
             self._meta.get_field('name')._choices = choices
         else:
             self._meta.get_field('name').choices = choices
 
-    def get_children(self, parent):
-        return pagetools.menus.utils._auto_children_funcs[self.name]()
+    def get_children(self, parent=None):
+        return MenusConfig.auto_children_funcs[self.name]()
 
     def get_absolute_url(self):
         return "."
 
     @classmethod
-    def show_in_menu_add(Clz):
-        return len(pagetools.menus.utils._entrieable_auto_children) > 0
+    def show_in_menu_add(cls):
+        return len(MenusConfig.entrieable_auto_children) > 0
 
     class Meta:
         verbose_name = _("Autopopulated Entry")
