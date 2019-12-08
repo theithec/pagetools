@@ -1,4 +1,4 @@
-from django.test import TestCase, RequestFactory
+from django.test import RequestFactory
 from django.views.generic import DetailView
 from pagetools.menus.tests import MenuDataTestCase
 from pagetools.menus.views import SelectedMenuentriesMixin
@@ -27,9 +27,7 @@ class SelectedMenuentriesMixinTest(MenuDataTestCase):
     def setUp(self):
 
         super().setUp()
-        pk = ConcretePublishableLangModel
         self.request = RequestFactory().get('/fake-path')
-
         # Setup request and view.
         self.view = self.DummyView()
 

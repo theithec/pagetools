@@ -1,12 +1,12 @@
+from django.core.exceptions import MultipleObjectsReturned
 from django.urls import reverse
-from django.utils.translation import ugettext_lazy as _
 from django.utils.http import urlquote
+from django.utils.translation import ugettext_lazy as _
 from grappelli.dashboard.modules import DashboardModule
-from grappelli.dashboard.utils import get_admin_site_name
+
+from pagetools.core.utils import get_classname
 from pagetools.menus.models import Menu
 from pagetools.menus.utils import entrieable_models
-from pagetools.core.utils import get_classname
-from django.core.exceptions import MultipleObjectsReturned
 
 
 class MenuModule(DashboardModule):
@@ -30,19 +30,19 @@ class MenuModule(DashboardModule):
     def add_entrychildren(self, children, collected=None):
         if collected is None:
             collected = []
-        for c in children:
-            c['url'] = c['obj_admin_url'] + '?menu=%s' % self.menu.pk
-            collected.append(c)
-            cc = c.get('children', None)
-            if cc:
-                collected = self.add_entrychildren(cc, collected)
+        for child in children:
+            child['url'] = child['obj_admin_url'] + '?menu=%s' % self.menu.pk
+            collected.append(child)
+            child_children = child.get('children', None)
+            if child_children:
+                collected = self.add_entrychildren(child_children, collected)
         return collected
 
     def init_with_context(self, context):
         self.menu = None
         try:
             self.menu = Menu.objects.lfilter().get(title=self.menu_title)
-        except (Menu.DoesNotExist, MultipleObjectsReturned) as e:
+        except (Menu.DoesNotExist, MultipleObjectsReturned):
             self.pre_content = _("Menu not found!")
 
             context['menu'] = {
@@ -60,13 +60,12 @@ class MenuModule(DashboardModule):
             }
             nested_children = self.menu.children_list(for_admin=True)
             context['existing'] = self.add_entrychildren(nested_children)
-            emods = entrieable_models()
-            for em in emods:
+            for model in entrieable_models():
                 self.children.append({
-                    'name': get_classname(em),
+                    'name': get_classname(model),
                     'url': reverse("admin:%s_%s_add" % (
-                        em.__module__[:-7].split('.')[-1],
-                        em.__name__.lower()
+                        model.__module__[:-7].split('.')[-1],
+                        model.__name__.lower()
                     )) + '?menu=%s' % self.menu.pk
                 })
         super(MenuModule, self).init_with_context(context)

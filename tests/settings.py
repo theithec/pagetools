@@ -130,5 +130,3 @@ PT_TEMPLATETAG_WIDGETS = {
     'latest_question': 'main.templatetags.LatestQuestionNode',
 }
 PT_MENU_TEMPLATE = 'foundation6_nav_menu.html'
-
-CAPTCHA_TEST_MODE = True

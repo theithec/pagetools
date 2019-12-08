@@ -1,8 +1,3 @@
-'''
-Created on 09.05.2013
-
-@author: Tim Heithecker
-'''
 from django import template
 from django.core.exceptions import ObjectDoesNotExist
 from pagetools.menus.models import Menu
@@ -19,7 +14,7 @@ class MenuRenderer(template.Node):
         menukeys = []
         try:
             menukeys = self.menukeys.resolve(context)
-            if type(menukeys) not in (list, tuple):
+            if isinstance(menukeys, str):
                 menukeys = [menukeys]
 
         except template.VariableDoesNotExist:
@@ -28,8 +23,8 @@ class MenuRenderer(template.Node):
             menu = Menu.objects.lfilter().select_related().get(
                 title=self.menu_title)
         except ObjectDoesNotExist:
-            e = "<!--UNKNOWN MENU %s !-->" % self.menu_title
-            return e
+            errstr = "<!--UNKNOWN MENU %s !-->" % self.menu_title
+            return errstr
         return menu.render(menukeys)
 
 

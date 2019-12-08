@@ -6,8 +6,8 @@ from pagetools.menus.admin import MenuAddForm, MenuChangeForm
 
 class MenuFormTests(TestCase):
     def test_menu_addform(self):
-        mf = MenuAddForm({'title': 'Testmenu1'})
-        self.assertTrue(mf.is_valid())
+        form_add = MenuAddForm({'title': 'Testmenu1'})
+        self.assertTrue(form_add.is_valid())
 
     def test_add_menu(self):
         menuaddurl = reverse('admin:menus_menu_add', args=[])
@@ -23,8 +23,8 @@ class MenuFormTests(TestCase):
             content_object=Link.objects.create(url="#1")
         )
         data = menu.__dict__
-        mf = MenuChangeForm(data, instance=menu)
-        self.assertTrue('value="l1"' in mf.as_p())
+        form_change = MenuChangeForm(data, instance=menu)
+        self.assertTrue('value="l1"' in form_change.as_p())
 
     def test_dublicate_entry(self):
         menu = Menu.objects.add_root(title="Menu1")
@@ -43,9 +43,9 @@ class MenuFormTests(TestCase):
         data = menu.__dict__
         data['entry-text-0'] = "a"
         data['entry-text-1'] = "a"
-        mf = MenuChangeForm(data, instance=menu)
-        self.assertFalse(mf.is_valid())
+        form_change = MenuChangeForm(data, instance=menu)
+        self.assertFalse(form_change.is_valid())
 
         data['entry-text-1'] = "b"
-        mf = MenuChangeForm(data, instance=menu)
-        self.assertTrue(mf.is_valid())
+        form_change = MenuChangeForm(data, instance=menu)
+        self.assertTrue(form_change.is_valid())

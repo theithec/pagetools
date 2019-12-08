@@ -1,21 +1,10 @@
-
-'''
-Created on 15.12.2013
-
-@author: Tim Heithecker
-'''
 from django.contrib.contenttypes.models import ContentType
-
 from django.contrib.auth.models import User
-from django.urls import resolve
-
 from django.contrib import admin
-
 from django.test.testcases import TestCase
 
 from pagetools.core.utils import get_adminedit_url, get_adminadd_url
-from pagetools.widgets.models import (TypeArea, PageType, WidgetInArea,
-                                      ContentWidget)
+from pagetools.widgets.models import TypeArea, PageType, ContentWidget
 
 
 class TypeAreaAdminTests(TestCase):
@@ -66,15 +55,15 @@ class TypeAreaAdminTests(TestCase):
         response = self.client.get(adminurl)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(str(typearea), "sidebar_base")
-        cw = ContentWidget.objects.get(name="name1")
+        widget = ContentWidget.objects.get(name="name1")
         data = typearea.__dict__
         data.update({
             'widgets-TOTAL_FORMS': 1,
             'widgets-INITIAL_FORMS': 0,
             # 'widgets-MAX_NUM_FORMS':1000,
             'add_objs': '%s_%s' % (
-                ContentType.objects.get_for_model(cw).pk,
-                cw.pk)
+                ContentType.objects.get_for_model(widget).pk,
+                widget.pk)
 
         })
         response = self.client.post(adminurl, data, follow=True)

@@ -22,8 +22,6 @@ def questions_post_savecallback(sender, **kwargs):
                 kwargs['instance'].question_text)
         })
 
-    # print("Request finished!", sender, kwargs)
-
 
 class MainConfig(AppConfig):
     name = 'main'

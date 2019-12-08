@@ -1,12 +1,8 @@
-'''
-Created on 03.09.2012
-
-@author: Tim Heithecker
-'''
 from django.conf import settings
 
 
-def _(x): return x
+def _(x):
+    return x
 
 
 MSG_BASE_TEMPLATE = getattr(

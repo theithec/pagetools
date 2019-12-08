@@ -1,7 +1,6 @@
 from django.test import TestCase
 from django.utils.translation import activate
-import pagetools.core
-from pagetools.core.models import *
+from pagetools.core.models import get_language, PublishableLangModel, models
 
 
 class ConcretePublishableLangModel(PublishableLangModel):
