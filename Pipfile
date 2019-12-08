@@ -4,7 +4,6 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-django-filebrowser = "*"
 django-grappelli = "*"
 django = "==2.2.8"
 "beautifulsoup4" = "*"
@@ -16,20 +15,17 @@ django-sekizai = "*"
 django-simple-captcha = "*"
 djangoajax = "*"
 pillow = "*"
-e1839a8 = {editable = true,path = "."}
 tox = "*"
 
 [dev-packages]
 mock = "*"
 pytest = "*"
-black = "*"
 pylint = "*"
 pylint-django = "*"
 coverage = "*"
 "pysqlite3" = "*"
 tox = "*"
 coveralls = "*"
-wily = "*"
 
 [requires]
 python_version = "3.6"

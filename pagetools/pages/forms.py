@@ -4,6 +4,7 @@ Created on 18.12.2013
 @author: Tim Heithecker
 '''
 import os
+import logging
 
 from django import forms
 from django.core.exceptions import ValidationError
@@ -18,10 +19,9 @@ from crispy_forms.layout import Submit
 
 from captcha.fields import CaptchaField
 
-from .settings import MAILFORM_RECEIVERS as MAILFORM_RECEIVERS
+from .settings import MAILFORM_RECEIVERS
 from .settings import MAILFORM_SENDER
 
-import logging
 logger = logging.getLogger(__name__)
 
 
@@ -41,60 +41,48 @@ class DynMultipleChoiceField(forms.MultipleChoiceField):
         super(DynMultipleChoiceField, self).__init__(**kwargs)
 
 
-class MailReceiverField(object):
-    help_text = _('comma separated list of e-mails')
-
-    def __init__(self, *args, **kwargs):
-        try:
-            adrs = [n.strip() for n in kwargs['label'].split(',')]
-            ev = EmailValidator()
-            for a in adrs:
-                ev(a)
-        except (ValueError, ValidationError, KeyError):
-            raise ValidationError(self.help_text)
-
-
 class SendEmailForm(forms.Form):
 
+    IGNORED_FIELDS_IN_MESSAGE = ("captcha",)
+
     def __init__(self, *args, **kwargs):
-        mailreceivers = kwargs.pop('mailreceivers', None)
+        self.mailreceivers = kwargs.pop('mailreceivers', MAILFORM_RECEIVERS)
         super(SendEmailForm, self).__init__(*args, **kwargs)
-        self.mailreceivers = self.get_mailreceivers(mailreceivers)
         self.helper = FormHelper()
         self.helper.form_method = 'post'
         self.helper.add_input(Submit('submit', _('Submit')))
 
-    def get_mailreceivers(self, mailreceivers=None):
-        try:
-            r = (mailreceivers or
-                 ",".join(MAILFORM_RECEIVERS)).split(",")
-            logger.debug("Mail receivers %s " % r)
-            return r
-        except AttributeError:
-            logger.error("no email receivers for %s" % self)
-
-    def get_message(self):
+    def get_mailmessage(self):
         return os.linesep.join(
             ["%s\t%s" % (field.name, field.value())
-             for field in self if field.name not in ('captcha',)
+             for field in self
+             if field.name not in self.IGNORED_FIELDS_IN_MESSAGE
              ])
+
+    def get_mailsubject(self):
+        return _("Form submission")
+
+    def get_mailreceivers(self):
+        return self.mailreceivers
+
+    def get_mailsender(self):
+        return MAILFORM_SENDER
 
     def is_valid(self, **kwargs):
         _is_valid = super(SendEmailForm, self).is_valid()
         if _is_valid:
-            msg = self.get_message()
-            send_mail(_("Form"), msg, MAILFORM_SENDER,
-                      self.mailreceivers, fail_silently=False)
+            send_mail(self.get_mailsubject(), self.get_mailmessage(),
+                self.get_mailsender(), self.get_mailreceivers(), fail_silently=False)
         return _is_valid
 
     def clean(self):
         super(SendEmailForm, self).clean()
         if not self.mailreceivers:
             raise ValidationError(_("An error occured"))
+        validate = EmailValidator()
         try:
-            ev = EmailValidator()
-            for a in self.mailreceivers:
-                ev(a)
+            for receiver in self.mailreceivers:
+                validate(receiver)
         except (ValueError, ValidationError, KeyError):
             raise ValidationError(_("An error occured"))
 
@@ -109,36 +97,3 @@ class ContactForm(SendEmailForm):
 
 class CaptchaContactForm(ContactForm):
     captcha = CaptchaField()
-
-
-'''
-class BaseDynForm(forms.Form):
-
-    def __init__(self, *args, **kwargs):
-        extras = kwargs.pop('extras', [])
-        kwargs.pop('extras_opt', None)
-        super(BaseDynForm, self).__init__(*args, **kwargs)
-        for dynfield in extras:
-            self.add_custom_field(dynfield)
-
-    def add_custom_field(self, dynfield):
-        fieldkwargs = {'required': dynfield.required,
-                       'label': dynfield.name}
-        Fieldcls = dynfield.field_for_type.get(dynfield.field_type, None)
-        if not Fieldcls:
-            Fieldcls = getattr(forms, dynfield.field_type)
-        extra_add = getattr(self, 'add_%s' % dynfield.field_type.lower(), None)
-        if extra_add:
-            extra_add(**fieldkwargs)
-        else:
-            fname = 'custom_%s' % slugify(dynfield.name)
-            self.fields[fname] = Fieldcls(**fieldkwargs)
-
-    def is_valid(self, **kwargs):
-        _is_valid = super(BaseDynForm, self).is_valid()
-        if _is_valid:
-            self.msg = (messages.SUCCESS, _('Form processed'))
-        else:
-            self.msg = (messages.ERROR, _('An error occured'))
-        return _is_valid
-'''
