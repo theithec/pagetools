@@ -50,5 +50,5 @@ class TestContactFormWithKwargReceiver(ModifyMailReceiverTestCase):
 
     def test_sendmailform_overwrite_receivers(self):
         data = contactform_data
-        contactform = ContactForm(data, mailreceivers="x@y.zy")
+        contactform = ContactForm(data, mailreceivers=["x@y.zy"])
         self.assertEqual(contactform.mailreceivers, ["x@y.zy"])
