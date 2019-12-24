@@ -4,30 +4,16 @@ A PageNode is a model which may contains other PageNodes.
 Inheritated models with own fields needs concrete inheritance,
 otherwise a proxy model is sufficient.
 '''
-import warnings
-import json
 from django.core.exceptions import ValidationError
 from django.urls import reverse
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
-from django.core.cache import cache
+from django.contrib.contenttypes.fields import GenericForeignKey
 
 from pagetools.core.models import PagelikeModel, PublishableLangManager
 from pagetools.core.utils import (get_adminadd_url, get_classname, importer,
                                   choices2field)
-
-
-def cached(obj, name, val=None):
-    objkey = "__".join((obj.__class__.__name__, str(obj.pk)))
-    jsondata = cache.get(objkey) or "{}"
-    data = json.loads(jsondata)
-    if val:
-        data[name] = val
-        cache.set(objkey, json.dumps(data))
-    else:
-        val = data.get(name)
-    return val
 
 
 class PageNodeManager(PublishableLangManager):
@@ -56,10 +42,13 @@ class PageNode(PagelikeModel):
 
     classes = models.CharField(
         'Classes', max_length=512, blank=True, null=True)
-    content_type_pk = models.SmallIntegerField(blank=True)
+    content_type_pk = models.ForeignKey(
+        ContentType, null=True, blank=True, on_delete=models.CASCADE, db_column="content_type_pk")
+    content_object = GenericForeignKey('content_type_pk', 'id')
     in_nodes = models.ManyToManyField(
         "self", through="PageNodePos", related_name="positioned_content", symmetrical=False)
     objects = PageNodeManager()
+    allowed_children_classes = []
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -73,28 +62,24 @@ class PageNode(PagelikeModel):
         self.real_obj = None
 
     def get_real_obj(self):
-        real = self
-        if self.pk:
-            if not self.real_obj:
-                clz = ContentType.objects.get_for_id(real.content_type_pk)
-                self.real_obj = clz.model_class().objects.get(pk=real.pk)
-        return self.real_obj or self
+        return self.content_object or self
 
-    def get_real_child(self, child):
-        real_child = child.get_real_obj()
-        slug = self.slug + "_" + real_child.slug
-        real_child.long_slug = slug
-        return real_child
+    # def get_real_child(self, child):
+    #     real_child = child.get_real_obj()
+    #     slug = self.slug + "_" + real_child.slug
+    #     real_child.long_slug = slug
+    #     return real_child
 
-    def get_real_content(self, child):
-        warnings.warn("deprecated, use get_real_child",
-                      DeprecationWarning)
-
-        return self.get_real_child(child)
+    def children_queryset(self, **kwargs):
+        queryset = (
+            self.positioned_content.lfilter(**kwargs)
+            .prefetch_related("content_object")
+            .order_by('pagenodepos'))
+        return queryset
 
     def children(self, **kwargs):
-        _children = self.positioned_content.lfilter(**kwargs).order_by('pagenodepos')
-        return [self.get_real_child(child) for child in _children]
+        queryset = self.children_queryset()
+        return [child.get_real_obj() for child in queryset]
 
     def ordered_content(self, **kwargs):
         return self.children(**kwargs)
@@ -104,12 +89,7 @@ class PageNode(PagelikeModel):
         return get_classname(obj)
 
     def __str__(self):
-        txt = cached(self, "str")
-        if not txt:
-            obj = self.get_real_obj()
-            txt = cached(self, "str", "%s(%s)" % (obj.title, get_classname(obj)))
-
-        return txt
+        return "%s(%s)" % (self.title, self.get_classname())
 
     def clean(self):
         objs = PageNode.objects.filter(slug=self.slug, lang=self.lang)
@@ -120,10 +100,10 @@ class PageNode(PagelikeModel):
         return super().clean()
 
     def save(self, *args, **kwargs):
-        if not self.content_type_pk:
+        if self.__class__.__name__ != "PageNode":
             ctype = ContentType.objects.get_for_model(
-                self, for_concrete_model=False)
-            self.content_type_pk = ctype.pk
+                self.__class__, for_concrete_model=False)
+            self.content_type_pk = ctype
         super(PageNode, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
@@ -150,10 +130,7 @@ class PageNodePos(models.Model):
     owner = models.ForeignKey(PageNode, related_name="in_group", on_delete=models.CASCADE)
 
     def __str__(self):
-        txt = cached(self, "str")
-        if not txt:
-            txt = cached(self, "str", "%s:%s:%s" % (self.owner, self.content, self.position))
-        return txt
+        return "%s:%s:%s" % (self.owner, self.content, self.position)
 
     class Meta:
         ordering = ['position']

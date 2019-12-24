@@ -34,7 +34,7 @@ class CustomIndexDashboard(Dashboard):
             collapsible=True,
             column=1,
             css_classes=('collapse closed',),
-            exclude=('django.contrib.*', 'pagetools.sections.*'),
+            exclude=('django.contrib.*', ),
         ))
 
         # append an app list module for "Administration"
@@ -105,5 +105,4 @@ class CustomIndexDashboard(Dashboard):
                 ],
             css={'all': ['bower_components/jquery-bonsai/jquery.bonsai.css']}
         )
-
     media = property(_media)

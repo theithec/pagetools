@@ -3,10 +3,10 @@
 {% block javascripts %}
 {{ block.super }}
 <script>
+
 jQuery = grp.jQuery;
 (function($){
     $(document).ready(function(){
-
         {% if request.parent_model.allowed_children_classes|length > 1 %}
         $.getScript( "{% static "js/jquery.balloon.min.js" %}")
             .done(function( script, Status ) {
@@ -43,7 +43,6 @@ jQuery = grp.jQuery;
             })
         .fail(function( jqxhr, settings, exception ) {
             console.error( "Something went wrong", exception );
-
         });
         {% else %}
 
@@ -53,6 +52,12 @@ jQuery = grp.jQuery;
         });
 
         {% endif %}
+        // remove original edit links to the `PageNode`
+        let cnt = 0;
+        while(($editLink=$("#change_id_in_group-" + cnt + "-content")).length){
+            $editLink.hide();
+            cnt++;
+        }
     });
 }(grp.jQuery));
 </script>

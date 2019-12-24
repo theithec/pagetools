@@ -22,7 +22,7 @@ setup(
         "django-debug-toolbar==2.1",
         "django-filebrowser==3.12.1",
         "django-grappelli==2.13.2",
-        "django-model-utils==3.2.0",
+        "django-model-utils==4.0.0",
         "django-mptt==0.10.0",
         "django-sekizai==1.0.0",
         "django-simple-captcha==0.5.12",

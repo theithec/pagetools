@@ -1,3 +1,6 @@
+from django.urls import path
+from django.conf import settings
+
 from django.conf.urls import url, include
 from django.contrib import admin
 
@@ -24,3 +27,12 @@ urlpatterns = [
     url(r'search/', include('pagetools.search.urls')),
     url(r'subscribe/', include('pagetools.subscriptions.urls', namespace="subscriptions")),
 ]
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns = [
+        path('__debug__/', include(debug_toolbar.urls)),
+
+        # For django versions before 2.0:
+        # url(r'^__debug__/', include(debug_toolbar.urls)),
+
+    ] + urlpatterns
