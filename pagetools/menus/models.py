@@ -33,7 +33,7 @@ class MenuEntryManager(TreeManager, LangManager):
                 _('MenuEntry.content_object requires get_absolute_url'))
         kwargs['title'] = kwargs.get('title', '%s' % content_object)
         kwargs['content_type'] = ContentType.objects.get_for_model(
-            content_object)
+            content_object, for_concrete_model=False)
         kwargs['object_id'] = content_object.pk
         kwargs['slug'] = '%s' % getattr(
             content_object, 'slug',
@@ -283,11 +283,11 @@ class Menu(MenuEntry):
             nested_children = []
 
             for child in children:
+                obj = child.content_object
                 child_data = {
-                    'entry_title': child.title,
+                    'entry_title': child.title or getattr(obj, "title", None) or obj.name,
                     'dict_parent': dict_parent
                 }
-                obj = child.content_object
 
                 children_filter_kwargs['parent'] = child
                 child_children = []

@@ -1,5 +1,6 @@
 from django import template
 from django.template.loader import select_template
+from django.utils.safestring import mark_safe
 
 from pagetools.sections.utils import get_template_names_for_obj
 from pagetools.sections.apps import SectionsConfig
@@ -19,7 +20,6 @@ class ContentNode(template.Node):
 
     def render(self, context):
         obj = self.object_var.resolve(context)
-        user = self.user_var.resolve(context)
         suffix = ""
         if self.suffix_var:
             suffix = self.suffix_var.resolve(context)
@@ -27,8 +27,6 @@ class ContentNode(template.Node):
         for key, val in SectionsConfig.render_node_extradata.items():
             context[key] = val
         context['object'] = obj
-        if obj.positioned_content:
-            context['contents'] = obj.ordered_content(user=user)
         if not obj.enabled:
             context['unpublished'] = True
 
@@ -52,3 +50,13 @@ def _ordered_content(value, args):
     if obj is None:
         return []
     return obj.ordered_content(user=args)
+
+
+@register.simple_tag(name='rendered_ordered_children')
+def _rendered_ordered_children(obj, user, suffix=""):
+    children = obj.ordered_content(user=user)
+    return [
+        mark_safe(
+            select_template(get_template_names_for_obj(child, suffix)).render({"object": child})
+        ) for child in children
+    ]

@@ -29,3 +29,6 @@ class Section(TypeMixin, PageNode):
 class SectionList(PageNode):
     allowed_children_classes = [Section, ]
     objects = PageNodeManager()
+
+    class Meta:
+        proxy = True

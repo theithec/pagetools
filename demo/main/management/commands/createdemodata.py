@@ -1,4 +1,3 @@
-import os
 import sys  # noqa
 
 from django.contrib.auth.models import User  # noqa
@@ -52,9 +51,6 @@ def create():
         )[0]
         menu.children.add_child(page, enabled=True)
 
-    print("MENU", menu)
-    #  menu = Menu.objects.get(title="MainMenu")
-
     typearea_base = TypeArea.objects.create(
         area="sidebar", pagetype=pagetype_base)
     typearea_special = TypeArea.objects.create(
@@ -107,9 +103,9 @@ def create():
                                 status=STATUS_PUBLISHED)
     pp = s1.pagenodepos_set.create(position=1, content=s1, owner=sl1)
 
-    for i in range(4):
+    for i in range(40):
         kwargs = {}
-        if i < 3:
+        if i < 39:
             kwargs['status'] = STATUS_PUBLISHED
         a = Article.objects.create(
             title="Article %s" % i,
