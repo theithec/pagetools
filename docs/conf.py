@@ -17,7 +17,7 @@ import django
 import sys
 import os
 import shlex
-from version import get_git_version, call_git_describe
+from version import call_git_describe
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -71,7 +71,7 @@ author = 'Tim Heithecker'
 # built documents.
 #
 # The short X.Y version.
-version = get_git_version()
+version =  call_git_describe().split("-")[0]
 # The full version, including alpha/beta/rc tags.
 release = call_git_describe()
 
