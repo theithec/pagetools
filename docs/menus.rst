@@ -47,7 +47,7 @@ The menu template
 -----------------
 
 The template used to render the menu is set in ``settings.PT_MENU_TEMPLATE``.
- To support nested menus it must be able to call it self recursively,
+To support nested menus it must be able to call it self recursively,
 see the templates :any:`django-pagetools/pagetools/menus/templates/menu.html`.
 There are also
 - `foundation_nav_menu.html`
@@ -69,14 +69,15 @@ were modified by :func:`pagetools.menus.admin.make_entrieable_admin` are shown t
 Link
 ^^^^
 
-:class:`pagetools.menus.models.Link`.
- Just a simple link to anything.
+:class:`pagetools.menus.models.Link`
+Just a simple link to anything.
 
 
 ViewLink
 ^^^^^^^^
 
-:class:`pagetools.menus.models.ViewLink`. A link to a view. The view must have a reverse name and cant' have any parameters.
+:class:`pagetools.menus.models.ViewLink`
+A link to a view. The view must have a reverse name and cant' have any parameters.
 To be shown in the corresponding admin choice field, somewhere
 :func:`pagetools.menus.utils.entrieable_reverse_name` must be called with the reverse name of the view. It returns the name,
 so that could be done directly in a `urls.py`::

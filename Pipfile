@@ -17,6 +17,7 @@ django-simple-captcha = "*"
 djangoajax = "*"
 pillow = "*"
 tox = "*"
+sphinx = "*"
 
 [dev-packages]
 mock = "*"

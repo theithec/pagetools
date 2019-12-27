@@ -45,7 +45,7 @@ All question detail pages would have no highlighting for the corresponding menu 
 on the list item).
 
 The menu tag expects a parameter ``menukeys`` - a string or a list - that indicates which entries are active.
-For pagetools's models this is done in the ```pagetools.menus.views.SelectedMenuentriesMixin```,
+For pagetools's models this is done in the ``pagetools.menus.views.SelectedMenuentriesMixin``,
 so a subclass of ´´polls.views.DetailView´´ that inherits the mixin would solve this.
 
 Another way is to overwrite the templates for the questions detail and index view.
@@ -73,23 +73,3 @@ index.html::
 
 
 Note: "pollsindex" is the slugified version of "polls:index", see above.
-
-
-Last thing is using `pagetools.subscriptions` to allow users subscribing for new questions::
-
-    @receiver(post_save)
-    def questions_post_savecallback(sender, **kwargs):
-        from pagetools.subscriptions.utils import to_queue
-        if der.__name__ == 'Question' and kwargs['created'] == True:
-            to_queue({
-                'title': 'New Question',
-                'body': 'There is a great new question: %s.' % (
-                    kwargs['instance'].question_text )
-            })
-
-
-
-
-
-
-

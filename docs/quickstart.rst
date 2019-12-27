@@ -7,8 +7,8 @@ Quickstart
 Setup
 ~~~~~
 
-It's more interesting to show how pagetools works with existing apps.
-But let's start with a pure pagetools installation.
+Actually it would be more interesting to show how pagetools works with existing apps.
+But for simplicity let's start with a pure pagetools installation.
 
 
 Add the pagetools apps you want to use and their requirements to ``INSTALLED_APPS``::
