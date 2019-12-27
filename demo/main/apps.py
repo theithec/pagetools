@@ -5,13 +5,13 @@ from django.db.models.signals import post_save
 
 from django.dispatch import receiver
 
-# This will be added to ``polls.models.Question``
 
-
+# This will be added later to ``polls.models.Question``
 def question_get_absolute_url(self):
     return reverse("polls:detail", args=(self.pk,))
 
 
+# Notify subscribers about new questions
 @receiver(post_save)
 def questions_post_savecallback(sender, **kwargs):
     from pagetools.subscriptions.utils import to_queue
@@ -42,12 +42,12 @@ class MainConfig(AppConfig):
         make_entrieable_admin(polls.admin.QuestionAdmin)
 
         # (But) ...
-        # A content_object in a menuentry needs ``get_absolute_url``,
+        # A content_object in a `MenuEntry` needs `get_absolute_url`,
         # so add one to ``Question``.
         Question.add_to_class("get_absolute_url", question_get_absolute_url)
 
-        # Make a dynamic menuentry with all questions as children
-        # A function to define the dynamic entries:
+        # For a dynamic menu entry with all questions as children
+        # we need a function to define the dynamic entries:
         def recent_questions_as_entries():
             return [
                 MenuEntry(title=q.question_text, content_object=q)
