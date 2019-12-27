@@ -1,7 +1,7 @@
 import os
 from setuptools import setup, find_packages
 
-from docs.version import get_git_version
+from version import get_git_version
 
 # from distutils.core import setup
 README = open(os.path.join(os.path.dirname(__file__), 'README.rst')).read()
