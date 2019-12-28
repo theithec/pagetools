@@ -26,15 +26,21 @@ Demo::
   
     git clone git+https://theithec/django-pagetools.git
 
-    cd django-pagetools/demo
+    cd django-pagetools/
+
+    python setup.py install
+
+    cd demo
+
+    ./manage.py migrate
 
     ./manage.py createdemodata
 
     ./manage.py runserver
 
-Admin-url: http://127.0.0.1/admin
+Admin-url: http://127.0.0.1:8000/admin
 
 User:      admin
 
-Password:  pass#word
+Password:  password
 
