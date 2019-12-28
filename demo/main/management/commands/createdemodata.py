@@ -128,7 +128,7 @@ class Command(BaseCommand):
 
         management.call_command("migrate")
         try:
-            User.objects.create_superuser("admin", "q@w.de", "pass#word")
+            User.objects.create_superuser("admin", "q@w.de", "password")
         except BaseException:
             sys.exit("Error. DB exists?")
         create()
