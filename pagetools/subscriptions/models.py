@@ -136,8 +136,9 @@ class QueuedEmail(LangModel):
                         msg = EmailMessage(
                             "%s" % self.subject,
                             self.body.replace(
-                                '_unsubscribe_path_',
-                                '/unsubscribe/%s' % unsubscribe_path),
+                                '__unsubscribe_path__',
+                                 unsubscribe_path),
+                                #'/unsubscribe/%s' % unsubscribe_path),
                             subs_settings.NEWS_FROM,
                             [to],
                             connection=conn,

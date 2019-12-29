@@ -1,9 +1,3 @@
-'''
-Created on 03.09.2012
-
-@author: Tim Heithecker
-'''
-
 from django.template.loader import render_to_string
 from django.utils.translation import activate, get_language
 from django.contrib.sites.models import Site
