@@ -53,7 +53,7 @@ def _subscribe(request):
                 msg = subs_msg
                 errors = False
             except SMTPException:
-                pass
+                messages.add_message(request, messages.ERROR, _('Mail could not be send.'))
         else:
             msg = subs_msg
     else:
@@ -73,12 +73,15 @@ def _subscribe_json(res):
 
 
 def subscribe(request):
-    res = {}
-    res['msg'], res['errors'] = _subscribe(request)
+    if request.method == 'GET':
+        raise Http404
+    msg, errors = _subscribe(request)
     # ups, lazy
-    res['msg'] = '%s' % res['msg']
+    # res['msg'] = '%s' % res['msg']
     if request.is_ajax():
-        return _subscribe_json(res)
+        return _subscribe_json({"msg": msg, "errors": errors})
+
+    messages.add_message(request, messages.INFO, msg)
     return _subscribe_fallback(request)
 
 

@@ -1,8 +1,3 @@
-'''
-Created on 18.12.2013
-
-@author: Tim Heithecker
-'''
 import os
 import logging
 
@@ -19,6 +14,7 @@ from crispy_forms.layout import Submit
 
 from captcha.fields import CaptchaField
 
+from pagetools.core.settings import SUBMIT_BUTTON_CLASSES
 from .settings import MAILFORM_RECEIVERS
 from .settings import MAILFORM_SENDER
 
@@ -50,7 +46,7 @@ class SendEmailForm(forms.Form):
         super(SendEmailForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_method = 'post'
-        self.helper.add_input(Submit('submit', _('Submit')))
+        self.helper.add_input(Submit('submit', _('Submit'), css_class=SUBMIT_BUTTON_CLASSES))
 
     def get_mailmessage(self):
         return os.linesep.join(

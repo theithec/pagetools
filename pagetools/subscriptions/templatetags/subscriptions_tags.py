@@ -18,7 +18,7 @@ class SubscribeNode(template.Node):
         t = template.loader.get_template(
             'subscriptions/block_subscription.html')
         context['sform'] = SubscribeForm()
-        return t.render(context)
+        return t.render(context.flatten())
 
 
 @register.tag(name="subscribe_widget")

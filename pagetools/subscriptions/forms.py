@@ -1,14 +1,11 @@
-'''
-Created on 29.02.2012
-
-@author: Tim Heithecker
-'''
 from django.utils.translation import ugettext_lazy as _
 from django import forms
 from django.urls import reverse
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout
+
+from pagetools.core.settings import SUBMIT_BUTTON_CLASSES
 
 
 class SubscribeForm(forms.Form):
@@ -21,5 +18,5 @@ class SubscribeForm(forms.Form):
         self.helper.form_action = reverse('subscriptions:subscribe')
         # i think this is wrong but  prevents empty fieldset somehow
         self.helper.layout = Layout('email')
-        self.helper.add_input(Submit('subscribe', _('Submit')))
+        self.helper.add_input(Submit('subscribe', _('Submit'), css_class=SUBMIT_BUTTON_CLASSES))
         self.helper.form_tag = True
