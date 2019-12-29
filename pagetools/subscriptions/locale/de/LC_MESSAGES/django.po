@@ -122,7 +122,7 @@ msgstr "Ein Fehler ist aufgetreten"
 #: views.py:31
 #, python-format
 msgid "subscribed: %s"
-msgstr "angemeldet: %s"
+msgstr "Angemeldet: %s"
 
 #: views.py:101
 msgid "activation: ok"

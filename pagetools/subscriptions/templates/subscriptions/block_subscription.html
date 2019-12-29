@@ -25,8 +25,7 @@ window.onload = function (){
 				"{% url "subscriptions:subscribe" %}",
 				$("#subscribeform").serializeArray(),
 				function(data){
-					parsed = JSON.parse(data);
-					$("#subscribe-msgs").replaceWith('<span id="subscribe-msgs">'+parsed['msg']+'</span>');
+					$("#subscribe-msgs").replaceWith('<span id="subscribe-msgs">'+data['msg']+'</span>');
 				}
 		      );
 

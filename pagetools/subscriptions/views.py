@@ -2,7 +2,7 @@ import datetime
 from hashlib import sha224 as sha
 from smtplib import SMTPException
 
-from django import template
+from django import template, apps
 from django.core.mail import send_mail
 from django.urls import reverse
 from django.http.response import Http404, JsonResponse
@@ -16,10 +16,40 @@ from .models import Subscriber
 
 from . import settings as subs_settings
 
+config = apps.apps.get_app_config("subscriptions")
+subscribe_form = config.subscribe_form
+
+
+def _send_activation_mail(subscriber):
+    site_url = "https://%s" % Site.objects.get_current().domain
+    context = {
+        'site_name': Site.objects.get_current().name,
+        'site_url': site_url,
+        'activation_url': "%s%s?mk=%s/" % (
+            site_url,
+            (reverse('subscriptions:activate', kwargs={'key': subscriber.key})),
+            subscriber.mailkey()
+        )
+    }
+    tmpl = template.loader.get_template('subscriptions/activation_msg.txt')
+    mailmsg = tmpl.render(context)
+    try:
+        send_mail(
+            subs_settings.ACTIVATION_MAIL_SUBJECT,
+            mailmsg,
+            subs_settings.NEWS_FROM,
+            [subscriber.email],
+            fail_silently=False
+        )
+    except SMTPException:
+        return False
+
+    return True #send_mail
+
 
 def _subscribe(request):
     msg = _("An error occurred")
-    form = SubscribeForm(request.POST)
+    form = subscribe_form(request.POST)
     errors = True
     if form.is_valid():
         clean_data = form.clean()
@@ -28,48 +58,27 @@ def _subscribe(request):
         subs_msg = _('subscribed: %s') % email
         if not already_there:
             subscriber = Subscriber(email=email, is_activated=False, lang=get_language())
-            site_url = "https://%s" % Site.objects.get_current().domain
-            context = {
-                'site_name': Site.objects.get_current().name,
-                'site_url': site_url,
-                'activation_url': "%s%s?mk=%s/" % (
-                    site_url,
-                    (reverse('subscriptions:activate', kwargs={'key': subscriber.key})),
-                    subscriber.mailkey()
-                )
-            }
-            tmpl = template.loader.get_template(
-                'subscriptions/activation_msg.txt')
-            mailmsg = tmpl.render(context)
-            try:
-                send_mail(
-                    subs_settings.ACTIVATION_MAIL_SUBJECT,
-                    mailmsg,
-                    subs_settings.NEWS_FROM,
-                    [form['email'].value()],
-                    fail_silently=False
-                )
+            mail_success = _send_activation_mail(subscriber)
+            if mail_success:
                 subscriber.save()
-                msg = subs_msg
-                errors = False
-            except SMTPException:
-                messages.add_message(request, messages.ERROR, _('Mail could not be send.'))
-        else:
+        if already_there or mail_success:
             msg = subs_msg
+            errors = False
     else:
         msg = str(form.errors)
     return msg, errors
 
 
-def _subscribe_fallback(request):
+def _subscribe_fallback(request, msg, errors):
+    messages.add_message(request, messages.ERROR if errors else messages.SUCCESS, msg)
     return render(
         request,
         'subscriptions/subscribe_msg.html',
     )
 
 
-def _subscribe_json(res):
-    return JsonResponse(res)
+def _subscribe_json(msg, errors):
+    return JsonResponse({"msg": msg, "errors": errors})
 
 
 def subscribe(request):
@@ -79,10 +88,10 @@ def subscribe(request):
     # ups, lazy
     # res['msg'] = '%s' % res['msg']
     if request.is_ajax():
-        return _subscribe_json({"msg": msg, "errors": errors})
+        return _subscribe_json(msg, errors)
 
     messages.add_message(request, messages.INFO, msg)
-    return _subscribe_fallback(request)
+    return _subscribe_fallback(request, msg, errors)
 
 
 def _matching_activated_subscriber(request, key):

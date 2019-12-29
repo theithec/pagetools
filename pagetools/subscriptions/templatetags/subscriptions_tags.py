@@ -1,9 +1,3 @@
-'''
-Created on 29.02.2012
-
-@author: Tim Heithecker
-'''
-
 from django import template
 
 from pagetools.subscriptions.forms import SubscribeForm
@@ -18,7 +12,7 @@ class SubscribeNode(template.Node):
         t = template.loader.get_template(
             'subscriptions/block_subscription.html')
         context['sform'] = SubscribeForm()
-        return t.render(context.flatten())
+        return t.render(context)
 
 
 @register.tag(name="subscribe_widget")
