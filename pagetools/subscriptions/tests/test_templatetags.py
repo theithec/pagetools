@@ -1,9 +1,11 @@
+from unittest import mock
 from django.test import TestCase
+from django.template import RequestContext
 
 from pagetools.subscriptions.templatetags.subscriptions_tags import do_subscribe_node
 
 
 class TTTestCase(TestCase):
     def test_subscripton_node(self):
-        nsn = do_subscribe_node(None, None)
-        self.assertTrue('name="email"' in nsn.render({}))
+        nsn = do_subscribe_node(mock.Mock(), mock.Mock())
+        self.assertTrue('name="email"' in nsn.render(RequestContext(mock.Mock(), {})))
