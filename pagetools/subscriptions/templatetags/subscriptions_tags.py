@@ -12,7 +12,12 @@ class SubscribeNode(template.Node):
         t = template.loader.get_template(
             'subscriptions/block_subscription.html')
         context['sform'] = SubscribeForm()
-        return t.render(context.flatten())
+        try:
+            context = context.flatten()
+        except AttributeError:
+            pass
+
+        return t.render(context)
 
 
 @register.tag(name="subscribe_widget")

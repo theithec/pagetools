@@ -3,7 +3,6 @@ from setuptools import setup, find_packages
 
 from version import get_git_version
 
-# from distutils.core import setup
 README = open(os.path.join(os.path.dirname(__file__), 'README.rst')).read()
 
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
@@ -23,11 +22,11 @@ setup(
         "django-filebrowser==3.12.*",
         "django-grappelli<=2.14",
         "django-model-utils==4.0.*",
-        "django-mptt==0.10.*",
-        "django-sekizai==1.0.*",
+        "django-mptt==0.11.*",
+        "django-sekizai==1.1.*",
         "django-simple-captcha==0.5.12",
         "djangoajax==3.*",
-        "Pillow==6.*",
+        "Pillow==7.*",
     ],
 
     long_description=README,
@@ -41,7 +40,6 @@ setup(
         'Operating System :: OS Independent',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Topic :: Internet :: WWW/HTTP',
