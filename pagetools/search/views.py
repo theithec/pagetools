@@ -19,7 +19,7 @@ class SearchResultsView(PaginatorMixin):
     template_name = "search_results.html"
     context_object_name = 'results'
     search_params = {}
-    _search_mods = [m for m in search_mods]
+    _search_mods = search_mods[:]
     sep = ''
     form_cls = AdvSearchForm
     _thisdir = os.path.dirname(os.path.realpath(__file__))
@@ -101,7 +101,7 @@ class SearchResultsView(PaginatorMixin):
         txt = strip_tags('%s' % txt).lower()
         return txt
 
-    def get_queryset(self, **kwargs):
+    def get_queryset(self, **_kwargs):
         if not self.search_params:
             return tuple()
 
@@ -114,17 +114,17 @@ class SearchResultsView(PaginatorMixin):
                 fields = mod[1]
                 queryset = self.filtered_queryset(mod)
                 for field in fields:
-                    er = [
+                    exact_results = [
                         r for r in queryset
                         if (self._convert(exact, field, mod) in
                             self._stripped(getattr(r, field)))]
-                    results_exact |= set(er)
-        rs = [f for f in (results_all, results_any, results_exact) if f]
-        if not rs:
+                    results_exact |= set(exact_results)
+        results = [f for f in (results_all, results_any, results_exact) if f]
+        if not results:
             return tuple()
-        else:
-            rq = reduce(operator.and_, rs)
-            return list(rq)
+
+        reduced = reduce(operator.and_, results)
+        return list(reduced)
 
     def get_context_data(self, **kwargs):
         context = super(SearchResultsView, self).get_context_data(**kwargs)

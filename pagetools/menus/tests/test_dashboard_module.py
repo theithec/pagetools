@@ -1,5 +1,4 @@
 from django.urls import reverse
-from pagetools.menus.models import Menu, MenuEntry
 
 from pagetools.menus.tests import MenuDataTestCase
 from pagetools.menus.dashboard_modules import MenuModule

@@ -7,4 +7,3 @@ class SubscriptionsConfig(AppConfig):
 
     from .forms import SubscribeForm
     subscribe_form = SubscribeForm
-

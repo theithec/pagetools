@@ -1,4 +1,4 @@
-from django.conf.urls import include, url
+from django.conf.urls import url
 
 from pagetools.sections.views import PagelikeNodeView, BaseAjaxNodeView
 

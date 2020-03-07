@@ -142,7 +142,9 @@ disable=print-statement,
         missing-docstring,
         too-few-public-methods,
         no-self-use,
-        attribute-defined-outside-init
+        attribute-defined-outside-init,
+        arguments-differ
+        # tmp
 
 # Enable the message, report, category or checker with the given id(s). You can
 # either give multiple identifier separated by comma (,) or put this option
@@ -351,7 +353,8 @@ good-names=i,
            k,
            ex,
            Run,
-           _
+           _,
+           to
 
 # Include a hint for the correct naming format with invalid-name.
 include-naming-hint=no
@@ -518,7 +521,7 @@ max-branches=12
 max-locals=15
 
 # Maximum number of parents for a class (see R0901).
-max-parents=7
+max-parents=11
 
 # Maximum number of public methods for a class (see R0904).
 max-public-methods=20

@@ -214,7 +214,6 @@ class EntrieableAdmin(admin.ModelAdmin):
         """
         See :func:`pagetools.menus.admin.entrieable_admin_get_fields`
         """
-        """Entrieable get_fields (for monkeypatching)"""
         superfunc = super(self.__class__, self).get_fields
         if not getattr(superfunc, "for_entrieable", False):
             fields = superfunc(request, obj)
@@ -232,7 +231,7 @@ class EntrieableAdmin(admin.ModelAdmin):
         if not getattr(superfunc, "for_entrieable", False):
             self.fieldsets = superfunc(request, obj)
         else:
-            self.fieldsets = super(admin.ModelAdmin, self).get_fieldsets(request, obj)
+            self.fieldsets = super().get_fieldsets(request, obj)
 
         added = False
         for fieldset in self.fieldsets:

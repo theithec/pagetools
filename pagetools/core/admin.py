@@ -33,9 +33,9 @@ class AdminLinkMixin:
         )
     admin_link.short_description = _("Admin link")
 
+
 class PagelikeAdmin(AdminLinkMixin, TinyMCEMixin):
     '''
     Prepopulate slug from title and add tinymce-media
     '''
     prepopulated_fields = {"slug": ("title",)}
-

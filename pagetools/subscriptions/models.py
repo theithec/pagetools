@@ -109,20 +109,20 @@ class QueuedEmail(LangModel):
         unique=False,
         blank=True)
 
-    def save(self, force_insert=False, force_update=False, **kwargs):
+    def save(self, *args, **kwargs):
         self.modifydate = timezone.now()
 
         super(QueuedEmail, self).save()  # force_insert, force_update)
         modelname = subs_settings.SUBSCRIBER_MODEL
         if modelname == "Subscriber":
             modelname = "subscriptions.Subscriber"
-        SubsModel = apps.get_model(*modelname.rsplit('.', 1))
+        subscr_model = apps.get_model(*modelname.rsplit('.', 1))
         kwargs['lang'] = self.lang
-        subscribers = SubsModel.get_subscribers(**kwargs)
+        subscribers = subscr_model.get_subscribers(**kwargs)
 
-        for s in subscribers:
+        for subscr in subscribers:
             SendStatus(
-                subscriber=s,
+                subscriber=subscr,
                 queued_email=self,
                 status=0
             ).save()
@@ -151,24 +151,24 @@ class QueuedEmail(LangModel):
     def send_to_all(self, sendstatuses):
         if self.senddate < timezone.now():
             conn = get_connection()
-            for s in sendstatuses:
+            for sendstatus in sendstatuses:
                 status = self.send_to(
-                    s.subscriber.get_email(),
+                    sendstatus.subscriber.get_email(),
                     conn,
                     "%s?mk=%s/" % (
                         reverse('subscriptions:unsubscribe', kwargs={
-                            'key': s.subscriber.key}),
-                        s.subscriber.mailkey()
+                            'key': sendstatus.subscriber.key}),
+                        sendstatus.subscriber.mailkey()
                     )
                 )
                 if status == 1:
-                    if s.subscriber.failures != 0:
-                        s.subscriber.failures = 0
-                        s.subscriber.save()
-                    s.delete()
+                    if sendstatus.subscriber.failures != 0:
+                        sendstatus.subscriber.failures = 0
+                        sendstatus.subscriber.save()
+                    sendstatus.delete()
                 else:
-                    s.status = status
-                    subscriber = s.subscriber
+                    sendstatus.status = status
+                    subscriber = sendstatus.subscriber
                     subscriber.failures += 1
                     subscriber.save()
                     if subscriber.failures > subs_settings.MAX_FAILURES:
@@ -176,7 +176,7 @@ class QueuedEmail(LangModel):
                             subscriber=subscriber).delete()
                         subscriber.delete()
                     else:
-                        s.save()
+                        sendstatus.save()
 
     def __str__(self):
         return self.subject

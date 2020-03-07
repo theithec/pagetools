@@ -3,7 +3,7 @@ from grappelli.dashboard.modules import DashboardModule
 
 
 class PageNodesModule(DashboardModule):
-    """
+    r"""
     A module that displays a page with nodes.
     A "page" should be the root-pagenode model.
     Overwrite model =  <YourModel>
@@ -47,9 +47,9 @@ class PageNodesModule(DashboardModule):
         context['pages'] = pages
         context['admin_pagenodesview'] = '/adminnodes/__SLUG__'
         options = ""
-        for p in pages:
+        for page in pages:
             options += format_html(
-                '<option name={}>{}</option>', p.slug, p.title)
+                '<option name={}>{}</option>', page.slug, page.title)
         self.pre_content = '''<label>
             Page
             </label>

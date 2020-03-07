@@ -44,7 +44,7 @@ def _send_activation_mail(subscriber):
     except SMTPException:
         return False
 
-    return True #send_mail
+    return True  # send_mail
 
 
 def _subscribe(request):
