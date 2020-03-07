@@ -2,7 +2,6 @@
 (function($) {
 
   function dynfieldsVisibility(){
-    //console.log("IV", $("#id_included_form:visible").length);
     txt = $( "#id_included_form option:selected" ).text();
     if($("#id_included_form:visible").length){
       if (txt == "---------" || txt == ""){

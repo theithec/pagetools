@@ -4,9 +4,7 @@ $(document).ready(function() {
           handle: 'div',
           items: 'li',
           toleranceElement: '> div',
-          //containment: "parent",
           update: function(event, ui) {
-            console.log("EVENT UI")
         	  menu_entries_changed = true;
           }
     });

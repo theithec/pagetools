@@ -1,15 +1,11 @@
 from django.contrib import admin
-from django import forms
 from django.db.models.fields import BLANK_CHOICE_DASH
-from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
-from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 
 from django.contrib.contenttypes.models import ContentType
 from grappelli.forms import GrappelliSortableHiddenMixin
 from pagetools.core.admin import PagelikeAdmin, AdminLinkMixin
-from pagetools.menus.admin import EntrieableAdmin
 from .models import PageNode, PageNodePos
 
 
@@ -38,7 +34,7 @@ class BasePageNodePosAdmin(AdminLinkMixin, GrappelliSortableHiddenMixin, admin.T
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
 
-        is_content_with_choices =  db_field.name == "content" and getattr(
+        is_content_with_choices = db_field.name == "content" and getattr(
             self.parent_model, 'allowed_children_classes', False
         )
         if is_content_with_choices:
@@ -61,13 +57,12 @@ class BasePageNodePosAdmin(AdminLinkMixin, GrappelliSortableHiddenMixin, admin.T
                 cache["queryset"] = queryset
                 request._cache = cache
             kwargs["queryset"] = cache["queryset"]
-        field =  super(BasePageNodePosAdmin, self).formfield_for_foreignkey(
+        field = super(BasePageNodePosAdmin, self).formfield_for_foreignkey(
             db_field, request, **kwargs
         )
         if is_content_with_choices:
             field.choices = cache["choices"]
         return field
-
 
 
 class BasePageNodeAdmin(PagelikeAdmin):

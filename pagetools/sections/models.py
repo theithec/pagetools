@@ -77,7 +77,7 @@ class PageNode(PagelikeModel):
             .order_by('pagenodepos'))
         return queryset
 
-    def children(self, **kwargs):
+    def children(self, **_kwargs):
         queryset = self.children_queryset()
         return [child.get_real_obj() for child in queryset]
 

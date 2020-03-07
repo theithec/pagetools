@@ -11,8 +11,6 @@ MAILFORM_SENDER = getattr(settings,
                           )
 # It seems crispy_forms Auto Submit does not use the template pack
 SUBMIT_BUTTON_CLASSES = getattr(settings,
-      "PT_SUBMIT_BUTTON_CLASSES",
-      "btn btn-primary button primary"
-      )
-
-
+                                "PT_SUBMIT_BUTTON_CLASSES",
+                                "btn btn-primary button primary"
+                                )
