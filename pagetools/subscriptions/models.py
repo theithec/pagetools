@@ -138,7 +138,6 @@ class QueuedEmail(LangModel):
                             self.body.replace(
                                 '__unsubscribe_path__',
                                  unsubscribe_path),
-                                #'/unsubscribe/%s' % unsubscribe_path),
                             subs_settings.NEWS_FROM,
                             [to],
                             connection=conn,
@@ -156,7 +155,7 @@ class QueuedEmail(LangModel):
                 status = self.send_to(
                     s.subscriber.get_email(),
                     conn,
-                    "/%s?mk=%s" % (
+                    "%s?mk=%s/" % (
                         reverse('subscriptions:unsubscribe', kwargs={
                             'key': s.subscriber.key}),
                         s.subscriber.mailkey()
