@@ -9,7 +9,7 @@ register = template.Library()
 class SubscribeNode(template.Node):
 
     def render(self, context):
-        t = template.loader.get_template(
+        tmpl = template.loader.get_template(
             'subscriptions/block_subscription.html')
         context['sform'] = SubscribeForm()
         try:
@@ -17,7 +17,7 @@ class SubscribeNode(template.Node):
         except AttributeError:
             pass
 
-        return t.render(context)
+        return tmpl.render(context)
 
 
 @register.tag(name="subscribe_widget")

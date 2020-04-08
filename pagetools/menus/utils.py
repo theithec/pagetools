@@ -8,8 +8,6 @@ def entrieable_reverse_name(name, app_name=None):
     MenusConfig.entrieable_reverse_names = sorted([_f for _f in MenusConfig.entrieable_reverse_names if _f])
     return name
 
-# todo prefix add_
-
 
 def entrieable_auto_populated(name, callback):
     MenusConfig.entrieable_auto_children.append(name)

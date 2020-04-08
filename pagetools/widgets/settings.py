@@ -1,13 +1,8 @@
-'''
-Created on 15.12.2013
-
-@author: Tim Heithecker
-'''
 from django.conf import settings
 
 
-def _(x):
-    return x
+def _(_x):
+    return _x
 
 
 AREAS = getattr(settings, 'PT_AREAS',

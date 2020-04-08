@@ -5,7 +5,6 @@ from django.utils.html import strip_tags
 from django.utils.translation import ugettext_lazy as _
 
 from pagetools.core.models import PagelikeModel
-from pagetools.core.utils import choices2field
 from pagetools.widgets.models import PageType
 
 
@@ -36,7 +35,7 @@ class IncludedForm(models.Model):
         super(IncludedForm, self).__init__(*args, **kwargs)
         choices = [
             (i, _(i)) for i, j in list(self.includable_forms.items())]
-        choices2field(self._meta.get_field('included_form'), choices)
+        self._meta.get_field('included_form').choices = choices
 
     class Meta:
         abstract = True

@@ -3,7 +3,7 @@ from django import forms
 from django.urls import reverse
 
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit, Layout
+from crispy_forms.layout import Submit
 
 from pagetools.core.settings import SUBMIT_BUTTON_CLASSES
 

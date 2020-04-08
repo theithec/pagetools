@@ -1,9 +1,3 @@
-'''
-Created on 20.12.2013
-
-@author: Tim Heithecker
-'''
-
 from django.conf import settings
 from django.test import TestCase
 from django.test.client import Client
@@ -21,7 +15,6 @@ pagetools.search.search_mods = (
 pagetools.search.views.SearchResultsView._search_mods = pagetools.search.search_mods
 pagetools.search.extra_filter = lambda x: x.filter(status=STATUS_PUBLISHED)
 pagetools.search.views.extra_filter = lambda x: x.filter(status=STATUS_PUBLISHED)
-# search.extra_filter = lambda x: x
 
 
 class SearchViewTests(TestCase):

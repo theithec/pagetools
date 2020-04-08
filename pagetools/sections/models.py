@@ -12,8 +12,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
 
 from pagetools.core.models import PagelikeModel, PublishableLangManager
-from pagetools.core.utils import (get_adminadd_url, get_classname, importer,
-                                  choices2field)
+from pagetools.core.utils import (get_adminadd_url, get_classname, importer)
 
 
 class PageNodeManager(PublishableLangManager):
@@ -32,7 +31,7 @@ class TypeMixin(models.Model):
 
     def __init__(self, *args, **kwargs):
         super(TypeMixin, self).__init__(*args, **kwargs)
-        choices2field(self._meta.get_field('node_type'), self.node_choices)
+        self._meta.get_field('node_type').choices = self.node_choices
 
     class Meta:
         abstract = True
