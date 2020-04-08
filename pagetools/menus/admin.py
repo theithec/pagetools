@@ -146,8 +146,6 @@ class MenuAdmin(TinyMCEMixin, admin.ModelAdmin):
 
     class Media:
         js = (
-            "js/jquery/dist/jquery.min.js",
-            "js/jquery-ui/jquery-ui.min.js",
             "pagetools/admin/js/jquery.mjs.nestedSortable.js",
             "pagetools/admin/js/menuentries.js",
         )

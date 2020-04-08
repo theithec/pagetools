@@ -27,7 +27,7 @@ class Section(TypeMixin, PageNode):
 
 
 class SectionList(PageNode):
-    allowed_children_classes = [Section, ]
+    allowed_children_classes = [Section, Article]
     objects = PageNodeManager()
 
     class Meta:

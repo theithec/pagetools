@@ -1,3 +1,4 @@
+(function($){
 $(document).ready(function(){
     function load_pagenodes(slug){
         var url = admin_pagenodesurl.replace('__SLUG__', slug);
@@ -18,4 +19,4 @@ $(document).ready(function(){
     if (selText && selText != ""){
         load_pagenodes(selText);
     }
-});
+})})(grp.jQuery);

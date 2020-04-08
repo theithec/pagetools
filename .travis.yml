@@ -1,9 +1,8 @@
 dist: xenial
 language: python
 python:
+    - "3.5"
     - "3.6"
-env:
-    - TOX_ENV=py36-django22
 install:
     - "pip install -e . "
     - "pip install -r dev_requirements.txt"

@@ -14,8 +14,8 @@ class PageNodesModule(DashboardModule):
     ...
     def _media(self):
             return forms.Media(
-                js=["bower_components/jquery/dist/jquery.min.js",
-                    "bower_components/jquery-bonsai/jquery.bonsai.js",
+                js=["
+                    "js/jquery-bonsai/jquery.bonsai.js",
                     "js/nodetree.js"
                     ],
                 css = {'all': [
