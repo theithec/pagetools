@@ -29,5 +29,5 @@ class PaginatorTest(TestCase):
 
     def test_view(self):
         request = self.factory.get("/")
-        v = CPLMListView.as_view()(request)
-        self.assertEqual(list(v.context_data['curr_page_range']), list(range(1, 3)))
+        view = CPLMListView.as_view()(request)
+        self.assertEqual(list(view.context_data['curr_page_range']), list(range(1, 3)))

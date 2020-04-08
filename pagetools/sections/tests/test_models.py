@@ -4,8 +4,6 @@ from django.test import TestCase
 from pagetools.sections.models import PageNode
 from django.conf import settings
 
-settings.IS_TEST = True
-
 
 class TestModelMixin(TestCase):
 

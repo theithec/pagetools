@@ -1,5 +1,5 @@
-import django
 import importlib
+
 from django.shortcuts import reverse
 
 
@@ -89,11 +89,3 @@ def importer(str_or_obj):
         modname, clsname = str_or_obj.rsplit(".", 1)
         str_or_obj = getattr(importlib.import_module(modname), clsname)
     return str_or_obj
-
-
-def choices2field(field, choices):
-
-    if django.VERSION < (1, 9):
-        field._choices = choices
-    else:
-        field.choices = choices

@@ -21,14 +21,15 @@ from .base_models import BaseSubscriberMixin
 
 
 def _mk_key():
-    k = "".join([random.choice(string.ascii_letters + string.digits)
-                 for x in range(1, 32)])
+    key = "".join([
+        random.choice(string.ascii_letters + string.digits)
+        for x in range(1, 32)])
     try:
-        if Subscriber.objects.filter(key=k):
-            k = _mk_key()
+        if Subscriber.objects.filter(key=key):
+            key = _mk_key()
     except ProgrammingError:  # due migrations
         pass
-    return k
+    return key
 
 
 class Subscriber(BaseSubscriberMixin, LangModel):

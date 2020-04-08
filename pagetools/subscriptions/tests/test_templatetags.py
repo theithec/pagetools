@@ -5,7 +5,7 @@ from django.template import RequestContext
 from pagetools.subscriptions.templatetags.subscriptions_tags import do_subscribe_node
 
 
-class TTTestCase(TestCase):
+class TemplateTagTestCase(TestCase):
     def test_subscripton_node(self):
         nsn = do_subscribe_node(mock.Mock(), mock.Mock())
         self.assertTrue('name="email"' in nsn.render(RequestContext(mock.Mock(), {})))

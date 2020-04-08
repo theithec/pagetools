@@ -14,7 +14,7 @@ class SectionAdminTests(TestModelMixin):
 
         self.site = AdminSite()
 
-    def test_foo1(self):
+    def test_has_fields(self):
         admin = BasePageNodeAdmin(PageNode, self.site)
         self.assertEqual(list(admin.get_fields(Mock())), [
             'status', 'lang', 'title', 'slug', 'description',

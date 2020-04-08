@@ -1,10 +1,5 @@
-'''
-Created on 15.12.2013
-
-@author: Tim Heithecker
-'''
 from django.contrib.auth.models import User
-from django.urls import resolve, reverse
+from django.urls import reverse
 from django.test.client import Client
 from django.test.testcases import TestCase
 

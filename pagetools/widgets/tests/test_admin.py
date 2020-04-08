@@ -21,12 +21,10 @@ class TypeAreaAdminTests(TestCase):
         response = self.client.post(
             get_adminadd_url(TypeArea),
             {
-                # 'type_id': self.pagetype.pk,
                 'pagetype': self.pagetype.pk,
                 'area': "sidebar",
                 'widgets-TOTAL_FORMS': 1,
                 'widgets-INITIAL_FORMS': 0,
-                # 'save': True
             },
             follow=True
         )
@@ -42,9 +40,7 @@ class TypeAreaAdminTests(TestCase):
             follow=True
         )
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(
-            len(ContentWidget.objects.filter(name="name1")),
-            1)
+        self.assertEqual(len(ContentWidget.objects.filter(name="name1")), 1)
 
     def test_edit(self):
         self._test_add_typearea()

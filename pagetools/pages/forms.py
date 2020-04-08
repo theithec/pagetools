@@ -67,8 +67,9 @@ class SendEmailForm(forms.Form):
     def is_valid(self):
         _is_valid = super(SendEmailForm, self).is_valid()
         if _is_valid:
-            send_mail(self.get_mailsubject(), self.get_mailmessage(),
-                      self.get_mailsender(), self.get_mailreceivers(), fail_silently=False)
+            send_mail(
+                self.get_mailsubject(), self.get_mailmessage(),
+                self.get_mailsender(), self.get_mailreceivers(), fail_silently=False)
         return _is_valid
 
     def clean(self):

@@ -1,8 +1,8 @@
 from django.conf import settings
 
 
-def _(x):
-    return x
+def _(_x):
+    return _x
 
 
 MSG_BASE_TEMPLATE = getattr(

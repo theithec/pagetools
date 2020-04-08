@@ -1,7 +1,7 @@
 from django.template.defaultfilters import slugify
 
 
-class SelectedMenuentriesMixin(object):
+class SelectedMenuentriesMixin:
     '''Tries to find a slug from view or model add adds it to
     context. Used for find the selected menu-entries.
     [Use session-data instead?]

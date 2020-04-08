@@ -85,8 +85,6 @@ def subscribe(request):
     if request.method == 'GET':
         raise Http404
     msg, errors = _subscribe(request)
-    # ups, lazy
-    # res['msg'] = '%s' % res['msg']
     if request.is_ajax():
         return _subscribe_json(msg, errors)
 

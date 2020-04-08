@@ -1,9 +1,3 @@
-'''
-Created on 05.01.2014
-
-@author: Tim Heithecker
-
-'''
 from django.db import models
 
 from django.utils import timezone

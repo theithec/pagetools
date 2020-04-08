@@ -77,8 +77,7 @@ class MenuEntry(MPTTModel, LangModel):
         _('slug'), max_length=512,
         help_text=(_('Slug')),
         default='', blank=True)
-    parent = TreeForeignKey('self', null=True, blank=True,
-                            related_name='children', on_delete=models.CASCADE)
+    parent = TreeForeignKey('self', null=True, blank=True, related_name='children', on_delete=models.CASCADE)
 
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
@@ -97,10 +96,6 @@ class MenuEntry(MPTTModel, LangModel):
         return self.content_object.get_absolute_url()
 
     def clean(self):
-        def _raise():
-            raise ValidationError(
-                _('An entry with this title and language already exists in menu'))
-
         kwargs = {
             'title': self.title,
             'lang': self.lang,

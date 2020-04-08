@@ -1,9 +1,3 @@
-'''
-Created on 14.12.2013
-
-@author: Tim Heithecker
-'''
-
 from django.test import TestCase
 
 from pagetools.menus.models import Menu, Link
@@ -33,7 +27,6 @@ class TemplatetagsTests(TestCase):
         self.assertTrue(self.page1.slug in renderer)
 
     def test_hidden_subentries(self):
-
         link = Link.objects.create(url='/foo3')
         self.entry2.children.add_child(link, enabled=False)
 

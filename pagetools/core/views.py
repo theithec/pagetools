@@ -1,9 +1,3 @@
-'''
-Created on 20.12.2013
-
-@author: Tim Heithecker
-'''
-
 from django.conf import settings
 from django.views.generic.list import ListView
 
