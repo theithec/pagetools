@@ -1,4 +1,3 @@
-# Create your views here.
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from django.http.response import Http404
@@ -12,13 +11,7 @@ from .models import Page
 
 
 class IncludedFormMixin:
-    '''
-        expects in object
-        includable_forms = { 'name1': Form1,
-         [...]
-        }
 
-    '''
     included_form = None
     success_url = "/"
 
@@ -68,8 +61,7 @@ class IncludedFormMixin:
 
 class AuthPageMixin:
 
-    def get_queryset(self, *_args, **kwargs):
-
+    def get_queryset(self, **kwargs):
         user = self.request.user
         if not user.is_authenticated:
             kwargs['login_required'] = False
@@ -82,10 +74,7 @@ class BasePageView(SelectedMenuentriesMixin, WidgetPagelikeMixin, DetailView):
     pass
 
 
-class PageView(
-        AuthPageMixin,
-        IncludedFormMixin,
-        BasePageView):
+class PageView(AuthPageMixin, IncludedFormMixin, BasePageView):
     model = Page
 
     def get_pagetype_name(self, **kwargs):

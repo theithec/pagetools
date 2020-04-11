@@ -3,38 +3,37 @@ from django.urls import reverse
 from django.db import models
 from django.utils.html import strip_tags
 from django.utils.translation import ugettext_lazy as _
+from django.apps import apps
 
 from pagetools.core.models import PagelikeModel
 from pagetools.widgets.models import PageType
 
 
-from .forms import ContactForm, CaptchaContactForm
-
-
 class IncludedForm(models.Model):
-    '''Mixin to include a choosable form to an object
+    """Mixin that includes a form
 
-    The forms are defined in ``includeable_forms`` like
-    {stringkey: <Class>, ...}
-    '''
+     expects in object::
+
+         includable_forms = {
+             "name1": Form1,
+             # [...]
+         }
+
+     This items will be available as choices for the
+     `included form` field.
+
+    See :class:`pagetools.pages.views.IncludedFormMixin`
+    """
 
     included_form = models.CharField(
         _("Included form"), max_length=255, blank=True, choices=(
             ('dummy', 'dummy'),))
-    includable_forms = {
-        'Contactform': ContactForm,
-        'Contactfrom(Captcha)': CaptchaContactForm,
-    }
 
     def __init__(self, *args, **kwargs):
-        '''
-        Args:
-            included_form(django.db.models.CharField)
-        '''
-
         super(IncludedForm, self).__init__(*args, **kwargs)
-        choices = [
-            (i, _(i)) for i, j in list(self.includable_forms.items())]
+        appconf = apps.get_app_config("pages")
+        self.__class__.includable_forms = appconf.includable_forms
+        choices = [(i, _(i)) for i in self.includable_forms.keys()]
         self._meta.get_field('included_form').choices = choices
 
     class Meta:
@@ -42,6 +41,11 @@ class IncludedForm(models.Model):
 
 
 class IncludedEmailForm(IncludedForm):
+    """Included Form with email recevivers field
+
+       The :class:pagetools.pages.views.IncludedFormMixin will add
+       `email_receivers_list` to the form kwargs.
+    """
     email_receivers = models.CharField(
         _("Email Receivers"),
         max_length=512,
@@ -56,6 +60,11 @@ class IncludedEmailForm(IncludedForm):
 
 
 class AuthPage(models.Model):
+    """Page with a `login_required` field.
+
+       The ::class::pagetools.pages.views.IncludedFormMixin will add
+       `email_receivers_list` to the form kwargs.
+    """
     login_required = models.BooleanField(_('Login required'), default=False)
 
     class Meta:
@@ -63,18 +72,11 @@ class AuthPage(models.Model):
 
 
 class BasePage(IncludedEmailForm, AuthPage, PagelikeModel):
-    '''A basemodel for a page with one main content area
+    """A basemodel for a page with one main content area"""
 
-    Args:
-        content(django.db.models.TextField)
-
-        pagetype(pagetools.widgets.models.Pagetype)
-    '''
     content = models.TextField(_('Content'))
     objects = models.Manager()
     pagetype = models.ForeignKey(PageType, blank=True, null=True, on_delete=models.CASCADE)
-    '''See :class:`pagetools.widgets.models.PageType`
-    '''
 
     def get_pagetype(self, **kwargs):
         return self.pagetype
@@ -94,6 +96,8 @@ class Page(BasePage):
 
 
 class PageBlockMixin(models.Model):
+    """Abstract Content blocks for pages"""
+
     content = models.TextField(_('Content'), blank=True)
     visible = models.BooleanField(_('Visible'), default=True)
     # in concrete model:

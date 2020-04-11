@@ -1,13 +1,6 @@
 pagetools.subscriptions.tests package
 =====================================
 
-Subpackages
------------
-
-.. toctree::
-
-    pagetools.subscriptions.tests.migrations
-
 Submodules
 ----------
 

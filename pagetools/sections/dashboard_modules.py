@@ -3,33 +3,32 @@ from grappelli.dashboard.modules import DashboardModule
 
 
 class PageNodesModule(DashboardModule):
-    r"""
-    A module that displays a page with nodes.
+    r"""A module that displays a page with nodes.
+
     A "page" should be the root-pagenode model.
     Overwrite model =  <YourModel>
 
-    Dashboard needs to include the static files, e.g:
-    ----------------------------------------------------------------------------
-    from django import forms
-    ...
-    def _media(self):
-            return forms.Media(
-                js=["
-                    "js/jquery-bonsai/jquery.bonsai.js",
-                    "js/nodetree.js"
-                    ],
-                css = {'all': [
-                'bower_components/jquery-bonsai/jquery.bonsai.css ']}
-            )
+    Dashboard needs to include the static files, e.g::
 
-    media = property(_media)
+        from django import forms
+        ...
+        def _media(self):
+                return forms.Media(
+                    js=["
+                        "js/jquery-bonsai/jquery.bonsai.js",
+                        "js/nodetree.js"
+                        ],
+                    css = {'all': [
+                    'bower_components/jquery-bonsai/jquery.bonsai.css ']}
+                )
 
-    urls.py:
-        url(
-            r'^adminnodes/(?P<slug>[\w-]+)/$',
-            admin_pagenodesview,
-            name='admin_pagenodesview'),
-    ----------------------------------------------------------------------------
+        media = property(_media)
+
+        urls.py:
+            url(
+                r'^adminnodes/(?P<slug>[\w-]+)/$',
+                admin_pagenodesview,
+                name='admin_pagenodesview'),
 
     """
 

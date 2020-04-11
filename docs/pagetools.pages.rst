@@ -6,7 +6,6 @@ Subpackages
 
 .. toctree::
 
-    pagetools.pages.migrations
     pagetools.pages.tests
 
 Submodules

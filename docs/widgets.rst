@@ -1,4 +1,4 @@
-.. widgets_
+.. _widgets:
 
 =======
 Widgets
@@ -60,6 +60,7 @@ ContextProcessors
 -----------------
 
 In `pagetools.widgets.context_processors`
+
 - base_pagetype
   Uses the pagetype named "base"
 

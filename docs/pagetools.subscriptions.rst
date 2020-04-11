@@ -7,7 +7,6 @@ Subpackages
 .. toctree::
 
     pagetools.subscriptions.management
-    pagetools.subscriptions.migrations
     pagetools.subscriptions.templatetags
     pagetools.subscriptions.tests
 

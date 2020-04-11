@@ -4,14 +4,6 @@ pagetools.core.tests package
 Submodules
 ----------
 
-pagetools.core.tests.seleniumtestcase module
---------------------------------------------
-
-.. automodule:: pagetools.core.tests.seleniumtestcase
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 pagetools.core.tests.test_admin module
 --------------------------------------
 

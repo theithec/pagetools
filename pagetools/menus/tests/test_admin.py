@@ -6,7 +6,7 @@ from django.urls import reverse
 
 from pagetools.core.tests.test_models import ConcretePublishableLangModel
 from pagetools.core.utils import get_adminedit_url
-from pagetools.menus import _ENTRIEABLE_MODELS
+from pagetools.menus.apps import MenusConfig
 from pagetools.menus.admin import MenuAdmin, make_entrieable_admin
 from pagetools.menus.models import Link, Menu, MenuEntry
 from pagetools.widgets.settings import TEMPLATETAG_WIDGETS
@@ -115,7 +115,7 @@ class MenuAdminTests(TestCase):
 
         menu = Menu.objects.add_root(title="Menu1")
         entries = admininstance.addable_entries(obj=menu)
-        len_e = len(_ENTRIEABLE_MODELS)
+        len_e = len(MenusConfig.entrieable_models)
         if not TEMPLATETAG_WIDGETS:
             len_e -= 1
         self.assertEqual(entries.count('<li>'), len_e)

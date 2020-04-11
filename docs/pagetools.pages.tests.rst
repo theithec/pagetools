@@ -28,14 +28,6 @@ pagetools.pages.tests.test_models module
     :undoc-members:
     :show-inheritance:
 
-pagetools.pages.tests.test_urls module
---------------------------------------
-
-.. automodule:: pagetools.pages.tests.test_urls
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 pagetools.pages.tests.test_views module
 ---------------------------------------
 

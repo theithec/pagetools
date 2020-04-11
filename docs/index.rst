@@ -8,7 +8,7 @@
 
 
 Contents:
---------
+---------
 
 .. toctree::
    :maxdepth: 2
@@ -17,13 +17,11 @@ Contents:
    quickstart
    pollsandpagetools
    pagelike
-   menus
    pages
+   menus
    widgets
    search
    sections 
-   :ref:`modindex`
-
 
 Indices and tables
 ==================

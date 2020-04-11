@@ -2,3 +2,7 @@ div.unpublished, div.unpublished>div.columns>article
 {
 	background: #FF8888;
 }
+
+div.pagination a{
+    display: inline;
+}

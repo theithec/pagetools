@@ -1,3 +1,5 @@
+.. _sections:
+
 ========
 Sections
 ========
@@ -5,7 +7,10 @@ Sections
 Introducion
 -----------
 
-This app ist for (rendering) nested content. 
+This app ist for (rendering) nested content that consists of different models. 
+The models use concrete inheritation from :class:`pagetools.sections.models.PageNode`,
+which can find the "real" object again. The :class:`pagetools.sections.templatetags.sections_tags.render_node`
+renders the nested content and tries to find appropriate templates for the nested objects.
 
 
 Example

@@ -20,14 +20,6 @@ pagetools.sections.tests.test_models module
     :undoc-members:
     :show-inheritance:
 
-pagetools.sections.tests.test_views module
-------------------------------------------
-
-.. automodule:: pagetools.sections.tests.test_views
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 
 Module contents
 ---------------

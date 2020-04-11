@@ -1,0 +1,10 @@
+{% extends "paginate.html" %}
+{% block main %}
+<h1>Articles</h1>
+<ul>
+{% for article in article_list %}
+<li>{{ article }}</li>
+{% endfor %}
+</ul>
+{{ block.super }}
+{% endblock %}

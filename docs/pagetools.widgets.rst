@@ -7,8 +7,6 @@ Subpackages
 .. toctree::
 
     pagetools.widgets.management
-    pagetools.widgets.migrations
-    pagetools.widgets.tests
 
 Submodules
 ----------

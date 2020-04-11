@@ -2,11 +2,13 @@ from django.core.exceptions import MultipleObjectsReturned
 from django.urls import reverse
 from django.utils.http import urlquote
 from django.utils.translation import ugettext_lazy as _
+from django.apps import apps
 from grappelli.dashboard.modules import DashboardModule
 
 from pagetools.core.utils import get_classname
-from pagetools.menus.models import Menu
-from pagetools.menus.utils import entrieable_models
+from .models import Menu
+
+appconf = apps.get_app_config("menus")
 
 
 class MenuModule(DashboardModule):
@@ -60,7 +62,7 @@ class MenuModule(DashboardModule):
             }
             nested_children = self.menu.children_list(for_admin=True)
             context['existing'] = self.add_entrychildren(nested_children)
-            for model in entrieable_models():
+            for model in appconf.entrieable_models:
                 self.children.append({
                     'name': get_classname(model),
                     'url': reverse("admin:%s_%s_add" % (

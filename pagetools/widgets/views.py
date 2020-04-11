@@ -6,6 +6,11 @@ from .utils import get_areas_for_type
 
 
 class WidgetViewMixin:
+    """Add `areas` context data.
+
+    Expects a `get_pagetype_name` method, see `WidgetPagelikeMixin`
+    See ::class::pagetools.widgets.models.WidgetInArea
+    """
 
     add_pagetype_promise = True
     '''If set, the widget context processor will not adding areas'''
@@ -19,20 +24,12 @@ class WidgetViewMixin:
                 lang=get_language()).first()
             if pt_descr:
                 kwargs['pagetype_description'] = pt_descr.description
-        if kwargs.get("request", None) is None:
-            kwargs.update(csrf(self.request))
+        assert "request" not in kwargs
+        # if kwargs.get("request", None) is None:
+        #     kwargs.update(csrf(self.request))
         kwargs['areas'] = get_areas_for_type(ptype, kwargs)
         kwargs['pagetype_name'] = ptname
         return kwargs
-
-
-class WidgetPagelikeMixin(WidgetViewMixin):
-
-    def get_pagetype_name(self, **kwargs):
-        ptname = kwargs.get('pagetype_name', None)
-        if ptname is None:
-            ptname = getattr(self, 'pagetype_name', None)
-        return ptname
 
     def get_pagetype(self, ptname=None, **kwargs):
         ptype = None
@@ -45,3 +42,14 @@ class WidgetPagelikeMixin(WidgetViewMixin):
                 pass
 
         return ptype
+
+
+class WidgetPagelikeMixin(WidgetViewMixin):
+    """A `WidgetViewMixin` that tries to find the pagetype_name by kwargs or attribute"""
+
+    def get_pagetype_name(self, **kwargs):
+        ptname = kwargs.get('pagetype_name', None)
+        if ptname is None:
+            ptname = getattr(self, 'pagetype_name', None)
+        return ptname
+

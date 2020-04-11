@@ -6,7 +6,6 @@ Subpackages
 
 .. toctree::
 
-    pagetools.sections.migrations
     pagetools.sections.templatetags
     pagetools.sections.tests
 

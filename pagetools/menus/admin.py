@@ -11,9 +11,9 @@ from django.utils.safestring import mark_safe
 
 from pagetools.core.admin import TinyMCEMixin
 from pagetools.core.utils import get_adminadd_url, get_classname
-from pagetools.menus.models import (AutoPopulated, Link, Menu, MenuCache,
-                                    MenuEntry, ViewLink)
-from pagetools.menus.utils import entrieable_models
+from .models import (AutoPopulated, Link, Menu, MenuCache, MenuEntry, ViewLink)
+
+from .apps import MenusConfig
 
 
 class MenuChildrenWidget(forms.Widget):
@@ -87,7 +87,7 @@ class MenuAdmin(TinyMCEMixin, admin.ModelAdmin):
         return super(MenuAdmin, self).get_form(request, obj, **kwargs)
 
     def addable_entries(self, obj, **_kwargs):
-        ems = entrieable_models()
+        ems = MenusConfig.entrieable_models
         txt = "<ul>"
         for mod in ems:
             txt += '<li><a href="%s?menus=%s">%s</a></li>' % (
@@ -110,7 +110,7 @@ class MenuAdmin(TinyMCEMixin, admin.ModelAdmin):
                 [
                     '<li><a href="%s?menu=%s">%s</a></li>'
                     % (get_adminadd_url(model), context["object_id"], get_classname(model))
-                    for model in entrieable_models()
+                    for model in MenusConfig.entrieable_models
                 ]
             ))
             menu_obj = Menu.objects.filter(pk=obj.pk)[0]

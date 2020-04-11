@@ -1,6 +1,5 @@
 from collections import defaultdict
 import logging
-import django
 from django import template
 from django.core.exceptions import ValidationError
 from django.urls import reverse
@@ -8,6 +7,7 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.db.models.signals import pre_delete
+from django.dispatch import receiver
 from django.utils.text import slugify
 from django.utils.translation import ugettext_lazy as _
 
@@ -18,7 +18,6 @@ from mptt.models import MPTTModel
 from pagetools.core.models import LangManager, LangModel
 from pagetools.core.utils import get_classname, get_adminedit_url
 
-import pagetools.menus.utils
 from .settings import MENU_TEMPLATE
 from .apps import MenusConfig
 
@@ -118,10 +117,8 @@ class MenuEntry(MPTTModel, LangModel):
                     raise ValidationError(
                         _('A menu with this title and language already exists'))
 
-    class Meta:
-        pass
 
-
+@receiver(pre_delete)
 def delete_content(sender, **kwargs):
     try:
         object_id = int(kwargs['instance'].pk)
@@ -133,9 +130,6 @@ def delete_content(sender, **kwargs):
         object_id=object_id)
     if entries:
         entries.delete()
-
-
-pre_delete.connect(delete_content)
 
 
 class SelectedEntries(defaultdict):
@@ -288,7 +282,7 @@ class Menu(MenuEntry):
                 child_children = []
                 if not for_admin and getattr(obj, 'auto_children', False):
                     child_data['auto_entry'] = True
-                    child_children = obj.get_children(parent=self)
+                    child_children = obj.get_children()
                 elif dict_parent and dict_parent.get('auto_entry', False):
                     child_children = MenuEntry.objects.none()
                 else:
@@ -346,10 +340,7 @@ class ViewLink(AbstractLink):
             ('%s' % key, '%s' % key)
             for key in MenusConfig.entrieable_reverse_names
         ))
-        if django.VERSION < (1, 9):
-            self._meta.get_field('name')._choices = choices
-        else:
-            self._meta.get_field('name').choices = choices
+        self._meta.get_field('name').choices = choices
 
     def get_absolute_url(self):
         return reverse(self.name)
@@ -377,12 +368,9 @@ class AutoPopulated(AbstractLink):
             ('%s' % k, '%s' % k)
             for k in MenusConfig.entrieable_auto_children
         ))
-        if django.VERSION < (1, 9):
-            self._meta.get_field('name')._choices = choices
-        else:
-            self._meta.get_field('name').choices = choices
+        self._meta.get_field('name').choices = choices
 
-    def get_children(self, parent=None):
+    def get_children(self):
         return MenusConfig.auto_children_funcs[self.name]()
 
     def get_absolute_url(self):
