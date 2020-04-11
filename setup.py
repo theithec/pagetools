@@ -2,8 +2,7 @@ import os
 from setuptools import setup, find_packages
 import pygit2
 
-version = pygit2.Repository(".").describe().split("-")[0]
-#sfrom version import get_git_version
+from version import get_version
 
 README = open(os.path.join(os.path.dirname(__file__), 'README.rst')).read()
 
@@ -11,7 +10,7 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='django-pagetools',
-    version=version,
+    version=get_version(),
     packages=find_packages(exclude=("demo", "demo.*")),
     include_package_data=True,
     license='BSD License',  # example license
