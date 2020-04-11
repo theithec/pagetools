@@ -3,12 +3,7 @@ from django.db import models
 from pagetools.widgets.models import BaseWidget
 
 
-class Article(PageNode):
-    content = models.TextField("Content")
-    teaser = models.TextField("Teaser")
-    image = FileBrowseField("Image",max_length=200)
-    allowed_children_classes = ["main.models.Article", "main.models.SectionList"]
-    objects = PageNodeManager()
+class ChoosableTemplateWidget(BaseWidget):
 
     content = models.TextField('Content')
     template = models.CharField(

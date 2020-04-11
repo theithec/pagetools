@@ -12,4 +12,3 @@ class PagesConfig(AppConfig):
             'Contactform': forms.ContactForm,
             'Contactfrom(Captcha)': forms.CaptchaContactForm,
         }
-        print("PC", vars(self))

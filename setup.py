@@ -1,6 +1,5 @@
 import os
 from setuptools import setup, find_packages
-import pygit2
 
 from version import get_version
 
