@@ -103,7 +103,7 @@ def filter_expired(queryset):
     fieldname = model.define_expired
     daterange = getattr(model, "expired_daterange", 1)
     to_delete = model.objects.filter(
-        **{f"{fieldname}__lt": datetime.now() - timedelta(daterange)})
+        **{"%s__lt" % fieldname: datetime.now() - timedelta(daterange)})
     return to_delete
 
 

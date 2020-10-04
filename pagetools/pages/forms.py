@@ -14,8 +14,9 @@ from crispy_forms.layout import Submit
 from captcha.fields import CaptchaField
 
 from pagetools.core.settings import SUBMIT_BUTTON_CLASSES
-from .settings import MAILFORM_RECEIVERS
-from .settings import MAILFORM_SENDER
+from pagetools.pages.validators import validate_emails_str
+
+from .settings import MAILFORM_RECEIVERS,  MAILFORM_SENDER
 
 logger = logging.getLogger(__name__)
 
@@ -70,6 +71,12 @@ class SendEmailForm(forms.Form):
                 self.get_mailsubject(), self.get_mailmessage(),
                 self.get_mailsender(), self.get_mailreceivers(), fail_silently=False)
         return _is_valid
+
+    def clean(self):
+        super(SendEmailForm, self).clean()
+        if not self.mailreceivers:
+            raise ValidationError(_("An error occured"))
+        validate_emails_str(",".join(self.mailreceivers))
 
 
 class ContactForm(SendEmailForm):
