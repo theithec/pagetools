@@ -1,0 +1,15 @@
+{% extends "grappelli/dashboard/module.html" %}
+{% load i18n %}
+{% block module_content %}
+
+	<div class="grp-module">
+        {% for child in module.children %}
+	<div class="grp-row">
+        {{ child }}
+    </div>
+        {% endfor %}
+	<div class="grp-row">
+        <a href="#" class="grp-button grp-delete-link ">Delete old entries</a>
+    </div>
+    </div>
+{% endblock %}
