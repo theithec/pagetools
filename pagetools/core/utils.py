@@ -1,3 +1,5 @@
+from typing import List
+from datetime import datetime, timedelta
 import importlib
 
 from django.shortcuts import reverse
@@ -89,3 +91,20 @@ def importer(str_or_obj):
         modname, clsname = str_or_obj.rsplit(".", 1)
         str_or_obj = getattr(importlib.import_module(modname), clsname)
     return str_or_obj
+
+
+def filter_expired(queryset):
+    """The model needs
+        define_expired = Name of a DateTimeField
+        # optional
+        expired_daterange = 1  # Days - how old items have to be to be deleted
+    """
+    model = queryset.model
+    fieldname = model.define_expired
+    daterange = getattr(model, "expired_daterange", 1)
+    to_delete = model.objects.filter(
+        **{f"{fieldname}__lt": datetime.now() - timedelta(daterange)})
+    return to_delete
+
+
+

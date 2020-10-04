@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.utils.html import format_html
 from django.utils.translation import ugettext_lazy as _
 
-from pagetools.core.utils import get_adminedit_url
+from pagetools.core.utils import get_adminedit_url, filter_expired
 
 
 class TinyMCEMixin(admin.ModelAdmin):
@@ -33,8 +33,22 @@ class AdminLinkMixin:
     admin_link.short_description = _("Admin link")
 
 
-class PagelikeAdmin(AdminLinkMixin, TinyMCEMixin):
+class DeleteExpiredMixinAdmin:
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if getattr(self.model, "define_expired", None):
+            actions["delete_expired"] = (
+                    delete_expired_action, "delete_expired", _("Delete expired"))
+        return actions
+
+
+class PagelikeAdmin(AdminLinkMixin, DeleteExpiredMixinAdmin, TinyMCEMixin):
     '''
     Prepopulate slug from title and add tinymce-media
     '''
     prepopulated_fields = {"slug": ("title",)}
+
+
+def delete_expired_action(modeladmin, request, queryset):
+    queryset = filter_expired(queryset)
+    return admin.actions.delete_selected(modeladmin, request, queryset)
