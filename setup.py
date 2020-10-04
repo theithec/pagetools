@@ -12,7 +12,7 @@ setup(
     version=get_version(),
     packages=find_packages(exclude=("demo", "demo.*")),
     include_package_data=True,
-    license='BSD License',  # example license
+    license='MIT License',
     description='A set of Django apps to to provide some cms-like features',
     install_requires=[
         "Django==2.*",

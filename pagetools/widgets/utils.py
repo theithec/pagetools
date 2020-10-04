@@ -1,5 +1,4 @@
 from django.db.utils import DatabaseError
-
 from pagetools.widgets.models import PageType, TypeArea
 
 
@@ -25,10 +24,14 @@ def get_areas_for_type(pagetype, contextdict, tmpdict=None):
         if tmpdict.get(type_area.area) is not None:
             continue
 
-        orderedwidgets = type_area.widgets.filter(enabled=True).order_by('position')
+        orderedwidgets = (
+            type_area.widgets
+            .filter(enabled=True)
+            .prefetch_related("content_object")
+            .order_by('position'))
         tmpdict[type_area.area] = [
             widget.get_content(contextdict)
-            for widget in orderedwidgets  # allareawidgets
+            for widget in orderedwidgets
         ]
 
     if pagetype.parent:

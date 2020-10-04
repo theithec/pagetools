@@ -4,9 +4,13 @@ from django.db import models
 from django.utils.html import strip_tags
 from django.utils.translation import ugettext_lazy as _
 from django.apps import apps
+from django.core.exceptions import ValidationError
+
 
 from pagetools.core.models import PagelikeModel
 from pagetools.widgets.models import PageType
+
+from .validators import validate_emails_str
 
 
 class IncludedForm(models.Model):
@@ -19,12 +23,15 @@ class IncludedForm(models.Model):
              # [...]
          }
 
+         or use the settings from the AppConfig for "pages"
+
      This items will be available as choices for the
      `included form` field.
 
     See :class:`pagetools.pages.views.IncludedFormMixin`
     """
 
+    includable_forms = {}
     included_form = models.CharField(
         _("Included form"), max_length=255, blank=True, choices=(
             ('dummy', 'dummy'),))
@@ -32,7 +39,8 @@ class IncludedForm(models.Model):
     def __init__(self, *args, **kwargs):
         super(IncludedForm, self).__init__(*args, **kwargs)
         appconf = apps.get_app_config("pages")
-        self.__class__.includable_forms = appconf.includable_forms
+        self.__class__.includable_forms = (
+            self.__class__.includable_forms or appconf.includable_forms)
         choices = [(i, _(i)) for i in self.includable_forms.keys()]
         self._meta.get_field('included_form').choices = choices
 
@@ -51,6 +59,12 @@ class IncludedEmailForm(IncludedForm):
         max_length=512,
         blank=True,
         help_text="Comma separated list of emails")
+
+    def clean(self, *args, **kwargs):
+        super().clean()
+        if self.included_form and not self.email_receivers:
+            raise ValidationError(_('''The selected form requires "email_receivers"'''))
+        validate_emails_str(self.email_receivers)
 
     def email_receivers_list(self):
         return [part.strip() for part in self.email_receivers.split(",") if part.strip()]

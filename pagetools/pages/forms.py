@@ -4,7 +4,6 @@ import logging
 from django import forms
 from django.core.exceptions import ValidationError
 from django.core.mail import send_mail
-from django.core.validators import EmailValidator
 from django.forms import widgets
 from django.utils.text import slugify
 from django.utils.translation import ugettext_lazy as _
@@ -71,17 +70,6 @@ class SendEmailForm(forms.Form):
                 self.get_mailsubject(), self.get_mailmessage(),
                 self.get_mailsender(), self.get_mailreceivers(), fail_silently=False)
         return _is_valid
-
-    def clean(self):
-        super(SendEmailForm, self).clean()
-        if not self.mailreceivers:
-            raise ValidationError(_("An error occured"))
-        validate = EmailValidator()
-        try:
-            for receiver in self.mailreceivers:
-                validate(receiver)
-        except (ValueError, ValidationError, KeyError):
-            raise ValidationError(_("An error occured"))
 
 
 class ContactForm(SendEmailForm):

@@ -19,9 +19,6 @@ class BasePageAdmin(EntrieableAdmin, PagelikeAdmin):
     search_fields = ('title', 'content')
     save_as = True
 
-    class Media:
-        js = [os.path.join(
-            settings.STATIC_URL, 'pagetools', 'js', 'formreceiver.js')]
 
 
 class PageAdmin(BasePageAdmin):

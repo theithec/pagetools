@@ -18,14 +18,14 @@ class IncludedFormMixin:
     def get_form_class(self):
         self.object = self.get_object()
         fname = self.object.included_form
+        print("O", self.object, fname)
         if fname:
             return self.object.includable_forms.get(fname)
         return None
 
     def get(self, request, *_args, **kwargs):
-        form_class = self.get_form_class()
-        if form_class and kwargs.get('form', None) is None:
-            formcls = self.get_form_class()
+        formcls = self.get_form_class()
+        if formcls and kwargs.get('form', None) is None:
             fkwargs = self.get_form_kwargs()
             kwargs['form'] = formcls(**fkwargs)
         return self.render_to_response(self.get_context_data(**kwargs))
