@@ -9,7 +9,13 @@ from .models import QueuedEmail, SendStatus, Subscriber
 
 class SubscriberAdmin(admin.ModelAdmin):
     change_list_template = 'admin/subscriptions/subscriber/sub_change_list.html'
-    list_display = ('email', 'is_activated')
+    list_display = ('email', 'subscribtion_date', 'is_activated')
+    date_hierarchy = 'subscribtion_date'
+    readonly_fields = ['subscribtion_date']
+    list_editable = ["is_activated"]
+    list_filter = ["is_activated"]
+    change_list_template = "admin/change_list.html"
+    change_list_template = "admin/change_list_filter_sidebar.html"
 
     def get_urls(self):
         urls = super().get_urls()

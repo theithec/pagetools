@@ -18,7 +18,6 @@ class IncludedFormMixin:
     def get_form_class(self):
         self.object = self.get_object()
         fname = self.object.included_form
-        print("O", self.object, fname)
         if fname:
             return self.object.includable_forms.get(fname)
         return None
