@@ -26,9 +26,9 @@ class ContentNode(template.Node):
         real_template = get_template_names_for_obj(obj, suffix)
         for key, val in SectionsConfig.render_node_extradata.items():
             context[key] = val
-        context['object'] = obj
+        context["object"] = obj
         if not obj.enabled:
-            context['unpublished'] = True
+            context["unpublished"] = True
 
         data = {}
         for dict_ in context.dicts:
@@ -44,7 +44,7 @@ def render_node(parser, token, *args, **kwargs):
     return ContentNode(obj, user, suffix)
 
 
-@register.filter(name='ordered_content')
+@register.filter(name="ordered_content")
 def _ordered_content(value, args):
     obj = value
     if obj is None:
@@ -52,11 +52,14 @@ def _ordered_content(value, args):
     return obj.ordered_content(user=args)
 
 
-@register.simple_tag(name='rendered_ordered_children')
+@register.simple_tag(name="rendered_ordered_children")
 def _rendered_ordered_children(obj, user, suffix=""):
     children = obj.ordered_content(user=user)
     return [
         mark_safe(
-            select_template(get_template_names_for_obj(child, suffix)).render({"object": child})
-        ) for child in children
+            select_template(get_template_names_for_obj(child, suffix)).render(
+                {"object": child}
+            )
+        )
+        for child in children
     ]

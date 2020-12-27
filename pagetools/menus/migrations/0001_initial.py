@@ -9,83 +9,141 @@ import mptt.fields
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('contenttypes', '0002_remove_content_type_name'),
+        ("contenttypes", "0002_remove_content_type_name"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Link',
+            name="Link",
             fields=[
-                ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
-                ('title', models.CharField(max_length=128, verbose_name='Title')),
-                ('enabled', models.BooleanField(verbose_name='enabled', default=True)),
-                ('url', models.CharField(max_length=255, verbose_name='URL')),
+                (
+                    "id",
+                    models.AutoField(
+                        serialize=False,
+                        verbose_name="ID",
+                        primary_key=True,
+                        auto_created=True,
+                    ),
+                ),
+                ("title", models.CharField(max_length=128, verbose_name="Title")),
+                ("enabled", models.BooleanField(verbose_name="enabled", default=True)),
+                ("url", models.CharField(max_length=255, verbose_name="URL")),
             ],
             options={
-                'verbose_name': 'Link',
-                'verbose_name_plural': 'Links',
+                "verbose_name": "Link",
+                "verbose_name_plural": "Links",
             },
         ),
         migrations.CreateModel(
-            name='MenuCache',
+            name="MenuCache",
             fields=[
-                ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
-                ('cache', models.TextField()),
+                (
+                    "id",
+                    models.AutoField(
+                        serialize=False,
+                        verbose_name="ID",
+                        primary_key=True,
+                        auto_created=True,
+                    ),
+                ),
+                ("cache", models.TextField()),
             ],
         ),
         migrations.CreateModel(
-            name='MenuEntry',
+            name="MenuEntry",
             fields=[
-                ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
-                ('lang', models.CharField(max_length=20, blank=True, verbose_name='language', choices=settings.LANGUAGES)),
-                ('title', models.CharField(max_length=128, verbose_name='Title')),
-                ('slugs',
-                 models.CharField(max_length=512,
-                                  help_text='Whitespace separated slugs of content',
-                                  default='',
-                                  blank=True,
-                                  verbose_name='slugs')),
-                ('object_id', models.PositiveIntegerField()),
-                ('enabled', models.BooleanField(default=False)),
-                ('lft', models.PositiveIntegerField(editable=False, db_index=True)),
-                ('rght', models.PositiveIntegerField(editable=False, db_index=True)),
-                ('tree_id', models.PositiveIntegerField(editable=False, db_index=True)),
-                ('level', models.PositiveIntegerField(editable=False, db_index=True)),
-                ('content_type', models.ForeignKey(to='contenttypes.ContentType', on_delete=models.CASCADE)),
-                ('parent', mptt.fields.TreeForeignKey(to='menus.MenuEntry', blank=True,
-                                                      related_name='children', null=True, on_delete=models.CASCADE)),
+                (
+                    "id",
+                    models.AutoField(
+                        serialize=False,
+                        verbose_name="ID",
+                        primary_key=True,
+                        auto_created=True,
+                    ),
+                ),
+                (
+                    "lang",
+                    models.CharField(
+                        max_length=20,
+                        blank=True,
+                        verbose_name="language",
+                        choices=settings.LANGUAGES,
+                    ),
+                ),
+                ("title", models.CharField(max_length=128, verbose_name="Title")),
+                (
+                    "slugs",
+                    models.CharField(
+                        max_length=512,
+                        help_text="Whitespace separated slugs of content",
+                        default="",
+                        blank=True,
+                        verbose_name="slugs",
+                    ),
+                ),
+                ("object_id", models.PositiveIntegerField()),
+                ("enabled", models.BooleanField(default=False)),
+                ("lft", models.PositiveIntegerField(editable=False, db_index=True)),
+                ("rght", models.PositiveIntegerField(editable=False, db_index=True)),
+                ("tree_id", models.PositiveIntegerField(editable=False, db_index=True)),
+                ("level", models.PositiveIntegerField(editable=False, db_index=True)),
+                (
+                    "content_type",
+                    models.ForeignKey(
+                        to="contenttypes.ContentType", on_delete=models.CASCADE
+                    ),
+                ),
+                (
+                    "parent",
+                    mptt.fields.TreeForeignKey(
+                        to="menus.MenuEntry",
+                        blank=True,
+                        related_name="children",
+                        null=True,
+                        on_delete=models.CASCADE,
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='ViewLink',
+            name="ViewLink",
             fields=[
-                ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
-                ('title', models.CharField(max_length=128, verbose_name='Title')),
-                ('enabled', models.BooleanField(verbose_name='enabled', default=True)),
-                ('name', models.CharField(max_length=255, verbose_name='Name')),
+                (
+                    "id",
+                    models.AutoField(
+                        serialize=False,
+                        verbose_name="ID",
+                        primary_key=True,
+                        auto_created=True,
+                    ),
+                ),
+                ("title", models.CharField(max_length=128, verbose_name="Title")),
+                ("enabled", models.BooleanField(verbose_name="enabled", default=True)),
+                ("name", models.CharField(max_length=255, verbose_name="Name")),
             ],
             options={
-                'verbose_name': 'ViewLink',
-                'verbose_name_plural': 'ViewLinks',
+                "verbose_name": "ViewLink",
+                "verbose_name_plural": "ViewLinks",
             },
         ),
         migrations.CreateModel(
-            name='Menu',
-            fields=[
-            ],
+            name="Menu",
+            fields=[],
             options={
-                'proxy': True,
-                'verbose_name': 'Menu',
+                "proxy": True,
+                "verbose_name": "Menu",
             },
-            bases=('menus.menuentry',),
+            bases=("menus.menuentry",),
         ),
         migrations.AlterUniqueTogether(
-            name='menuentry',
-            unique_together=set([('title', 'lang')]),
+            name="menuentry",
+            unique_together=set([("title", "lang")]),
         ),
         migrations.AddField(
-            model_name='menucache',
-            name='menu',
-            field=models.OneToOneField(to='menus.Menu', blank=True, null=True, on_delete=models.CASCADE),
+            model_name="menucache",
+            name="menu",
+            field=models.OneToOneField(
+                to="menus.Menu", blank=True, null=True, on_delete=models.CASCADE
+            ),
         ),
     ]

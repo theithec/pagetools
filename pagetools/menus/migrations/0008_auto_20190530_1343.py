@@ -6,23 +6,23 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('menus', '0007_auto_20180527_1359'),
+        ("menus", "0007_auto_20180527_1359"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='menuentry',
-            name='level',
+            model_name="menuentry",
+            name="level",
             field=models.PositiveIntegerField(editable=False),
         ),
         migrations.AlterField(
-            model_name='menuentry',
-            name='lft',
+            model_name="menuentry",
+            name="lft",
             field=models.PositiveIntegerField(editable=False),
         ),
         migrations.AlterField(
-            model_name='menuentry',
-            name='rght',
+            model_name="menuentry",
+            name="rght",
             field=models.PositiveIntegerField(editable=False),
         ),
     ]

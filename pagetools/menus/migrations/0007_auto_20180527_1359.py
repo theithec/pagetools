@@ -8,12 +8,12 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('menus', '0006_auto_20161030_1520'),
+        ("menus", "0006_auto_20161030_1520"),
     ]
 
     operations = [
         migrations.AlterUniqueTogether(
-            name='menuentry',
+            name="menuentry",
             unique_together=set([]),
         ),
     ]

@@ -11,6 +11,6 @@ class CommandsTestCase(TestCase):
 
         args = []
         opts = {}
-        call_command('mk_templatetagwidgets', *args, **opts)
+        call_command("mk_templatetagwidgets", *args, **opts)
         widgetobjects = TemplateTagWidget.objects.all()
         self.assertEqual(len(TEMPLATETAG_WIDGETS), len(widgetobjects))

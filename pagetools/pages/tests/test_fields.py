@@ -10,12 +10,10 @@ class TestForm(forms.Form):
 
 class FormsTestCase(TestCase):
     def test_valid_dyn_field(self):
-        form = TestForm({
-            'dmcf': ["1", "2"]
-        })
+        form = TestForm({"dmcf": ["1", "2"]})
         self.assertTrue(form.is_valid())
 
     def test_invalid_dyn_field(self):
         self.assertRaises(
-            ValidationError,
-            lambda: DynMultipleChoiceField(label="sowrong"))
+            ValidationError, lambda: DynMultipleChoiceField(label="sowrong")
+        )

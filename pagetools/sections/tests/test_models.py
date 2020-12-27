@@ -6,7 +6,6 @@ from django.conf import settings
 
 
 class TestModelMixin(TestCase):
-
     def setUp(self):
 
         self.model = PageNode
@@ -14,6 +13,5 @@ class TestModelMixin(TestCase):
 
 
 class ModelTests(TestModelMixin):
-
     def test_title(self):
         self.assertEqual(self.node1.title, "w1")

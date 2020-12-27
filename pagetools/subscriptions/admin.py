@@ -8,10 +8,10 @@ from .models import QueuedEmail, SendStatus, Subscriber
 
 
 class SubscriberAdmin(admin.ModelAdmin):
-    change_list_template = 'admin/subscriptions/subscriber/sub_change_list.html'
-    list_display = ('email', 'subscribtion_date', 'is_activated')
-    date_hierarchy = 'subscribtion_date'
-    readonly_fields = ['subscribtion_date']
+    change_list_template = "admin/subscriptions/subscriber/sub_change_list.html"
+    list_display = ("email", "subscribtion_date", "is_activated")
+    date_hierarchy = "subscribtion_date"
+    readonly_fields = ["subscribtion_date"]
     list_editable = ["is_activated"]
     list_filter = ["is_activated"]
     change_list_template = "admin/change_list.html"
@@ -20,7 +20,11 @@ class SubscriberAdmin(admin.ModelAdmin):
     def get_urls(self):
         urls = super().get_urls()
         my_urls = [
-            path('mass_subscription/', self.mass_subscription, name="pagetools_subscriptions_mass_subscription"),
+            path(
+                "mass_subscription/",
+                self.mass_subscription,
+                name="pagetools_subscriptions_mass_subscription",
+            ),
         ]
         return my_urls + urls
 
@@ -40,7 +44,11 @@ class SubscriberAdmin(admin.ModelAdmin):
             if failed:
                 context["failures"] = failed
 
-        return TemplateResponse(request, "admin/subscriptions/subscriber/mass_subscription.html", context=context)
+        return TemplateResponse(
+            request,
+            "admin/subscriptions/subscriber/mass_subscription.html",
+            context=context,
+        )
 
 
 admin.site.register(Subscriber, SubscriberAdmin)

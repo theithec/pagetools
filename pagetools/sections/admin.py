@@ -5,13 +5,15 @@ from django.utils.safestring import mark_safe
 
 from django.contrib.contenttypes.models import ContentType
 from grappelli.forms import GrappelliSortableHiddenMixin
-from pagetools.core.admin import PagelikeAdmin, AdminLinkMixin
+from pagetools.admin import PagelikeAdmin, AdminLinkMixin
 from .models import PageNode, PageNodePos
 
 
-class BasePageNodePosAdmin(AdminLinkMixin, GrappelliSortableHiddenMixin, admin.TabularInline):
+class BasePageNodePosAdmin(
+    AdminLinkMixin, GrappelliSortableHiddenMixin, admin.TabularInline
+):
     model = PageNodePos
-    readonly_fields = ('admin_link',)
+    readonly_fields = ("admin_link",)
     fk_name = "owner"
     sortable_field_name = "position"
     extra = 1
@@ -22,12 +24,14 @@ class BasePageNodePosAdmin(AdminLinkMixin, GrappelliSortableHiddenMixin, admin.T
             super(BasePageNodePosAdmin, self)
             .get_queryset(request)
             .select_related("owner")
-            .prefetch_related("content__content_object"))
+            .prefetch_related("content__content_object")
+        )
 
     def admin_link(self, instance, linktext=None):
         realobj = instance.content.content_object
         return super().admin_link(realobj, linktext)
-    admin_link.short_description = _("Admin link")
+
+    admin_link.short_description = _("Admin link")  # type: ignore
 
     def has_add_permission(self, request):
         return True
@@ -35,7 +39,7 @@ class BasePageNodePosAdmin(AdminLinkMixin, GrappelliSortableHiddenMixin, admin.T
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
 
         is_content_with_choices = db_field.name == "content" and getattr(
-            self.parent_model, 'allowed_children_classes', False
+            self.parent_model, "allowed_children_classes", False
         )
         if is_content_with_choices:
             cache = getattr(request, "_cache", {})
@@ -46,14 +50,17 @@ class BasePageNodePosAdmin(AdminLinkMixin, GrappelliSortableHiddenMixin, admin.T
                 else:
                     allowed_contenttypes = [
                         ContentType.objects.get_for_model(
-                            acc, for_concrete_model=False).pk
+                            acc, for_concrete_model=False
+                        ).pk
                         for acc in allowed_children_classes
                     ]
                     queryset = PageNode.objects.filter(
                         content_type_pk__in=allowed_contenttypes
                     )
-                queryset = queryset.order_by('title')
-                cache["choices"] = [("", BLANK_CHOICE_DASH)] + [(obj.id, str(obj)) for obj in queryset]
+                queryset = queryset.order_by("title")
+                cache["choices"] = [("", BLANK_CHOICE_DASH)] + [
+                    (obj.id, str(obj)) for obj in queryset
+                ]
                 cache["queryset"] = queryset
                 request._cache = cache
             kwargs["queryset"] = cache["queryset"]
@@ -68,20 +75,25 @@ class BasePageNodePosAdmin(AdminLinkMixin, GrappelliSortableHiddenMixin, admin.T
 class BasePageNodeAdmin(PagelikeAdmin):
 
     inlines = [BasePageNodePosAdmin]
-    change_form_template = 'admin/change_form_chooser.html'
+    change_form_template = "admin/change_form_chooser.html"
 
     prepopulated_fields = {"slug": ("title",)}
-    readonly_fields = ('status_changed', 'containing_nodes')
+    readonly_fields = ("status_changed", "containing_nodes")
 
     def get_queryset(self, request):
         real_pk = self.model.get_contenttype_pk()
-        qs = self.model._default_manager.filter(content_type_pk=real_pk).prefetch_related("content_object")
+        qs = self.model._default_manager.filter(
+            content_type_pk=real_pk
+        ).prefetch_related("content_object")
         return qs
 
     def containing_nodes(self, instance):
         parents = instance.in_nodes.all()
-        txt = ", ".join([self.admin_link(p.content_object, str(p.content_object)) for p in parents])
+        txt = ", ".join(
+            [self.admin_link(p.content_object, str(p.content_object)) for p in parents]
+        )
         return mark_safe(txt)
+
     containing_nodes.short_description = _("Parents")
     containing_nodes.allow_tags = _("Parents")
 

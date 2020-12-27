@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.utils.translation import activate
-from pagetools.core.models import get_language, PublishableLangModel, models
+from pagetools.models import get_language, PublishableLangModel, models
 
 
 class ConcretePublishableLangModel(PublishableLangModel):
@@ -14,15 +14,26 @@ class ConcretePublishableLangModel(PublishableLangModel):
 
 
 class PublishableLangModelTest(TestCase):
-
     def setUp(self):
         self.orglang = get_language()
-        self.inst_pub_de = ConcretePublishableLangModel.objects.create(status="published", lang="de")
-        self.inst_pub_en = ConcretePublishableLangModel.objects.create(status="published", lang="en")
-        self.inst_draft_de = ConcretePublishableLangModel.objects.create(status="draft", lang="de")
-        self.inst_draft_en = ConcretePublishableLangModel.objects.create(status="draft", lang="en")
-        self.inst_pub_nolang = ConcretePublishableLangModel.objects.create(status="published")
-        self.inst_draft_nolang = ConcretePublishableLangModel.objects.create(status="draft")
+        self.inst_pub_de = ConcretePublishableLangModel.objects.create(
+            status="published", lang="de"
+        )
+        self.inst_pub_en = ConcretePublishableLangModel.objects.create(
+            status="published", lang="en"
+        )
+        self.inst_draft_de = ConcretePublishableLangModel.objects.create(
+            status="draft", lang="de"
+        )
+        self.inst_draft_en = ConcretePublishableLangModel.objects.create(
+            status="draft", lang="en"
+        )
+        self.inst_pub_nolang = ConcretePublishableLangModel.objects.create(
+            status="published"
+        )
+        self.inst_draft_nolang = ConcretePublishableLangModel.objects.create(
+            status="draft"
+        )
 
     def tearDown(self):
         activate(self.orglang)
@@ -32,7 +43,9 @@ class PublishableLangModelTest(TestCase):
         self.assertEqual(len(ConcretePublishableLangModel.public.lfilter()), 2)
 
     def test_skip_lang(self):
-        self.assertEqual(len(ConcretePublishableLangModel.public.lfilter(skip_lang=True)), 3)
+        self.assertEqual(
+            len(ConcretePublishableLangModel.public.lfilter(skip_lang=True)), 3
+        )
 
     def test_find_en_active(self):
         activate("en")

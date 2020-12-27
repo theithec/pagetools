@@ -8,16 +8,19 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('menus', '0004_auto_20160911_1305'),
+        ("menus", "0004_auto_20160911_1305"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='autopopulated',
-            options={'verbose_name': 'Autopopulated Entry', 'verbose_name_plural': 'Autopopulated Entries'},
+            name="autopopulated",
+            options={
+                "verbose_name": "Autopopulated Entry",
+                "verbose_name_plural": "Autopopulated Entries",
+            },
         ),
         migrations.AlterModelOptions(
-            name='viewlink',
-            options={'verbose_name': 'View', 'verbose_name_plural': 'View'},
+            name="viewlink",
+            options={"verbose_name": "View", "verbose_name_plural": "View"},
         ),
     ]

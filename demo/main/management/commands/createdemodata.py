@@ -1,17 +1,14 @@
-import sys  # noqa
+import sys
 
-from django.contrib.auth.models import User  # noqa
+from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
-from django.core import management  # noqa
+from django.core import management
 from django.core.management.base import BaseCommand
-from django.utils import timezone  # noqa
+from django.utils import timezone
 
 from filebrowser.base import FileObject
 
-import pagetools.menus.utils  # noqa
-
-
-from pagetools.core.settings import STATUS_PUBLISHED  # noqa
+from pagetools.settings import STATUS_PUBLISHED
 from pagetools.menus.models import Menu, AutoPopulated, ViewLink  # noqa
 from pagetools.pages.models import Page  # noqa
 from pagetools.widgets.models import (PageType, TypeArea, ContentWidget,  # noqa

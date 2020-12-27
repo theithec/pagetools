@@ -24,23 +24,23 @@ class IncludedFormMixin:
 
     def get(self, request, *_args, **kwargs):
         formcls = self.get_form_class()
-        if formcls and kwargs.get('form', None) is None:
+        if formcls and kwargs.get("form", None) is None:
             fkwargs = self.get_form_kwargs()
-            kwargs['form'] = formcls(**fkwargs)
+            kwargs["form"] = formcls(**fkwargs)
         return self.render_to_response(self.get_context_data(**kwargs))
 
     def post(self, request, *_args, **kwargs):
         self.get_object()
         form = self.get_form_class()(request.POST, **self.get_form_kwargs())
         if form.is_valid():
-            kwargs['form'] = None
+            kwargs["form"] = None
             return self.form_valid(form)
 
         return self.form_invalid(form)
 
     def form_valid(self, form):
         if self.request.is_ajax():
-            return JsonResponse({'data': _("Mail send")}, status=200)
+            return JsonResponse({"data": _("Mail send")}, status=200)
 
         messages.success(self.request, _("Mail send"))
         return self.get(self.request, form=None)
@@ -53,18 +53,17 @@ class IncludedFormMixin:
 
     def get_form_kwargs(self):
         kwargs = {}
-        if getattr(self, 'object') and getattr(self.object, 'email_receivers_list'):
-            kwargs['mailreceivers'] = self.object.email_receivers_list()
+        if getattr(self, "object") and getattr(self.object, "email_receivers_list"):
+            kwargs["mailreceivers"] = self.object.email_receivers_list()
         return kwargs
 
 
 class AuthPageMixin:
-
     def get_queryset(self, **kwargs):
         user = self.request.user
         if not user.is_authenticated:
-            kwargs['login_required'] = False
-        kwargs['user'] = user
+            kwargs["login_required"] = False
+        kwargs["user"] = user
         qs = self.model.public.lfilter(**kwargs)
         return qs
 
@@ -80,24 +79,22 @@ class PageView(AuthPageMixin, IncludedFormMixin, BasePageView):
         return (
             self.object.pagetype.name
             if self.object.pagetype
-            else super().get_pagetype_name(**kwargs))
+            else super().get_pagetype_name(**kwargs)
+        )
 
     def get_pagetype(self, **kwargs):
         return self.object.pagetype or super().get_pagetype(self)
 
     def get_context_data(self, **kwargs):
-        kwargs['page_title'] = self.object.title
+        kwargs["page_title"] = self.object.title
         kwargs = super(PageView, self).get_context_data(**kwargs)
         return kwargs
 
 
 class IndexView(PageView):
-
     def get_object(self, **_kwargs):
         try:
-            self.object = self.get_queryset().get(
-                slug="start"
-            )
+            self.object = self.get_queryset().get(slug="start")
             return self.object
         except ObjectDoesNotExist:
             raise Http404

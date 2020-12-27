@@ -3,33 +3,28 @@ from django.contrib import admin
 from django.utils.html import format_html
 from django.utils.translation import ugettext_lazy as _
 
-from pagetools.core.utils import get_adminedit_url, filter_expired
+from pagetools.utils import get_adminedit_url, filter_expired
 
 
 class TinyMCEMixin(admin.ModelAdmin):
-    '''
+    """
     Add tinymce media files
-    '''
+    """
 
     class Media:
 
         js = [
-            '%sgrappelli/tinymce/jscripts/tiny_mce/tiny_mce.js' %
-            settings.STATIC_URL,
-            '%sgrappelli/tinymce_setup/tinymce_setup.js' %
-            settings.STATIC_URL,
+            "%sgrappelli/tinymce/jscripts/tiny_mce/tiny_mce.js" % settings.STATIC_URL,
+            "%sgrappelli/tinymce_setup/tinymce_setup.js" % settings.STATIC_URL,
         ]
-        '''Sphinx shows this as a hardcoded string, but it is not.'''
+        """Sphinx shows this as a hardcoded string, but it is not."""
 
 
 class AdminLinkMixin:
     def admin_link(self, instance, linktext=None):
         linktext = linktext or "Edit"
-        return format_html(
-            '<a href="{}">{}</a>',
-            get_adminedit_url(instance),
-            linktext
-        )
+        return format_html('<a href="{}">{}</a>', get_adminedit_url(instance), linktext)
+
     admin_link.short_description = _("Admin link")
 
 
@@ -38,14 +33,18 @@ class DeleteExpiredMixinAdmin:
         actions = super().get_actions(request)
         if getattr(self.model, "define_expired", None):
             actions["delete_expired"] = (
-                    delete_expired_action, "delete_expired", _("Delete expired"))
+                delete_expired_action,
+                "delete_expired",
+                _("Delete expired"),
+            )
         return actions
 
 
 class PagelikeAdmin(AdminLinkMixin, DeleteExpiredMixinAdmin, TinyMCEMixin):
-    '''
+    """
     Prepopulate slug from title and add tinymce-media
-    '''
+    """
+
     prepopulated_fields = {"slug": ("title",)}
 
 

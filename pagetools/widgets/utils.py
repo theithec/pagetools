@@ -5,7 +5,7 @@ from pagetools.widgets.models import PageType, TypeArea
 def type_or_none(typename):
     try:
         return PageType.objects.get(name=typename)
-    except(PageType.DoesNotExist, DatabaseError):
+    except (PageType.DoesNotExist, DatabaseError):
         return None
 
 
@@ -14,7 +14,7 @@ def get_areas_for_type(pagetype, contextdict, tmpdict=None):
         tmpdict = {}
 
     if pagetype is None:
-        pagetype = type_or_none('base')
+        pagetype = type_or_none("base")
         if not pagetype:
             return None
 
@@ -25,19 +25,14 @@ def get_areas_for_type(pagetype, contextdict, tmpdict=None):
             continue
 
         orderedwidgets = (
-            type_area.widgets
-            .filter(enabled=True)
+            type_area.widgets.filter(enabled=True)
             .prefetch_related("content_object")
-            .order_by('position'))
+            .order_by("position")
+        )
         tmpdict[type_area.area] = [
-            widget.get_content(contextdict)
-            for widget in orderedwidgets
+            widget.get_content(contextdict) for widget in orderedwidgets
         ]
 
     if pagetype.parent:
-        tmpdict = get_areas_for_type(
-            pagetype.parent,
-            contextdict,
-            tmpdict
-        )
+        tmpdict = get_areas_for_type(pagetype.parent, contextdict, tmpdict)
     return tmpdict

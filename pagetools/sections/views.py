@@ -28,30 +28,28 @@ class BaseNodeView(DetailView):
 
     def get_template_names(self):
         return (
-            self.template_name or
-            get_template_names_for_obj(self.object, self.template_suffix) or
-            super(BaseNodeView, self).get_template_names()
+            self.template_name
+            or get_template_names_for_obj(self.object, self.template_suffix)
+            or super(BaseNodeView, self).get_template_names()
         )
 
     def get_context_data(self, **kwargs):
         context = super(BaseNodeView, self).get_context_data(**kwargs)
         self.object = self.get_object()
-        context['contents'] = self.object.ordered_content(
-            user=self.request.user)
+        context["contents"] = self.object.ordered_content(user=self.request.user)
         return context
 
 
-class PagelikeNodeView(SelectedMenuentriesMixin, WidgetPagelikeMixin,
-                       BaseNodeView):
+class PagelikeNodeView(SelectedMenuentriesMixin, WidgetPagelikeMixin, BaseNodeView):
     pass
 
 
 class BaseAjaxNodeViewMixin(AJAXMixin):
     def get_context_data(self, **kwargs):
         context = super(BaseAjaxNodeViewMixin, self).get_context_data(**kwargs)
-        context['AJAXVIEW'] = True
-        context['css_block'] = "css_ajax"
-        context['js_block'] = "js_ajax"
+        context["AJAXVIEW"] = True
+        context["css_block"] = "css_ajax"
+        context["js_block"] = "js_ajax"
         return context
 
 
@@ -62,21 +60,19 @@ class BaseAjaxNodeView(BaseAjaxNodeViewMixin, BaseNodeView):
 def _add_children(txt, children, user):
     for child in children:
         adminediturl = reverse(
-            'admin:%s_%s_change' % (
-                child._meta.app_label,
-                child._meta.model_name
-            ),
-            args=(child.id,))
+            "admin:%s_%s_change" % (child._meta.app_label, child._meta.model_name),
+            args=(child.id,),
+        )
 
         txt += format_html(
-            '''<li><a {} href="{}">{}</a>''',
+            """<li><a {} href="{}">{}</a>""",
             "" if child.enabled else mark_safe("style='color: orange;'"),
             adminediturl,
-            child
+            child,
         )
         coc = child.ordered_content(user=user)
         if coc:
-            txt += '<ul>' + _add_children('', coc, user) + '</ul>'
+            txt += "<ul>" + _add_children("", coc, user) + "</ul>"
         txt += "</li>"
     return txt
 
@@ -86,8 +82,6 @@ def _add_children(txt, children, user):
 def admin_pagenodesview(request, slug):
     module = PageNodesModule.model.objects.get(slug=slug)
     listtxt = '<ol id="pagenodes">'
-    listtxt += _add_children('',
-                             [module],
-                             user=request.user)
-    listtxt += '</ol>'
+    listtxt += _add_children("", [module], user=request.user)
+    listtxt += "</ol>"
     return HttpResponse(listtxt)

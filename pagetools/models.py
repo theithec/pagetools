@@ -93,15 +93,15 @@ class PublishableLangModel(LangModel, StatusModel):
         warnings.warn("Depricated. Bad naming. Use ``is_published``.")
         return self.status == ptsettings.STATUS_PUBLISHED
 
-    _enabled.boolean = True
-    _enabled.admin_order_field = "status"
+    _enabled.boolean = True  # type: ignore
+    _enabled.admin_order_field = "status"  # type: ignore
     enabled = property(_enabled)
 
     def _is_published(self):
         return self.status == ptsettings.STATUS_PUBLISHED
 
-    _is_published.boolean = True
-    _is_published.admin_order_field = "status"
+    _is_published.boolean = True  # type: ignore
+    _is_published.admin_order_field = "status"  # type: ignore
     is_published = property(_is_published)
 
     class Meta:

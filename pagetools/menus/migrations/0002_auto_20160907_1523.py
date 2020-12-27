@@ -8,17 +8,23 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('menus', '0001_initial'),
+        ("menus", "0001_initial"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='menuentry',
-            name='slugs',
+            model_name="menuentry",
+            name="slugs",
         ),
         migrations.AddField(
-            model_name='menuentry',
-            name='slug',
-            field=models.CharField(blank=True, default='', help_text='Slug', max_length=512, verbose_name='slug'),
+            model_name="menuentry",
+            name="slug",
+            field=models.CharField(
+                blank=True,
+                default="",
+                help_text="Slug",
+                max_length=512,
+                verbose_name="slug",
+            ),
         ),
     ]

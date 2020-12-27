@@ -7,11 +7,9 @@ register = template.Library()
 
 
 class SubscribeNode(template.Node):
-
     def render(self, context):
-        tmpl = template.loader.get_template(
-            'subscriptions/block_subscription.html')
-        context['sform'] = SubscribeForm()
+        tmpl = template.loader.get_template("subscriptions/block_subscription.html")
+        context["sform"] = SubscribeForm()
         try:
             context = context.flatten()
         except AttributeError:

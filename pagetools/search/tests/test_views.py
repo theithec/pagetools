@@ -6,11 +6,11 @@ from django.urls import reverse
 from pagetools.pages.models import Page
 import pagetools.search
 import pagetools.search.views
-from pagetools.core.settings import STATUS_PUBLISHED
+from pagetools.settings import STATUS_PUBLISHED
 
 
 pagetools.search.search_mods = (
-    (Page, ('title', 'content'), {'replacements': 'content'}),
+    (Page, ("title", "content"), {"replacements": "content"}),
 )
 pagetools.search.views.SearchResultsView._search_mods = pagetools.search.search_mods
 pagetools.search.extra_filter = lambda x: x.filter(status=STATUS_PUBLISHED)
@@ -18,24 +18,24 @@ pagetools.search.views.extra_filter = lambda x: x.filter(status=STATUS_PUBLISHED
 
 
 class SearchViewTests(TestCase):
-
     def setUp(self):
         self.client = Client()
         for title, content, is_pub in [
-            ('P%s' % i, 'Foo%s' % i, True) for i in range(4)
-
+            ("P%s" % i, "Foo%s" % i, True) for i in range(4)
         ]:
-            Page.objects.create(**{
-                'title': title,
-                'content': content,
-                'slug': slugify(title),
-                'status': 'published' if is_pub else 'draft'
-            })
+            Page.objects.create(
+                **{
+                    "title": title,
+                    "content": content,
+                    "slug": slugify(title),
+                    "status": "published" if is_pub else "draft",
+                }
+            )
 
             settings.PAGINATE_BY = 3
 
     def test_search4page(self):
-        response = self.client.get(reverse('search') + '/?contains_all=Foo1')
+        response = self.client.get(reverse("search") + "/?contains_all=Foo1")
         self.assertTrue("P1" in str(response.content))
         self.assertFalse("P2" in str(response.content))
 
@@ -43,7 +43,7 @@ class SearchViewTests(TestCase):
         p2.status = "draft"
         p2.save()
 
-        response = self.client.get('/search/?contains_any=Foo1 Foo2')
+        response = self.client.get("/search/?contains_any=Foo1 Foo2")
         self.assertTrue("P1" in str(response.content))
         self.assertFalse("P2" in str(response.content))
         self.assertFalse("P3" in str(response.content))

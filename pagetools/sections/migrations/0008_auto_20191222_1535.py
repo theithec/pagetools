@@ -7,13 +7,19 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('sections', '0007_auto_20170301_2044'),
+        ("sections", "0007_auto_20170301_2044"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='pagenode',
-            name='content_type_pk',
-            field=models.ForeignKey(blank=True, db_column='content_type_pk', null=True, on_delete=django.db.models.deletion.CASCADE, to='contenttypes.ContentType'),
+            model_name="pagenode",
+            name="content_type_pk",
+            field=models.ForeignKey(
+                blank=True,
+                db_column="content_type_pk",
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="contenttypes.ContentType",
+            ),
         ),
     ]

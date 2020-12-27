@@ -14,16 +14,16 @@ from django.utils.http import urlquote
 from django.utils.translation import ugettext_lazy as _
 from django.db.utils import ProgrammingError
 
-from pagetools.core.models import LangModel, LangManager
+from pagetools.models import LangModel, LangManager
 
 from . import settings as subs_settings
 from .base_models import BaseSubscriberMixin
 
 
 def _mk_key():
-    key = "".join([
-        random.choice(string.ascii_letters + string.digits)
-        for x in range(1, 32)])
+    key = "".join(
+        [random.choice(string.ascii_letters + string.digits) for x in range(1, 32)]
+    )
     try:
         if Subscriber.objects.filter(key=key):
             key = _mk_key()
@@ -43,20 +43,19 @@ class Subscriber(BaseSubscriberMixin, LangModel):
         self.save()
 
     def mailkey(self):
-        return sha(self.get_email().encode('utf-8')).hexdigest()
+        return sha(self.get_email().encode("utf-8")).hexdigest()
 
     def cmd_path(self):
-        return "/?mk=".join(
-            (urlquote(self.key), urlquote(self.mailkey())))
+        return "/?mk=".join((urlquote(self.key), urlquote(self.mailkey())))
 
     def get_email(self):
         return str(self.email)
 
     @classmethod
     def get_subscribers(cls, **kwargs):
-        fkwargs = {'is_activated': True}
+        fkwargs = {"is_activated": True}
         if subs_settings.SUBSCRIBER_LANG_ONLY:
-            fkwargs['lang'] = kwargs.pop('lang', None)
+            fkwargs["lang"] = kwargs.pop("lang", None)
 
         return cls.objects.lfilter(**fkwargs)
 
@@ -73,42 +72,27 @@ _subscriber_model = None
 #            (2, 'Unexpected Error'),
 #        ))
 class QueuedEmail(LangModel):
-
     class Meta:
         abstract = False
         verbose_name = _("News-Mail")
 
     createdate = models.DateTimeField(
-        'Created on',
-        auto_now_add=True,
-
-        blank=True,
-        editable=False)
+        "Created on", auto_now_add=True, blank=True, editable=False
+    )
 
     modifydate = models.DateTimeField(
-        'Last modified on',
-        auto_now_add=True,
-        blank=True,
-        editable=False)
+        "Last modified on", auto_now_add=True, blank=True, editable=False
+    )
 
     senddate = models.DateTimeField(
-        'Send after',
-        auto_now_add=True,
-        blank=True,
-        editable=True)
+        "Send after", auto_now_add=True, blank=True, editable=True
+    )
 
     subject = models.CharField(
-        verbose_name="Subject",
-        default="",
-        unique=False,
-        blank=True,
-        max_length=255)
+        verbose_name="Subject", default="", unique=False, blank=True, max_length=255
+    )
 
-    body = models.TextField(
-        verbose_name="Body",
-        default="",
-        unique=False,
-        blank=True)
+    body = models.TextField(verbose_name="Body", default="", unique=False, blank=True)
 
     def save(self, *args, **kwargs):
         self.modifydate = timezone.now()
@@ -117,16 +101,12 @@ class QueuedEmail(LangModel):
         modelname = subs_settings.SUBSCRIBER_MODEL
         if modelname == "Subscriber":
             modelname = "subscriptions.Subscriber"
-        subscr_model = apps.get_model(*modelname.rsplit('.', 1))
-        kwargs['lang'] = self.lang
+        subscr_model = apps.get_model(*modelname.rsplit(".", 1))
+        kwargs["lang"] = self.lang
         subscribers = subscr_model.get_subscribers(**kwargs)
 
         for subscr in subscribers:
-            SendStatus(
-                subscriber=subscr,
-                queued_email=self,
-                status=0
-            ).save()
+            SendStatus(subscriber=subscr, queued_email=self, status=0).save()
 
     def send_to(self, to, conn, unsubscribe_path):
         status = -1
@@ -136,15 +116,15 @@ class QueuedEmail(LangModel):
                     try:
                         msg = EmailMessage(
                             "%s" % self.subject,
-                            self.body.replace(
-                                '__unsubscribe_path__',
-                                 unsubscribe_path),
+                            self.body.replace("__unsubscribe_path__", unsubscribe_path),
                             subs_settings.NEWS_FROM,
                             [to],
                             connection=conn,
                         )
                         msg.content_subtype = "html"  # Main content is now text/html
-                        status = msg.send(fail_silently=True,)
+                        status = msg.send(
+                            fail_silently=True,
+                        )
                     except smtplib.SMTPException:
                         pass
         return status
@@ -156,11 +136,14 @@ class QueuedEmail(LangModel):
                 status = self.send_to(
                     sendstatus.subscriber.get_email(),
                     conn,
-                    "%s?mk=%s/" % (
-                        reverse('subscriptions:unsubscribe', kwargs={
-                            'key': sendstatus.subscriber.key}),
-                        sendstatus.subscriber.mailkey()
-                    )
+                    "%s?mk=%s/"
+                    % (
+                        reverse(
+                            "subscriptions:unsubscribe",
+                            kwargs={"key": sendstatus.subscriber.key},
+                        ),
+                        sendstatus.subscriber.mailkey(),
+                    ),
                 )
                 if status == 1:
                     if sendstatus.subscriber.failures != 0:
@@ -173,8 +156,7 @@ class QueuedEmail(LangModel):
                     subscriber.failures += 1
                     subscriber.save()
                     if subscriber.failures > subs_settings.MAX_FAILURES:
-                        SendStatus.objects.filter(
-                            subscriber=subscriber).delete()
+                        SendStatus.objects.filter(subscriber=subscriber).delete()
                         subscriber.delete()
                     else:
                         sendstatus.save()
@@ -184,15 +166,15 @@ class QueuedEmail(LangModel):
 
 
 class SendStatus(models.Model):
-    subscriber = models.ForeignKey(subs_settings.SUBSCRIBER_MODEL, on_delete=models.CASCADE)
+    subscriber = models.ForeignKey(
+        subs_settings.SUBSCRIBER_MODEL, on_delete=models.CASCADE
+    )
     queued_email = models.ForeignKey(QueuedEmail, on_delete=models.CASCADE)
     status = models.IntegerField()
 
     def __str__(self):
-        return "%s  / %s : %s" % (self.subscriber,
-                                  self.queued_email,
-                                  self.status)
+        return "%s  / %s : %s" % (self.subscriber, self.queued_email, self.status)
 
     class Meta:
-        verbose_name = 'Status'
-        verbose_name_plural = 'Statuses'
+        verbose_name = "Status"
+        verbose_name_plural = "Statuses"

@@ -32,29 +32,32 @@ class PageNodesModule(DashboardModule):
 
     """
 
-    template = 'admin/dashboard_pagenodes_module.html'
+    template = "admin/dashboard_pagenodes_module.html"
     model = None
 
     def __init__(self, *args, **kwargs):
-        kwargs['title'] = "Nodes Tree"
-        self.model = kwargs.pop('model')
+        kwargs["title"] = "Nodes Tree"
+        self.model = kwargs.pop("model")
         super().__init__(*args, **kwargs)
 
     def init_with_context(self, context):
         pages = self.model.objects.filter(
-            content_type_pk=self.model.get_contenttype_pk())
-        context['pages'] = pages
-        context['admin_pagenodesview'] = '/adminnodes/__SLUG__'
+            content_type_pk=self.model.get_contenttype_pk()
+        )
+        context["pages"] = pages
+        context["admin_pagenodesview"] = "/adminnodes/__SLUG__"
         options = ""
         for page in pages:
-            options += format_html(
-                '<option name={}>{}</option>', page.slug, page.title)
-        self.pre_content = '''<label>
+            options += format_html("<option name={}>{}</option>", page.slug, page.title)
+        self.pre_content = (
+            """<label>
             Page
             </label>
             <select style="width: auto;" id='pagenode_page_chooser'>
                 %s
-            </select>''' % options
+            </select>"""
+            % options
+        )
 
         super(PageNodesModule, self).init_with_context(context)
         self._initialized = True

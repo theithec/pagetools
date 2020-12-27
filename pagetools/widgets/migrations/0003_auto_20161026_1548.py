@@ -8,17 +8,17 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('widgets', '0002_auto_20160912_2314'),
+        ("widgets", "0002_auto_20160912_2314"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='typearea',
-            old_name='type',
-            new_name='pagetype',
+            model_name="typearea",
+            old_name="type",
+            new_name="pagetype",
         ),
         migrations.AlterUniqueTogether(
-            name='typearea',
-            unique_together=set([('area', 'pagetype', 'lang')]),
+            name="typearea",
+            unique_together=set([("area", "pagetype", "lang")]),
         ),
     ]

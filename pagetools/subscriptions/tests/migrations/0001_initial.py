@@ -13,17 +13,25 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='CustomSubscriber',
+            name="CustomSubscriber",
             fields=[
-                ('id', models.AutoField(serialize=False, auto_created=True, verbose_name='ID', primary_key=True)),
-                ('is_activated', models.BooleanField(default=False)),
-                ('subscribtion_date', models.DateTimeField(auto_now_add=True)),
-                ('failures', models.IntegerField(default=0)),
-                ('email', models.EmailField(max_length=254)),
-                ('user', models.OneToOneField(to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.AutoField(
+                        serialize=False,
+                        auto_created=True,
+                        verbose_name="ID",
+                        primary_key=True,
+                    ),
+                ),
+                ("is_activated", models.BooleanField(default=False)),
+                ("subscribtion_date", models.DateTimeField(auto_now_add=True)),
+                ("failures", models.IntegerField(default=0)),
+                ("email", models.EmailField(max_length=254)),
+                ("user", models.OneToOneField(to=settings.AUTH_USER_MODEL)),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
         ),
     ]

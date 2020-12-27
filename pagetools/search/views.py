@@ -8,7 +8,7 @@ from django.db.models.query_utils import Q
 from django.utils.html import strip_tags
 
 from pagetools.search import search_mods, extra_filter
-from pagetools.core.views import PaginatorMixin
+from pagetools.views import PaginatorMixin
 
 from .forms import AdvSearchForm
 from . import settings
@@ -17,26 +17,29 @@ from . import settings
 class SearchResultsView(PaginatorMixin):
 
     template_name = "search_results.html"
-    context_object_name = 'results'
+    context_object_name = "results"
     search_params = {}
     _search_mods = search_mods[:]
-    sep = ''
+    sep = ""
     form_cls = AdvSearchForm
     _thisdir = os.path.dirname(os.path.realpath(__file__))
     if settings.SEARCH_REPLACEMENTS:
         replacements = json.load(
-            open(os.path.join(_thisdir, settings.SEARCH_REPLACEMENTS_FILE)))
+            open(os.path.join(_thisdir, settings.SEARCH_REPLACEMENTS_FILE))
+        )
 
     def get(self, request, *args, **kwargs):
         self.form = self.form_cls(request.GET)
         if self.form.is_valid():
             cleaned_data = self.form.cleaned_data
             if any(cleaned_data.values()):
-                self.sep = '?%s&' % ('&'.join(
-                    ['%s=%s' % (k, v) for k, v in list(cleaned_data.items()) if v]
-                ))
+                self.sep = "?%s&" % (
+                    "&".join(
+                        ["%s=%s" % (k, v) for k, v in list(cleaned_data.items()) if v]
+                    )
+                )
                 self.search_params = cleaned_data
-                model_pks = cleaned_data.get('models')
+                model_pks = cleaned_data.get("models")
                 if model_pks:
                     int_pks = [int(s) for s in model_pks]
                     self._search_mods = [search_mods[i] for i in int_pks]
@@ -46,11 +49,13 @@ class SearchResultsView(PaginatorMixin):
         cls = mod[0]
         fields = mod[1]
         qs = extra_filter(cls.objects.all())
-        cnots = self.search_params.get('contains_not', '').split()
+        cnots = self.search_params.get("contains_not", "").split()
         if cnots:
-            notlist = [Q(**{'%s__icontains' % field:
-                            self._convert(cnot, field, mod)})
-                       for cnot in cnots for field in fields]
+            notlist = [
+                Q(**{"%s__icontains" % field: self._convert(cnot, field, mod)})
+                for cnot in cnots
+                for field in fields
+            ]
             combined_notlist = reduce(operator.or_, notlist)
             qs = qs.exclude(combined_notlist)
         return qs
@@ -59,7 +64,7 @@ class SearchResultsView(PaginatorMixin):
         if not settings.SEARCH_REPLACEMENTS:
             return term
 
-        replace = mod[2].get('replacements', {}) if len(mod) > 2 else {}
+        replace = mod[2].get("replacements", {}) if len(mod) > 2 else {}
         if field in replace:
             for key, val in self.replacements.items():
                 term = term.replace(key, val)
@@ -79,8 +84,11 @@ class SearchResultsView(PaginatorMixin):
                     continue
                 qlist = reduce(
                     operator.or_,
-                    [Q(**{'%s__icontains' % field: self._convert(sterm, field, mod)})
-                     for field in fields])
+                    [
+                        Q(**{"%s__icontains" % field: self._convert(sterm, field, mod)})
+                        for field in fields
+                    ],
+                )
                 qlists.append(qlist)
 
             if qlists:
@@ -90,15 +98,15 @@ class SearchResultsView(PaginatorMixin):
         return result
 
     def result_any(self):
-        terms = self.search_params.get('contains_any', '').split()
+        terms = self.search_params.get("contains_any", "").split()
         return self.result_(terms, operator.or_)
 
     def result_all(self):
-        terms = self.search_params.get('contains_all', '').split()
+        terms = self.search_params.get("contains_all", "").split()
         return self.result_(terms, operator.and_)
 
     def _stripped(self, txt):
-        txt = strip_tags('%s' % txt).lower()
+        txt = strip_tags("%s" % txt).lower()
         return txt
 
     def get_queryset(self, **_kwargs):
@@ -108,16 +116,20 @@ class SearchResultsView(PaginatorMixin):
         results_any = self.result_any()
         results_all = self.result_all()
         results_exact = set()
-        exact = self.search_params.get('contains_exact').lower() or None
+        exact = self.search_params.get("contains_exact").lower() or None
         if exact:
             for mod in self._search_mods:
                 fields = mod[1]
                 queryset = self.filtered_queryset(mod)
                 for field in fields:
                     exact_results = [
-                        r for r in queryset
-                        if (self._convert(exact, field, mod) in
-                            self._stripped(getattr(r, field)))]
+                        r
+                        for r in queryset
+                        if (
+                            self._convert(exact, field, mod)
+                            in self._stripped(getattr(r, field))
+                        )
+                    ]
                     results_exact |= set(exact_results)
         results = [f for f in (results_all, results_any, results_exact) if f]
         if not results:
@@ -128,8 +140,8 @@ class SearchResultsView(PaginatorMixin):
 
     def get_context_data(self, **kwargs):
         context = super(SearchResultsView, self).get_context_data(**kwargs)
-        context['view_url'] = reverse("search")
-        context['form'] = self.form
+        context["view_url"] = reverse("search")
+        context["form"] = self.form
         return context
 
 

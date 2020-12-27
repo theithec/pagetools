@@ -1,24 +1,29 @@
 from django.test import TransactionTestCase
 
-from pagetools.menus.models import Menu, Link, ViewLink
+from pagetools.menus.models import Menu, Link
 from pagetools.pages.models import Page
-from pagetools.core.settings import STATUS_PUBLISHED
-from pagetools.core.tests.test_models import ConcretePublishableLangModel
+from pagetools.settings import STATUS_PUBLISHED
+from pagetools.tests.test_models import ConcretePublishableLangModel
 
 
 class MenuDataTestCase(TransactionTestCase):
     # fixtures = ["testdata.json"]
     def setUp(self):
         super().setUp()
-        kwargs = {'enabled': True}
-        self.menu = Menu.objects.add_root(title='MainMenu')
-        self.page1 = Page.objects.create(title='P1', slug='start',
-                                         status=STATUS_PUBLISHED, included_form="Contactform")
+        kwargs = {"enabled": True}
+        self.menu = Menu.objects.add_root(title="MainMenu")
+        self.page1 = Page.objects.create(
+            title="P1",
+            slug="start",
+            status=STATUS_PUBLISHED,
+            included_form="Contactform",
+        )
         self.entry_page1 = self.menu.children.add_child(self.page1, **kwargs)
-        self.link1 = Link.objects.create(url='#')
+        self.link1 = Link.objects.create(url="#")
         self.entry_link1 = self.menu.children.add_child(self.link1, **kwargs)
-        self.linkwargs = Link.objects.create(url='/foo')
+        self.linkwargs = Link.objects.create(url="/foo")
         self.entry_linkwargs = self.entry_link1.children.add_child(self.linkwargs)
         self.cpm1 = ConcretePublishableLangModel.objects.create(
-            foo="x", status=STATUS_PUBLISHED)
+            foo="x", status=STATUS_PUBLISHED
+        )
         self.entry_cpm1 = self.menu.children.add_child(self.cpm1, **kwargs)

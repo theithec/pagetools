@@ -1,9 +1,9 @@
-'''
+"""
 Nested content (e.g. for single pages)
 A PageNode is a model which may contains other PageNodes.
 Inheritated models with own fields needs concrete inheritance,
 otherwise a proxy model is sufficient.
-'''
+"""
 from django.core.exceptions import ValidationError
 from django.urls import reverse
 from django.db import models
@@ -11,8 +11,8 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
 
-from pagetools.core.models import PagelikeModel, PublishableLangManager
-from pagetools.core.utils import (get_adminadd_url, get_classname, importer)
+from pagetools.models import PagelikeModel, PublishableLangManager
+from pagetools.utils import get_adminadd_url, get_classname, importer
 
 
 class PageNodeManager(PublishableLangManager):
@@ -20,18 +20,16 @@ class PageNodeManager(PublishableLangManager):
 
 
 class TypeMixin(models.Model):
-    '''Pagenodes that differs only in their representation may use the same
+    """Pagenodes that differs only in their representation may use the same
     model but different node choices.
-    The node choice is is part of the template names'''
+    The node choice is is part of the template names"""
+
     node_choices = ()
-    node_type = models.CharField(
-        max_length=128,
-        blank=True
-    )
+    node_type = models.CharField(max_length=128, blank=True)
 
     def __init__(self, *args, **kwargs):
         super(TypeMixin, self).__init__(*args, **kwargs)
-        self._meta.get_field('node_type').choices = self.node_choices
+        self._meta.get_field("node_type").choices = self.node_choices
 
     class Meta:
         abstract = True
@@ -39,19 +37,27 @@ class TypeMixin(models.Model):
 
 class PageNode(PagelikeModel):
 
-    classes = models.CharField(
-        'Classes', max_length=512, blank=True, null=True)
+    classes = models.CharField("Classes", max_length=512, blank=True, null=True)
     content_type_pk = models.ForeignKey(
-        ContentType, null=True, blank=True, on_delete=models.CASCADE, db_column="content_type_pk")
-    content_object = GenericForeignKey('content_type_pk', 'id')
+        ContentType,
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+        db_column="content_type_pk",
+    )
+    content_object = GenericForeignKey("content_type_pk", "id")
     in_nodes = models.ManyToManyField(
-        "self", through="PageNodePos", related_name="positioned_content", symmetrical=False)
+        "self",
+        through="PageNodePos",
+        related_name="positioned_content",
+        symmetrical=False,
+    )
     objects = PageNodeManager()
     allowed_children_classes = []
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        allowed = getattr(self, 'allowed_children_classes', None)
+        allowed = getattr(self, "allowed_children_classes", None)
         if allowed:
             repl = []
             for cls in allowed:
@@ -73,7 +79,8 @@ class PageNode(PagelikeModel):
         queryset = (
             self.positioned_content.lfilter(**kwargs)
             .prefetch_related("content_object")
-            .order_by('pagenodepos'))
+            .order_by("pagenodepos")
+        )
         return queryset
 
     def children(self, **_kwargs):
@@ -95,13 +102,16 @@ class PageNode(PagelikeModel):
         lobjs = len(objs)
         if (lobjs == 1 and objs[0].pk != self.pk) or lobjs > 1:
             raise ValidationError(
-                _('The slug "%s" for language "%s" is already taken') % (self.slug, self.lang))
+                _('The slug "%s" for language "%s" is already taken')
+                % (self.slug, self.lang)
+            )
         return super().clean()
 
     def save(self, *args, **kwargs):
         if self.__class__.__name__ != "PageNode":
             ctype = ContentType.objects.get_for_model(
-                self.__class__, for_concrete_model=False)
+                self.__class__, for_concrete_model=False
+            )
             self.content_type_pk = ctype
         super(PageNode, self).save(*args, **kwargs)
 
@@ -118,20 +128,22 @@ class PageNode(PagelikeModel):
         return get_adminadd_url(cls)
 
     class Meta:
-        verbose_name = _('Node')
-        verbose_name_plural = _('Nodes')
+        verbose_name = _("Node")
+        verbose_name_plural = _("Nodes")
 
 
 class PageNodePos(models.Model):
 
     position = models.PositiveIntegerField()
     content = models.ForeignKey(PageNode, on_delete=models.CASCADE)
-    owner = models.ForeignKey(PageNode, related_name="in_group", on_delete=models.CASCADE)
+    owner = models.ForeignKey(
+        PageNode, related_name="in_group", on_delete=models.CASCADE
+    )
 
     def __str__(self):
         return "%s:%s:%s" % (self.owner, self.content, self.position)
 
     class Meta:
-        ordering = ['position']
-        verbose_name = _('Included Content')
-        verbose_name_plural = _('Included Content')
+        ordering = ["position"]
+        verbose_name = _("Included Content")
+        verbose_name_plural = _("Included Content")

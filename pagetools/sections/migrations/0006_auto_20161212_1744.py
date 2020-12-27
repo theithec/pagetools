@@ -9,14 +9,16 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('sections', '0005_auto_20161201_1704'),
+        ("sections", "0005_auto_20161201_1704"),
     ]
 
     if django.VERSION >= (1, 9):
         operations = [
             migrations.AlterField(
-                model_name='pagenode',
-                name='slug',
-                field=models.SlugField(allow_unicode=True, max_length=255, verbose_name='Slug'),
+                model_name="pagenode",
+                name="slug",
+                field=models.SlugField(
+                    allow_unicode=True, max_length=255, verbose_name="Slug"
+                ),
             ),
         ]

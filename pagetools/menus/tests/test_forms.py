@@ -1,4 +1,4 @@
-from django.urls import resolve, reverse
+from django.urls import reverse
 from django.test.testcases import TestCase
 from pagetools.menus.models import Menu, Link
 from pagetools.menus.admin import MenuAddForm, MenuChangeForm
@@ -6,12 +6,12 @@ from pagetools.menus.admin import MenuAddForm, MenuChangeForm
 
 class MenuFormTests(TestCase):
     def test_menu_addform(self):
-        form_add = MenuAddForm({'title': 'Testmenu1'})
+        form_add = MenuAddForm({"title": "Testmenu1"})
         self.assertTrue(form_add.is_valid())
 
     def test_add_menu(self):
-        menuaddurl = reverse('admin:menus_menu_add', args=[])
-        response = self.client.post(menuaddurl, {'title': 'Testmenu1'})
+        menuaddurl = reverse("admin:menus_menu_add", args=[])
+        response = self.client.post(menuaddurl, {"title": "Testmenu1"})
         self.assertTrue(response.status_code in (200, 302))
 
     def test_menuchildrenwidgets(self):
@@ -20,7 +20,7 @@ class MenuFormTests(TestCase):
             parent=menu,
             slug="l1",
             title="l1",
-            content_object=Link.objects.create(url="#1")
+            content_object=Link.objects.create(url="#1"),
         )
         data = menu.__dict__
         form_change = MenuChangeForm(data, instance=menu)
@@ -32,20 +32,20 @@ class MenuFormTests(TestCase):
             parent=menu,
             slug="l1",
             title="l1",
-            content_object=Link.objects.create(url="#1")
+            content_object=Link.objects.create(url="#1"),
         )
         Menu.objects.add_child(
             parent=menu,
             slug="l2",
             title="l2",
-            content_object=Link.objects.create(url="#2")
+            content_object=Link.objects.create(url="#2"),
         )
         data = menu.__dict__
-        data['entry-text-0'] = "a"
-        data['entry-text-1'] = "a"
+        data["entry-text-0"] = "a"
+        data["entry-text-1"] = "a"
         form_change = MenuChangeForm(data, instance=menu)
         self.assertFalse(form_change.is_valid())
 
-        data['entry-text-1'] = "b"
+        data["entry-text-1"] = "b"
         form_change = MenuChangeForm(data, instance=menu)
         self.assertTrue(form_change.is_valid())

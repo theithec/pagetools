@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from pagetools.core.utils import get_adminadd_url, get_adminedit_url
+from pagetools.utils import get_adminadd_url, get_adminedit_url
 
 from demo_sections.models import Article, SectionList
 from demo_sections.tests import SectionsDataTestCase

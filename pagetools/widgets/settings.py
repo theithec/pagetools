@@ -5,8 +5,15 @@ def _(_x):
     return _x
 
 
-AREAS = getattr(settings, 'PT_AREAS',
-                (('sidebar', _('Sidebar'),),)
-                )
+AREAS = getattr(
+    settings,
+    "PT_AREAS",
+    (
+        (
+            "sidebar",
+            _("Sidebar"),
+        ),
+    ),
+)
 
-TEMPLATETAG_WIDGETS = getattr(settings, 'PT_TEMPLATETAG_WIDGETS', {})
+TEMPLATETAG_WIDGETS = getattr(settings, "PT_TEMPLATETAG_WIDGETS", {})

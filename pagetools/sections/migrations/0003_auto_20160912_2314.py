@@ -8,15 +8,16 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('sections', '0002_auto_20160907_1609'),
+        ("sections", "0002_auto_20160907_1609"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='pagenodepos',
+            name="pagenodepos",
             options={
-                'ordering': ['position'],
-                'verbose_name': 'Included Content',
-                'verbose_name_plural': 'Included Content'},
+                "ordering": ["position"],
+                "verbose_name": "Included Content",
+                "verbose_name_plural": "Included Content",
+            },
         ),
     ]

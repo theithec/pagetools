@@ -8,13 +8,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('menus', '0005_auto_20160912_2314'),
+        ("menus", "0005_auto_20160912_2314"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='viewlink',
-            name='name',
-            field=models.CharField(max_length=255, verbose_name='Name'),
+            model_name="viewlink",
+            name="name",
+            field=models.CharField(max_length=255, verbose_name="Name"),
         ),
     ]

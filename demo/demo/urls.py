@@ -20,7 +20,7 @@ urlpatterns = [
     url(r'^captcha/', include('captcha.urls')),
     url(r'polls/', include('polls.urls', namespace="polls")),
     # url(r'', include('demo_sections.urls', namespace="demo_sections")),
-    url(r'', include('pagetools.core.urls')),
+    url(r'', include('pagetools.urls')),
     url(r'pages/', include('pagetools.pages.urls', namespace="pages")),
     url(r'articles/', ArticleListView.as_view(), name="articles"),
     url(r'^node/', include('pagetools.sections.urls', namespace="sections")),

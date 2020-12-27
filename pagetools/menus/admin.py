@@ -9,9 +9,9 @@ from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.utils.safestring import mark_safe
 
-from pagetools.core.admin import TinyMCEMixin
-from pagetools.core.utils import get_adminadd_url, get_classname
-from .models import (AutoPopulated, Link, Menu, MenuCache, MenuEntry, ViewLink)
+from pagetools.admin import TinyMCEMixin
+from pagetools.utils import get_adminadd_url, get_classname
+from .models import AutoPopulated, Link, Menu, MenuCache, MenuEntry, ViewLink
 
 from .apps import MenusConfig
 
@@ -27,16 +27,17 @@ class MenuChildrenWidget(forms.Widget):
 
     def render(self, *_args, **_kwargs):
         menu = Menu.objects.get(pk=self.instance.pk)
-        return mark_safe(render_to_string(
-            "menus/admin/menuentries.html",
-            {
-                "children": menu.children_list(for_admin=True),
-                "cls":
-                    'class="sortable grp-grp-items sortable ui-sortable '
+        return mark_safe(
+            render_to_string(
+                "menus/admin/menuentries.html",
+                {
+                    "children": menu.children_list(for_admin=True),
+                    "cls": 'class="sortable grp-grp-items sortable ui-sortable '
                     'mjs-nestedSortable-branch mjs-nestedSortable-expanded"',
-                "original": menu,
-            },
-        ))
+                    "original": menu,
+                },
+            )
+        )
 
 
 class MenuAddForm(forms.ModelForm):
@@ -97,22 +98,29 @@ class MenuAdmin(TinyMCEMixin, admin.ModelAdmin):
             )
         return mark_safe(txt + "</ul>")
 
-    addable_entries.short_description = _("Add")
-    addable_entries.allow_tags = True
+    addable_entries.short_description = _("Add")  # type: ignore
+    addable_entries.allow_tags = True  # type: ignore
 
     def get_queryset(self, request):
         return Menu.objects.root_nodes()
 
     def render_change_form(
-            self, request, context, add=False, change=False, form_url="", obj=None):
+        self, request, context, add=False, change=False, form_url="", obj=None
+    ):
         if change and obj:
-            context["addable_entries"] = mark_safe("".join(
-                [
-                    '<li><a href="%s?menu=%s">%s</a></li>'
-                    % (get_adminadd_url(model), context["object_id"], get_classname(model))
-                    for model in MenusConfig.entrieable_models
-                ]
-            ))
+            context["addable_entries"] = mark_safe(
+                "".join(
+                    [
+                        '<li><a href="%s?menu=%s">%s</a></li>'
+                        % (
+                            get_adminadd_url(model),
+                            context["object_id"],
+                            get_classname(model),
+                        )
+                        for model in MenusConfig.entrieable_models
+                    ]
+                )
+            )
             menu_obj = Menu.objects.filter(pk=obj.pk)[0]
             context["menu_entries"] = menu_obj.children_list(for_admin=True)
         return admin.ModelAdmin.render_change_form(
@@ -252,8 +260,7 @@ class EntrieableAdmin(admin.ModelAdmin):
         if not getattr(superfunc, "for_entrieable", False):
             superfunc(request, form, formsets, change)
         else:
-            admin.ModelAdmin.save_related(
-                self, request, form, formsets, change)
+            admin.ModelAdmin.save_related(self, request, form, formsets, change)
 
         if "menus" not in form.changed_data:
             return
@@ -282,12 +289,14 @@ class EntrieableAdmin(admin.ModelAdmin):
             elif found and not is_selected:
                 entry.delete()
 
-    save_related.for_entrieable = True
+    save_related.for_entrieable = True  # type: ignore
 
     def _redirect(self, action, request, obj, *args, **kwargs):
         menus_param = request.GET.get("menus", None)
         if menus_param and "_save" in request.POST:
-            return HttpResponseRedirect(reverse("admin:menus_menu_change", args=(menus_param,)))
+            return HttpResponseRedirect(
+                reverse("admin:menus_menu_change", args=(menus_param,))
+            )
 
         return getattr(admin.ModelAdmin, "response_%s" % action)(
             self, request, obj, *args, **kwargs

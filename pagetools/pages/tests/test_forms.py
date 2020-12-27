@@ -7,12 +7,11 @@ CONTACTFORM_DATA = {
     "subject": "Test",
     "sender": "q@w.de",
     "message": "Foo",
-    "name": "Name"
+    "name": "Name",
 }
 
 
 class TestContactFormMissingReceiver(TestCase):
-
     @mock.patch("pagetools.pages.forms.MAILFORM_RECEIVERS", [])
     def test_sendmailform_no_reveivers(self, *_args):
         contactform = ContactForm(CONTACTFORM_DATA)
@@ -20,7 +19,6 @@ class TestContactFormMissingReceiver(TestCase):
 
 
 class TestContactFormWithSettingsReceiver(TestCase):
-
     @mock.patch("pagetools.pages.forms.MAILFORM_RECEIVERS", ["q@w.de"])
     def test_sendmailform_receivers_from_settings(self, *_args):
         contactform = ContactForm(CONTACTFORM_DATA)
@@ -28,7 +26,6 @@ class TestContactFormWithSettingsReceiver(TestCase):
 
 
 class TestContactFormWithKwargReceiver(TestCase):
-
     def test_sendmailform_overwrite_receivers(self):
         data = CONTACTFORM_DATA
         contactform = ContactForm(data, mailreceivers=["x@y.zy"])

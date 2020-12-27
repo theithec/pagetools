@@ -8,17 +8,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('pages', '0007_auto_20161201_1704'),
+        ("pages", "0007_auto_20161201_1704"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='page',
-            name='description',
+            model_name="page",
+            name="description",
             field=models.CharField(
                 blank=True,
-                help_text='Description (for searchengines)',
+                help_text="Description (for searchengines)",
                 max_length=156,
-                verbose_name='Description'),
+                verbose_name="Description",
+            ),
         ),
     ]

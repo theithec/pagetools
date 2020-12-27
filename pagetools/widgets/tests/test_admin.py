@@ -3,15 +3,14 @@ from django.contrib.auth.models import User
 from django.contrib import admin
 from django.test.testcases import TestCase
 
-from pagetools.core.utils import get_adminedit_url, get_adminadd_url
+from pagetools.utils import get_adminedit_url, get_adminadd_url
 from pagetools.widgets.models import TypeArea, PageType, ContentWidget
 
 
 class TypeAreaAdminTests(TestCase):
-
     def setUp(self):
-        self.admin = User.objects.create_superuser('admin', 'q@w.de', 'password')
-        self.client.login(username="admin", password='password')
+        self.admin = User.objects.create_superuser("admin", "q@w.de", "password")
+        self.client.login(username="admin", password="password")
         self.site = admin.sites.AdminSite()
         self.pagetype = PageType.objects.create(name="base")
         # self.typearea = TypeArea.objects.create(
@@ -21,12 +20,12 @@ class TypeAreaAdminTests(TestCase):
         response = self.client.post(
             get_adminadd_url(TypeArea),
             {
-                'pagetype': self.pagetype.pk,
-                'area': "sidebar",
-                'widgets-TOTAL_FORMS': 1,
-                'widgets-INITIAL_FORMS': 0,
+                "pagetype": self.pagetype.pk,
+                "area": "sidebar",
+                "widgets-TOTAL_FORMS": 1,
+                "widgets-INITIAL_FORMS": 0,
             },
-            follow=True
+            follow=True,
         )
         self.assertEqual(response.status_code, 200)
 
@@ -34,10 +33,10 @@ class TypeAreaAdminTests(TestCase):
         response = self.client.post(
             get_adminadd_url(ContentWidget),
             {
-                'name': 'name1',
-                'content': 'txt1',
+                "name": "name1",
+                "content": "txt1",
             },
-            follow=True
+            follow=True,
         )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(ContentWidget.objects.filter(name="name1")), 1)
@@ -45,22 +44,21 @@ class TypeAreaAdminTests(TestCase):
     def test_edit(self):
         self._test_add_typearea()
         self._test_add_contentwidget()
-        typearea = TypeArea.objects.get(
-            pagetype=self.pagetype, area="sidebar")
+        typearea = TypeArea.objects.get(pagetype=self.pagetype, area="sidebar")
         adminurl = get_adminedit_url(typearea)
         response = self.client.get(adminurl)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(str(typearea), "sidebar_base")
         widget = ContentWidget.objects.get(name="name1")
         data = typearea.__dict__
-        data.update({
-            'widgets-TOTAL_FORMS': 1,
-            'widgets-INITIAL_FORMS': 0,
-            # 'widgets-MAX_NUM_FORMS':1000,
-            'add_objs': '%s_%s' % (
-                ContentType.objects.get_for_model(widget).pk,
-                widget.pk)
-
-        })
+        data.update(
+            {
+                "widgets-TOTAL_FORMS": 1,
+                "widgets-INITIAL_FORMS": 0,
+                # 'widgets-MAX_NUM_FORMS':1000,
+                "add_objs": "%s_%s"
+                % (ContentType.objects.get_for_model(widget).pk, widget.pk),
+            }
+        )
         response = self.client.post(adminurl, data, follow=True)
         self.assertEqual(response.status_code, 200)

@@ -8,56 +8,123 @@ import pagetools.subscriptions.models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='QueuedEmail',
+            name="QueuedEmail",
             fields=[
-                ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
-                ('lang', models.CharField(max_length=20, blank=True, verbose_name='language', choices=settings.LANGUAGES)),
-                ('createdate', models.DateTimeField(verbose_name='Created on', auto_now_add=True)),
-                ('modifydate', models.DateTimeField(verbose_name='Last modified on', auto_now_add=True)),
-                ('senddate', models.DateTimeField(verbose_name='Send after', auto_now_add=True)),
-                ('subject', models.CharField(max_length=255, verbose_name='Subject', default='', blank=True)),
-                ('body', models.TextField(verbose_name='Body', default='', blank=True)),
+                (
+                    "id",
+                    models.AutoField(
+                        serialize=False,
+                        verbose_name="ID",
+                        primary_key=True,
+                        auto_created=True,
+                    ),
+                ),
+                (
+                    "lang",
+                    models.CharField(
+                        max_length=20,
+                        blank=True,
+                        verbose_name="language",
+                        choices=settings.LANGUAGES,
+                    ),
+                ),
+                (
+                    "createdate",
+                    models.DateTimeField(verbose_name="Created on", auto_now_add=True),
+                ),
+                (
+                    "modifydate",
+                    models.DateTimeField(
+                        verbose_name="Last modified on", auto_now_add=True
+                    ),
+                ),
+                (
+                    "senddate",
+                    models.DateTimeField(verbose_name="Send after", auto_now_add=True),
+                ),
+                (
+                    "subject",
+                    models.CharField(
+                        max_length=255, verbose_name="Subject", default="", blank=True
+                    ),
+                ),
+                ("body", models.TextField(verbose_name="Body", default="", blank=True)),
             ],
             options={
-                'verbose_name': 'News-Mail',
-                'abstract': False,
+                "verbose_name": "News-Mail",
+                "abstract": False,
             },
         ),
         migrations.CreateModel(
-            name='SendStatus',
+            name="SendStatus",
             fields=[
-                ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
-                ('status', models.IntegerField()),
-                ('queued_email', models.ForeignKey(to='subscriptions.QueuedEmail', on_delete=models.CASCADE)),
+                (
+                    "id",
+                    models.AutoField(
+                        serialize=False,
+                        verbose_name="ID",
+                        primary_key=True,
+                        auto_created=True,
+                    ),
+                ),
+                ("status", models.IntegerField()),
+                (
+                    "queued_email",
+                    models.ForeignKey(
+                        to="subscriptions.QueuedEmail", on_delete=models.CASCADE
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Status',
-                'verbose_name_plural': 'Statuses',
+                "verbose_name": "Status",
+                "verbose_name_plural": "Statuses",
             },
         ),
         migrations.CreateModel(
-            name='Subscriber',
+            name="Subscriber",
             fields=[
-                ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
-                ('lang', models.CharField(max_length=20, blank=True, verbose_name='language', choices=settings.LANGUAGES)),
-                ('is_activated', models.BooleanField(default=False)),
-                ('subscribtion_date', models.DateTimeField(auto_now_add=True)),
-                ('failures', models.IntegerField(default=0)),
-                ('key', models.CharField(max_length=32, default=pagetools.subscriptions.models._mk_key)),
-                ('email', models.EmailField(max_length=254, unique=True)),
+                (
+                    "id",
+                    models.AutoField(
+                        serialize=False,
+                        verbose_name="ID",
+                        primary_key=True,
+                        auto_created=True,
+                    ),
+                ),
+                (
+                    "lang",
+                    models.CharField(
+                        max_length=20,
+                        blank=True,
+                        verbose_name="language",
+                        choices=settings.LANGUAGES,
+                    ),
+                ),
+                ("is_activated", models.BooleanField(default=False)),
+                ("subscribtion_date", models.DateTimeField(auto_now_add=True)),
+                ("failures", models.IntegerField(default=0)),
+                (
+                    "key",
+                    models.CharField(
+                        max_length=32, default=pagetools.subscriptions.models._mk_key
+                    ),
+                ),
+                ("email", models.EmailField(max_length=254, unique=True)),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
         ),
         migrations.AddField(
-            model_name='sendstatus',
-            name='subscriber',
-            field=models.ForeignKey(to='subscriptions.Subscriber', on_delete=models.CASCADE),
+            model_name="sendstatus",
+            name="subscriber",
+            field=models.ForeignKey(
+                to="subscriptions.Subscriber", on_delete=models.CASCADE
+            ),
         ),
     ]

@@ -8,15 +8,15 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('pages', '0005_auto_20160927_1259'),
+        ("pages", "0005_auto_20160927_1259"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='pagedynformfield',
-            name='form_containing_model',
+            model_name="pagedynformfield",
+            name="form_containing_model",
         ),
         migrations.DeleteModel(
-            name='PageDynFormField',
+            name="PageDynFormField",
         ),
     ]

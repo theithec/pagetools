@@ -1,6 +1,4 @@
-from django.shortcuts import render
-
-from pagetools.core.views import PaginatorMixin
+from pagetools.views import PaginatorMixin
 from demo_sections.models import Article
 
 

@@ -3,16 +3,27 @@ from django.contrib.contenttypes.models import ContentType
 from django.urls import reverse
 from django.http.response import HttpResponseRedirect
 
-from pagetools.core.admin import TinyMCEMixin
-from pagetools.core.utils import itersubclasses, get_classname, get_perm_str
+from pagetools.admin import TinyMCEMixin
+from pagetools.utils import itersubclasses, get_classname, get_perm_str
 
-from .models import (TypeArea, ContentWidget, PageType, PageTypeDescription,
-                     WidgetInArea, BaseWidget, TemplateTagWidget)
+from .models import (
+    TypeArea,
+    ContentWidget,
+    PageType,
+    PageTypeDescription,
+    WidgetInArea,
+    BaseWidget,
+    TemplateTagWidget,
+)
 
 
 class WidgetInAreaAdmin(admin.TabularInline):
     model = WidgetInArea
-    fields = ("adminedit_url", "enabled", "position",)
+    fields = (
+        "adminedit_url",
+        "enabled",
+        "position",
+    )
     sortable_field_name = "position"
     extra = 0
     max_num = 0
@@ -24,52 +35,68 @@ class TypeAreaAdmin(admin.ModelAdmin):
 
     def save_model(self, request, obj, form, change):
         super(TypeAreaAdmin, self).save_model(request, obj, form, change)
-        objs_to_add = form.data.get('add_objs')
+        objs_to_add = form.data.get("add_objs")
         if objs_to_add:
-            pks = objs_to_add.split('_')
+            pks = objs_to_add.split("_")
             contenttype = ContentType.objects.get_for_id(int(pks[0]))
             obj_id = int(pks[1])
             pos = obj.widgets.all().count()
             WidgetInArea.objects.get_or_create(
-                typearea=obj, content_type=contenttype, object_id=obj_id, position=pos)
+                typearea=obj, content_type=contenttype, object_id=obj_id, position=pos
+            )
 
-    def render_change_form(self, request, context, add=False,
-                           change=False, form_url='', obj=None):
+    def render_change_form(
+        self, request, context, add=False, change=False, form_url="", obj=None
+    ):
 
         if obj:
             user = request.user
             clslist = itersubclasses(BaseWidget)
-            context['addable_objs'] = []
-            context['addable_widgets'] = []
+            context["addable_objs"] = []
+            context["addable_widgets"] = []
             found = [widget.content_object for widget in obj.widgets.all()]
             self.readonly_fields = ("area", "pagetype")
             for cls in clslist:
                 if not user.has_perm(get_perm_str(cls)):
                     continue
 
-                context['addable_widgets'].append(
-                    '<li>+  <a href="%s">%s</a></li>' % (
-                        (reverse('admin:%s_%s_add' % (cls._meta.app_label, cls._meta.model_name)) +
-                         "?typearea=%s" % (context['object_id'])), get_classname(cls)
-                    ))
+                context["addable_widgets"].append(
+                    '<li>+  <a href="%s">%s</a></li>'
+                    % (
+                        (
+                            reverse(
+                                "admin:%s_%s_add"
+                                % (cls._meta.app_label, cls._meta.model_name)
+                            )
+                            + "?typearea=%s" % (context["object_id"])
+                        ),
+                        get_classname(cls),
+                    )
+                )
                 objs = cls.objects.all()
                 ctpk = ContentType.objects.get_for_model(cls).pk
                 for _obj in objs:
                     if _obj in found:
                         continue
 
-                    context['addable_objs'].append(
-                        '<option  value="%s_%s">%s</option>' % (ctpk, obj.pk, obj,)
+                    context["addable_objs"].append(
+                        '<option  value="%s_%s">%s</option>'
+                        % (
+                            ctpk,
+                            obj.pk,
+                            obj,
+                        )
                     )
-            self.change_form_template = 'admin/widgets/typearea/change_form.html'
+            self.change_form_template = "admin/widgets/typearea/change_form.html"
         else:
-            self.change_form_template = 'core/admin/change_form_help_text.html'
-            context['help_text'] = '[save] before adding widgets'
+            self.change_form_template = "core/admin/change_form_help_text.html"
+            context["help_text"] = "[save] before adding widgets"
         return admin.ModelAdmin.render_change_form(
-            self, request, context, add=add, change=change, form_url=form_url, obj=obj)
+            self, request, context, add=add, change=change, form_url=form_url, obj=obj
+        )
 
     def get_readonly_fields(self, request, obj=None):
-        return ['area', 'pagetype'] if obj else []
+        return ["area", "pagetype"] if obj else []
 
 
 class BaseWidgetAdmin(admin.ModelAdmin):
@@ -79,17 +106,19 @@ class BaseWidgetAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         obj.user = request.user
         obj.save()
-        typearea_id = request.GET.get('typearea', None)
+        typearea_id = request.GET.get("typearea", None)
         if typearea_id:
             typearea = TypeArea.objects.get(pk=int(typearea_id))
             WidgetInArea.objects.create(
                 typearea=typearea,
                 content_type=ContentType.objects.get_for_model(obj),
-                object_id=obj.pk, position=typearea.widgets.count())
+                object_id=obj.pk,
+                position=typearea.widgets.count(),
+            )
 
     def _redirect(self, action, request, obj, *args, **kwargs):
-        typearea_id = request.GET.get('typearea', None)
-        if typearea_id and '_save' in request.POST:
+        typearea_id = request.GET.get("typearea", None)
+        if typearea_id and "_save" in request.POST:
             return HttpResponseRedirect(
                 reverse("admin:widgets_typearea_change", args=(typearea_id,))
             )
@@ -121,11 +150,10 @@ class ContentWidgetAdmin(BaseWidgetAdmin, TinyMCEMixin):
 
 
 class TemplateTagWidgetAdmin(BaseWidgetAdmin):
-
     def get_readonly_fields(self, request, obj=None):
         if obj:
             self.prepopulated_fields = {}
-            return ['renderclasskey']
+            return ["renderclasskey"]
 
         self.prepopulated_fields = {"name": ("renderclasskey",)}
         return []

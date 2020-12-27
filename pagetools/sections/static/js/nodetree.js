@@ -1,3 +1,4 @@
+/* global admin_pagenodesurl */
 (function($){
 $(document).ready(function(){
     function load_pagenodes(slug){
@@ -5,7 +6,7 @@ $(document).ready(function(){
         $.ajax({
             url: url,
             success: function(data, textStatus, jqXHR){
-               content = data.content || data;
+               var content = data.content || data;
                $("#pagenodes").replaceWith(content);
                $("#pagenodes").bonsai({'expandAll':true});
             }

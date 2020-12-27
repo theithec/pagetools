@@ -1,6 +1,5 @@
+/* global grp */
 // Read a page's GET URL variables and return them as an associative array.
-
-//  - not my work
 function getUrlVars() {
 	var vars = [], hash;
 	var hashes = window.location.href.slice(
@@ -18,7 +17,7 @@ function getUrlVars() {
 		function() {
 			var uvars = getUrlVars();
 			if ('menu' in uvars) {
-				$s = $("#id_menus").find("option[value="+ uvars['menu']+"]");
+				var $s = $("#id_menus").find("option[value="+ uvars['menu']+"]");
 				$s.attr('selected',true);//.select();
 			}
 		});

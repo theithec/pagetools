@@ -1,1 +1,1 @@
-default_app_config = 'pagetools.subscriptions.apps.SubscriptionsConfig'
+default_app_config = "pagetools.subscriptions.apps.SubscriptionsConfig"

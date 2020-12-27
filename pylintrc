@@ -143,7 +143,9 @@ disable=print-statement,
         too-few-public-methods,
         no-self-use,
         attribute-defined-outside-init,
-        arguments-differ
+        arguments-differ,
+        super-with-arguments,
+        invalid-name
         # tmp
 
 # Enable the message, report, category or checker with the given id(s). You can

@@ -8,19 +8,23 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('widgets', '0001_initial'),
+        ("widgets", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='contentwidget',
-            options={'verbose_name': 'Simple Text Widget', 'verbose_name_plural': 'Simple Text Widgets'},
+            name="contentwidget",
+            options={
+                "verbose_name": "Simple Text Widget",
+                "verbose_name_plural": "Simple Text Widgets",
+            },
         ),
         migrations.AlterModelOptions(
-            name='widgetinarea',
+            name="widgetinarea",
             options={
-                'ordering': ['position'],
-                'verbose_name': 'Included widget',
-                'verbose_name_plural': 'Included widgets'},
+                "ordering": ["position"],
+                "verbose_name": "Included widget",
+                "verbose_name_plural": "Included widgets",
+            },
         ),
     ]

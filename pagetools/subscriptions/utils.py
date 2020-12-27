@@ -6,24 +6,26 @@ from .models import QueuedEmail, SendStatus
 
 
 def to_queue(content, **kwargs):
-    lang = content.get('lang', None) or kwargs.get('lang', None)
+    lang = content.get("lang", None) or kwargs.get("lang", None)
     orglang = get_language()
     if lang:
         activate(lang)
     else:
         activate(orglang)
     site = Site.objects.get_current()
-    msg = render_to_string('subscriptions/msg.html', {
-        'title': content['title'],
-        'content': content['body'],
-        'site_name': site.name,
-        'site_domain': site.domain,
-    })
+    msg = render_to_string(
+        "subscriptions/msg.html",
+        {
+            "title": content["title"],
+            "content": content["body"],
+            "site_name": site.name,
+            "site_domain": site.domain,
+        },
+    )
     qm = QueuedEmail(
-        subject="%s %s" % (
-            subs_settings.NEWS_SUBJECT_PREFIX, content['title']),
+        subject="%s %s" % (subs_settings.NEWS_SUBJECT_PREFIX, content["title"]),
         body=msg,
-        lang=lang
+        lang=lang,
     )
     qm.save()
     activate(orglang)
@@ -46,6 +48,7 @@ def send_max(max_send=subs_settings.MAX_PER_TIME):
         if maxmails < 1:
             break
         num_sended += send_queued_mail(qm, maxmails)
+
 
 # influenced by:
 # http://stackoverflow.com/questions/7583801/send-mass-emails-with-emailmultialternatives

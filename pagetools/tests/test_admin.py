@@ -2,7 +2,7 @@ import os
 from django.test import TestCase
 from django.contrib.staticfiles import finders
 
-from pagetools.core.admin import TinyMCEMixin
+from pagetools.admin import TinyMCEMixin
 
 
 class TestMediaMixin:

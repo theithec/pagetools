@@ -1,20 +1,9 @@
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '#c##*+s7^=1m^p-=m&fvs8v(8p&#esxlqbq_3i+v(5)4z3ud)@'
-
-# SECURITY WARNING: keep the secret key used in production secret!
-
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
-
 ALLOWED_HOSTS = ["*"]
-
-
-# Application definition
-
 SITE_ID = 1  # required by contrib.sites
-
-
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -40,7 +29,7 @@ INSTALLED_APPS = [
     'crispy_forms',      # required for pages
     'sekizai',           # required for sections. Needs further configuration
     'django_ajax',
-    'pagetools.core',    # needed for all pagetools modules
+    'pagetools',    # needed for all pagetools modules
     'pagetools.widgets',  # Widgets (e.g. for sidebars)
     'pagetools.pages',   # Simple Pages
     'pagetools.menus',   #
@@ -53,9 +42,6 @@ INSTALLED_APPS = [
     'demo_sections',
     'main'
 ]
-
-# ROOT_URLCONF = 'demo.urls'
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -76,8 +62,6 @@ TEMPLATES = [
         },
     },
 ]
-
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -95,12 +79,6 @@ DATABASES = {
     }
 }
 ROOT_URLCONF = 'tests.urls'
-# WSGI_APPLICATION = 'demo.wsgi.application'
-
-
-# Internationalization
-# https://docs.djangoproject.com/en/1.9/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'

@@ -13,27 +13,29 @@ from crispy_forms.layout import Submit
 
 from captcha.fields import CaptchaField
 
-from pagetools.core.settings import SUBMIT_BUTTON_CLASSES
+from pagetools.settings import SUBMIT_BUTTON_CLASSES
 from pagetools.pages.validators import validate_emails_str
 
-from .settings import MAILFORM_RECEIVERS,  MAILFORM_SENDER
+from .settings import MAILFORM_RECEIVERS, MAILFORM_SENDER
 
 logger = logging.getLogger(__name__)
 
 
 class DynMultipleChoiceField(forms.MultipleChoiceField):
-
     def __init__(self, **kwargs):
         try:
-            label, values = kwargs['label'].split(':')
+            label, values = kwargs["label"].split(":")
         except ValueError:
             raise ValidationError(
-                _('ChoiceField name must be "name: option1, option2 [...])'))
-        kwargs.update({
-            'label': label,
-            'choices': [(slugify(v), v) for v in values.split(',')],
-            'widget': widgets.CheckboxSelectMultiple
-        })
+                _('ChoiceField name must be "name: option1, option2 [...])')
+            )
+        kwargs.update(
+            {
+                "label": label,
+                "choices": [(slugify(v), v) for v in values.split(",")],
+                "widget": widgets.CheckboxSelectMultiple,
+            }
+        )
         super(DynMultipleChoiceField, self).__init__(**kwargs)
 
 
@@ -42,18 +44,22 @@ class SendEmailForm(forms.Form):
     IGNORED_FIELDS_IN_MESSAGE = ("captcha",)
 
     def __init__(self, *args, **kwargs):
-        self.mailreceivers = kwargs.pop('mailreceivers', None) or MAILFORM_RECEIVERS
+        self.mailreceivers = kwargs.pop("mailreceivers", None) or MAILFORM_RECEIVERS
         super(SendEmailForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.helper.form_method = 'post'
-        self.helper.add_input(Submit('submit', _('Submit'), css_class=SUBMIT_BUTTON_CLASSES))
+        self.helper.form_method = "post"
+        self.helper.add_input(
+            Submit("submit", _("Submit"), css_class=SUBMIT_BUTTON_CLASSES)
+        )
 
     def get_mailmessage(self):
         return os.linesep.join(
-            ["%s\t%s" % (field.name, field.value())
-             for field in self
-             if field.name not in self.IGNORED_FIELDS_IN_MESSAGE
-             ])
+            [
+                "%s\t%s" % (field.name, field.value())
+                for field in self
+                if field.name not in self.IGNORED_FIELDS_IN_MESSAGE
+            ]
+        )
 
     def get_mailsubject(self):
         return _("Form submission")
@@ -68,8 +74,12 @@ class SendEmailForm(forms.Form):
         _is_valid = super(SendEmailForm, self).is_valid()
         if _is_valid:
             send_mail(
-                self.get_mailsubject(), self.get_mailmessage(),
-                self.get_mailsender(), self.get_mailreceivers(), fail_silently=False)
+                self.get_mailsubject(),
+                self.get_mailmessage(),
+                self.get_mailsender(),
+                self.get_mailreceivers(),
+                fail_silently=False,
+            )
         return _is_valid
 
     def clean(self):
@@ -83,8 +93,7 @@ class ContactForm(SendEmailForm):
     subject = forms.CharField(max_length=100, label=_("About"), required=True)
     name = forms.CharField(label=_("Your Name"))
     sender = forms.EmailField(label=_("E-Mail"))
-    message = forms.CharField(
-        widget=forms.widgets.Textarea(), label=_("Message"))
+    message = forms.CharField(widget=forms.widgets.Textarea(), label=_("Message"))
 
 
 class CaptchaContactForm(ContactForm):

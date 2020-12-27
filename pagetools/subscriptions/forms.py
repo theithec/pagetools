@@ -5,7 +5,7 @@ from django.urls import reverse
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 
-from pagetools.core.settings import SUBMIT_BUTTON_CLASSES
+from pagetools.settings import SUBMIT_BUTTON_CLASSES
 
 
 class SubscribeForm(forms.Form):
@@ -15,6 +15,8 @@ class SubscribeForm(forms.Form):
         super(SubscribeForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_id = "subscribeform"
-        self.helper.form_action = reverse('subscriptions:subscribe')
-        self.helper.add_input(Submit('subscribe', _('Submit'), css_class=SUBMIT_BUTTON_CLASSES))
+        self.helper.form_action = reverse("subscriptions:subscribe")
+        self.helper.add_input(
+            Submit("subscribe", _("Submit"), css_class=SUBMIT_BUTTON_CLASSES)
+        )
         self.helper.form_tag = True
