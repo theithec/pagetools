@@ -24,6 +24,7 @@ pagetoolsdemo1/htmlcov/
 pagetoolsdemo1/media/
 README.html
 docs/_build
+docs/build
 docs/mymake
 demo/django-ajax
 demo/media/_versions/*
