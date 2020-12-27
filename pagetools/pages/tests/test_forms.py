@@ -1,4 +1,5 @@
 from unittest import mock
+
 from django.test import TestCase
 
 from pagetools.pages.forms import ContactForm

@@ -1,11 +1,12 @@
+from django.apps import apps
 from django.core.exceptions import MultipleObjectsReturned
 from django.urls import reverse
 from django.utils.http import urlquote
 from django.utils.translation import ugettext_lazy as _
-from django.apps import apps
 from grappelli.dashboard.modules import DashboardModule
 
 from pagetools.utils import get_classname
+
 from .models import Menu
 
 appconf = apps.get_app_config("menus")

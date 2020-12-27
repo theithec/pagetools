@@ -1,6 +1,7 @@
 import os
-from django.test import TestCase
+
 from django.contrib.staticfiles import finders
+from django.test import TestCase
 
 from pagetools.admin import TinyMCEMixin
 

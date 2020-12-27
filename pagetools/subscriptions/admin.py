@@ -1,8 +1,8 @@
 from django.contrib import admin
-from django.urls import path
-from django.template.response import TemplateResponse
-from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
+from django.core.validators import validate_email
+from django.template.response import TemplateResponse
+from django.urls import path
 
 from .models import QueuedEmail, SendStatus, Subscriber
 

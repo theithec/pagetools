@@ -1,10 +1,10 @@
-from django.contrib.contenttypes.models import ContentType
-from django.contrib.auth.models import User
 from django.contrib import admin
+from django.contrib.auth.models import User
+from django.contrib.contenttypes.models import ContentType
 from django.test.testcases import TestCase
 
-from pagetools.utils import get_adminedit_url, get_adminadd_url
-from pagetools.widgets.models import TypeArea, PageType, ContentWidget
+from pagetools.utils import get_adminadd_url, get_adminedit_url
+from pagetools.widgets.models import ContentWidget, PageType, TypeArea
 
 
 class TypeAreaAdminTests(TestCase):

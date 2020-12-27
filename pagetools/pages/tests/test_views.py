@@ -1,6 +1,7 @@
 from unittest import mock
-from pagetools.menus.tests import MenuDataTestCase
+
 import pagetools.pages.models
+from pagetools.menus.tests import MenuDataTestCase
 from pagetools.pages.forms import CaptchaContactForm
 
 

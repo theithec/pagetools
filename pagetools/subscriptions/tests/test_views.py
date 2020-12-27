@@ -1,4 +1,5 @@
 from unittest import mock
+
 from django.conf import settings
 from django.contrib.messages.storage.fallback import FallbackStorage
 from django.core import mail

@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from django.test import TestCase, RequestFactory, override_settings
+from django.test import RequestFactory, TestCase, override_settings
 
 from pagetools.tests.test_models import ConcretePublishableLangModel
 from pagetools.views import PaginatorMixin

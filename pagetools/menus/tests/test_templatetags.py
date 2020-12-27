@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from pagetools.menus.models import Menu, Link
+from pagetools.menus.models import Link, Menu
 from pagetools.menus.templatetags.menus_tags import MenuRenderer
 from pagetools.pages.models import Page
 

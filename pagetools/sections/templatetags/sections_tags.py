@@ -2,8 +2,8 @@ from django import template
 from django.template.loader import select_template
 from django.utils.safestring import mark_safe
 
-from pagetools.sections.utils import get_template_names_for_obj
 from pagetools.sections.apps import SectionsConfig
+from pagetools.sections.utils import get_template_names_for_obj
 
 register = template.Library()
 

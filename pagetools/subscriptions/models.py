@@ -1,20 +1,20 @@
 import datetime
-from hashlib import sha224 as sha
 import smtplib
 import string
+from hashlib import sha224 as sha
 
+from django.apps import apps
 from django.core.mail import get_connection
 from django.core.mail.message import EmailMessage
 from django.db import models
-from django.apps import apps
+from django.db.utils import ProgrammingError
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.crypto import random
 from django.utils.http import urlquote
 from django.utils.translation import ugettext_lazy as _
-from django.db.utils import ProgrammingError
 
-from pagetools.models import LangModel, LangManager
+from pagetools.models import LangManager, LangModel
 
 from . import settings as subs_settings
 from .base_models import BaseSubscriberMixin

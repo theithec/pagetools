@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.utils.html import format_html
 from django.utils.translation import ugettext_lazy as _
 
-from pagetools.utils import get_adminedit_url, filter_expired
+from pagetools.utils import filter_expired, get_adminedit_url
 
 
 class TinyMCEMixin(admin.ModelAdmin):

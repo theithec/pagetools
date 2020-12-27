@@ -5,7 +5,6 @@ from django.conf import settings
 from django.conf.urls import url
 from django.views import static
 
-
 urlpatterns = []
 if settings.DEBUG:
     urlpatterns += [

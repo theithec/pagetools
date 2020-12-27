@@ -1,6 +1,9 @@
-import os
 import logging
+import os
 
+from captcha.fields import CaptchaField
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Submit
 from django import forms
 from django.core.exceptions import ValidationError
 from django.core.mail import send_mail
@@ -8,13 +11,8 @@ from django.forms import widgets
 from django.utils.text import slugify
 from django.utils.translation import ugettext_lazy as _
 
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit
-
-from captcha.fields import CaptchaField
-
-from pagetools.settings import SUBMIT_BUTTON_CLASSES
 from pagetools.pages.validators import validate_emails_str
+from pagetools.settings import SUBMIT_BUTTON_CLASSES
 
 from .settings import MAILFORM_RECEIVERS, MAILFORM_SENDER
 

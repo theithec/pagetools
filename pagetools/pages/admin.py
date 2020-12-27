@@ -3,10 +3,9 @@ from django.utils.translation import ugettext_lazy as _
 
 from pagetools.admin import PagelikeAdmin
 from pagetools.menus.admin import EntrieableAdmin
-from pagetools.pages.models import Page  # , DynFormField, PageDynFormField
-
-from pagetools.menus.utils import entrieable_auto_populated
 from pagetools.menus.models import MenuEntry
+from pagetools.menus.utils import entrieable_auto_populated
+from pagetools.pages.models import Page  # , DynFormField, PageDynFormField
 
 
 class BasePageAdmin(EntrieableAdmin, PagelikeAdmin):

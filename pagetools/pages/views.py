@@ -1,12 +1,13 @@
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
-from django.http.response import Http404
 from django.http import JsonResponse
+from django.http.response import Http404
 from django.utils.translation import ugettext as _
 from django.views.generic.detail import DetailView
 
-from pagetools.widgets.views import WidgetPagelikeMixin
 from pagetools.menus.views import SelectedMenuentriesMixin
+from pagetools.widgets.views import WidgetPagelikeMixin
+
 from .models import Page
 
 

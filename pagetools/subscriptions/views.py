@@ -2,18 +2,19 @@ import datetime
 from hashlib import sha224 as sha
 from smtplib import SMTPException
 
-from django import template, apps
-from django.core.mail import send_mail
-from django.urls import reverse
-from django.http.response import Http404, JsonResponse
-from django.shortcuts import render, get_object_or_404
-from django.utils import timezone
-from django.utils.translation import get_language, ugettext_lazy as _
-from django.contrib.sites.models import Site
+from django import apps, template
 from django.contrib import messages
-from .models import Subscriber
+from django.contrib.sites.models import Site
+from django.core.mail import send_mail
+from django.http.response import Http404, JsonResponse
+from django.shortcuts import get_object_or_404, render
+from django.urls import reverse
+from django.utils import timezone
+from django.utils.translation import get_language
+from django.utils.translation import ugettext_lazy as _
 
 from . import settings as subs_settings
+from .models import Subscriber
 
 config = apps.apps.get_app_config("subscriptions")
 subscribe_form = config.subscribe_form

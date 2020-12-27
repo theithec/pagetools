@@ -1,7 +1,8 @@
 # pylint: disable=import-outside-toplevel
 from typing import Dict
-from django.forms import Form
+
 from django.apps import AppConfig
+from django.forms import Form
 
 
 class PagesConfig(AppConfig):

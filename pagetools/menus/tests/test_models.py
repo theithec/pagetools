@@ -3,9 +3,8 @@ from django.test import TestCase
 from django.utils.translation import get_language
 
 from pagetools.menus.models import Menu
-from pagetools.pages.models import Page
-
 from pagetools.menus.tests import MenuDataTestCase
+from pagetools.pages.models import Page
 
 
 class ModelTests(MenuDataTestCase):

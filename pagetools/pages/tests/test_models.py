@@ -2,8 +2,8 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.test import TestCase
 
-from pagetools.settings import STATUS_PUBLISHED
 from pagetools.pages.models import Page
+from pagetools.settings import STATUS_PUBLISHED
 
 
 class PageTests(TestCase):

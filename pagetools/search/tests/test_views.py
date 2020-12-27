@@ -1,13 +1,13 @@
 from django.conf import settings
 from django.test import TestCase
 from django.test.client import Client
-from django.utils.text import slugify
 from django.urls import reverse
-from pagetools.pages.models import Page
+from django.utils.text import slugify
+
 import pagetools.search
 import pagetools.search.views
+from pagetools.pages.models import Page
 from pagetools.settings import STATUS_PUBLISHED
-
 
 pagetools.search.search_mods = (
     (Page, ("title", "content"), {"replacements": "content"}),

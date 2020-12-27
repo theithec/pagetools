@@ -1,4 +1,5 @@
 from django.db.utils import DatabaseError
+
 from pagetools.widgets.models import PageType, TypeArea
 
 

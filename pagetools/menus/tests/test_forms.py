@@ -1,7 +1,8 @@
-from django.urls import reverse
 from django.test.testcases import TestCase
-from pagetools.menus.models import Menu, Link
+from django.urls import reverse
+
 from pagetools.menus.admin import MenuAddForm, MenuChangeForm
+from pagetools.menus.models import Link, Menu
 
 
 class MenuFormTests(TestCase):

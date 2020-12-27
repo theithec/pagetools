@@ -1,7 +1,8 @@
 # pylint: disable=import-outside-toplevel
-from typing import Any, Dict, List, Callable
-from django.db import models
+from typing import Any, Callable, Dict, List
+
 from django.apps import AppConfig
+from django.db import models
 
 
 class MenusConfig(AppConfig):

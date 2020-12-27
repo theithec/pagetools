@@ -1,13 +1,13 @@
 """Models (mostly) for pages."""
 from typing import Dict
-from django.urls import reverse
-from django.db import models
-from django.forms import Form
-from django.utils.html import strip_tags
-from django.utils.translation import ugettext_lazy as _
+
 from django.apps import apps
 from django.core.exceptions import ValidationError
-
+from django.db import models
+from django.forms import Form
+from django.urls import reverse
+from django.utils.html import strip_tags
+from django.utils.translation import ugettext_lazy as _
 
 from pagetools.models import PagelikeModel
 from pagetools.widgets.models import PageType

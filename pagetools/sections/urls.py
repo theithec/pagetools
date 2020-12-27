@@ -1,6 +1,6 @@
 from django.conf.urls import url
 
-from pagetools.sections.views import PagelikeNodeView, BaseAjaxNodeView
+from pagetools.sections.views import BaseAjaxNodeView, PagelikeNodeView
 
 app_name = "sections"
 

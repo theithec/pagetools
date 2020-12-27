@@ -1,19 +1,19 @@
 from django.contrib import admin
 from django.contrib.contenttypes.models import ContentType
-from django.urls import reverse
 from django.http.response import HttpResponseRedirect
+from django.urls import reverse
 
 from pagetools.admin import TinyMCEMixin
-from pagetools.utils import itersubclasses, get_classname, get_perm_str
+from pagetools.utils import get_classname, get_perm_str, itersubclasses
 
 from .models import (
-    TypeArea,
+    BaseWidget,
     ContentWidget,
     PageType,
     PageTypeDescription,
-    WidgetInArea,
-    BaseWidget,
     TemplateTagWidget,
+    TypeArea,
+    WidgetInArea,
 )
 
 

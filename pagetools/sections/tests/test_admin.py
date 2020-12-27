@@ -2,8 +2,8 @@ from unittest.mock import Mock
 
 from django.contrib.admin import AdminSite
 
-from pagetools.sections.models import PageNode
 from pagetools.sections.admin import BasePageNodeAdmin
+from pagetools.sections.models import PageNode
 from pagetools.sections.tests.test_models import TestModelMixin
 
 

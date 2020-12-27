@@ -6,14 +6,14 @@ from django.core.exceptions import ValidationError
 from django.http.response import HttpResponseRedirect
 from django.template.loader import render_to_string
 from django.urls import reverse
-from django.utils.translation import ugettext_lazy as _
 from django.utils.safestring import mark_safe
+from django.utils.translation import ugettext_lazy as _
 
 from pagetools.admin import TinyMCEMixin
 from pagetools.utils import get_adminadd_url, get_classname
-from .models import AutoPopulated, Link, Menu, MenuCache, MenuEntry, ViewLink
 
 from .apps import MenusConfig
+from .models import AutoPopulated, Link, Menu, MenuCache, MenuEntry, ViewLink
 
 
 class MenuChildrenWidget(forms.Widget):

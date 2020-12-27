@@ -1,5 +1,5 @@
-from django.utils.translation import get_language
 from django.template.context_processors import csrf
+from django.utils.translation import get_language
 
 from .models import PageType
 from .utils import get_areas_for_type

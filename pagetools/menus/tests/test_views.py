@@ -1,5 +1,6 @@
 from django.test import RequestFactory
 from django.views.generic import DetailView
+
 from pagetools.menus.tests import MenuDataTestCase
 from pagetools.menus.views import SelectedMenuentriesMixin
 from pagetools.tests.test_models import ConcretePublishableLangModel

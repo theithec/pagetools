@@ -1,17 +1,17 @@
-import os
 import json
 import operator
+import os
 from functools import reduce
 
-from django.urls import reverse
 from django.db.models.query_utils import Q
+from django.urls import reverse
 from django.utils.html import strip_tags
 
-from pagetools.search import search_mods, extra_filter
+from pagetools.search import extra_filter, search_mods
 from pagetools.views import PaginatorMixin
 
-from .forms import AdvSearchForm
 from . import settings
+from .forms import AdvSearchForm
 
 
 class SearchResultsView(PaginatorMixin):

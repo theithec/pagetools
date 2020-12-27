@@ -1,6 +1,6 @@
 from django.test import TransactionTestCase
 
-from pagetools.menus.models import Menu, Link
+from pagetools.menus.models import Link, Menu
 from pagetools.pages.models import Page
 from pagetools.settings import STATUS_PUBLISHED
 from pagetools.tests.test_models import ConcretePublishableLangModel

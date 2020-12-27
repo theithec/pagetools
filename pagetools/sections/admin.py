@@ -1,11 +1,12 @@
 from django.contrib import admin
-from django.db.models.fields import BLANK_CHOICE_DASH
-from django.utils.translation import ugettext_lazy as _
-from django.utils.safestring import mark_safe
-
 from django.contrib.contenttypes.models import ContentType
+from django.db.models.fields import BLANK_CHOICE_DASH
+from django.utils.safestring import mark_safe
+from django.utils.translation import ugettext_lazy as _
 from grappelli.forms import GrappelliSortableHiddenMixin
-from pagetools.admin import PagelikeAdmin, AdminLinkMixin
+
+from pagetools.admin import AdminLinkMixin, PagelikeAdmin
+
 from .models import PageNode, PageNodePos
 
 

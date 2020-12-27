@@ -3,12 +3,11 @@ from django.contrib.auth.models import User
 from django.test.testcases import TestCase
 from django.urls import reverse
 
-
+from pagetools.menus.admin import MenuAdmin, make_entrieable_admin
+from pagetools.menus.apps import MenusConfig
+from pagetools.menus.models import Link, Menu, MenuEntry
 from pagetools.tests.test_models import ConcretePublishableLangModel
 from pagetools.utils import get_adminedit_url
-from pagetools.menus.apps import MenusConfig
-from pagetools.menus.admin import MenuAdmin, make_entrieable_admin
-from pagetools.menus.models import Link, Menu, MenuEntry
 from pagetools.widgets.settings import TEMPLATETAG_WIDGETS
 
 

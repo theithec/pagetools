@@ -1,6 +1,7 @@
+from django.contrib.sites.models import Site
 from django.template.loader import render_to_string
 from django.utils.translation import activate, get_language
-from django.contrib.sites.models import Site
+
 from . import settings as subs_settings
 from .models import QueuedEmail, SendStatus
 

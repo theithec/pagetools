@@ -1,8 +1,8 @@
 from django.core.management import call_command
 from django.test import TestCase
 
-from pagetools.widgets.settings import TEMPLATETAG_WIDGETS
 from pagetools.widgets.models import TemplateTagWidget
+from pagetools.widgets.settings import TEMPLATETAG_WIDGETS
 
 
 class CommandsTestCase(TestCase):

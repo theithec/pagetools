@@ -1,8 +1,7 @@
 from django.contrib.auth.models import User
-from django.urls import reverse
 from django.test.client import Client
 from django.test.testcases import TestCase
-
+from django.urls import reverse
 from django.utils.text import slugify
 
 from pagetools.pages.models import Page

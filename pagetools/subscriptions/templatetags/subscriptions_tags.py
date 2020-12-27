@@ -2,7 +2,6 @@ from django import template
 
 from pagetools.subscriptions.forms import SubscribeForm
 
-
 register = template.Library()
 
 

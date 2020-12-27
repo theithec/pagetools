@@ -1,5 +1,6 @@
 from django import template
 from django.core.exceptions import ObjectDoesNotExist
+
 from pagetools.menus.models import Menu
 
 register = template.Library()
