@@ -2,41 +2,40 @@
 
 <a href="javascript://" id="subscribe-btn">Newsletter</a>
 <div id="subscribeform-wrapper" style="display: none">
-	<div id="loading">
-		<p>
-		<img src="http://i.stack.imgur.com/FhHRx.gif" alt="Please wait"/> Please Wait
-		</p>
-	</div>
+    <div id="loading">
+        <p>
+        <img src="http://i.stack.imgur.com/FhHRx.gif" alt="Please wait"/> Please Wait
+        </p>
+    </div>
 
-	<p>{% blocktrans %}Subscribe to our newsletter{% endblocktrans %}</p>
-	{% crispy  sform %}
-	<span id="subscribe-msgs"></span>
+    <p>{% blocktrans %}Subscribe to our newsletter{% endblocktrans %}22</p>
+    {% crispy  sform  %}
+    <span id="subscribe-msgs"></span>
 </div>
 <script>
-window.onload = function (){
-	$("#subscribeform-wrapper").toggle(false);
-	$("#subscribe-btn").toggle(true).click(function(){
-		$("#subscribeform-wrapper").toggle();
-	});
+    window.onload = function (){
+        $("#subscribeform-wrapper").toggle(false);
+        $("#subscribe-btn").toggle(true).click(function(){
+            $("#subscribeform-wrapper").toggle();
+        });
 
-	$("#submit-id-subscribe").click(function(){
-		$("subscribe-msgs").replaceWith('<span id="subscribe-msgs"></span>');
-		$.post(
-				"{% url "subscriptions:subscribe" %}",
-				$("#subscribeform").serializeArray(),
-				function(data){
-					$("#subscribe-msgs").replaceWith('<span id="subscribe-msgs">'+data['msg']+'</span>');
-				}
-		      );
+        $("#submit-id-subscribe").click(function(){
+            $("subscribe-msgs").replaceWith('<span id="subscribe-msgs"></span>');
+            $.post(
+                "{% url "subscriptions:subscribe" %}",
+                $("#subscribeform").serializeArray(),
+                function(data){
+                    $("#subscribe-msgs").replaceWith('<span id="subscribe-msgs">'+data['msg']+'</span>');
+                }
+            );
 
-		return false;
+            return false;
 
-	});
-	$("#loading").ajaxStart(function(){
-		$(this).show();
-	}).ajaxStop(function(){
-		$(this).hide();
-	}).hide();
-
-}
+        });
+        $("#loading").ajaxStart(function(){
+            $(this).show();
+        }).ajaxStop(function(){
+            $(this).hide();
+        }).hide();
+    }
 </script>

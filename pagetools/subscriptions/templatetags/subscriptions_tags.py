@@ -1,5 +1,4 @@
 from django import template
-
 from pagetools.subscriptions.forms import SubscribeForm
 
 register = template.Library()
@@ -7,14 +6,10 @@ register = template.Library()
 
 class SubscribeNode(template.Node):
     def render(self, context):
+        request = context.pop("request")
         tmpl = template.loader.get_template("subscriptions/block_subscription.html")
         context["sform"] = SubscribeForm()
-        try:
-            context = context.flatten()
-        except AttributeError:
-            pass
-
-        return tmpl.render(context)
+        return tmpl.render(context, request=request)
 
 
 @register.tag(name="subscribe_widget")

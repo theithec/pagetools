@@ -7,45 +7,44 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-10 16:30+0100\n"
+"POT-Creation-Date: 2020-12-27 19:24+0100\n"
 "PO-Revision-Date: 2016-02-10 16:32+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"Last-Translator: \n"
-"Language-Team: \n"
 "X-Generator: Poedit 1.8.4\n"
 
-#: admin.py:57
+#: sections/admin.py:35
 msgid "Admin link"
 msgstr "Bearbeiten\t"
 
-#: admin.py:68 admin.py:69
+#: sections/admin.py:98 sections/admin.py:99
 msgid "Parents"
 msgstr "Eltern"
 
-#: models.py:98
+#: sections/models.py:105
+#, python-format
+msgid "The slug \"%s\" for language \"%s\" is already taken"
+msgstr ""
+
+#: sections/models.py:131
 msgid "Node"
 msgstr "Knoten"
 
-#: models.py:99
+#: sections/models.py:132
 msgid "Nodes"
 msgstr "Knoten"
 
-#: models.py:113
-msgid "Content Position"
-msgstr "Positionierter Inhalt"
-
-#: models.py:114
-msgid "Content Positions"
-msgstr "Positionierte Inhalte"
-
-#: templates/sections/content.html:33
-msgid "I Want To Buy"
+#: sections/models.py:148 sections/models.py:149
+msgid "Included Content"
 msgstr ""
 
-#: templates/sections/content.html:38
-msgid "More Info"
-msgstr ""
+#~ msgid "Content Position"
+#~ msgstr "Positionierter Inhalt"
+
+#~ msgid "Content Positions"
+#~ msgstr "Positionierte Inhalte"

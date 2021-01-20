@@ -7,29 +7,52 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-28 15:06+0100\n"
+"POT-Creation-Date: 2020-12-27 19:24+0100\n"
 "PO-Revision-Date: 2015-03-28 15:07+0100\n"
 "Last-Translator: slart@aktivix.org <slart@aktivix.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.5.4\n"
 
-#: forms.py:12
+#: subscriptions/forms.py:11
 msgid "E-Mail"
 msgstr ""
 
-#: models.py:75
+#: subscriptions/forms.py:19
+msgid "Submit"
+msgstr ""
+
+#: subscriptions/models.py:77
 msgid "News-Mail"
 msgstr ""
 
-#: settings.py:17
+#: subscriptions/settings.py:16
 msgid "Welcome"
 msgstr "Willkommen"
 
-#: templates/subscribe/activation_msg.txt:2
+#: subscriptions/templates/admin/subscriptions/subscriber/mass_subscription.html:7
+msgid "Back"
+msgstr ""
+
+#: subscriptions/templates/admin/subscriptions/subscriber/mass_subscription.html:14
+msgid "One line per row"
+msgstr ""
+
+#: subscriptions/templates/admin/subscriptions/subscriber/sub_change_list.html:10
+#, python-format
+msgid "Add %(name)s"
+msgstr ""
+
+#: subscriptions/templates/admin/subscriptions/subscriber/sub_change_list.html:12
+#, python-format
+msgid "Add many %(name)s"
+msgstr ""
+
+#: subscriptions/templates/subscriptions/activation_msg.txt:2
 #, python-format
 msgid ""
 "\n"
@@ -62,12 +85,14 @@ msgstr ""
 "%(site_name)s\n"
 "\n"
 
-#: templates/subscribe/block_subscribtion.html:11
-msgid " subscribe to newsletter "
+#: subscriptions/templates/subscriptions/block_subscription.html:11
+#, fuzzy
+#| msgid " subscribe to newsletter "
+msgid "Subscribe to our newsletter"
 msgstr "Newsletter-Anmeldung"
 
-#: templates/subscribe/msg.html:2
-#, python-format
+#: subscriptions/templates/subscriptions/msg.html:2
+#, fuzzy, python-format
 #| msgid ""
 #| "\n"
 #| "New content on %(site_name)s:\n"
@@ -80,7 +105,7 @@ msgstr "Newsletter-Anmeldung"
 #| "%(site_name)s\n"
 #| "\n"
 #| "Unsubscribe?\n"
-#| "%(site_url)s_unsubscribe_path_\n"
+#| "https://%(site_domain)s_unsubscribe_path_\n"
 #| "More Infos: info@%(site_domain)s\n"
 msgid ""
 "\n"
@@ -94,7 +119,7 @@ msgid ""
 "%(site_name)s\n"
 "\n"
 "Unsubscribe?\n"
-"https://%(site_domain)s_unsubscribe_path_\n"
+"https://%(site_domain)s__unsubscribe_path__\n"
 "More Infos: info@%(site_domain)s\n"
 msgstr ""
 "\n"
@@ -111,23 +136,23 @@ msgstr ""
 "https://%(site_domain)s_unsubscribe_path_\n"
 "Mehr Infos: info@%(site_domain)s\n"
 
-#: templates/subscribe/subscribe_msg.html:4
+#: subscriptions/templates/subscriptions/subscribe_msg.html:4
 msgid "back"
 msgstr "zurück"
 
-#: views.py:25
+#: subscriptions/views.py:52
 msgid "An error occurred"
 msgstr "Ein Fehler ist aufgetreten"
 
-#: views.py:31
+#: subscriptions/views.py:59
 #, python-format
 msgid "subscribed: %s"
 msgstr "Angemeldet: %s"
 
-#: views.py:101
+#: subscriptions/views.py:113 subscriptions/views.py:116
 msgid "activation: ok"
 msgstr "Aktivierung erfolgreich"
 
-#: views.py:112
+#: subscriptions/views.py:125 subscriptions/views.py:128
 msgid "unsubscribe: ok"
 msgstr "Abmeldung erfolgreich"

@@ -7,102 +7,128 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-28 13:23+0100\n"
+"POT-Creation-Date: 2020-12-27 19:24+0100\n"
 "PO-Revision-Date: 2015-03-28 13:28+0100\n"
 "Last-Translator: slart@aktivix.org <slart@aktivix.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.5.4\n"
 
-#: admin.py:97
+#: menus/admin.py:67
+#, python-format
+msgid "Entry \"%s\" already exists"
+msgstr ""
+
+#: menus/admin.py:101
+msgid "Add"
+msgstr ""
+
+#: menus/admin.py:184
 msgid "Menus"
 msgstr ""
 
-#: dashboard_modules.py:25
+#: menus/admin.py:250
+msgid "In menus"
+msgstr ""
+
+#: menus/dashboard_modules.py:29
 msgid "Menu Overview"
 msgstr "Menü-Übersicht"
 
-#: models.py:35
-msgid "Use 'add_child' or 'add_root' instead of 'create'"
+#: menus/dashboard_modules.py:49
+msgid "Menu not found!"
 msgstr ""
 
-#: models.py:40
+#: menus/models.py:31
 msgid "MenuEntry.content_object requires get_absolute_url"
 msgstr ""
 
-#: models.py:53
+#: menus/models.py:46
 #, python-format
 msgid "Entry %(title)s already exists in %(parent)s"
 msgstr ""
 
-#: models.py:65
+#: menus/models.py:53
+msgid "Use 'add_child' or 'add_root' instead of 'create'"
+msgstr ""
+
+#: menus/models.py:61
 #, python-format
 msgid "Menu %(name)s already exists"
 msgstr ""
 
-#: models.py:72 models.py:263
+#: menus/models.py:67 menus/models.py:325
 msgid "Title"
 msgstr "Titel"
 
-#: models.py:74
-msgid "slugs"
+#: menus/models.py:69
+#, fuzzy
+#| msgid "slugs"
+msgid "slug"
 msgstr "URL-Schreibweise"
 
-#: models.py:258
+#: menus/models.py:69
+msgid "Slug"
+msgstr ""
+
+#: menus/models.py:108
+msgid "An entry with this title and language already exists in menu"
+msgstr ""
+
+#: menus/models.py:114
+msgid "A menu with this title and language already exists"
+msgstr ""
+
+#: menus/models.py:320
 msgid "Menu"
 msgstr ""
 
-#: models.py:264
+#: menus/models.py:326
 msgid "enabled"
 msgstr "aktiviert"
 
-#: models.py:271
+#: menus/models.py:336
 msgid "URL"
 msgstr ""
 
-#: models.py:280
+#: menus/models.py:345
 msgid "Link"
 msgstr ""
 
-#: models.py:281
+#: menus/models.py:346
 msgid "Links"
 msgstr ""
 
-#: models.py:285
+#: menus/models.py:350 menus/models.py:378
 msgid "Name"
 msgstr ""
 
-#: models.py:302
-msgid "ViewLink"
+#: menus/models.py:367 menus/models.py:368
+msgid "View"
 msgstr ""
 
-#: models.py:303
-msgid "ViewLinks"
+#: menus/models.py:398
+msgid "Autopopulated Entry"
 msgstr ""
 
-#: templates/admin/dashboard_menu_module.html:8
+#: menus/models.py:399
+msgid "Autopopulated Entries"
+msgstr ""
+
+#: menus/templates/menus/admin/dashboard_menu_module.html:8
 msgid "Existing entries"
 msgstr "Bestehende Einträge"
 
-#: templates/admin/dashboard_menu_module.html:21
+#: menus/templates/menus/admin/dashboard_menu_module.html:23
 msgid "Create new entry"
 msgstr "Neuer Eintrag"
 
-#: templates/admin/menus/menu/change_form.html:72
-msgid "Add New Entry"
-msgstr "Neuen Eintrag hinzufügen"
+#~ msgid "Add New Entry"
+#~ msgstr "Neuen Eintrag hinzufügen"
 
-#: templates/admin/menus/menu/change_form.html:78
-msgid "Entries"
-msgstr "Einträge"
-
-#: utils.py:28
-msgid "Entrieable urls need a name"
-msgstr ""
-
-#: utils.py:34
-msgid "deprecated, wrong naming, use entrieable_url"
-msgstr ""
+#~ msgid "Entries"
+#~ msgstr "Einträge"

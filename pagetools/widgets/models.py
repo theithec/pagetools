@@ -25,13 +25,13 @@ class BaseWidget(models.Model):
     def get_template_name(self, context):  # pylint: disable=unused-argument
         return self.template_name
 
-    def render(self, context):
+    def render(self, context, request):
         templ = template.loader.get_template(self.get_template_name(context))
         context["title"] = self.get_title(context)
-        context["content"] = self.get_content(context)
-        return mark_safe(templ.render(context))
+        context["content"] = self.get_content(context, request)
+        return mark_safe(templ.render(context, request=request))
 
-    def get_content(self, context):  # pylint: disable=unused-argument
+    def get_content(self, context, request):  # pylint: disable=unused-argument
         raise NotImplementedError()
 
     def __str__(self):
@@ -48,7 +48,7 @@ class ContentWidget(BaseWidget):
 
     content = models.TextField(_("Content"))
 
-    def get_content(self, context):  # pylint: disable=unused-argument
+    def get_content(self, context, request):  # pylint: disable=unused-argument
         return self.content
 
     class Meta:
@@ -77,8 +77,9 @@ class TemplateTagWidget(BaseWidget):
                 self.templatetag_instance = clz()
         return self.templatetag_instance
 
-    def get_content(self, context):
+    def get_content(self, context, request):
         if self.load_templatetag_instance():
+            context["request"] = request
             return self.templatetag_instance.render(context)
 
         return None
@@ -164,8 +165,8 @@ class WidgetInArea(models.Model):
     def get_title(self):
         return "%s" % self.content_object.title
 
-    def get_content(self, contextdict):
-        return self.content_object.render(contextdict)
+    def get_content(self, contextdict, request):
+        return self.content_object.render(contextdict, request)
 
     def adminedit_url(self):
         obj = self.content_object

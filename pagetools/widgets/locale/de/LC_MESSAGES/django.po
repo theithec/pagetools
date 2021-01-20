@@ -7,48 +7,91 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-28 13:35+0100\n"
+"POT-Creation-Date: 2020-12-27 19:24+0100\n"
 "PO-Revision-Date: 2015-03-28 13:40+0100\n"
 "Last-Translator: slart@aktivix.org <slart@aktivix.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.5.4\n"
 
-#: management/commands/mk_templatetagwidgets.py:15
+#: widgets/management/commands/mk_templatetagwidgets.py:10
 msgid "create Widgets according to settings.(PT_)TEMPLATETAG_WIDGETS "
 msgstr "erstelle Widget gemäß settings.[PT_].TEMPLATETAG_WIDGETS"
 
-#: models.py:24
+#: widgets/models.py:19
 msgid "name"
 msgstr "Name"
 
-#: models.py:35
+#: widgets/models.py:49
 msgid "Content"
 msgstr "Inhalt"
 
-#: models.py:84
+#: widgets/models.py:55
+msgid "Simple Text Widget"
+msgstr ""
+
+#: widgets/models.py:56
+msgid "Simple Text Widgets"
+msgstr ""
+
+#: widgets/models.py:97
 msgid "Pagetype"
 msgstr "Seitentyp"
 
-#: models.py:107
+#: widgets/models.py:98
+#, fuzzy
+#| msgid "Pagetype"
+msgid "Pagetypes"
+msgstr "Seitentyp"
+
+#: widgets/models.py:106
+msgid "Description"
+msgstr ""
+
+#: widgets/models.py:116
+#, fuzzy
+#| msgid "Pagetype-Areas"
+msgid "Pagetype-Description"
+msgstr "Seitentyp-Bereiche"
+
+#: widgets/models.py:117
+#, fuzzy
+#| msgid "Pagetype-Areas"
+msgid "Pagetype-Descriptions"
+msgstr "Seitentyp-Bereiche"
+
+#: widgets/models.py:148
 msgid "Pagetype-Area"
 msgstr "Seitentyp-Bereich"
 
-#: models.py:108
+#: widgets/models.py:149
 msgid "Pagetype-Areas"
 msgstr "Seitentyp-Bereiche"
 
-#: settings.py:14
+#: widgets/models.py:179
+#, fuzzy
+#| msgid "Add new Widget"
+msgid "Included widget"
+msgstr "Neues Widget hinzufügen"
+
+#: widgets/models.py:180
+#, fuzzy
+#| msgid "Add new Widget"
+msgid "Included widgets"
+msgstr "Neues Widget hinzufügen"
+
+#: widgets/settings.py:14
 msgid "Sidebar"
 msgstr "Seitenleiste"
 
-#: templates/admin/widgets/typearea/change_form.html:5
+#: widgets/templates/admin/widgets/typearea/change_form.html:5
 msgid "Add new Widget"
 msgstr "Neues Widget hinzufügen"
 
-#: templates/admin/widgets/typearea/change_form.html:19
+#: widgets/templates/admin/widgets/typearea/change_form.html:19
 msgid "Add existing Widget"
 msgstr "Existierendes Widget hinzufügen"

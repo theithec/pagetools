@@ -10,7 +10,8 @@ def type_or_none(typename):
         return None
 
 
-def get_areas_for_type(pagetype, contextdict, tmpdict=None):
+def get_areas_for_type(pagetype, contextdict, request, tmpdict=None):
+    request.areas_added = True
     if not tmpdict:
         tmpdict = {}
 
@@ -19,7 +20,7 @@ def get_areas_for_type(pagetype, contextdict, tmpdict=None):
         if not pagetype:
             return None
 
-        return get_areas_for_type(pagetype, contextdict, tmpdict)
+        return get_areas_for_type(pagetype, contextdict, request, tmpdict)
     type_areas = TypeArea.objects.lfilter(pagetype=pagetype)
     for type_area in type_areas:
         if tmpdict.get(type_area.area) is not None:
@@ -31,9 +32,9 @@ def get_areas_for_type(pagetype, contextdict, tmpdict=None):
             .order_by("position")
         )
         tmpdict[type_area.area] = [
-            widget.get_content(contextdict) for widget in orderedwidgets
+            widget.get_content(contextdict, request) for widget in orderedwidgets
         ]
 
     if pagetype.parent:
-        tmpdict = get_areas_for_type(pagetype.parent, contextdict, tmpdict)
+        tmpdict = get_areas_for_type(pagetype.parent, contextdict, request, tmpdict)
     return tmpdict

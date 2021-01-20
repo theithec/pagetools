@@ -1,4 +1,5 @@
 from django.template.context_processors import csrf
+from django.template.context import RequestContext
 from django.utils.translation import get_language
 
 from .models import PageType
@@ -23,10 +24,7 @@ class WidgetViewMixin:
             pt_descr = ptype.pagetypedescription_set.filter(lang=get_language()).first()
             if pt_descr:
                 kwargs["pagetype_description"] = pt_descr.description
-        assert "request" not in kwargs
-        # if kwargs.get("request", None) is None:
-        #     kwargs.update(csrf(self.request))
-        kwargs["areas"] = get_areas_for_type(ptype, kwargs)
+        kwargs["areas"] = get_areas_for_type(ptype, kwargs, request=self.request)
         kwargs["pagetype_name"] = ptname
         return kwargs
 
