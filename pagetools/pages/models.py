@@ -12,6 +12,8 @@ from django.utils.translation import ugettext_lazy as _
 from pagetools.models import PagelikeModel
 from pagetools.widgets.models import PageType
 
+from .settings import INDEX_VIEW_SLUG
+
 from .validators import validate_emails_str
 
 
@@ -106,6 +108,8 @@ class BasePage(IncludedEmailForm, AuthPage, PagelikeModel):
         return self.pagetype
 
     def get_absolute_url(self):
+        if self.slug == INDEX_VIEW_SLUG:
+            return "/"
         return reverse("pages:pageview", kwargs={"slug": self.slug})
 
     class Meta(PagelikeModel.Meta):

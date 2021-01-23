@@ -10,3 +10,8 @@ MAILFORM_SENDER = getattr(settings, "PT_MAILFORM_SENDER", "form@localhost")
 SUBMIT_BUTTON_CLASSES = getattr(
     settings, "PT_SUBMIT_BUTTON_CLASSES", "btn btn-primary button primary"
 )
+
+INDEX_VIEW_SLUG = getattr(
+    settings, "PT_INDEX_VIEW_SLUG", "start"
+)
+
