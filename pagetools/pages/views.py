@@ -77,11 +77,7 @@ class PageView(AuthPageMixin, IncludedFormMixin, BasePageView):
     model = Page
 
     def get_pagetype_name(self, **kwargs):
-        return (
-            self.object.pagetype.name
-            if self.object.pagetype
-            else super().get_pagetype_name(**kwargs)
-        )
+        return self.object.pagetype.name if self.object.pagetype else super().get_pagetype_name(**kwargs)
 
     def get_pagetype(self, **kwargs):
         return self.object.pagetype or super().get_pagetype(self)

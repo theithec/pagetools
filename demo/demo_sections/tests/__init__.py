@@ -1,4 +1,3 @@
-
 import os.path
 from django.test import TestCase
 from django.conf import settings
@@ -8,7 +7,6 @@ from demo_sections.models import Article, Section, SectionList
 
 
 class SectionsDataTestCase(TestCase):
-
     def setUp(self):
         self.sections = []
         self.articles = []
@@ -24,26 +22,16 @@ class SectionsDataTestCase(TestCase):
                 slug="slug%s" % i,
                 content="Text%s" % i,
                 teaser="Teaser%s" % i,
-                image=FileObject(
-                    "%s/foo.jpg" % settings.MEDIA_ROOT),
-
+                image=FileObject("%s/foo.jpg" % settings.MEDIA_ROOT),
                 status="published",
             )
             self.articles.append(article)
 
         s1, s2 = self.sections
-        PageNodePos.objects.create(
-            content=self.articles[0],
-            owner=s1,
-            position=0
-        )
+        PageNodePos.objects.create(content=self.articles[0], owner=s1, position=0)
         self.sectionlist1 = SectionList.objects.create(
             title="Sectionlist1",
             slug="sectionlist1",
             status="published",
         )
-        PageNodePos.objects.create(
-            content=s1,
-            owner=self.sectionlist1,
-            position=0
-        )
+        PageNodePos.objects.create(content=s1, owner=self.sectionlist1, position=0)

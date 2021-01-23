@@ -25,6 +25,4 @@ class AdvSearchForm(forms.Form):
             k, v = m[:2]
             _models.append(k)
         choices = [("%s" % i, get_classname(k)) for i, k in enumerate(_models)]
-        self.fields["models"] = forms.MultipleChoiceField(
-            choices=choices, required=False
-        )
+        self.fields["models"] = forms.MultipleChoiceField(choices=choices, required=False)

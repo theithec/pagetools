@@ -56,8 +56,7 @@ class TypeAreaAdminTests(TestCase):
                 "widgets-TOTAL_FORMS": 1,
                 "widgets-INITIAL_FORMS": 0,
                 # 'widgets-MAX_NUM_FORMS':1000,
-                "add_objs": "%s_%s"
-                % (ContentType.objects.get_for_model(widget).pk, widget.pk),
+                "add_objs": "%s_%s" % (ContentType.objects.get_for_model(widget).pk, widget.pk),
             }
         )
         response = self.client.post(adminurl, data, follow=True)

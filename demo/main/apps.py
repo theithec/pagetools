@@ -15,16 +15,18 @@ def question_get_absolute_url(self):
 @receiver(post_save)
 def questions_post_savecallback(sender, **kwargs):
     from pagetools.subscriptions.utils import to_queue
-    if sender.__name__ == 'Question' and kwargs['created'] == True:
-        to_queue({
-            'title': 'New Question',
-            'body': 'There is a great new question: %s.' % (
-                kwargs['instance'].question_text)
-        })
+
+    if sender.__name__ == "Question" and kwargs["created"] == True:
+        to_queue(
+            {
+                "title": "New Question",
+                "body": "There is a great new question: %s." % (kwargs["instance"].question_text),
+            }
+        )
 
 
 class MainConfig(AppConfig):
-    name = 'main'
+    name = "main"
 
     def ready(self):
         import polls.admin
@@ -32,8 +34,10 @@ class MainConfig(AppConfig):
         from polls.models import Question
 
         from pagetools.menus.models import MenuEntry
-        from pagetools.menus.utils import (entrieable_auto_populated,
-                                           entrieable_reverse_name)
+        from pagetools.menus.utils import (
+            entrieable_auto_populated,
+            entrieable_reverse_name,
+        )
         from pagetools.menus.admin import make_entrieable_admin
         from pagetools.pages.models import Page
         import pagetools.search
@@ -53,6 +57,7 @@ class MainConfig(AppConfig):
                 MenuEntry(title=q.question_text, content_object=q)
                 for q in Question.objects.filter(pub_date__lte=timezone.now())
             ]
+
         # tell pagetools menus about it
         entrieable_auto_populated("All questions", recent_questions_as_entries)
 
@@ -66,7 +71,7 @@ class MainConfig(AppConfig):
 
         # Make Questions searchable
         pagetools.search.search_mods = (
-            (Question, ('question_text',)),
+            (Question, ("question_text",)),
             # and pages also
-            (Page, ('title', 'content'), {'replacements': 'content'}),
+            (Page, ("title", "content"), {"replacements": "content"}),
         )

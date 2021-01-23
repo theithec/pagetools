@@ -22,9 +22,7 @@ class PageViewTestCase(MenuDataTestCase):
             "captcha_0": "xPASSED",
             "captcha_1": "PASSED",
         }
-        pagetools.pages.models.Page.includable_forms = {
-            "Contactform": CaptchaContactForm
-        }
+        pagetools.pages.models.Page.includable_forms = {"Contactform": CaptchaContactForm}
         response = self.client.post(self.page1.get_absolute_url(), data)
         self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, "An error occured")

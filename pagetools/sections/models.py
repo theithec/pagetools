@@ -76,11 +76,7 @@ class PageNode(PagelikeModel):
     #     return real_child
 
     def children_queryset(self, **kwargs):
-        queryset = (
-            self.positioned_content.lfilter(**kwargs)
-            .prefetch_related("content_object")
-            .order_by("pagenodepos")
-        )
+        queryset = self.positioned_content.lfilter(**kwargs).prefetch_related("content_object").order_by("pagenodepos")
         return queryset
 
     def children(self, **_kwargs):
@@ -101,17 +97,12 @@ class PageNode(PagelikeModel):
         objs = PageNode.objects.filter(slug=self.slug, lang=self.lang)
         lobjs = len(objs)
         if (lobjs == 1 and objs[0].pk != self.pk) or lobjs > 1:
-            raise ValidationError(
-                _('The slug "%s" for language "%s" is already taken')
-                % (self.slug, self.lang)
-            )
+            raise ValidationError(_('The slug "%s" for language "%s" is already taken') % (self.slug, self.lang))
         return super().clean()
 
     def save(self, *args, **kwargs):
         if self.__class__.__name__ != "PageNode":
-            ctype = ContentType.objects.get_for_model(
-                self.__class__, for_concrete_model=False
-            )
+            ctype = ContentType.objects.get_for_model(self.__class__, for_concrete_model=False)
             self.content_type_pk = ctype
         super(PageNode, self).save(*args, **kwargs)
 
@@ -136,9 +127,7 @@ class PageNodePos(models.Model):
 
     position = models.PositiveIntegerField()
     content = models.ForeignKey(PageNode, on_delete=models.CASCADE)
-    owner = models.ForeignKey(
-        PageNode, related_name="in_group", on_delete=models.CASCADE
-    )
+    owner = models.ForeignKey(PageNode, related_name="in_group", on_delete=models.CASCADE)
 
     def __str__(self):
         return "%s:%s:%s" % (self.owner, self.content, self.position)

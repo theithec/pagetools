@@ -45,9 +45,7 @@ class MenuAdminTests(TestCase):
     def test_admin_index(self):
         """ test index because customdashboard with MenuModule is may used"""
         adminindex = reverse("admin:index")
-        response = self.client.get(
-            adminindex, follow=True, extra={"app_label": "admin"}
-        )
+        response = self.client.get(adminindex, follow=True, extra={"app_label": "admin"})
         self.assertIn(response.status_code, (200, 302))
 
     def test_add(self):
@@ -99,9 +97,7 @@ class MenuAdminTests(TestCase):
         adminurl = reverse("admin:menus_menu_change", args=[menu.pk])
         data = self._data_from_menu(menu)
         self.client.post(adminurl, data)
-        self.assertEqual(
-            [entry["entry_title"] for entry in menu.children_list()], ["e1", "e2"]
-        )
+        self.assertEqual([entry["entry_title"] for entry in menu.children_list()], ["e1", "e2"])
         data.update(
             {
                 "entry-order": "[%s]=null&[%s]=null" % (entries[1].pk, entries[0].pk),
@@ -150,9 +146,7 @@ class MenuAdminTests(TestCase):
         data = instance.__dict__
         menu = Menu.objects.add_root(title="Menu1")
 
-        admininstance = admincls(
-            model=ConcretePublishableLangModel, admin_site=self.site
-        )
+        admininstance = admincls(model=ConcretePublishableLangModel, admin_site=self.site)
         self.assertTrue(admininstance.get_fields({}, instance), [])
         self.assertTrue(admininstance.get_fieldsets({}, instance), [])
         formcls = admincls.form

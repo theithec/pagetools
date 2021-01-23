@@ -131,9 +131,7 @@ class TypeArea(LangModel):
 
     def clean(self, *args, **kwargs):
         super().clean(*args, **kwargs)
-        filtered = TypeArea.objects.filter(
-            area=self.area, pagetype=self.pagetype, lang=""
-        ).exclude(pk=self.pk)
+        filtered = TypeArea.objects.filter(area=self.area, pagetype=self.pagetype, lang="").exclude(pk=self.pk)
         if filtered:
             raise ValidationError({"__all__": ("Language Error",)})
 
@@ -153,9 +151,7 @@ class TypeArea(LangModel):
 class WidgetInArea(models.Model):
     """A widget associated with an area"""
 
-    typearea = models.ForeignKey(
-        TypeArea, related_name="widgets", on_delete=models.CASCADE
-    )
+    typearea = models.ForeignKey(TypeArea, related_name="widgets", on_delete=models.CASCADE)
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey("content_type", "object_id")

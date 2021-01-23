@@ -11,7 +11,10 @@ from .models import Article, Section, SectionList
 
 class MainSectionsAdmin(BasePageNodeAdmin, EntrieableAdmin):
     form = EntrieableForm
-    exclude = ['content_type_pk', 'object_id', ]
+    exclude = [
+        "content_type_pk",
+        "object_id",
+    ]
 
 
 admin.site.register([Article, Section, SectionList], MainSectionsAdmin)

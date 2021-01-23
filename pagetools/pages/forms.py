@@ -24,9 +24,7 @@ class DynMultipleChoiceField(forms.MultipleChoiceField):
         try:
             label, values = kwargs["label"].split(":")
         except ValueError:
-            raise ValidationError(
-                _('ChoiceField name must be "name: option1, option2 [...])')
-            )
+            raise ValidationError(_('ChoiceField name must be "name: option1, option2 [...])'))
         kwargs.update(
             {
                 "label": label,
@@ -46,9 +44,7 @@ class SendEmailForm(forms.Form):
         super(SendEmailForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_method = "post"
-        self.helper.add_input(
-            Submit("submit", _("Submit"), css_class=SUBMIT_BUTTON_CLASSES)
-        )
+        self.helper.add_input(Submit("submit", _("Submit"), css_class=SUBMIT_BUTTON_CLASSES))
 
     def get_mailmessage(self):
         return os.linesep.join(

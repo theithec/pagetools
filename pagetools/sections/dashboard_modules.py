@@ -41,9 +41,7 @@ class PageNodesModule(DashboardModule):
         super().__init__(*args, **kwargs)
 
     def init_with_context(self, context):
-        pages = self.model.objects.filter(
-            content_type_pk=self.model.get_contenttype_pk()
-        )
+        pages = self.model.objects.filter(content_type_pk=self.model.get_contenttype_pk())
         context["pages"] = pages
         context["admin_pagenodesview"] = "/adminnodes/__SLUG__"
         options = ""

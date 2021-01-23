@@ -46,8 +46,6 @@ class ModelTests(MenuDataTestCase):
 class M2Tests(TestCase):
     def test_create(self):
         menu = Menu.objects.add_root("M1")
-        page = Page.objects.create(
-            title="t1", slug="t1", content="t1", status="published"
-        )
+        page = Page.objects.create(title="t1", slug="t1", content="t1", status="published")
         menu.children.add_child(page)
         self.assertEqual(page, menu.children.first().content_object)

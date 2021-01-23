@@ -9,9 +9,7 @@ import pagetools.search.views
 from pagetools.pages.models import Page
 from pagetools.settings import STATUS_PUBLISHED
 
-pagetools.search.search_mods = (
-    (Page, ("title", "content"), {"replacements": "content"}),
-)
+pagetools.search.search_mods = ((Page, ("title", "content"), {"replacements": "content"}),)
 pagetools.search.views.SearchResultsView._search_mods = pagetools.search.search_mods
 pagetools.search.extra_filter = lambda x: x.filter(status=STATUS_PUBLISHED)
 pagetools.search.views.extra_filter = lambda x: x.filter(status=STATUS_PUBLISHED)
@@ -20,9 +18,7 @@ pagetools.search.views.extra_filter = lambda x: x.filter(status=STATUS_PUBLISHED
 class SearchViewTests(TestCase):
     def setUp(self):
         self.client = Client()
-        for title, content, is_pub in [
-            ("P%s" % i, "Foo%s" % i, True) for i in range(4)
-        ]:
+        for title, content, is_pub in [("P%s" % i, "Foo%s" % i, True) for i in range(4)]:
             Page.objects.create(
                 **{
                     "title": title,

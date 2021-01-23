@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class DemoSectionsConfig(AppConfig):
-    name = 'demo_sections'
+    name = "demo_sections"

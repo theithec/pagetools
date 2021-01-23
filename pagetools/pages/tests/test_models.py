@@ -11,13 +11,9 @@ class PageTests(TestCase):
         self.username = "admin"
         self.email = "test@test.com"
         self.password = "test"
-        self.admin = User.objects.create_superuser(
-            self.username, self.email, self.password
-        )
+        self.admin = User.objects.create_superuser(self.username, self.email, self.password)
         self.admin.save()
-        self.page = Page.objects.create(
-            title="p1", slug="p1", included_form=list(Page.includable_forms.keys())[0]
-        )
+        self.page = Page.objects.create(title="p1", slug="p1", included_form=list(Page.includable_forms.keys())[0])
 
     def test_title(self):
         self.assertEqual(self.page.title, "p1")

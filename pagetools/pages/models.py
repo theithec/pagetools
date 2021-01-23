@@ -36,16 +36,12 @@ class IncludedForm(models.Model):
     """
 
     includable_forms: Dict[str, Form] = {}
-    included_form = models.CharField(
-        _("Included form"), max_length=255, blank=True, choices=(("dummy", "dummy"),)
-    )
+    included_form = models.CharField(_("Included form"), max_length=255, blank=True, choices=(("dummy", "dummy"),))
 
     def __init__(self, *args, **kwargs):
         super(IncludedForm, self).__init__(*args, **kwargs)
         appconf = apps.get_app_config("pages")
-        self.__class__.includable_forms = (
-            self.__class__.includable_forms or appconf.includable_forms
-        )
+        self.__class__.includable_forms = self.__class__.includable_forms or appconf.includable_forms
         choices = [(i, _(i)) for i in self.includable_forms.keys()]
         self._meta.get_field("included_form").choices = choices
 
@@ -74,9 +70,7 @@ class IncludedEmailForm(IncludedForm):
         validate_emails_str(self.email_receivers)
 
     def email_receivers_list(self):
-        return [
-            part.strip() for part in self.email_receivers.split(",") if part.strip()
-        ]
+        return [part.strip() for part in self.email_receivers.split(",") if part.strip()]
 
     class Meta:
         abstract = True
@@ -100,9 +94,7 @@ class BasePage(IncludedEmailForm, AuthPage, PagelikeModel):
 
     content = models.TextField(_("Content"))
     objects = models.Manager()
-    pagetype = models.ForeignKey(
-        PageType, blank=True, null=True, on_delete=models.CASCADE
-    )
+    pagetype = models.ForeignKey(PageType, blank=True, null=True, on_delete=models.CASCADE)
 
     def get_pagetype(self, **kwargs):
         return self.pagetype

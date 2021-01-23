@@ -9,4 +9,6 @@ from pagetools.subscriptions.templatetags.subscriptions_tags import do_subscribe
 class TemplateTagTestCase(TestCase):
     def test_subscripton_node(self):
         nsn = do_subscribe_node(mock.Mock(), mock.Mock())
-        self.assertTrue('name="email"' in nsn.render(RequestContext(mock.Mock(), {})))
+        request = mock.MagicMock()
+        request.META = {}
+        self.assertTrue('name="email"' in nsn.render({"request": request}))

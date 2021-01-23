@@ -14,6 +14,4 @@ class FormsTestCase(TestCase):
         self.assertTrue(form.is_valid())
 
     def test_invalid_dyn_field(self):
-        self.assertRaises(
-            ValidationError, lambda: DynMultipleChoiceField(label="sowrong")
-        )
+        self.assertRaises(ValidationError, lambda: DynMultipleChoiceField(label="sowrong"))

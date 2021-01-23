@@ -83,9 +83,7 @@ class PublishableLangModel(LangModel, StatusModel):
     Model with a language and a status field and a ``PublishableLangManager``
     """
 
-    _translated_choices = [
-        (slug, _(name)) for (slug, name) in ptsettings.STATUS_CHOICES
-    ]
+    _translated_choices = [(slug, _(name)) for (slug, name) in ptsettings.STATUS_CHOICES]
     STATUS = Choices(*_translated_choices)
     public = PublishableLangManager()
 

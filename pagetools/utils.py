@@ -32,9 +32,7 @@ def itersubclasses(cls, _seen=None):
     """
 
     if not isinstance(cls, type):
-        raise TypeError(
-            "itersubclasses must be called with " "new-style classes, not %.100r" % cls
-        )
+        raise TypeError("itersubclasses must be called with " "new-style classes, not %.100r" % cls)
     if _seen is None:
         _seen = set()
     try:
@@ -64,8 +62,7 @@ def get_adminadd_url(cls):
 
 def get_adminedit_url(obj):
     return reverse(
-        "admin:%s_%s_change"
-        % (obj.__class__._meta.app_label, obj.__class__.__name__.lower()),
+        "admin:%s_%s_change" % (obj.__class__._meta.app_label, obj.__class__.__name__.lower()),
         args=(obj.id,),
     )
 
@@ -101,7 +98,5 @@ def filter_expired(queryset):
     model = queryset.model
     fieldname = model.define_expired
     daterange = getattr(model, "expired_daterange", 1)
-    to_delete = model.objects.filter(
-        **{"%s__lt" % fieldname: datetime.now() - timedelta(daterange)}
-    )
+    to_delete = model.objects.filter(**{"%s__lt" % fieldname: datetime.now() - timedelta(daterange)})
     return to_delete

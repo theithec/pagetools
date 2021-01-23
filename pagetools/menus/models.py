@@ -27,13 +27,9 @@ logger = logging.getLogger("pagetools")
 class MenuEntryManager(TreeManager, LangManager):
     def add_child(self, content_object, **kwargs):
         if not getattr(content_object, "get_absolute_url", None):
-            raise ValidationError(
-                _("MenuEntry.content_object requires get_absolute_url")
-            )
+            raise ValidationError(_("MenuEntry.content_object requires get_absolute_url"))
         kwargs["title"] = kwargs.get("title", "%s" % content_object)
-        kwargs["content_type"] = ContentType.objects.get_for_model(
-            content_object, for_concrete_model=False
-        )
+        kwargs["content_type"] = ContentType.objects.get_for_model(content_object, for_concrete_model=False)
         kwargs["object_id"] = content_object.pk
         kwargs["slug"] = "%s" % getattr(content_object, "slug", slugify(content_object))
         try:
@@ -42,9 +38,7 @@ class MenuEntryManager(TreeManager, LangManager):
         except KeyError:
             pass
         if not created:
-            raise ValidationError(
-                _("Entry %(title)s already exists in %(parent)s"), params=kwargs
-            )
+            raise ValidationError(_("Entry %(title)s already exists in %(parent)s"), params=kwargs)
         return entry
 
 
@@ -53,24 +47,16 @@ class MenuManager(MenuEntryManager):
         raise AttributeError(_("Use 'add_child' or 'add_root' instead of 'create'"))
 
     def add_root(self, title, **kwargs):
-        menu, created = TreeManager.get_or_create(
-            self, title=title, parent=None, **kwargs
-        )
+        menu, created = TreeManager.get_or_create(self, title=title, parent=None, **kwargs)
         if not created:
-            raise ValidationError(
-                _("Menu %(name)s already exists"), params={"name": title}
-            )
+            raise ValidationError(_("Menu %(name)s already exists"), params={"name": title})
         return menu
 
 
 class MenuEntry(MPTTModel, LangModel):
     title = models.CharField(_("Title"), max_length=128)
-    slug = models.CharField(
-        _("slug"), max_length=512, help_text=(_("Slug")), default="", blank=True
-    )
-    parent = TreeForeignKey(
-        "self", null=True, blank=True, related_name="children", on_delete=models.CASCADE
-    )
+    slug = models.CharField(_("slug"), max_length=512, help_text=(_("Slug")), default="", blank=True)
+    parent = TreeForeignKey("self", null=True, blank=True, related_name="children", on_delete=models.CASCADE)
 
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
@@ -103,16 +89,10 @@ class MenuEntry(MPTTModel, LangModel):
                 for entry in entries:
                     is_same = self.pk and self.pk == entry.pk
                     if not is_same and entry.get_root() == root:
-                        raise ValidationError(
-                            _(
-                                "An entry with this title and language already exists in menu"
-                            )
-                        )
+                        raise ValidationError(_("An entry with this title and language already exists in menu"))
             else:  # root
                 if entries:
-                    raise ValidationError(
-                        _("A menu with this title and language already exists")
-                    )
+                    raise ValidationError(_("A menu with this title and language already exists"))
 
 
 @receiver(pre_delete)
@@ -122,9 +102,7 @@ def delete_content(sender, **kwargs):
     except ValueError:
         return
 
-    entries = MenuEntry.objects.filter(
-        content_type=ContentType.objects.get_for_model(sender), object_id=object_id
-    )
+    entries = MenuEntry.objects.filter(content_type=ContentType.objects.get_for_model(sender), object_id=object_id)
     if entries:
         entries.delete()
 
@@ -235,18 +213,12 @@ class Menu(MenuEntry):
                 return {
                     "entry_order_id": entry_cnt,
                     "entry_pk": entry.pk,
-                    "entry_del_url": reverse(
-                        "admin:menus_menuentry_delete", args=(entry.pk,)
-                    ),
-                    "entry_change_url": reverse(
-                        "admin:menus_menuentry_change", args=(entry.pk,)
-                    ),
+                    "entry_del_url": reverse("admin:menus_menuentry_delete", args=(entry.pk,)),
+                    "entry_change_url": reverse("admin:menus_menuentry_change", args=(entry.pk,)),
                     "obj_admin_url": reverseurl,
                     "obj_classname": get_classname(obj.__class__),
                     "obj_title": obj,
-                    "obj_status": "published"
-                    if getattr(obj, "enabled", True)
-                    else "draft",
+                    "obj_status": "published" if getattr(obj, "enabled", True) else "draft",
                     "entry_enabled": "checked" if entry.enabled else "",
                 }
             if not getattr(obj, "is_published", True):
@@ -259,9 +231,7 @@ class Menu(MenuEntry):
             cslug = getattr(obj, "slug", getattr(obj, "menukey", slugify("%s" % obj)))
             curr_dict = child_data
             while curr_dict:
-                curr_dict["select_class_marker"] = curr_dict.get(
-                    "select_class_marker", ""
-                )
+                curr_dict["select_class_marker"] = curr_dict.get("select_class_marker", "")
                 curr_dict["select_class_marker"] += " %(sel_" + cslug + ")s"
                 curr_dict = curr_dict["dict_parent"]
 
@@ -281,9 +251,7 @@ class Menu(MenuEntry):
             for child in children:
                 obj = child.content_object
                 child_data = {
-                    "entry_title": child.title
-                    or getattr(obj, "title", None)
-                    or obj.name,
+                    "entry_title": child.title or getattr(obj, "title", None) or obj.name,
                     "dict_parent": dict_parent,
                 }
 
@@ -295,9 +263,7 @@ class Menu(MenuEntry):
                 elif dict_parent and dict_parent.get("auto_entry", False):
                     child_children = MenuEntry.objects.none()
                 else:
-                    child_children = child.get_children().filter(
-                        **children_filter_kwargs
-                    )
+                    child_children = child.get_children().filter(**children_filter_kwargs)
 
                 child_data.update(get_child_data(for_admin, child, obj, dict_parent))
 
@@ -351,9 +317,7 @@ class ViewLink(AbstractLink):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        choices = tuple(
-            (("%s" % key, "%s" % key) for key in MenusConfig.entrieable_reverse_names)
-        )
+        choices = tuple((("%s" % key, "%s" % key) for key in MenusConfig.entrieable_reverse_names))
         self._meta.get_field("name").choices = choices
 
     def get_absolute_url(self):
@@ -379,9 +343,7 @@ class AutoPopulated(AbstractLink):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        choices = tuple(
-            (("%s" % k, "%s" % k) for k in MenusConfig.entrieable_auto_children)
-        )
+        choices = tuple((("%s" % k, "%s" % k) for k in MenusConfig.entrieable_auto_children))
         self._meta.get_field("name").choices = choices
 
     def get_children(self):

@@ -23,7 +23,7 @@
             $("subscribe-msgs").replaceWith('<span id="subscribe-msgs"></span>');
             $.post(
                 "{% url "subscriptions:subscribe" %}",
-                $("#subscribeform").serializeArray(),
+                $(".subscribeform").serializeArray(),
                 function(data){
                     $("#subscribe-msgs").replaceWith('<span id="subscribe-msgs">'+data['msg']+'</span>');
                 }

@@ -24,20 +24,14 @@ class SearchResultsView(PaginatorMixin):
     form_cls = AdvSearchForm
     _thisdir = os.path.dirname(os.path.realpath(__file__))
     if settings.SEARCH_REPLACEMENTS:
-        replacements = json.load(
-            open(os.path.join(_thisdir, settings.SEARCH_REPLACEMENTS_FILE))
-        )
+        replacements = json.load(open(os.path.join(_thisdir, settings.SEARCH_REPLACEMENTS_FILE)))
 
     def get(self, request, *args, **kwargs):
         self.form = self.form_cls(request.GET)
         if self.form.is_valid():
             cleaned_data = self.form.cleaned_data
             if any(cleaned_data.values()):
-                self.sep = "?%s&" % (
-                    "&".join(
-                        ["%s=%s" % (k, v) for k, v in list(cleaned_data.items()) if v]
-                    )
-                )
+                self.sep = "?%s&" % ("&".join(["%s=%s" % (k, v) for k, v in list(cleaned_data.items()) if v]))
                 self.search_params = cleaned_data
                 model_pks = cleaned_data.get("models")
                 if model_pks:
@@ -52,9 +46,7 @@ class SearchResultsView(PaginatorMixin):
         cnots = self.search_params.get("contains_not", "").split()
         if cnots:
             notlist = [
-                Q(**{"%s__icontains" % field: self._convert(cnot, field, mod)})
-                for cnot in cnots
-                for field in fields
+                Q(**{"%s__icontains" % field: self._convert(cnot, field, mod)}) for cnot in cnots for field in fields
             ]
             combined_notlist = reduce(operator.or_, notlist)
             qs = qs.exclude(combined_notlist)
@@ -84,10 +76,7 @@ class SearchResultsView(PaginatorMixin):
                     continue
                 qlist = reduce(
                     operator.or_,
-                    [
-                        Q(**{"%s__icontains" % field: self._convert(sterm, field, mod)})
-                        for field in fields
-                    ],
+                    [Q(**{"%s__icontains" % field: self._convert(sterm, field, mod)}) for field in fields],
                 )
                 qlists.append(qlist)
 
@@ -123,12 +112,7 @@ class SearchResultsView(PaginatorMixin):
                 queryset = self.filtered_queryset(mod)
                 for field in fields:
                     exact_results = [
-                        r
-                        for r in queryset
-                        if (
-                            self._convert(exact, field, mod)
-                            in self._stripped(getattr(r, field))
-                        )
+                        r for r in queryset if (self._convert(exact, field, mod) in self._stripped(getattr(r, field)))
                     ]
                     results_exact |= set(exact_results)
         results = [f for f in (results_all, results_any, results_exact) if f]

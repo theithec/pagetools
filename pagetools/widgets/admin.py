@@ -41,13 +41,9 @@ class TypeAreaAdmin(admin.ModelAdmin):
             contenttype = ContentType.objects.get_for_id(int(pks[0]))
             obj_id = int(pks[1])
             pos = obj.widgets.all().count()
-            WidgetInArea.objects.get_or_create(
-                typearea=obj, content_type=contenttype, object_id=obj_id, position=pos
-            )
+            WidgetInArea.objects.get_or_create(typearea=obj, content_type=contenttype, object_id=obj_id, position=pos)
 
-    def render_change_form(
-        self, request, context, add=False, change=False, form_url="", obj=None
-    ):
+    def render_change_form(self, request, context, add=False, change=False, form_url="", obj=None):
 
         if obj:
             user = request.user
@@ -64,10 +60,7 @@ class TypeAreaAdmin(admin.ModelAdmin):
                     '<li>+  <a href="%s">%s</a></li>'
                     % (
                         (
-                            reverse(
-                                "admin:%s_%s_add"
-                                % (cls._meta.app_label, cls._meta.model_name)
-                            )
+                            reverse("admin:%s_%s_add" % (cls._meta.app_label, cls._meta.model_name))
                             + "?typearea=%s" % (context["object_id"])
                         ),
                         get_classname(cls),
@@ -119,14 +112,10 @@ class BaseWidgetAdmin(admin.ModelAdmin):
     def _redirect(self, action, request, obj, *args, **kwargs):
         typearea_id = request.GET.get("typearea", None)
         if typearea_id and "_save" in request.POST:
-            return HttpResponseRedirect(
-                reverse("admin:widgets_typearea_change", args=(typearea_id,))
-            )
+            return HttpResponseRedirect(reverse("admin:widgets_typearea_change", args=(typearea_id,)))
 
         # see menus.admin._redirect
-        return getattr(admin.ModelAdmin, "response_%s" % action)(
-            self, request, obj, *args, **kwargs
-        )
+        return getattr(admin.ModelAdmin, "response_%s" % action)(self, request, obj, *args, **kwargs)
 
     def response_add(self, request, obj, *args, **kwargs):
         return self._redirect("add", request, obj, *args, **kwargs)

@@ -56,10 +56,6 @@ def _ordered_content(value, args):
 def _rendered_ordered_children(obj, user, suffix=""):
     children = obj.ordered_content(user=user)
     return [
-        mark_safe(
-            select_template(get_template_names_for_obj(child, suffix)).render(
-                {"object": child}
-            )
-        )
+        mark_safe(select_template(get_template_names_for_obj(child, suffix)).render({"object": child}))
         for child in children
     ]

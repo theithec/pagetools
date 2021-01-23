@@ -8,9 +8,7 @@ def entrieable_reverse_name(name, app_name=None):
     """
     fullname = "%s:%s" % (app_name, name) if app_name else name
     MenusConfig.entrieable_reverse_names.append(fullname)
-    MenusConfig.entrieable_reverse_names = sorted(
-        [name for name in MenusConfig.entrieable_reverse_names if name]
-    )
+    MenusConfig.entrieable_reverse_names = sorted([name for name in MenusConfig.entrieable_reverse_names if name])
     return name
 
 

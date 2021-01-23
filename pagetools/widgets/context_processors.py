@@ -1,10 +1,11 @@
 from .utils import get_areas_for_type, type_or_none
 
 
-def base_pagetype(request=None):
-    d = {}
-    d["areas"] = get_areas_for_type(type_or_none("base"), {})
-    return d
+def base_pagetype(request):
+    context = {}
+    if not getattr(request, "areas_added", False):
+        context["areas"] = get_areas_for_type(type_or_none("base"), {}, request)
+    return context
 
 
 def pagetype_from_view(request):

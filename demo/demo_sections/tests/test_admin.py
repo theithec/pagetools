@@ -7,10 +7,9 @@ import pagetools.sections.dashboard_modules
 
 
 class AdminTest(SectionsDataTestCase):
-
     def setUp(self):
-        self.admin = User.objects.create_superuser('admin', 'q@w.de', 'password')
-        self.client.login(username="admin", password='password')
+        self.admin = User.objects.create_superuser("admin", "q@w.de", "password")
+        self.client.login(username="admin", password="password")
         super().setUp()
 
     def test_article_add(self):
@@ -29,8 +28,8 @@ class AdminTest(SectionsDataTestCase):
         pagetools.sections.dashboard_modules.PageNodesModule.model = SectionList
         #  print("ALL", SectionList.objects.all())
         response = self.client.get(
-            '/adminnodes/%s/' % self.sectionlist1.slug,
-            HTTP_X_REQUESTED_WITH='XMLHttpRequest'
+            "/adminnodes/%s/" % self.sectionlist1.slug,
+            HTTP_X_REQUESTED_WITH="XMLHttpRequest",
         )
         # self.assertTrue(str(response.content).startswith("<ol"))
         self.assertTrue(response.status_code, 200)

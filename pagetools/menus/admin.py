@@ -51,9 +51,7 @@ class MenuChangeForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(MenuChangeForm, self).__init__(*args, **kwargs)
-        self.fields["children"] = forms.Field(
-            required=False, widget=MenuChildrenWidget(instance=kwargs["instance"])
-        )
+        self.fields["children"] = forms.Field(required=False, widget=MenuChildrenWidget(instance=kwargs["instance"]))
 
     def clean_children(self, *args, **_kwargs):
         names = []
@@ -104,9 +102,7 @@ class MenuAdmin(TinyMCEMixin, admin.ModelAdmin):
     def get_queryset(self, request):
         return Menu.objects.root_nodes()
 
-    def render_change_form(
-        self, request, context, add=False, change=False, form_url="", obj=None
-    ):
+    def render_change_form(self, request, context, add=False, change=False, form_url="", obj=None):
         if change and obj:
             context["addable_entries"] = mark_safe(
                 "".join(
@@ -173,9 +169,7 @@ class EntrieableForm(forms.ModelForm):
         try:
             entry = kwargs["instance"]
             content_type = ContentType.objects.get_for_model(entry)
-            containing_menus = MenuEntry.objects.filter(
-                content_type=content_type, object_id=entry.id
-            )
+            containing_menus = MenuEntry.objects.filter(content_type=content_type, object_id=entry.id)
             menuroot_ids = {menu.get_root().id for menu in containing_menus}
         except (KeyError, AttributeError):
             menuroot_ids = set()
@@ -206,9 +200,7 @@ class EntrieableForm(forms.ModelForm):
         return cleaned_data
 
     class Media(TinyMCEMixin.Media):
-        js = TinyMCEMixin.Media.js + [
-            settings.STATIC_URL + "pagetools/admin/js/pre_sel_menu.js"
-        ]
+        js = TinyMCEMixin.Media.js + [settings.STATIC_URL + "pagetools/admin/js/pre_sel_menu.js"]
 
 
 class EntrieableAdmin(admin.ModelAdmin):
@@ -246,9 +238,7 @@ class EntrieableAdmin(admin.ModelAdmin):
                 break
 
         if not added:
-            self.fieldsets = self.fieldsets + type(self.fieldsets)(
-                ((_("In menus"), {"fields": ["menus"]}),)
-            )
+            self.fieldsets = self.fieldsets + type(self.fieldsets)(((_("In menus"), {"fields": ["menus"]}),))
 
         return self.fieldsets
 
@@ -294,13 +284,9 @@ class EntrieableAdmin(admin.ModelAdmin):
     def _redirect(self, action, request, obj, *args, **kwargs):
         menus_param = request.GET.get("menus", None)
         if menus_param and "_save" in request.POST:
-            return HttpResponseRedirect(
-                reverse("admin:menus_menu_change", args=(menus_param,))
-            )
+            return HttpResponseRedirect(reverse("admin:menus_menu_change", args=(menus_param,)))
 
-        return getattr(admin.ModelAdmin, "response_%s" % action)(
-            self, request, obj, *args, **kwargs
-        )
+        return getattr(admin.ModelAdmin, "response_%s" % action)(self, request, obj, *args, **kwargs)
 
     def response_add(self, request, obj, *args, **kwargs):
         return self._redirect("add", request, obj, *args, **kwargs)

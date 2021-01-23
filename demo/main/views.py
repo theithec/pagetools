@@ -9,5 +9,3 @@ class ArticleListView(PaginatorMixin):
     #     data = super().get_context_data(**kwargs)
     #     data["form"] = FooForm()
     #     return data
-
-

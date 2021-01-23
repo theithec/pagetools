@@ -11,11 +11,8 @@ class SubscribeForm(forms.Form):
     email = forms.EmailField(label=_("E-Mail"))
 
     def __init__(self, *args, **kwargs):
-        super(SubscribeForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.helper.form_id = "subscribeform"
+        self.helper.form_class = "subscribeform"
         self.helper.form_action = reverse("subscriptions:subscribe")
-        self.helper.add_input(
-            Submit("subscribe", _("Submit"), css_class=SUBMIT_BUTTON_CLASSES)
-        )
-        self.helper.form_tag = True
+        self.helper.add_input(Submit("subscribe", _("Submit"), css_class=SUBMIT_BUTTON_CLASSES))

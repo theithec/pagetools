@@ -21,9 +21,7 @@ from .base_models import BaseSubscriberMixin
 
 
 def _mk_key():
-    key = "".join(
-        [random.choice(string.ascii_letters + string.digits) for x in range(1, 32)]
-    )
+    key = "".join([random.choice(string.ascii_letters + string.digits) for x in range(1, 32)])
     try:
         if Subscriber.objects.filter(key=key):
             key = _mk_key()
@@ -60,9 +58,6 @@ class Subscriber(BaseSubscriberMixin, LangModel):
         return cls.objects.lfilter(**fkwargs)
 
 
-_subscriber_model = None
-
-
 # http://djangosnippets.org/snippets/1993/
 # django-mailer, django-mail-queue, ... alle doof
 #        choices=(
@@ -76,21 +71,13 @@ class QueuedEmail(LangModel):
         abstract = False
         verbose_name = _("News-Mail")
 
-    createdate = models.DateTimeField(
-        "Created on", auto_now_add=True, blank=True, editable=False
-    )
+    createdate = models.DateTimeField("Created on", auto_now_add=True, blank=True, editable=False)
 
-    modifydate = models.DateTimeField(
-        "Last modified on", auto_now_add=True, blank=True, editable=False
-    )
+    modifydate = models.DateTimeField("Last modified on", auto_now_add=True, blank=True, editable=False)
 
-    senddate = models.DateTimeField(
-        "Send after", auto_now_add=True, blank=True, editable=True
-    )
+    senddate = models.DateTimeField("Send after", auto_now_add=True, blank=True, editable=True)
 
-    subject = models.CharField(
-        verbose_name="Subject", default="", unique=False, blank=True, max_length=255
-    )
+    subject = models.CharField(verbose_name="Subject", default="", unique=False, blank=True, max_length=255)
 
     body = models.TextField(verbose_name="Body", default="", unique=False, blank=True)
 
@@ -166,9 +153,7 @@ class QueuedEmail(LangModel):
 
 
 class SendStatus(models.Model):
-    subscriber = models.ForeignKey(
-        subs_settings.SUBSCRIBER_MODEL, on_delete=models.CASCADE
-    )
+    subscriber = models.ForeignKey(subs_settings.SUBSCRIBER_MODEL, on_delete=models.CASCADE)
     queued_email = models.ForeignKey(QueuedEmail, on_delete=models.CASCADE)
     status = models.IntegerField()
 
