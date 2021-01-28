@@ -38,6 +38,7 @@ class DynMultipleChoiceField(forms.MultipleChoiceField):
 class SendEmailForm(forms.Form):
 
     IGNORED_FIELDS_IN_MESSAGE = ("captcha",)
+    USE_MAILRECEIVERS = True
 
     def __init__(self, *args, **kwargs):
         self.mailreceivers = kwargs.pop("mailreceivers", None) or MAILFORM_RECEIVERS

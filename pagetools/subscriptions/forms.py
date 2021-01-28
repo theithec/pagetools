@@ -13,6 +13,6 @@ class SubscribeForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.helper.form_class = "subscribeform"
+        self.helper.form_id = "subscribeform"
         self.helper.form_action = reverse("subscriptions:subscribe")
         self.helper.add_input(Submit("subscribe", _("Submit"), css_class=SUBMIT_BUTTON_CLASSES))

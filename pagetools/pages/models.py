@@ -65,7 +65,7 @@ class IncludedEmailForm(IncludedForm):
 
     def clean(self, *args, **kwargs):
         super().clean()
-        if self.included_form and not self.email_receivers:
+        if self.included_form and getattr(self.included_form, "USE_MAILRECEIVERS", False) and not self.email_receivers:
             raise ValidationError(_('''The selected form requires "email_receivers"'''))
         validate_emails_str(self.email_receivers)
 

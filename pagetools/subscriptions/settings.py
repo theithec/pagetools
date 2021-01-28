@@ -11,8 +11,13 @@ NEWS_FROM = getattr(settings, "PT_SUBSCR_NEWS_FROM", "news@localhost")
 
 NEWS_SUBJECT_PREFIX = getattr(settings, "PT_SUBSCR_SUBJECT_PREFIX", "[News:]")
 
+SUBSCRIPTION_SUCCESS_MSG = getattr(settings, "PT_SUBSCR_SUBSCRIPTION_SUCCESS_MSG", _("subscribed: %s"))
 
 ACTIVATION_MAIL_SUBJECT = getattr(settings, "PT_SUBSCR_ACTIVATION_MAIL_SUBJECT", _("Welcome"))
+
+ACTIVATION_SUCCESS_MAIL_SUBJECT = getattr(settings, "PT_SUBSCR_ACTIVATION_SUCCESS_MAIL_SUBJECT", _("Activation successfull"))
+
+ACTIVATION_SUCCESS_MSG = getattr(settings, "PT_SUBSCR_ACTIVATION_SUCCESS_MSG", _("activation: ok"))
 
 MAX_PER_TIME = getattr(settings, "PT_SUBSCR_MAX_PER_TIME", 100)
 

@@ -26,7 +26,7 @@ class ViewTest(TestCase):
         self.assertFalse(sub.is_activated)
         self.factory = RequestFactory()
         url = reverse("subscriptions:activate", kwargs={"key": sub.key})
-        request = self.factory.get("%s/?mk=%s/" % (url, sub.mailkey()))
+        request = self.factory.get(url)
         setattr(request, "session", "session")
         setattr(request, "resolver_match", mock.Mock(func=activate))
         messages = FallbackStorage(request)

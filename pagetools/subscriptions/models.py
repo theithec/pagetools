@@ -40,15 +40,8 @@ class Subscriber(BaseSubscriberMixin, LangModel):
         self.subscribtion_date = datetime.date(1900, 1, 1)
         self.save()
 
-    def mailkey(self):
-        return sha(self.get_email().encode("utf-8")).hexdigest()
-
-    def cmd_path(self):
-        return "/?mk=".join((urlquote(self.key), urlquote(self.mailkey())))
-
     def get_email(self):
-        return str(self.email)
-
+        return self.email
     @classmethod
     def get_subscribers(cls, **kwargs):
         fkwargs = {"is_activated": True}
@@ -56,6 +49,7 @@ class Subscriber(BaseSubscriberMixin, LangModel):
             fkwargs["lang"] = kwargs.pop("lang", None)
 
         return cls.objects.lfilter(**fkwargs)
+
 
 
 # http://djangosnippets.org/snippets/1993/
@@ -123,14 +117,10 @@ class QueuedEmail(LangModel):
                 status = self.send_to(
                     sendstatus.subscriber.get_email(),
                     conn,
-                    "%s?mk=%s/"
-                    % (
-                        reverse(
-                            "subscriptions:unsubscribe",
-                            kwargs={"key": sendstatus.subscriber.key},
-                        ),
-                        sendstatus.subscriber.mailkey(),
-                    ),
+                    reverse(
+                        "subscriptions:unsubscribe",
+                        kwargs={"key": sendstatus.subscriber.key},
+                    )
                 )
                 if status == 1:
                     if sendstatus.subscriber.failures != 0:

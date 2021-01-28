@@ -7,8 +7,8 @@ from django.contrib import messages
 from django.contrib.sites.models import Site
 from django.core.mail import EmailMultiAlternatives
 
-from django.http.response import Http404, JsonResponse
-from django.shortcuts import get_object_or_404, render
+from django.http.response import Http404, JsonResponse, HttpResponse
+from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import get_language
@@ -47,69 +47,58 @@ def _send_activation_mail(subscriber, template_name):
     context = {
         "site_name": Site.objects.get_current().name,
         "site_url": site_url,
-        "activation_url": "%s%s?mk=%s/"
-        % (
-            site_url,
-            (reverse("subscriptions:activate", kwargs={"key": subscriber.key})),
-            subscriber.mailkey(),
-        ),
+        "activation_url": site_url + reverse("subscriptions:activate", kwargs={"key": subscriber.key})
     }
     subject = subs_settings.ACTIVATION_MAIL_SUBJECT
     return _send_mail(subscriber, template_name, context, subject)
 
 
 def _subscribe(request, mail_success_template_name="subscriptions/activation_msg"):
-    msg = _("An error occurred")
     form = subscribe_form(request.POST)
-    errors = True
     if form.is_valid():
         clean_data = form.clean()
         email = clean_data["email"]
         already_there = Subscriber.objects.filter(email=email).exists()
-        subs_msg = _("subscribed: %s") % email
         if not already_there:
             subscriber = Subscriber(email=email, is_activated=False, lang=get_language())
             mail_success = _send_activation_mail(subscriber, mail_success_template_name)
             if mail_success:
                 subscriber.save()
-        if already_there or mail_success:
-            msg = subs_msg
-            errors = False
-    else:
-        msg = str(form.errors)
-    return msg, errors
+            else:
+                form.add_error(_("An error occurred"))
+    return form
 
 
-def _subscribe_fallback(request, msg, errors):
-    # messages.add_message(request, messages.ERROR if errors else messages.SUCCESS, msg)
-    return render(
-        request,
-        "subscriptions/subscribe_msg.html",
-    )
+def _subscribe_fallback(request, form, msg):
+    context = {"msg": msg}
+    if form.errors:
+        context["form"] = form
+    return render(request, "subscriptions/subscribe_result.html", context)
 
 
-def _subscribe_json(msg, errors):
-    return JsonResponse({"msg": msg, "errors": errors})
+def _subscribe_json(form, msg):
+    return JsonResponse({"form": form.as_p(), "errors": form.errors, "msg": msg})
 
 
 def subscribe(request):
     if request.method == "GET":
         raise Http404
-    msg, errors = _subscribe(request)
+    form = _subscribe(request)
+    if form.errors:
+        msg = _("An error occurred")
+    else:
+        msg = subs_settings.SUBSCRIPTION_SUCCESS_MSG % form.cleaned_data["email"]
     if request.is_ajax():
-        return _subscribe_json(msg, errors)
-    messages.add_message(request, messages.SUCCESS, msg)
-    return _subscribe_fallback(request, msg, errors)
+        return _subscribe_json(form, msg)
+    level = messages.ERROR if form.errors else messages.SUCCESS
+    messages.add_message(request, level, msg)
+    return _subscribe_fallback(request, form, msg)
 
 
 def _matching_activated_subscriber(request, key):
     # remove trailing slash
-    mailkey = request.GET.get("mk", "/")[:-1]
     subscriber = get_object_or_404(Subscriber, key=key)
-    mailsha = sha(subscriber.email.encode("utf-8")).hexdigest()
-    if mailsha == mailkey:
-        return subscriber
-    return None
+    return subscriber
 
 
 def _activate(request, key):
@@ -118,7 +107,7 @@ def _activate(request, key):
         activate_end = subscriber.subscribtion_date + datetime.timedelta(hours=48)
         if not subscriber.is_activated and activate_end > timezone.now():
             subscriber.activate()
-            messages.add_message(request, messages.SUCCESS, _("activation: ok"))
+            messages.add_message(request, messages.SUCCESS, subs_settings.ACTIVATION_SUCCESS_MSG)
             return subscriber
 
 

@@ -11,8 +11,10 @@ class PagesConfig(AppConfig):
 
     def ready(self):
         from . import forms
+        from pagetools.subscriptions.forms import SubscribeForm
 
         self.includable_forms = {
             "Contactform": forms.ContactForm,
             "Contactfrom(Captcha)": forms.CaptchaContactForm,
+            "SubscribeForm": SubscribeForm
         }

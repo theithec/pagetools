@@ -147,7 +147,7 @@ msgstr "Ein Fehler ist aufgetreten"
 #: subscriptions/views.py:59
 #, python-format
 msgid "subscribed: %s"
-msgstr "Angemeldet: %s"
+msgstr "Eingetragen: %s"
 
 #: subscriptions/views.py:113 subscriptions/views.py:116
 msgid "activation: ok"

@@ -8,7 +8,7 @@
         </p>
     </div>
 
-    <p>{% blocktrans %}Subscribe to our newsletter{% endblocktrans %}22</p>
+    <p>{% blocktrans %}Subscribe to our newsletter{% endblocktrans %}</p>
     {% crispy  sform  %}
     <span id="subscribe-msgs"></span>
 </div>
@@ -23,14 +23,13 @@
             $("subscribe-msgs").replaceWith('<span id="subscribe-msgs"></span>');
             $.post(
                 "{% url "subscriptions:subscribe" %}",
-                $(".subscribeform").serializeArray(),
+                $("#subscribeform").serializeArray(),
                 function(data){
                     $("#subscribe-msgs").replaceWith('<span id="subscribe-msgs">'+data['msg']+'</span>');
+                    $("#subscribeform").replaceWith(data.form);
                 }
             );
-
             return false;
-
         });
         $("#loading").ajaxStart(function(){
             $(this).show();
