@@ -16,5 +16,5 @@ class PagesConfig(AppConfig):
         self.includable_forms = {
             "Contactform": forms.ContactForm,
             "Contactfrom(Captcha)": forms.CaptchaContactForm,
-            "SubscribeForm": SubscribeForm
+            "SubscribeForm": SubscribeForm,
         }

@@ -56,7 +56,11 @@ class IncludedFormMixin:
         formcls = self.get_form_class()
         kwargs = {}
 
-        if getattr(formcls, "USE_MAILRECEIVERS", False) and getattr(self, "object") and getattr(self.object, "email_receivers_list"):
+        if (
+            getattr(formcls, "USE_MAILRECEIVERS", False)
+            and getattr(self, "object")
+            and getattr(self.object, "email_receivers_list")
+        ):
             kwargs["mailreceivers"] = self.object.email_receivers_list()
         return kwargs
 

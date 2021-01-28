@@ -7,9 +7,8 @@ from django.contrib import messages
 from django.contrib.sites.models import Site
 from django.core.mail import EmailMultiAlternatives
 
-from django.http.response import Http404, JsonResponse, HttpResponse
-from django.shortcuts import get_object_or_404, render, redirect
-from django.urls import reverse
+from django.http.response import Http404, JsonResponse
+from django.shortcuts import get_object_or_404, render
 from django.utils import timezone
 from django.utils.translation import get_language
 from django.utils.translation import ugettext_lazy as _
@@ -22,6 +21,12 @@ subscribe_form = config.subscribe_form
 
 
 def _send_mail(subscriber, template_name, context, subject, attachmentfile=None):
+    domain = Site.objects.get_current().domain
+    context.update({
+        "site_name": Site.objects.get_current().name,
+        "site_domain": domain,
+        "subscriber": subscriber
+    })
     tmpl = template.loader.get_template(template_name + ".txt")
     msg = tmpl.render(context)
     try:
@@ -43,14 +48,8 @@ def _send_mail(subscriber, template_name, context, subject, attachmentfile=None)
 
 
 def _send_activation_mail(subscriber, template_name):
-    site_url = "https://%s" % Site.objects.get_current().domain
-    context = {
-        "site_name": Site.objects.get_current().name,
-        "site_url": site_url,
-        "activation_url": site_url + reverse("subscriptions:activate", kwargs={"key": subscriber.key})
-    }
     subject = subs_settings.ACTIVATION_MAIL_SUBJECT
-    return _send_mail(subscriber, template_name, context, subject)
+    return _send_mail(subscriber, template_name, {}, subject)
 
 
 def _subscribe(request, mail_success_template_name="subscriptions/activation_msg"):

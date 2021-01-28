@@ -18,7 +18,7 @@ setup(
         "Django==2.*",
         "beautifulsoup4==4.*",
         "django-crispy-forms==1.8.*",
-        "django-debug-toolbar==2.*",
+        "django-debug-toolbar==3.*",
         "django-filebrowser==3.12.*",
         "django-grappelli<=2.14",
         "django-model-utils==4.0.*",

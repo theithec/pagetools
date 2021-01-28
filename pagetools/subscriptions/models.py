@@ -42,6 +42,7 @@ class Subscriber(BaseSubscriberMixin, LangModel):
 
     def get_email(self):
         return self.email
+
     @classmethod
     def get_subscribers(cls, **kwargs):
         fkwargs = {"is_activated": True}
@@ -49,7 +50,6 @@ class Subscriber(BaseSubscriberMixin, LangModel):
             fkwargs["lang"] = kwargs.pop("lang", None)
 
         return cls.objects.lfilter(**fkwargs)
-
 
 
 # http://djangosnippets.org/snippets/1993/
@@ -120,7 +120,7 @@ class QueuedEmail(LangModel):
                     reverse(
                         "subscriptions:unsubscribe",
                         kwargs={"key": sendstatus.subscriber.key},
-                    )
+                    ),
                 )
                 if status == 1:
                     if sendstatus.subscriber.failures != 0:
